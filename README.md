@@ -1,5 +1,6 @@
-##Opench Firebase 
+# Opench Firebase 
 
-####Running the application:
+Running the application:
 `npm run start`
-##### This will open the separate electron window containing the application
+
+This will open the separate electron window containing the application
