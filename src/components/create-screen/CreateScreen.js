@@ -2,8 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card'
 import MainBottomNav from '../MainBottomNav.js'
 
-
-function Initial() {
+function CreateScreen() {
     return (
         <div>
             <MainBottomNav />
@@ -11,4 +10,4 @@ function Initial() {
     );
 }
 
-export default Initial;
+export default CreateScreen;
