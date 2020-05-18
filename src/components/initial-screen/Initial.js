@@ -1,12 +1,16 @@
-import React from 'react';
-import Card from '@material-ui/core/Card'
+import React, {Component} from 'react';
+import InitialCard from "./InitialCard";
 
-function Initial() {
-    return (
-        <div>
-            Initial Screen
-        </div>
-    );
+class Initial extends Component{
+    render() {
+        return(
+            <div style={{padding:20,background: 'linear-gradient(to right bottom, #667eea, #764ba2)',
+                minHeight: 538,overflow:'hidden'}}>
+                <div style={{marginTop: 50}}/>
+                <InitialCard/>
+            </div>
+        )
+    }
 }
 
 export default Initial;
