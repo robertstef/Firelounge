@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OpenchFirebase.iml" filepath="$PROJECT_DIR$/OpenchFirebase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/opench-firebase.iml" filepath="$PROJECT_DIR$/.idea/opench-firebase.iml" />
     </modules>
   </component>
 </project>
