@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 import React, {Component} from 'react';
 import InitialCard from "./InitialCard";
+import MainBottomNav from "../MainBottomNav";
 
 class Initial extends Component{
     render() {
@@ -12,19 +12,6 @@ class Initial extends Component{
             </div>
         )
     }
-=======
-import React from 'react';
-import Card from '@material-ui/core/Card'
-import MainBottomNav from '../MainBottomNav.js'
-
-
-function Initial() {
-    return (
-        <div>
-            <MainBottomNav />
-        </div>
-    );
->>>>>>> cfd2b40bbdfdb72514e7e16867c3e3867e8a191f
 }
 
 export default Initial;
