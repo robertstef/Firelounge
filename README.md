@@ -1,4 +1,4 @@
-# Opench Firebase 
+# OpenchFirebase
 
 Running the application:
 `npm run start`
