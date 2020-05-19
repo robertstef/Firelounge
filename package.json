@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.14",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -18,7 +19,8 @@
     "electron-is-dev": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-router-dom": "latest"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -45,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/icons": "^4.9.1",
     "concurrently": "^5.2.0",
     "electron": "^8.3.0",
     "electron-builder": "^22.6.0",
