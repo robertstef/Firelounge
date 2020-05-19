@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import GroupIcon from '@material-ui/icons/Group';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import StorageIcon from '@material-ui/icons/Storage';
 
 function TabPanel(props) {
@@ -107,7 +107,7 @@ export default function SecondaryManageNav() {
           aria-label="nav tabs example"
           className={classes.tabs}
         >
-          <LinkTab icon={<BusinessCenterIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
+          <LinkTab icon={<CloudQueueIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
           <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
           <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} />
         </Tabs>
