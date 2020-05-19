@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
     height: '40px',
   },
   selectEmpty: {
-    marginTop: '5px',
-    // marginBottom: '10px'
+    marginTop: '9px',
   },
   box: {
     marginTop: '5px',
