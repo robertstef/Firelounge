@@ -22,7 +22,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={3} style={{padding: '0px'}}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -46,6 +46,7 @@ function a11yProps(index) {
 function LinkTab(props) {
   return (
     <Tab
+      style={{minWidth: '50px'}}
       component="a"
       onClick={(event) => {
         event.preventDefault();
@@ -57,16 +58,37 @@ function LinkTab(props) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     position: 'absolute',
-    bottom: '48px',
-    width: '100%',
-    padding: '0px'
+    left: '50px',
+    height: '100%',
+    overflow: 'hidden'
   },
+  appbar: {
+    height: '100%',
+    width: '50px',
+    marginTop: '50px',
+  },
+  linkTab: {
+    width: '50px',
+    
+  },
+  tabs: {
+    width: '50px',
+    height: '100%'
+  },
+  settingsTab: {
+    marginBottom: '50px',
+    marginTop: 'auto'
+  },
+  content: {
+    paddingTop: '0px'
+  }
 }));
 
-export default function NavTabs() {
+export default function SecondaryManageNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -76,27 +98,31 @@ export default function NavTabs() {
 
   return (
     <div className={classes.root}>
-      <TabPanel value={value} index={0}>
-        Deploy Page
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Databse Page
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Users Page
-      </TabPanel>
-            <AppBar position="static">
+      <AppBar position="static" className={classes.appbar}>
         <Tabs
+          orientation='vertical'
           variant="fullWidth"
           value={value}
           onChange={handleChange}
           aria-label="nav tabs example"
+          className={classes.tabs}
         >
-          <LinkTab icon={<BusinessCenterIcon/>} {...a11yProps(0)} />
+          <LinkTab icon={<BusinessCenterIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
           <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
           <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
+      <div className={classes.content}>
+        <TabPanel value={value} index={0}>
+          Deploy Page
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Databse Page
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Users Page
+        </TabPanel>
+      </div>
     </div>
   );
 }
