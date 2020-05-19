@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
   appbar: {
     height: '100%',
     width: '50px',
-    marginTop: '50px',
   },
   linkTab: {
     width: '50px',

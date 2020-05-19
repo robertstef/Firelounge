@@ -63,7 +63,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     position: 'absolute',
     left: '0px',
-    height: '100%'
+    height: '100%',
+    width: '100%',
+    overflow: 'hidden'
   },
   appbar: {
     height: '100%',
@@ -81,6 +83,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     bottom: '10px',
     marginTop: 'auto'
+  },
+  tabpanel: {
+    width: '100%'
   }
 }));
 
@@ -107,13 +112,13 @@ export default function MainNav() {
           <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} className={classes.tabpanel}>
         Create Screen
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={1} className={classes.tabpanel}>
         <ManageScreen/>
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={2} className={classes.tabpanel}>
         Settings Page
       </TabPanel>
     </div>

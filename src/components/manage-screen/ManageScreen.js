@@ -1,9 +1,11 @@
 import React from 'react';
-import SecondaryManageNav from '../manage-screen/SecondaryManageNav.js'
+import SecondaryManageNav from './SecondaryManageNav'
+import TopManageNav from './TopManageNav'
 
 function ManageScreen() {
     return (
         <div>
+        	<TopManageNav />
             <SecondaryManageNav />
         </div>
     );
