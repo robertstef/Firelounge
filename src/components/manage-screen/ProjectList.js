@@ -5,17 +5,28 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    marginTop: '-5px',
-    marginLeft: '25%',
-    minWidth: 200,
-    height: '50px'
+    marginLeft: '10%',
+    marginRight: 'auto',
+    minWidth: '200px',
+    height: '40px',
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: '5px',
+    // marginBottom: '10px'
   },
+  box: {
+    marginTop: '5px',
+    marginBottom: '5px',
+    marginLeft: '20%',
+    minWidth: '250px',
+    minHeight: '40px',
+    backgroundColor: 'white',
+    borderRadius: 40,
+  }
 }));
 
 export default function ProjectList() {
@@ -27,7 +38,7 @@ export default function ProjectList() {
   };
 
   return (
-    <div>
+      <Box className={classes.box} boxShadow={2}>
          <FormControl className={classes.formControl}>
         <Select
           value={age}
@@ -44,6 +55,6 @@ export default function ProjectList() {
           <MenuItem value={30}>Project 3</MenuItem>
         </Select>
       </FormControl>
-    </div>
+      </Box>
   );
 }

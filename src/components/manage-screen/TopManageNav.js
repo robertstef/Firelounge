@@ -4,11 +4,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import ProjectList from './ProjectList.js'
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    display: 'flex'
+    display: 'flex',
   }
 }));
 
@@ -17,9 +16,7 @@ export default function TopManageNav() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{display: 'flex'}}>
-        <ProjectList />
-      </AppBar>
+          <ProjectList />
     </div>
   );
 }

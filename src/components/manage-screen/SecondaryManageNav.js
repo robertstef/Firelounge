@@ -64,11 +64,13 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     left: '50px',
     height: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: '100%'
   },
   appbar: {
     height: '100%',
     width: '50px',
+    borderRadius: '0px 20px 20px 0px'
   },
   linkTab: {
     width: '50px',
@@ -76,14 +78,18 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     width: '50px',
-    height: '100%'
+    height: '100%',
+    borderRadius: '0px 20px 20px 0px'
   },
   settingsTab: {
     marginBottom: '50px',
     marginTop: 'auto'
   },
   content: {
-    paddingTop: '0px'
+    paddingTop: '0px',
+    width: '100%',
+    paddingLeft: '50%',
+    paddingTop: '25%'
   }
 }));
 
@@ -112,11 +118,11 @@ export default function SecondaryManageNav() {
         </Tabs>
       </AppBar>
       <div className={classes.content}>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0} >
           Deploy Page
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Databse Page
+          Database Page
         </TabPanel>
         <TabPanel value={value} index={2}>
           Users Page
