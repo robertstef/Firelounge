@@ -19,7 +19,8 @@
     "electron-is-dev": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-router-dom": "latest"
   },
   "scripts": {
     "react-start": "react-scripts start",

@@ -44,7 +44,7 @@ function FlexTag(props) {
     const classes = useStyles();
     return(
         <Box className={classes.parent}>
-            <Button classes={{ root: classes.root, label: classes.label }}>
+            <Button classes={{ root: classes.root, label: classes.label}} onClick={() => {window.location.href="#/project"}}>
                 {props.title}
                 <CallMissedOutgoingRoundedIcon className={classes.icon} />
             </Button>

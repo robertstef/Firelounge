@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import InitialCard from "./InitialCard";
-import MainBottomNav from "../MainBottomNav";
 
 class Initial extends Component{
     render() {
