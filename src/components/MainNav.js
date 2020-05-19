@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import ManageScreen from './manage-screen/ManageScreen.js'
 import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -22,7 +23,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3} style={{padding: '0px'}}>
-          <div>{children}</div>
+          <div >{children}</div>
         </Box>
       )}
     </div>
@@ -45,6 +46,7 @@ function a11yProps(index) {
 function LinkTab(props) {
   return (
     <Tab
+      style={{minWidth: '50px'}}
       component="a"
       onClick={(event) => {
         event.preventDefault();
@@ -56,15 +58,33 @@ function LinkTab(props) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     position: 'absolute',
-    bottom: '0px',
-    width: '100%',
+    left: '0px',
+    height: '100%'
   },
+  appbar: {
+    height: '100%',
+    width: '50px'
+  },
+  linkTab: {
+    width: '50px',
+    
+  },
+  tabs: {
+    width: '50px',
+    height: '100%'
+  },
+  settingsTab: {
+    position: 'absolute',
+    bottom: '10px',
+    marginTop: 'auto'
+  }
 }));
 
-export default function MainBottomNav() {
+export default function MainNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -74,23 +94,28 @@ export default function MainBottomNav() {
 
   return (
     <div className={classes.root}>
+      <AppBar position="static" color="default" className={classes.appbar}>
+        <Tabs
+              className={classes.tabs}
+              orientation="vertical"
+              value={value}
+              onChange={handleChange}
+              aria-label="nav tabs example"
+            >
+          <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
+          <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
+          <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
+        </Tabs>
+      </AppBar>
       <TabPanel value={value} index={0}>
         Create Screen
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ManageScreen/>
       </TabPanel>
-            <AppBar position="static">
-        <Tabs
-          variant="fullWidth"
-          value={value}
-          onChange={handleChange}
-          aria-label="nav tabs example"
-        >
-          <LinkTab icon={<CreateIcon />} {...a11yProps(0)} />
-          <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} />
-        </Tabs>
-      </AppBar>
+      <TabPanel value={value} index={2}>
+        Settings Page
+      </TabPanel>
     </div>
   );
 }
