@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -10,6 +10,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CreateScreen from "./create-screen/CreateScreen";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,6 +57,14 @@ function LinkTab(props) {
     />
   );
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#ef223c'
+    },
+  }
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,17 +113,20 @@ export default function MainNav() {
     <div className={classes.root}>
     <Box>
       <AppBar position="static" color="default" className={classes.appbar}>
-        <Tabs
+        <ThemeProvider theme={theme}>
+          <Tabs
               className={classes.tabs}
               orientation="vertical"
               value={value}
               onChange={handleChange}
               aria-label="nav tabs example"
-            >
-          <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
-          <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-          <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
-        </Tabs>
+              indicatorColor={"primary"}
+          >
+            <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
+            <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
+          </Tabs>
+        </ThemeProvider>
       </AppBar>
       </Box>
       <TabPanel value={value} index={0} className={classes.tabpanel}>

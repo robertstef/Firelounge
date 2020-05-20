@@ -3,7 +3,7 @@ import DeployScreenCard from './DeployScreenCard.js'
 
 function DeployScreen() {
     return (
-        <div style={{height: '100%', width: '100%'}}>
+        <div>
             <DeployScreenCard />
         </div>
     );
