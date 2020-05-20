@@ -9,12 +9,14 @@ import Box from '@material-ui/core/Box';
 import GroupIcon from '@material-ui/icons/Group';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import StorageIcon from '@material-ui/icons/Storage';
+import DeployScreen from './DeployScreen.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
     <div
+      style={{height: '100%', width: '100%'}}
       role="tabpanel"
       hidden={value !== index}
       id={`nav-tabpanel-${index}`}
@@ -22,8 +24,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3} style={{padding: '0px'}}>
-          <Typography>{children}</Typography>
+        <Box p={3} style={{padding: '0px', height: '100%', width: '100%'}}>
+          <div style={{height: '100%', width: '100%'}}>{children}</div>
         </Box>
       )}
     </div>
@@ -60,9 +62,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'inherit',
     position: 'absolute',
-    left: '50px',
+    left: '51px',
     height: '100%',
     overflow: 'hidden',
     width: '100%'
@@ -70,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
   appbar: {
     height: '100%',
     width: '50px',
-    borderRadius: '0px 20px 20px 0px'
+    borderRadius: '0px 10px 10px 0px',
+    backgroundColor: '#8d99ae',
   },
   linkTab: {
     width: '50px',
@@ -79,17 +82,21 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     width: '50px',
     height: '100%',
-    borderRadius: '0px 20px 20px 0px'
+    borderRadius: '0px 10px 10px 0px',
+    backgroundColor: '#8d99ae',
   },
   settingsTab: {
     marginBottom: '50px',
     marginTop: 'auto'
   },
   content: {
-    paddingTop: '0px',
+    height: '(100% - 50px)',
     width: '100%',
-    paddingLeft: '50%',
-    paddingTop: '25%'
+    paddingRight: '90px',
+    marginLeft: '35px',
+    paddingBottom: '90px',
+    marginTop: '35px',
+    paddingTop: '0px',
   }
 }));
 
@@ -113,13 +120,13 @@ export default function SecondaryManageNav() {
           className={classes.tabs}
         >
           <LinkTab icon={<CloudQueueIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
-          <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
-          <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} />
+          <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} className={classes.linkTab}/>
+          <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} className={classes.linkTab}/>
         </Tabs>
       </AppBar>
       <div className={classes.content}>
         <TabPanel value={value} index={0} >
-          Deploy Page
+          <DeployScreen />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Database Page

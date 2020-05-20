@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '250px',
     minHeight: '40px',
     backgroundColor: 'white',
-    borderRadius: 40,
+    borderRadius: 10,
   }
 }));
 

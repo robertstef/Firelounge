@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#EDF2F4',
     position: 'absolute',
     left: '0px',
     height: '100%',
@@ -70,7 +70,8 @@ const useStyles = makeStyles((theme) => ({
   },
   appbar: {
     height: '100%',
-    width: '50px'
+    width: '50px',
+    backgroundColor: '#8d99ae',
   },
   linkTab: {
     width: '50px',
@@ -78,7 +79,8 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     width: '50px',
-    height: '100%'
+    height: '100%',
+    backgroundColor: '#8d99ae',
   },
   settingsTab: {
     position: 'absolute',
@@ -100,6 +102,7 @@ export default function MainNav() {
 
   return (
     <div className={classes.root}>
+    <Box>
       <AppBar position="static" color="default" className={classes.appbar}>
         <Tabs
               className={classes.tabs}
@@ -113,6 +116,7 @@ export default function MainNav() {
           <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
         </Tabs>
       </AppBar>
+      </Box>
       <TabPanel value={value} index={0} className={classes.tabpanel}>
         <CreateScreen/>
       </TabPanel>
