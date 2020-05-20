@@ -9,6 +9,7 @@ import ManageScreen from './manage-screen/ManageScreen.js'
 import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import SettingsIcon from '@material-ui/icons/Settings';
+import CreateScreen from "./create-screen/CreateScreen";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -113,7 +114,7 @@ export default function MainNav() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} className={classes.tabpanel}>
-        Create Screen
+        <CreateScreen/>
       </TabPanel>
       <TabPanel value={value} index={1} className={classes.tabpanel}>
         <ManageScreen/>

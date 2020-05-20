@@ -1,11 +1,10 @@
 import React from 'react';
-import Card from '@material-ui/core/Card'
-import MainBottomNav from '../MainBottomNav.js'
+import CreateScreenCard from "./CreateScreenCard";
 
 function CreateScreen() {
     return (
-        <div>
-            <MainBottomNav />
+        <div style={{backgroundColor:'#f0f0f0', height: 600}}>
+            <CreateScreenCard/>
         </div>
     );
 }
