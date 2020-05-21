@@ -98,7 +98,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 'auto'
   },
   content: {
-    height: '(100% - 50px)',
     width: '100%',
     paddingRight: '90px',
     marginLeft: '35px',
