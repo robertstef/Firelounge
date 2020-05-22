@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import ManageScreen from './manage-screen/ManageScreen.js'
-import CreateIcon from '@material-ui/icons/Create';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import SettingsIcon from '@material-ui/icons/Settings';
-import CreateScreen from "./create-screen/CreateScreen";
-import CreateNav from "./create-screen/CreateNav"
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
+import CreateNewProjectContent from "./CreateNewProjectContent";
+import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
+import Card from "@material-ui/core/Card";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
     <div
+      style={{height: '100%', width: '100%'}}
       role="tabpanel"
       hidden={value !== index}
       id={`nav-tabpanel-${index}`}
@@ -25,8 +25,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3} style={{padding: '0px'}}>
-          <div >{children}</div>
+        <Box p={3} style={{padding: '0px', height: '100%', width: '100%'}}>
+          <div style={{height: '100%', width: '100%'}}>{children}</div>
         </Box>
       )}
     </div>
@@ -71,16 +71,17 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexGrow: 1,
-    backgroundColor: '#EDF2F4',
+    backgroundColor: 'inherit',
     position: 'absolute',
-    left: '0px',
+    left: '51px',
     height: '100%',
-    width: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: '100%'
   },
   appbar: {
     height: '100%',
     width: '50px',
+    borderRadius: '0px 10px 10px 0px',
     backgroundColor: '#8d99ae',
   },
   linkTab: {
@@ -90,19 +91,24 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     width: '50px',
     height: '100%',
+    borderRadius: '0px 10px 10px 0px',
     backgroundColor: '#8d99ae',
   },
   settingsTab: {
-    position: 'absolute',
-    bottom: '10px',
+    marginBottom: '50px',
     marginTop: 'auto'
   },
-  tabpanel: {
-    width: '100%'
+  content: {
+    width: '100%',
+    paddingRight: '90px',
+    marginLeft: '35px',
+    paddingBottom: '90px',
+    marginTop: '35px',
+    paddingTop: '0px',
   }
 }));
 
-export default function MainNav() {
+export default function SecondaryManageNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -112,33 +118,36 @@ export default function MainNav() {
 
   return (
     <div className={classes.root}>
-    <Box>
-      <AppBar position="static" color="default" className={classes.appbar}>
+      <AppBar position="static" className={classes.appbar}>
         <ThemeProvider theme={theme}>
           <Tabs
-              className={classes.tabs}
-              orientation="vertical"
+              orientation='vertical'
+              variant="fullWidth"
               value={value}
               onChange={handleChange}
               aria-label="nav tabs example"
+              className={classes.tabs}
               indicatorColor={"primary"}
           >
-            <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-            <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
+            <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
           </Tabs>
         </ThemeProvider>
       </AppBar>
-      </Box>
-      <TabPanel value={value} index={0} className={classes.tabpanel}>
-        <CreateNav/>
-      </TabPanel>
-      <TabPanel value={value} index={1} className={classes.tabpanel}>
-        <ManageScreen/>
-      </TabPanel>
-      <TabPanel value={value} index={2} className={classes.tabpanel}>
-        Settings Page
-      </TabPanel>
+      <div className={classes.content}>
+        <TabPanel value={value} index={0} >
+          <div style={{marginTop: -10}}/>
+          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
+            <CreateNewProjectContent/>
+          </Card>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <div style={{marginTop: -10}}/>
+          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
+            <CreateCurrentProjectContent/>
+          </Card>
+        </TabPanel>
+      </div>
     </div>
   );
 }

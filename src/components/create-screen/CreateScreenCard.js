@@ -2,20 +2,12 @@ import React, {Component} from 'react'
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import {createMuiTheme} from "@material-ui/core/styles";
 import CreateNewProjectContent from "./CreateNewProjectContent";
 import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#ef223c'
-        },
-    }
-});
-
 class CreateScreenCard extends Component{
+
     render(){
         return(
             <div style={{padding: 15, height:'100%',}}>
@@ -43,3 +35,5 @@ class CreateScreenCard extends Component{
 
 export default CreateScreenCard;
 
+/*
+ */
