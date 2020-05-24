@@ -11,6 +11,7 @@ import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import CreateNewProjectContent from "./CreateNewProjectContent";
 import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import Card from "@material-ui/core/Card";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -131,6 +132,7 @@ export default function SecondaryManageNav() {
           >
             <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
             <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
+            <LinkTab icon={<AddBoxIcon />} {...a11yProps(2)} />
           </Tabs>
         </ThemeProvider>
       </AppBar>
