@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
@@ -71,15 +69,13 @@ export default function ProjectList(props) {
             <em>Select Project...</em>
           </MenuItem>
         {[...Array(projectList.length).keys()].map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
 
-        return (
-          <MenuItem key={value} value={value}>
-            { projectList[value] }
-          </MenuItem>
-          );
-        })}
-
+          return (
+            <MenuItem key={value} value={value}>
+              { projectList[value] }
+            </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
       </Box>

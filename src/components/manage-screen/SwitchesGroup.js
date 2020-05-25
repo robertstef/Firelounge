@@ -1,13 +1,9 @@
 import React from 'react';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-
-
 
 
 export default function SwitchesGroup() {
@@ -22,11 +18,11 @@ export default function SwitchesGroup() {
   
   const handleChange = (event) => {
     // only make changes if all isnt true or the change is to the all switch
-    if ( event.target.name === 'all' || state.all != true ) {
+    if ( event.target.name === 'all' || state.all !== true ) {
       setState({ ...state, [event.target.name]: event.target.checked });
     }
     //change all switches to true if all is selected    
-    if ( event.target.name === 'all' && state.all == false){
+    if ( event.target.name === 'all' && state.all === false){
       setState({
         all: true,
         hosting: true,
