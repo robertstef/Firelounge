@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainNav() {
+export default function MainNav(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -134,7 +134,7 @@ export default function MainNav() {
         <CreateNav/>
       </TabPanel>
       <TabPanel value={value} index={1} className={classes.tabpanel}>
-        <ManageScreen/>
+        <ManageScreen username={props.username}/>
       </TabPanel>
       <TabPanel value={value} index={2} className={classes.tabpanel}>
         Settings Page

@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
 
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     marginLeft: '10%',
@@ -28,30 +29,57 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ProjectList() {
+
+function getProjects(username){
+  //concat strings
+  var user = username.concat('.json')
+
+  //get project list
+  var data = require('../../Users/'.concat(user))
+
+  //add to array
+  var projectList = []
+  for (var item in data){
+    projectList.push(item)
+  }
+  return projectList;
+}
+
+
+export default function ProjectList(props) {
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
+  const [currProject, setCurrProject] = React.useState('');
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setCurrProject(event.target.value);
+
   };
+
+  var projectList = getProjects(props.username);
 
   return (
       <Box className={classes.box} boxShadow={2}>
          <FormControl className={classes.formControl}>
         <Select
-          value={age}
+          value={currProject}
           onChange={handleChange}
           displayEmpty
           className={classes.selectEmpty}
           inputProps={{ 'aria-label': 'Without label' }}
         >
-          <MenuItem value="">
+        <MenuItem value="">
             <em>Select Project...</em>
           </MenuItem>
-          <MenuItem value={10}>Project 1</MenuItem>
-          <MenuItem value={20}>Project 2</MenuItem>
-          <MenuItem value={30}>Project 3</MenuItem>
+        {[...Array(projectList.length).keys()].map((value) => {
+        const labelId = `checkbox-list-label-${value}`;
+
+        return (
+          <MenuItem key={value} value={value}>
+            { projectList[value] }
+          </MenuItem>
+          );
+        })}
+
         </Select>
       </FormControl>
       </Box>

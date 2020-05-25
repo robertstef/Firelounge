@@ -11,12 +11,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function TopManageNav() {
+export default function TopManageNav(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-          <ProjectList />
+          <ProjectList username={props.username}/>
     </div>
   );
 }
