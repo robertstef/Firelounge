@@ -10,6 +10,8 @@ class Main extends Component{
 	componentDidMount(){
 		const values = queryString.parse(this.props.location.search);
 		
+        //get user name from params and set state - so it rerenders
+        //lower components with username
 		this.setState({
 			username: values.username
 		})

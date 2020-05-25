@@ -47,6 +47,7 @@ function completeSignIn(){
     //call js login script here
     var username = 'testusername'
 
+    //switch screen to project window with username as param
     window.location.href="#/project?username=" + username
 }
 
