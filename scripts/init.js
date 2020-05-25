@@ -33,16 +33,24 @@ function access_userfile(callback) {
     });
 }
 
-// Gets users info and access their user file
-access_userfile((path, uname) => {
+/**
+ * Reads in the user file from ~/.firelounge/Users if a
+ * repeat user, or creates the the userfile if a first
+ * time user.
+ */
+function ufile_init() {
 
-    let u_path = path + `/${uname}.json`;
+    // Gets users info and access their user file
+    access_userfile((path, uname) => {
 
-    // first time user
-    if (! fs.existsSync(u_path)) {
-        const content = {uname: uname};
-        fs.writeFileSync(u_path, JSON.stringify(content), (err) => {
-            if (err) {console.log(err.message)};
-        })
-    }
-});
+        let u_path = path + `/${uname}.json`;
+
+        // first time user
+        if (! fs.existsSync(u_path)) {
+            const content = {uname: uname};
+            fs.writeFileSync(u_path, JSON.stringify(content), (err) => {
+                if (err) {console.log(err.message)}
+            })
+        }
+    });
+}
