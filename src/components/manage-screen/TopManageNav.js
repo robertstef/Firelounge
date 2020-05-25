@@ -1,7 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
 import ProjectList from './ProjectList.js'
 
 const useStyles = makeStyles((theme) => ({
@@ -11,12 +9,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function TopManageNav() {
+export default function TopManageNav(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-          <ProjectList />
+          <ProjectList username={props.username}/>
     </div>
   );
 }

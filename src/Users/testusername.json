@@ -1,0 +1,10 @@
+{
+	"project1": {
+		"features": "hosting",
+		"location": "~/Documents"
+	},
+	"project2": {
+                "features": "hosting",
+                "location": "~/Documents"
+        }
+}

@@ -40,11 +40,25 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+
+
+function completeSignIn(){
+
+    //call js login script here
+    var username = 'testusername'
+
+    //switch screen to project window with username as param
+    window.location.href="#/project?username=" + username
+}
+
+
+
+
 function FlexTag(props) {
     const classes = useStyles();
     return(
         <Box className={classes.parent}>
-            <Button classes={{ root: classes.root, label: classes.label}} onClick={() => {window.location.href="#/project"}}>
+            <Button classes={{ root: classes.root, label: classes.label}} onClick={() => completeSignIn()}>
                 {props.title}
                 <CallMissedOutgoingRoundedIcon className={classes.icon} />
             </Button>

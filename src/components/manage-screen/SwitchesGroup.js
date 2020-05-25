@@ -1,17 +1,14 @@
 import React from 'react';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 
 
-
-
 export default function SwitchesGroup() {
   const [state, setState] = React.useState({
+    all: false,
     hosting: false,
     database: false,
     storage: false,
@@ -20,7 +17,21 @@ export default function SwitchesGroup() {
 
   
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+    // only make changes if all isnt true or the change is to the all switch
+    if ( event.target.name === 'all' || state.all !== true ) {
+      setState({ ...state, [event.target.name]: event.target.checked });
+    }
+    //change all switches to true if all is selected    
+    if ( event.target.name === 'all' && state.all === false){
+      setState({
+        all: true,
+        hosting: true,
+        database: true,
+        storage: true,
+        functions: true,
+      });
+    }
+    
   };
 
   //used for testing purposes - state can be removed when ready along with <p> below
@@ -36,6 +47,10 @@ export default function SwitchesGroup() {
     <div style={{marginLeft: '50px'}}>
       <FormControl component="fieldset" style={{width: '100%'}}>
         <FormGroup>
+          <FormControlLabel
+            control={<Switch checked={state.all} onChange={handleChange} name="all" />}
+            label="All"
+          />
           <FormControlLabel
             control={<Switch checked={state.hosting} onChange={handleChange} name="hosting" />}
             label="Hosting"

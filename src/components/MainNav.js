@@ -9,7 +9,6 @@ import ManageScreen from './manage-screen/ManageScreen.js'
 import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import SettingsIcon from '@material-ui/icons/Settings';
-import CreateScreen from "./create-screen/CreateScreen";
 import CreateNav from "./create-screen/CreateNav"
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 
@@ -102,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainNav() {
+export default function MainNav(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -134,7 +133,7 @@ export default function MainNav() {
         <CreateNav/>
       </TabPanel>
       <TabPanel value={value} index={1} className={classes.tabpanel}>
-        <ManageScreen/>
+        <ManageScreen username={props.username}/>
       </TabPanel>
       <TabPanel value={value} index={2} className={classes.tabpanel}>
         Settings Page

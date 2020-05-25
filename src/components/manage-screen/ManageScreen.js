@@ -2,10 +2,10 @@ import React from 'react';
 import SecondaryManageNav from './SecondaryManageNav'
 import TopManageNav from './TopManageNav'
 
-function ManageScreen() {
+function ManageScreen(props) {
     return (
         <div>
-        	<TopManageNav />
+        	<TopManageNav username={props.username}/>
             <SecondaryManageNav />
         </div>
     );
