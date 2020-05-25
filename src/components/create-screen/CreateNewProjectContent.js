@@ -15,6 +15,9 @@ const theme = createMuiTheme({
         primary: {
             main: '#ef223c'
         },
+        secondary: {
+            main: '#8d99ae'
+        }
     }
 });
 
@@ -38,15 +41,18 @@ class CreateNewProjectContent extends Component {
                 <div>
                     <Typography variant="h6" gutterBottom>Create a New Project</Typography>
                     <div style={{marginTop:10}}/>
-                    <div>
-                        <TextField
-                            style={{width:'80%'}}
-                            id="outlined-size-small"
-                            size={'small'}
-                            defaultValue="Enter your project name"
-                            variant={"outlined"}
-                        />
-                    </div>
+                    <ThemeProvider theme={theme}>
+                        <div>
+                            <TextField
+                                style={{width:'80%'}}
+                                id="outlined-size-small"
+                                size={'small'}
+                                placeholder="Enter your project name"
+                                variant={"outlined"}
+                                color={'secondary'}
+                            />
+                        </div>
+                    </ThemeProvider>
                     <div style={{marginTop:20}}/>
                     <Typography variant="h6" gutterBottom>Select Project's Features</Typography>
                     <div style={{marginTop:10}}/>
@@ -87,7 +93,7 @@ class CreateNewProjectContent extends Component {
                                 style={{width:'70%', marginRight: '5px'}}
                                 id="outlined-size-small"
                                 size={'small'}
-                                defaultValue="..."
+                                placeholder="..."
                                 variant={"outlined"}
                             />
                             <Button size={'small'} variant={'outlined'} style={{height:'40px'}}>...</Button>
