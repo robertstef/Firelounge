@@ -46,7 +46,7 @@ class CreateCurrentProjectContent extends Component{
                         <Grid item style={{width: '48%'}}>
                             <Typography variant="h6" gutterBottom>Initialize a Pre-existing Firebase Project</Typography>
                             <div style={{marginTop:20}}/>
-                            <Typography variant="h7" gutterBottom>Set Your Project Path</Typography>
+                            <Typography variant="h6" gutterBottom>Set Your Project Path</Typography>
                             <div style={{marginTop:10}}/>
                             <div>
                                 <TextField
@@ -67,7 +67,7 @@ class CreateCurrentProjectContent extends Component{
                         <Grid item>
                             <Typography variant="h6" gutterBottom>Initialize a Current Project</Typography>
                             <div style={{marginTop:52}}/>
-                            <Typography variant="h7" gutterBottom>Set Your Project Path</Typography>
+                            <Typography variant="h6" gutterBottom>Set Your Project Path</Typography>
                             <div style={{marginTop:10}}/>
                             <div>
                                 <TextField
