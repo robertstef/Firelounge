@@ -6,7 +6,7 @@ import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import deploy from "../../scripts/deploy";
 
-export default function SwitchesGroup() {
+export default function SwitchesGroup(props) {
   const [state, setState] = React.useState({
     all: false,
     hosting: false,
@@ -78,6 +78,8 @@ export default function SwitchesGroup() {
       <Button onClick={() => {deployItems({state})} } disabled={btnDisabled()} style={{backgroundColor: '#EDF2F4', color: '#EF233C'}}>
         DEPLOY! :-)
       </Button>
+      <p> username: {props.username}</p>
+      <p> active project: {props.currProject}</p>
       <p> Deploying.... {JSON.stringify(displayState)} </p>
     </div>
   );
