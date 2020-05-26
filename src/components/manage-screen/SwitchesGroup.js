@@ -4,7 +4,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-import deploy from "../../scripts/deploy";
 
 export default function SwitchesGroup(props) {
   const [state, setState] = React.useState({
@@ -46,7 +45,6 @@ export default function SwitchesGroup(props) {
     setDisplayState({
       state
     });
-    deploy(state.state)
   };
 
   return (
