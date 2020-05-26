@@ -35,7 +35,7 @@ function getProjects(username){
   //get project list
   var data = require('../../Users/'.concat(user))
 
-  //add to array
+  //add to array of projects
   var projectList = []
   for (var item in data){
     projectList.push(item)
@@ -49,10 +49,16 @@ export default function ProjectList(props) {
   const [currProject, setCurrProject] = React.useState('');
 
   const handleChange = (event) => {
+    //update state of current project
+    //dont think this needs to be a state
     setCurrProject(event.target.value);
 
+    //update the currproject state in the manage screen via callback function
+    props.getSelectedProject(event.target.value)
   };
 
+  //get project list on render
+  //this could eventually be changed to only run on mount
   var projectList = getProjects(props.username);
 
   return (
@@ -71,7 +77,7 @@ export default function ProjectList(props) {
         {[...Array(projectList.length).keys()].map((value) => {
 
           return (
-            <MenuItem key={value} value={value}>
+            <MenuItem key={value} value={ projectList[value] }>
               { projectList[value] }
             </MenuItem>
             );

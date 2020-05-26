@@ -14,7 +14,7 @@ export default function TopManageNav(props) {
 
   return (
     <div className={classes.root}>
-          <ProjectList username={props.username}/>
+          <ProjectList username={props.username} getSelectedProject={props.getSelectedProject}/>
     </div>
   );
 }

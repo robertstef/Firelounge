@@ -99,7 +99,7 @@ class CreateNewProjectContent extends Component {
                             <Button size={'small'} variant={'outlined'} style={{height:'40px'}}>...</Button>
                         </div>
                         <div style={{marginTop:20}}/>
-                        <Button variant={'outlined'} disabled={this.btnDisabled}>Create</Button>
+                        <Button variant={'outlined'} disabled={this.btnDisabled()}>Create</Button>
                     </ThemeProvider>
                 </div>
             </div>

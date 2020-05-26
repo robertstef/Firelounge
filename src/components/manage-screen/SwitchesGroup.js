@@ -5,8 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 
-
-export default function SwitchesGroup() {
+export default function SwitchesGroup(props) {
   const [state, setState] = React.useState({
     all: false,
     hosting: false,
@@ -15,7 +14,11 @@ export default function SwitchesGroup() {
     functions: false,
   });
 
-  
+  function btnDisabled() {
+    const isDisabled = (currentValue) => currentValue === false;
+    return Object.values(state).every(isDisabled);
+  }
+
   const handleChange = (event) => {
     // only make changes if all isnt true or the change is to the all switch
     if ( event.target.name === 'all' || state.all !== true ) {
@@ -36,12 +39,13 @@ export default function SwitchesGroup() {
 
   //used for testing purposes - state can be removed when ready along with <p> below
   //calling the deploy python script can occur here
-  const [displayState, setDisplayState] = React.useState({})
+  const [displayState, setDisplayState] = React.useState({});
+
   const deployItems = (state) =>{
     setDisplayState({
       state
-    })
-  }
+    });
+  };
 
   return (
     <div style={{marginLeft: '50px'}}>
@@ -69,9 +73,11 @@ export default function SwitchesGroup() {
           />
         </FormGroup>
       </FormControl>
-      <Button onClick={ () => {deployItems({state})} } style={{backgroundColor: '#EDF2F4', color: '#EF233C'}}>
-        DEPLOY!
+      <Button onClick={() => {deployItems({state})} } disabled={btnDisabled()} style={{backgroundColor: '#EDF2F4', color: '#EF233C'}}>
+        DEPLOY! :-)
       </Button>
+      <p> username: {props.username}</p>
+      <p> active project: {props.currProject}</p>
       <p> Deploying.... {JSON.stringify(displayState)} </p>
     </div>
   );
