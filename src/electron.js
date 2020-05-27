@@ -12,7 +12,8 @@ function createWindow () {
         height: 600
     });
 
-    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`)
+    //path needs to be changed -- remove __dirname and use something else
+    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../../../../../../../build/index.html")}`)
 
     if(isDev){
         win.webContents.openDevTools();

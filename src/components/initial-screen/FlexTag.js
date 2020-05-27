@@ -43,9 +43,13 @@ const useStyles = makeStyles(theme => ({
 
 
 function completeSignIn(){
-    console.log('making request...')
-
-    axios.get('http://localhost:5000/test')
+    
+    axios.get("http://localhost:5000/test")
+            .then((response) => {
+                console.log(response)
+            }).catch(error => {
+            console.log(error)
+        })
 
     //call js login script here
     var username = 'testusername'

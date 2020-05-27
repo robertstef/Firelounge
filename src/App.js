@@ -10,7 +10,6 @@ app.use(cors);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use(express.static(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`));
 
 app.get("/test", (req, res) => {
 	res.status(200).send('test');
