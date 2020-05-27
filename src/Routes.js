@@ -3,7 +3,6 @@ import {HashRouter, Switch, Route} from 'react-router-dom';
 import Main from "./components/main-screen/Main";
 import Initial from "./components/initial-screen/Initial";
 
-
 const Routes =  (
 	<HashRouter>
 	 	<Switch>
