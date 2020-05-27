@@ -10,6 +10,7 @@ import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import CreateNewProjectContent from "./CreateNewProjectContent";
 import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
+import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
@@ -130,6 +131,7 @@ export default function SecondaryManageNav() {
               className={classes.tabs}
               indicatorColor={"primary"}
           >
+            {/* Icons for nav bar */}
             <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
             <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
             <LinkTab icon={<AddBoxIcon />} {...a11yProps(2)} />
@@ -137,16 +139,28 @@ export default function SecondaryManageNav() {
         </ThemeProvider>
       </AppBar>
       <div className={classes.content}>
+
+        {/* Create page */}
         <TabPanel value={value} index={0} >
           <div style={{marginTop: -10}}/>
           <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
             <CreateNewProjectContent/>
           </Card>
         </TabPanel>
+
+        {/* Init pre-existing or current project page */}
         <TabPanel value={value} index={1}>
           <div style={{marginTop: -10}}/>
           <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
             <CreateCurrentProjectContent/>
+          </Card>
+        </TabPanel>
+
+        {/* Add existing project to firelounge page */}
+        <TabPanel value={value} index={2}>
+          <div style={{marginTop:-10}}/>
+          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
+            <AddProjContent/>
           </Card>
         </TabPanel>
       </div>
