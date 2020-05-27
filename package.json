@@ -7,22 +7,25 @@
     "appId": "opench.firebase"
   },
   "homepage": "./",
-  "main": "public/electron.js",
+  "main": "src/electron.js",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "latest",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "body-parser": "^1.19.0",
     "cross-env": "^7.0.2",
     "electron-is-dev": "^1.2.0",
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "prop-types": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
     "react-router-dom": "latest",
-    "@material-ui/styles": "latest",
-    "prop-types": "latest"
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "react-start": "react-scripts start",

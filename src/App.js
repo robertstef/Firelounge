@@ -1,19 +1,17 @@
-import React from 'react';
-import './App.css';
-import Initial from "./components/initial-screen/Initial";
-import {HashRouter, Switch, Route} from 'react-router-dom';
-import Main from "./components/main-screen/Main";
+const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
+const isDev = require("electron-is-dev");
 
+const app = express()
 
-function App() {
-  return (
-      <HashRouter>
-          <Switch>
-              <Route path="/project" component={Main} />
-              <Route exact path="/" component={Initial}/>
-          </Switch>
-      </HashRouter>
-  );
-}
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 
-export default App;
+app.use(express.static(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`));
+
+app.get('/test', (request, response) => {
+	response.send('Welcome to Firelounge')
+});
+
+app.listen(5000, () => console.log('App listening on port 5000'));
