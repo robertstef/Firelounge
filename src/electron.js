@@ -5,14 +5,16 @@ const url = require('url');
 const isDev = require("electron-is-dev");
 
 
+let win;
+
 function createWindow () {
     // Create the browser window.
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 800,
         height: 600
     });
 
-    //path needs to be changed -- remove __dirname and use something else
+    //path needs to be changed -- remove __dirname and use something else [ process.cwd() ] ? 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../../../../../../../build/index.html")}`)
 
     if(isDev){
