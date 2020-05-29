@@ -1,22 +1,30 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const server = require('./App.js')
+const url = require('url');
 const isDev = require("electron-is-dev");
+
+
+let win;
 
 function createWindow () {
     // Create the browser window.
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 800,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true
-        }
+        height: 600
     });
 
-    // and load the index.html of the app.
-    win.loadURL(
-        isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`
-    );
+    //path needs to be changed -- remove __dirname and use something else [ process.cwd() ] ? 
+    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../../../../../../../build/index.html")}`)
 
+    //if dev mode then open with dev tools
+    if(isDev){
+        win.webContents.openDevTools();
+    }
+    
+    win.on('closed', function (){
+        win = null;
+    });
 }
 
 // This method will be called when Electron has finished

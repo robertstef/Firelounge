@@ -4,7 +4,10 @@ import DeployScreenCard from './DeployScreenCard.js'
 function DeployScreen(props) {
     return (
         <div>
-            <DeployScreenCard username={props.username} currProject={props.currProject}/>
+            <DeployScreenCard 
+            	username={props.username} 
+            	currProject={props.currProject} 
+			/>
         </div>
     );
 }

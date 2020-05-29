@@ -45,6 +45,7 @@ export default function SwitchesGroup(props) {
     setDisplayState({
       state
     });
+
   };
 
   return (

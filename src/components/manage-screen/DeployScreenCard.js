@@ -10,7 +10,10 @@ function DeployScreenCard(props) {
                 <Box boxShadow={2} style={{ marginLeft:'50px', marginTop: '25px', width: '175px', borderRadius: '5px'}}>
                     <h2 style={{textAlign: 'center', verticalAlign: 'center'}}> Deploy Page </h2>
                 </Box>
-                <SwitchesGroup username={props.username} currProject={props.currProject}/>
+                <SwitchesGroup 
+                    username={props.username}
+                    currProject={props.currProject}
+                />
             </Card>
         </div>
     )

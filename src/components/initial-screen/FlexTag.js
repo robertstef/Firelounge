@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CallMissedOutgoingRoundedIcon from '@material-ui/icons/CallMissedOutgoingRounded';
 import {makeStyles} from "@material-ui/core/styles";
-
+const axios = require('axios');
 
 const hoveredTextColor = '#000000';
 
@@ -43,6 +43,14 @@ const useStyles = makeStyles(theme => ({
 
 
 function completeSignIn(){
+    // this is a test request to run a script
+    //should return 'hello world' as response data
+    axios.get("http://localhost:5000/test")
+            .then((response) => {
+                console.log(response)
+            }).catch(error => {
+            console.log(error)
+        })
 
     //call js login script here
     var username = 'testusername'

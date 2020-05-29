@@ -17,7 +17,10 @@ function ManageScreen(props) {
     return (
         <div>
         	<TopManageNav username={props.username} getSelectedProject={getSelectedProject}/>
-            <SecondaryManageNav username={props.username} currProject={currProject}/>
+            <SecondaryManageNav 
+                username={props.username}
+                currProject={currProject}
+            />
         </div>
     );
 }
