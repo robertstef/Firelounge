@@ -26,9 +26,8 @@ If using production version - use the log file created
 */
 
 const test_module = require('./scripts/test.js')
-app.get("/test", async (req, res) => {
+app.get("/test", (req, res) => {
     test_module.test_function().then((output) => {
-    
         if( output.code === 0 ) {
             res.status(200).send(output.stdout);
         } else {

@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 
 module.exports = {
-    test_function: async function () {
+    test_function: function () {
         var response_obj = {}
         return new Promise((resolve, reject) => {
             
