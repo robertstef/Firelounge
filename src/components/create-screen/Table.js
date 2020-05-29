@@ -13,6 +13,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import AddProjButton from './AddProjButton'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 
 // Component for individual table cell
@@ -65,6 +67,7 @@ export default function CustomizedTable() {
                         <StyledTableCell align='center'>Project Name</StyledTableCell>
                         <StyledTableCell align='center'>Project ID</StyledTableCell>
                         <StyledTableCell align='center'>Project Number</StyledTableCell>
+                        <StyledTableCell align='center'/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -75,6 +78,7 @@ export default function CustomizedTable() {
                             </StyledTableCell>
                             <StyledTableCell align='center'>{row.pId}</StyledTableCell>
                             <StyledTableCell align='center'>{row.pNumber}</StyledTableCell>
+                            <StyledTableCell align='center'><AddProjButton/></StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
