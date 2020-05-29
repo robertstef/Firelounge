@@ -43,7 +43,8 @@ const useStyles = makeStyles(theme => ({
 
 
 function completeSignIn(){
-    
+    // this is a test request to run a script
+    //should return 'hello world' as response data
     axios.get("http://localhost:5000/test")
             .then((response) => {
                 console.log(response)

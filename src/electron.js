@@ -17,10 +17,11 @@ function createWindow () {
     //path needs to be changed -- remove __dirname and use something else [ process.cwd() ] ? 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../../../../../../../build/index.html")}`)
 
+    //if dev mode then open with dev tools
     if(isDev){
         win.webContents.openDevTools();
     }
-
+    
     win.on('closed', function (){
         win = null;
     });
