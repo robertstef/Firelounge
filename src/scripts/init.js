@@ -20,7 +20,7 @@ function access_userfile(callback) {
     exec("firebase login --interactive", (error, stdout, stderr) => {
 
         if (error) { return error.message};
-        if (stderr) { return stderr };
+        //if (stderr) { return stderr };
 
         let res = stdout.split(" ");
         res = res[res.length - 1];

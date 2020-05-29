@@ -3,9 +3,6 @@ import React from 'react';
 const userStateContext = React.createContext();
 const userDispatchContext = React.createContext();
 
-// use dispatch to modify the state
-// use state to pass around info and
-
 function UserReducer(state, action) {
     return {default: state.default += 1}
 }
@@ -24,6 +21,10 @@ function UserProvider({children}) {
     );
 }
 
+/**
+ * A function used to give the calling component access to the
+ * current users state information.
+ */
 function UserState() {
     const context = React.useContext(userStateContext);
     if (context === undefined) {
@@ -32,6 +33,10 @@ function UserState() {
     return context;
 }
 
+/**
+ * Used to give the calling component access to the dispatch state
+ * to update the current users state information.
+ */
 function UserDispatch() {
     const context = React.useContext(userDispatchContext);
     if (context === undefined) {
