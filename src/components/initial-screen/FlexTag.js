@@ -47,16 +47,20 @@ function completeSignIn(){
     //should return 'hello world' as response data
     axios.get("http://localhost:5000/test")
             .then((response) => {
-                console.log(response)
+                if(response.status == 200){
+                    //set username
+                    // var username = response.data;
+                    //for dev purposes
+                    var username = 'testusername'
+
+                    //switch screen to project window with username as param
+                    window.location.href="#/project?username=" + username
+                }
+
+
             }).catch(error => {
             console.log(error)
         })
-
-    //call js login script here
-    var username = 'testusername'
-
-    //switch screen to project window with username as param
-    window.location.href="#/project?username=" + username
 }
 
 
