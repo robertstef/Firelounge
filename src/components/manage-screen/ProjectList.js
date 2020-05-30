@@ -35,6 +35,16 @@ function getProjects(username){
   //get project list
   var data = require('../../Users/'.concat(user))
 
+  try {
+    //get project list
+    var data = require('../../Users/'.concat(user))  
+  } catch (err) {
+    console.log('User is not initalized')
+    console.log(err)
+  }
+
+
+
   //add to array of projects
   var projectList = []
   for (var item in data){

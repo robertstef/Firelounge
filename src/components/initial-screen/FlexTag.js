@@ -56,8 +56,6 @@ function completeSignIn(){
                     //switch screen to project window with username as param
                     window.location.href="#/project?username=" + username
                 }
-
-
             }).catch(error => {
             console.log(error)
         })
