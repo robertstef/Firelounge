@@ -47,7 +47,7 @@ function completeSignIn(){
     //should return 'hello world' as response data
     axios.get("http://localhost:5000/test")
             .then((response) => {
-                if(response.status == 200){
+                if(response.status === 200){
                     //set username
                     // var username = response.data;
                     //for dev purposes

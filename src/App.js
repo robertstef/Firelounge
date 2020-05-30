@@ -38,7 +38,9 @@ app.get("/test", (req, res) => {
 })
 
 /*
-\
+End point for user login 
+currently forces a login no matter current status
+on success returns status 200 and data username
 */
 const login_module = require('./scripts/login.js')
 app.get("/login", (req, res) => {

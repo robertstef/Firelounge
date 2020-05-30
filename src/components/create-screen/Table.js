@@ -14,7 +14,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import AddProjButton from './AddProjButton'
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 
 // Component for individual table cell

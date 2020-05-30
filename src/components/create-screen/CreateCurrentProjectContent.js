@@ -3,26 +3,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Brightness1OutlinedIcon from "@material-ui/icons/Brightness1Outlined";
-import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
-import {createMuiTheme} from "@material-ui/core/styles";
-
-
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#ef223c'
-        },
-        secondary: {
-            main: '#8d99ae'
-        }
-    }
-});
-
 
 class CreateCurrentProjectContent extends Component{
 
