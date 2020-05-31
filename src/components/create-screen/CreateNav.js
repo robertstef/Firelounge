@@ -13,7 +13,6 @@ import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import AddProjectContent from './AddProjectContent.js';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
