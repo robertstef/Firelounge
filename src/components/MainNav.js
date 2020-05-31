@@ -12,7 +12,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import CreateNav from "./create-screen/CreateNav"
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import BathtubIcon from '@material-ui/icons/Bathtub';
-import Tester from './ContextStateTest';
+import StateTest from './ContextStateTest';
 import {UserProvider} from '../context/userContext';
 import DispTest from './ContextDispTest';
 
@@ -130,6 +130,8 @@ export default function MainNav(props) {
                   <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
                   <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
                   <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
+
+                  {/* Context Test Link */}
                   <LinkTab icon={<BathtubIcon />} {...a11yProps(3)} className={classes.linkTab}/>
                 </Tabs>
               </ThemeProvider>
@@ -149,7 +151,7 @@ export default function MainNav(props) {
 
           {/* Context test values */}
           <TabPanel value={value} index={3} className={classes.tabpanel}>
-            <Tester />
+            <StateTest />
             <DispTest/>
           </TabPanel>
       </UserProvider>
