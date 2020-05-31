@@ -11,6 +11,10 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CreateNav from "./create-screen/CreateNav"
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import BathtubIcon from '@material-ui/icons/Bathtub';
+import Tester from './ContextStateTest';
+import {UserProvider} from '../context/userContext';
+import DispTest from './ContextDispTest';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,33 +115,44 @@ export default function MainNav(props) {
 
   return (
     <div className={classes.root}>
-    <Box>
-      <AppBar position="static" color="default" className={classes.appbar}>
-        <ThemeProvider theme={theme}>
-          <Tabs
-              className={classes.tabs}
-              orientation="vertical"
-              value={value}
-              onChange={handleChange}
-              aria-label="nav tabs example"
-              indicatorColor={"primary"}
-          >
-            <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-            <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
-          </Tabs>
-        </ThemeProvider>
-      </AppBar>
-      </Box>
-      <TabPanel value={value} index={0} className={classes.tabpanel}>
-        <CreateNav/>
-      </TabPanel>
-      <TabPanel value={value} index={1} className={classes.tabpanel}>
-        <ManageScreen username={props.username}/>
-      </TabPanel>
-      <TabPanel value={value} index={2} className={classes.tabpanel}>
-        Settings Page
-      </TabPanel>
+      <UserProvider>
+          <Box>
+            <AppBar position="static" color="default" className={classes.appbar}>
+              <ThemeProvider theme={theme}>
+                <Tabs
+                    className={classes.tabs}
+                    orientation="vertical"
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="nav tabs example"
+                    indicatorColor={"primary"}
+                >
+                  <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
+                  <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
+                  <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
+                  <LinkTab icon={<BathtubIcon />} {...a11yProps(3)} className={classes.linkTab}/>
+                </Tabs>
+              </ThemeProvider>
+            </AppBar>
+          </Box>
+          <TabPanel value={value} index={0} className={classes.tabpanel}>
+            <CreateNav/>
+          </TabPanel>
+
+          <TabPanel value={value} index={1} className={classes.tabpanel}>
+            <ManageScreen username={props.username}/>
+          </TabPanel>
+
+          <TabPanel value={value} index={2} className={classes.tabpanel}>
+            Settings Page
+          </TabPanel>
+
+          {/* Context test values */}
+          <TabPanel value={value} index={3} className={classes.tabpanel}>
+            <Tester />
+            <DispTest/>
+          </TabPanel>
+      </UserProvider>
     </div>
   );
 }
