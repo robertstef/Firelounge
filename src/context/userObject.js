@@ -1,4 +1,4 @@
-export class User {
+export default class User {
 
     /**
      * Creates a new User object.
@@ -16,6 +16,9 @@ export class User {
         this._projs = projs;       // firelounge projects
         this._fb_projs = fb_projs; // firebase projects
     }
+
+
+    /* PUBLIC METHODS */
 
     /* Getters for each instance variable */
     get uname() { return this._uname; }
@@ -35,7 +38,7 @@ export class User {
      */
     setActive(new_active) {
         if ( (new_active.name === undefined) || (new_active.path === undefined) || new_active.id === undefined ) {
-            throw new Error("Input for setActive must be of the form {name:\"\", path:\"\"} ")
+            throw new Error("Input for setActive must be of the form {name:\"\", path:\"\", id:\"\"} ")
         }
         else if (! this._projsInclude(new_active)) {
             throw new Error("The inputted project does not exist in firelounge");
@@ -79,10 +82,13 @@ export class User {
             throw new Error("This project does not exist in firelounge");
         }
         else {
-            const idx = this._projs.indexOf(old_proj);
-            this._projs.slice(idx, 1);
+            const idx = this._findProj(old_proj);
+            this._projs.splice(idx, 1);
         }
     }
+
+
+    /* PRIVATE METHODS */
 
     /**
      * Checks if two objects of the form: {name: "", path: "", id: ""}
@@ -108,4 +114,34 @@ export class User {
         }
         return false;
     }
+
+    /**
+     * Locates the index of the given project in this._projs.
+     * @param p: project to be located
+     * @returns {number}: index of project if found, -1 otherwise
+     */
+    _findProj(p) {
+         for( let i = 0; i < this._projs.length; i++ ) {
+             if (User._isEqual(this._projs[i], p)) {
+                 return i;
+             }
+         }
+         return -1;
+    }
 }
+
+/*
+let projects = [{name:"proj1", path:"./Users/proj1", id:"123"},
+    {name:"test_proj", path:"~/src/files", id:"321"},
+    {name:"new_proj", path:"/users/robertstefanyshin/", id:"456"}];
+
+
+let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
+    {name: "new_proj", id: "new_proj_id", num: "5678"},
+    {name: "last_proj", id: "list_proj_id", num: "23048"}];
+
+let test_user = new User("Robert", projects, fb_projects);
+
+test_user.removeProj({name:"proj1", path:"./Users/proj1", id:"123"});
+console.log("Got here");
+ */
