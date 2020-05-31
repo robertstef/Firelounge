@@ -31,10 +31,10 @@ export class User {
      *
      * @param new_active: new active project in an object
      *                    of the form:
-     *                    {name: "", path: ""}
+     *                    {name: "", path: "", id:""}
      */
     setActive(new_active) {
-        if ( (new_active.name === undefined) || (new_active.path === undefined) ) {
+        if ( (new_active.name === undefined) || (new_active.path === undefined) || new_active.id === undefined ) {
             throw new Error("Input for setActive must be of the form {name:\"\", path:\"\"} ")
         }
         else if (! this._projsInclude(new_active)) {
@@ -49,10 +49,10 @@ export class User {
      *
      * @param new_proj: project to be added in an object of
      *                  the form:
-     *                  {name: "", path: ""}
+     *                  {name: "", path: "", id:""}
      */
     addProj(new_proj) {
-        if ( (new_proj.name === undefined) || (new_proj.path === undefined) ) {
+        if ( (new_proj.name === undefined) || (new_proj.path === undefined) || new_proj.id === undefined ) {
             throw new Error("Input for addProj must be of the form {name:\"\", path:\"\"} ")
         }
         else if (this._projsInclude(new_proj)) {
@@ -69,10 +69,10 @@ export class User {
      *
      * @param old_proj: project to be removed in an object
      *                  of the form:
-     *                  {name:"", path:""}
+     *                  {name:"", path:"", id:""}
      */
     removeProj(old_proj) {
-        if ( (old_proj.name === undefined) || (old_proj.path === undefined) ) {
+        if ( (old_proj.name === undefined) || (old_proj.path === undefined) || old_proj.id === undefined ) {
             throw new Error("Input for addProj must be of the form {name:\"\", path:\"\"} ")
         }
         else if ( ! this._projsInclude(old_proj)) {
