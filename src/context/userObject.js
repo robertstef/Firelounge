@@ -5,16 +5,18 @@ export default class User {
      * @param uname: users username
      * @param projs: users current firelounge projects in an
      *               object of the form:
-     *               {name: "", path: "", ... }
+     *               {id: {name:"", number: "", path: ""}, ...,}
      * @param fb_projs: users current firebase projects in an
-     *                  array of the form:
-     *                  [{display_name: "", id: "", number: ""}, ...]
+     *                  object of the form:
+     *                  {id:{name:"", number:""}, ...,}
+     * @param act_proj: current active project - will default to empty
+     *                  string if no argument provided
      */
-    constructor(uname, projs, fb_projs) {
-        this._act_proj = projs[0]; // active project
-        this._uname = uname;       // user name
-        this._projs = projs;       // firelounge projects
-        this._fb_projs = fb_projs; // firebase projects
+    constructor(uname, projs, fb_projs, act_proj="") {
+        this._uname = uname;         // user name
+        this._projs = projs;         // firelounge projects
+        this._fb_projs = fb_projs;   // firebase projects
+        this._act_proj = act_proj;   // current active project
     }
 
 
@@ -32,16 +34,11 @@ export default class User {
     /**
      * Sets the users current active project.
      *
-     * @param new_active: new active project in an object
-     *                    of the form:
-     *                    {name: "", path: "", id:""}
+     * @param new_active: String representing the project ID
      */
     setActive(new_active) {
-        if ( (new_active.name === undefined) || (new_active.path === undefined) || new_active.id === undefined ) {
-            throw new Error("Input for setActive must be of the form {name:\"\", path:\"\", id:\"\"} ")
-        }
-        else if (! this._projsInclude(new_active)) {
-            throw new Error("The inputted project does not exist in firelounge");
+        if (this._projs[new_active] === undefined) {
+            throw new Error(`A project with the id ${new_active} does not exist in firelounge`);
         }
         this._act_proj = new_active;
     }
@@ -52,9 +49,10 @@ export default class User {
      *
      * @param new_proj: project to be added in an object of
      *                  the form:
-     *                  {name: "", path: "", id:""}
+     *                  {id: "", name: "", number: "", path: ""}
      */
     addProj(new_proj) {
+
         if ( (new_proj.name === undefined) || (new_proj.path === undefined) || new_proj.id === undefined ) {
             throw new Error("Input for addProj must be of the form {name:\"\", path:\"\"} ")
         }
@@ -72,7 +70,7 @@ export default class User {
      *
      * @param old_proj: project to be removed in an object
      *                  of the form:
-     *                  {name:"", path:"", id:""}
+     *                  {name:"", number:"", path:""}
      */
     removeProj(old_proj) {
         if ( (old_proj.name === undefined) || (old_proj.path === undefined) || old_proj.id === undefined ) {
@@ -98,21 +96,30 @@ export default class User {
      * @returns {boolean}: true if equal, false if not
      */
     static _isEqual(a, b) {
-        return ((a.name === b.name) || (a.path === b.path) || (a.id === b.id));
+        return ((a.name === b.name) || (a.number === b.number) || (a.path === b.path));
     }
 
     /**
      * Checks if this._projs contains the given object.
      * @param comp: the object to be search for of the form:
-     *              {name:"", path:"", id:""}
+     *              {name:"", number:"", path:""}
      * @returns {boolean}: true if found, false if not
      * @private
      */
      _projsInclude(comp) {
-        for (let p of this._projs) {
-            if (User._isEqual(comp, p)) { return true }
-        }
-        return false;
+
+         // make sure project id exists
+         if (this._projs[comp.id] === undefined) {
+             return false;
+         }
+         // if yes, check if objects are equal
+         else {
+             const projs = Object.this._projs.keys();
+             for (let key of projs) {
+                 if (User._isEqual(comp, this._projs[key])) { return true }
+             }
+             return false;
+         }
     }
 
     /**
