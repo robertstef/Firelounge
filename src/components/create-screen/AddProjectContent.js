@@ -10,6 +10,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Brightness1OutlinedIcon from "@material-ui/icons/Brightness1Outlined";
 import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
 import {createMuiTheme} from "@material-ui/core/styles";
+import GetPathButton from "./GetPathButton";
 
 
 const theme = createMuiTheme({
@@ -56,7 +57,7 @@ class AddProjectContent extends Component{
                                     placeholder="..."
                                     variant={"outlined"}
                                 />
-                                <Button size={'small'} variant={'outlined'} style={{height:'40px'}}>...</Button>
+                                <GetPathButton/>
                             </div>
                             <div style={{marginTop:20}}/>
                             <Typography variant="h6" gutterBottom>Select Project's Features</Typography>
