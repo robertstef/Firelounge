@@ -1,17 +1,32 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const server = require('./App.js')
 const url = require('url');
 const isDev = require("electron-is-dev");
 
-
 let win;
+
+ipcMain.on('get-path', (event, arg) => {
+    const {dialog} = require('electron');
+    dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then(
+        function(res) {
+            event.reply('get-path-reply', res.filePaths[0])
+        }
+    );
+
+
+
+});
 
 function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+        },
         width: 800,
         height: 600
+
     });
 
     //path needs to be changed -- remove __dirname and use something else [ process.cwd() ] ? 
@@ -26,6 +41,7 @@ function createWindow () {
         win = null;
     });
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -47,7 +63,8 @@ app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
     }
-})
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import SwitchesGroup from './SwitchesGroup.js';

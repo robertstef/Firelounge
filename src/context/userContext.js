@@ -1,17 +1,62 @@
 import React from 'react';
+import User from './userObject';
 
+/* Create a state context and a dispatch context */
 const userStateContext = React.createContext();
 const userDispatchContext = React.createContext();
 
+/* Test user data */
+let projects = [{name:"proj1", path:"./Users/proj1", id:"123"},
+                {name:"test_proj", path:"~/src/files", id:"321"},
+                {name:"new_proj", path:"/users/robertstefanyshin/", id:"456"}];
+
+
+let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
+                   {name: "new_proj", id: "new_proj_id", num: "5678"},
+                   {name: "last_proj", id: "list_proj_id", num: "23048"}];
+
+let test_user = new User("Robert", projects, fb_projects);
+
+/**
+ * A reducer function for use by UserProvider to carry out
+ * the desired action on the userDispatchContext.
+ *
+ * @param state: the current context state
+ * @param action: object specifying the operation to be carried out
+ *                on the current User context. Must be of the form:
+ *                {type: "", args: ""}
+ *
+ *                type must be set to on of:
+ *                setActive, addProj, removeProj
+ *
+ *                args must be of the form:
+ *                {name: "", path: "" , id: ""}
+ *
+ * @returns {user: (*|User|number|string)}: updated User state
+ */
 function UserReducer(state, action) {
-    return {default: state.default += 1}
+    switch(action.type) {
+        case 'setActive':
+            state.user.setActive(action.args);
+            return {user: state.user};
+        case 'addProj':
+            state.user.addProj(action.args);
+            return {user: state.user};
+        case 'removeProj':
+            state.user.removeProj(action.args);
+            return {user: state.user};
+        default:
+            throw new Error("Unspecified action");
+    }
 }
 
 /**
  * A component to provide the user context to the application.
+ * All components nested within UserProvider will be able to
+ * access the UserState and UserDispatch.
  */
 function UserProvider({children}) {
-    const [state, dispatch] = React.useReducer(UserReducer, {default: 0});
+    const [state, dispatch] = React.useReducer(UserReducer, {user: test_user});
     return (
         <userStateContext.Provider value={state}>
             <userDispatchContext.Provider value={dispatch}>
@@ -34,8 +79,8 @@ function UserState() {
 }
 
 /**
- * Used to give the calling component access to the dispatch state
- * to update the current users state information.
+ * A function used to give the calling component access to the
+ * dispatch state to update the current users state information.
  */
 function UserDispatch() {
     const context = React.useContext(userDispatchContext);
