@@ -10,12 +10,22 @@ let win;
 let dialogShown = false; // flag to represent whether the dialog is open or closed
 ipcMain.on('get-path', (event, arg) => {
     if (dialogShown === false) {
-        dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then(
-            function(res) {
+        dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
                 if (res.canceled === true || res.filePaths.length > 0) {
                     dialogShown = false;
-                    event.reply('get-path-reply', res.filePaths[0]);
-                    ipcMain.removeAllListeners('get-path-reply')
+                    //confirm filepath has .firebaserc file
+                    const validDir = require('./scripts/validDir.js');
+                    validDir.validDir_function(res.filePaths[0]).then((output) => {
+                        //if valid - send back path
+                        if( output === 1 ) {
+                            event.reply('get-path-reply', res.filePaths[0]);
+                            ipcMain.removeAllListeners('get-path-reply')
+                        } else {
+                            //else invalid - send back invalid
+                            event.reply('get-path-reply', "Invalid Path");
+                            ipcMain.removeAllListeners('get-path-reply')
+                        }
+                    }) ;
                 }
             }
         );
@@ -70,6 +80,5 @@ app.on('activate', () => {
     }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+
 
