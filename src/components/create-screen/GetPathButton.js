@@ -1,15 +1,15 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+const {ipcRenderer} = window.require('electron');
 
+// we should be able to move this listener to any place in the renderer process and it should receive the path
+ipcRenderer.on("get-path-reply", (event, arg) => {
+    console.log("Got the path", arg);
+});
 
 export default function GetPathButton() {
     const getPathIPC = () =>{
-        const {ipcRenderer} = window.require('electron');
         ipcRenderer.send("get-path", null);
-        ipcRenderer.on("get-path-reply", (event, arg) => {
-            console.log("Got the path", arg)
-        })
-
     };
 
     return(
