@@ -18,7 +18,6 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 
 
-
 /*
 This is a sample endpoint - should return cwd as data
 Console logs will appear in terminal of dev server
@@ -35,7 +34,7 @@ app.get("/test", (req, res) => {
         }
     }) ;
 
-})
+});
 
 /*
 End point for user login 

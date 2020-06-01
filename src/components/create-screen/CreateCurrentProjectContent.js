@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import GetPathButton from "./GetPathButton";
 
 class CreateCurrentProjectContent extends Component{
 
@@ -36,7 +37,7 @@ class CreateCurrentProjectContent extends Component{
                                     placeholder="..."
                                     variant={"outlined"}
                                 />
-                                <Button size={'small'} variant={'outlined'} style={{height:'40px'}}>...</Button>
+                                <GetPathButton/>
                             </div>
                             <div style={{marginTop:20}}/>
                             <Button variant={'outlined'} disabled={this.btnDisabled()} size={'small'}>Initialize</Button>
