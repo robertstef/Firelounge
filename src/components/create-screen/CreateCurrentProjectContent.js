@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import GetPathButton from "./GetPathButton";
+const axios = require('axios');
 
 class CreateCurrentProjectContent extends Component{
 
@@ -15,7 +16,29 @@ class CreateCurrentProjectContent extends Component{
     }
 
     btnDisabled() {
-        return true
+        return true;
+    }
+
+
+    handleClick(){
+        //hardcoded for now - should be passed as args
+        //package body of request
+        var body = {
+            'path': '/Users/benbaker/Documents/opench-370-project-dev/',
+            'name': undefined,
+            'username': 'testusername'
+        }
+
+        //call script to add project
+        //should return status 200 on request and the projectid as the message
+        axios.post("http://localhost:5000/insertProject", body)
+            .then((response) => {
+                if(response.status === 200){
+                    // do something here with result lol
+                }
+            }).catch(error => {
+                console.log(error)
+        })
     }
 
 
@@ -40,7 +63,7 @@ class CreateCurrentProjectContent extends Component{
                                 <GetPathButton/>
                             </div>
                             <div style={{marginTop:20}}/>
-                            <Button variant={'outlined'} disabled={this.btnDisabled()} size={'small'}>Initialize</Button>
+                            <Button variant={'outlined'} disabled={this.btnDisabled()} size={'small'} onClick={this.handleClick}>Initialize</Button>
                         </Grid>
                     </Grid>
                 </div>
