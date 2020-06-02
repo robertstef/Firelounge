@@ -25,6 +25,7 @@ module.exports = {
 	        	proj_id = firebaserc.projects.default
 	        } catch (error){
 	        	throw new error ('File not found')
+	        	resolve(-1);
 	        }
 	      
 	        var user_json = require('../Users/' + username + '.json');
@@ -40,16 +41,22 @@ module.exports = {
 	        }
 			
 	        // get features here
-	        var featureList = [];
-	        var firebasejson = fs.readFileSync(proj_path + 'firebase.json')
-			firebasejson = JSON.parse(firebasejson)	        
-	        if( firebasejson.hasOwnProperty('hosting')){
-	        	featureList.push('hosting')
+	         try {
+	         	//try to read firebase.json file
+	        	var featureList = [];
+		        var firebasejson = fs.readFileSync(proj_path + 'firebase.json')
+				firebasejson = JSON.parse(firebasejson)	        
+		        //then check for modules -- push them to list
+		        if( firebasejson.hasOwnProperty('hosting')){
+		        	featureList.push('hosting')
+		        }
+		        if( firebasejson.hasOwnProperty('database')){
+		        	featureList.push('database')
+		        }
+	        } catch (error){
+	        	throw new error ('File not found')
+	        	resolve(-1);
 	        }
-	        if( firebasejson.hasOwnProperty('database')){
-	        	featureList.push('database')
-	        }
-
 	        //..... add rest of the features later
 
 	        //package project to write
