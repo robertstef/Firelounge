@@ -5,7 +5,7 @@ export default class User {
      * @param uname: users username
      * @param projs: users current firelounge projects in an
      *               object of the form:
-     *               {id: {name:"", path: ""}, ...,}
+     *               {id: {name:"", path: "", features: ["", ...]}, ...,}
      * @param fb_projs: users current firebase projects in an
      *                  object of the form:
      *                  {id:{name:"", number:""}, ...,}
@@ -57,16 +57,18 @@ export default class User {
      *
      * @param new_proj: project to be added in an object of
      *                  the form:
-     *                  {id: "", name: "", path: ""}
+     *                  {id: "", name: "", path: "", features: ["", ...]}
      */
     addProj(new_proj) {
 
         // check input contains all required fields
-        if ( (new_proj.id === undefined) ||
-             (new_proj.name === undefined) ||
-             (new_proj.path === undefined) )
+        if ( (new_proj.id === undefined)  ||
+             (new_proj.name === undefined)||
+             (new_proj.path === undefined)||
+             (new_proj.features === undefined))
         {
-            throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", number: \"\", path:\"\"} ")
+            throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", number: \"\", path:\"\"," +
+                " features \"\"} ")
         }
         // check project does not already exist in firelounge
         else if (this._projsInclude(new_proj)) {
@@ -74,7 +76,8 @@ export default class User {
         }
         // add project to firelounge
         else {
-            this._projs[new_proj.id] = {name: new_proj.name, number: new_proj.number, path: new_proj.path};
+            this._projs[new_proj.id] = {name: new_proj.name, number: new_proj.number,
+                path: new_proj.path, features: new_proj.features};
         }
     }
 
@@ -97,20 +100,20 @@ export default class User {
     /* PRIVATE METHODS */
 
     /**
-     * Checks if two objects of the form: {name: "", path: "", id: ""}
+     * Checks if two objects of the form: {name: "", path: "", features: ["", ...]}
      * are of equal value.
      * @param a: first object to compare
      * @param b: second object to compare
      * @returns {boolean}: true if equal, false if not
      */
     static _isEqual(a, b) {
-        return ((a.name === b.name) || (a.path === b.path));
+        return ((a.name === b.name) && (a.path === b.path) && (a.features === b.features));
     }
 
     /**
      * Checks if this._projs contains the given object.
      * @param comp: the object to be search for of the form:
-     *              {name:"", number:"", path:""}
+     *              {name:"", path:"", features: ["", ...]}
      * @returns {boolean}: true if found, false if not
      * @private
      */
@@ -130,16 +133,3 @@ export default class User {
          }
     }
 }
-
-/*
-let projects = {"123":{name:"proj1", path:"./Users/proj1"},
-    "321":{name:"test_proj", path:"~/src/files"},
-    "456":{name:"new_proj", path:"/users/robertstefanyshin/"}};
-
-let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
-    {name: "new_proj", id: "new_proj_id", num: "5678"},
-    {name: "last_proj", id: "list_proj_id", num: "23048"}];
-
-let test_user = new User("Robert", projects, fb_projects);
-console.log(test_user.projs.keys())
- */
