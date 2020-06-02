@@ -6,10 +6,10 @@ const userStateContext = React.createContext();
 const userDispatchContext = React.createContext();
 
 /* Test user data */
-let projects = [{name:"proj1", path:"./Users/proj1", id:"123"},
-                {name:"test_proj", path:"~/src/files", id:"321"},
-                {name:"new_proj", path:"/users/robertstefanyshin/", id:"456"}];
 
+let projects = {123:{name:"proj1", path:"./Users/proj1"},
+                321:{name:"test_proj", path:"~/src/files"},
+                456:{name:"new_proj", path:"/users/robertstefanyshin/"}};
 
 let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
                    {name: "new_proj", id: "new_proj_id", num: "5678"},
