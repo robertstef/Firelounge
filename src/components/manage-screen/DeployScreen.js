@@ -1,13 +1,10 @@
 import React from 'react';
 import DeployScreenCard from './DeployScreenCard.js'
 
-function DeployScreen(props) {
+function DeployScreen() {
     return (
         <div>
-            <DeployScreenCard 
-            	username={props.username} 
-            	currProject={props.currProject} 
-			/>
+			<DeployScreenCard/>
         </div>
     );
 }
