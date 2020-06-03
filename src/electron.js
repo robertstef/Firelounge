@@ -22,7 +22,7 @@ ipcMain.on('get-path', (event, arg) => {
                             ipcMain.removeAllListeners('get-path-reply')
                         } else {
                             //else invalid - send back invalid
-                            event.reply('get-path-reply', "Invalid Path");
+                            event.reply('get-path-reply', "Invalid");
                             ipcMain.removeAllListeners('get-path-reply')
                         }
                     }) ;
@@ -39,7 +39,7 @@ function createWindow () {
         webPreferences: {
             nodeIntegration: true,
         },
-        width: 800,
+        width: 1000,
         height: 600
 
     });

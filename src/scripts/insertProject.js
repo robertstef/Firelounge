@@ -20,36 +20,42 @@ module.exports = {
         return new Promise((resolve, reject) => {
 	       	//get project id from .firebaserc file
 	        try {
-	        	var firebaserc = fs.readFileSync(proj_path + '.firebaserc')
+	        	var firebaserc = fs.readFileSync(proj_path + '/.firebaserc')
 	        	firebaserc = JSON.parse(firebaserc)
 	        	proj_id = firebaserc.projects.default
 	        } catch (error){
-	        	throw new error ('File not found')
+	        	reject(new Error('No firebaserc file found'));
 	        }
 	      
 	        var user_json = require('../Users/' + username + '.json');
 			//check to see if its already in the file
 	        if (user_json.projects.hasOwnProperty(proj_id)) {
-	        	console.log('PROJECT EXISTS -- ABORT MISSION')
-	        	resolve(-1)
+	        	reject(new Error('PROJECT EXISTS -- ABORT MISSION'));
 	        }
 
 	        //if no project name provided - use proj_id as name
-	        if(requestBody.name === undefined) {
+	        if(requestBody.name === '') {
 	        	proj_name = proj_id;
+	        } else {
+	        	proj_name = requestBody.name;
 	        }
 			
 	        // get features here
-	        var featureList = [];
-	        var firebasejson = fs.readFileSync(proj_path + 'firebase.json')
-			firebasejson = JSON.parse(firebasejson)	        
-	        if( firebasejson.hasOwnProperty('hosting')){
-	        	featureList.push('hosting')
+	         try {
+	         	//try to read firebase.json file
+	        	var featureList = [];
+		        var firebasejson = fs.readFileSync(proj_path + '/firebase.json')
+				firebasejson = JSON.parse(firebasejson)	        
+		        //then check for modules -- push them to list
+		        if( firebasejson.hasOwnProperty('hosting')){
+		        	featureList.push('hosting')
+		        }
+		        if( firebasejson.hasOwnProperty('database')){
+		        	featureList.push('database')
+		        }
+	        } catch (error){
+	        	reject(new Error('No firebase.json file found'));
 	        }
-	        if( firebasejson.hasOwnProperty('database')){
-	        	featureList.push('database')
-	        }
-
 	        //..... add rest of the features later
 
 	        //package project to write
@@ -62,12 +68,9 @@ module.exports = {
         	
         	fs.writeFileSync(`${path.join(__dirname, '../Users/' + username + '.json')}`, JSON.stringify(user_json), function(err) {
 	    		if (err) {
-	        		//if error resolve with error code
-	        		console.log(err);
-	        		resolve(-1)
+	        			reject(new Error(err));
 	    			}
 	    			//if success resolve with success code
-	    			console.log(proj_id)
 	    			resolve(proj_id);
 				})
         });
