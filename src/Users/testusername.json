@@ -1,10 +1,15 @@
 {
-	"project1": {
-		"features": "hosting",
-		"location": "~/Documents"
-	},
-	"project2": {
-                "features": "hosting",
-                "location": "~/Documents"
-        }
+	"activeProject": "projectid1",
+	"projects": {
+		"projectid1": {
+			"name": "project1",
+			"path": "~/Documents",
+			"features": "H"
+		},
+		"projectid2": {
+			"name": "project2",
+			"path": "~/Documents",
+			"features": "H"
+		}
+	}
 }

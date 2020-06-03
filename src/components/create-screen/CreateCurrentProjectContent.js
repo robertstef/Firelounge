@@ -2,47 +2,75 @@ import React, {Component} from 'react'
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
 import GetPathButton from "./GetPathButton";
+const axios = require('axios');
+
 
 class CreateCurrentProjectContent extends Component{
-
     constructor(props) {
         super(props);
-        this.state={
-            currProjectName: '',
+        this.state = {
+            projectName: '',
+            projectPath: ''
         }
     }
-
+    
     btnDisabled() {
-        return true
+        return false;
     }
 
+    /* Handles the click event of the initialize button */
+    handleClick = () => {
+        
+        //package body of request
+        var body = {
+            'path': this.state.projectPath, 
+            'name': this.state.projectName,
+            'username': 'testusername'
+        }
+        
+        //call script to add project
+        axios.post("http://localhost:5000/insertProject", body)
+            .then((response) => {
+                    // do something here with result lol
+                    console.log('Success!')
+            }).catch(error => {
+                console.error(error.response)
+        })
+    }
+
+    /* Used to get the input from the textfield for the project name */
+    handleChange = (event) => {
+        this.setState({projectName: event.target.value})
+    }
+
+    /* Callback to retrieve the selected path from GetPathButton */
+    getSelectedPath = (selectedPath) => {
+        this.setState({projectPath: selectedPath})
+    }
 
     render(){
         return(
             <div>
                 <div>
-                    <Grid container>
-                        <Grid item >
-                            <Typography variant="h6" gutterBottom>Initialize a Pre-existing Firebase Project</Typography>
-                            <div style={{marginTop:20}}/>
-                            <Typography variant="h6" gutterBottom>Set Your Project Path</Typography>
-                            <div style={{marginTop:10}}/>
-                            <div>
-                                <TextField
-                                    style={{width:'70%', marginRight: '5px'}}
-                                    id="outlined-size-small"
-                                    size={'small'}
-                                    placeholder="..."
-                                    variant={"outlined"}
-                                />
-                                <GetPathButton/>
-                            </div>
-                            <div style={{marginTop:20}}/>
-                            <Button variant={'outlined'} disabled={this.btnDisabled()} size={'small'}>Initialize</Button>
-                        </Grid>
-                    </Grid>
+                    <Typography variant="h6" gutterBottom>Initialize a Pre-existing Firebase Project</Typography>
+                    
+                    <div style={{marginTop:20}}>
+                        <TextField
+                            style={{width:'80%'}}
+                            id="outlined-size-small"
+                            size={'small'}
+                            placeholder="Enter your project name (Optional)"
+                            variant={"outlined"}
+                            color={'secondary'}
+                            value={this.state.projectName}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+
+                    <div style={{marginTop:20}}/>
+                    <GetPathButton path={this.getSelectedPath}/>
+                    <Button style={{marginTop:20}} variant={'outlined'} disabled={this.btnDisabled()} size={'small'} onClick={this.handleClick}>Initialize</Button>
                 </div>
             </div>
         )

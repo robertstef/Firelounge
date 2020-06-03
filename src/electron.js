@@ -1,21 +1,36 @@
-const { app, BrowserWindow, ipcMain} = require('electron');
+const { app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
-const server = require('./App.js')
+const server = require('./App.js');
 const url = require('url');
 const isDev = require("electron-is-dev");
 
 let win;
 
+
+let dialogShown = false; // flag to represent whether the dialog is open or closed
 ipcMain.on('get-path', (event, arg) => {
-    const {dialog} = require('electron');
-    dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then(
-        function(res) {
-            event.reply('get-path-reply', res.filePaths[0])
-        }
-    );
-
-
-
+    if (dialogShown === false) {
+        dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
+                if (res.canceled === true || res.filePaths.length > 0) {
+                    dialogShown = false;
+                    //confirm filepath has .firebaserc file
+                    const validDir = require('./scripts/validDir.js');
+                    validDir.validDir_function(res.filePaths[0]).then((output) => {
+                        //if valid - send back path
+                        if( output === 1 ) {
+                            event.reply('get-path-reply', res.filePaths[0]);
+                            ipcMain.removeAllListeners('get-path-reply')
+                        } else {
+                            //else invalid - send back invalid
+                            event.reply('get-path-reply', "Invalid");
+                            ipcMain.removeAllListeners('get-path-reply')
+                        }
+                    }) ;
+                }
+            }
+        );
+        dialogShown = true;
+    }
 });
 
 function createWindow () {
@@ -24,13 +39,13 @@ function createWindow () {
         webPreferences: {
             nodeIntegration: true,
         },
-        width: 800,
+        width: 1000,
         height: 600
 
     });
 
     //path needs to be changed -- remove __dirname and use something else [ process.cwd() ] ? 
-    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../../../../../../../build/index.html")}`)
+    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../../../../../../../build/index.html")}`);
 
     //if dev mode then open with dev tools
     if(isDev){
@@ -65,6 +80,5 @@ app.on('activate', () => {
     }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+
 
