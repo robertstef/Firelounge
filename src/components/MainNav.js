@@ -13,7 +13,6 @@ import CreateNav from "./create-screen/CreateNav"
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import StateTest from './ContextStateTest';
-import {UserProvider} from '../context/userContext';
 import DispTest from './ContextDispTest';
 
 function TabPanel(props) {
@@ -105,7 +104,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainNav(props) {
+//export default function MainNav(props) {
+export default function MainNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -115,46 +115,48 @@ export default function MainNav(props) {
 
   return (
     <div className={classes.root}>
-      <UserProvider>
-          <Box>
-            <AppBar position="static" color="default" className={classes.appbar}>
-              <ThemeProvider theme={theme}>
-                <Tabs
-                    className={classes.tabs}
-                    orientation="vertical"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="nav tabs example"
-                    indicatorColor={"primary"}
-                >
-                  <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
-                  <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-                  <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
+        <Box>
+          <AppBar position="static" color="default" className={classes.appbar}>
+            <ThemeProvider theme={theme}>
+              <Tabs
+                  className={classes.tabs}
+                  orientation="vertical"
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="nav tabs example"
+                  indicatorColor={"primary"}
+              >
+                <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
+                <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
+                <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
 
-                  {/* Context Test Link */}
-                  <LinkTab icon={<BathtubIcon />} {...a11yProps(3)} className={classes.linkTab}/>
-                </Tabs>
-              </ThemeProvider>
-            </AppBar>
-          </Box>
-          <TabPanel value={value} index={0} className={classes.tabpanel}>
-            <CreateNav/>
-          </TabPanel>
+                {/* Context Test Link */}
+                <LinkTab icon={<BathtubIcon />} {...a11yProps(3)} className={classes.linkTab}/>
+              </Tabs>
+            </ThemeProvider>
+          </AppBar>
+        </Box>
 
-          <TabPanel value={value} index={1} className={classes.tabpanel}>
-            <ManageScreen username={props.username}/>
-          </TabPanel>
+        {/* Create and init projects tab */}
+        <TabPanel value={value} index={0} className={classes.tabpanel}>
+          <CreateNav/>
+        </TabPanel>
 
-          <TabPanel value={value} index={2} className={classes.tabpanel}>
-            Settings Page
-          </TabPanel>
+        {/* Manage exisiting projects tab */}
+        <TabPanel value={value} index={1} className={classes.tabpanel}>
+          <ManageScreen/>
+        </TabPanel>
 
-          {/* Context test values */}
-          <TabPanel value={value} index={3} className={classes.tabpanel}>
-            <StateTest />
-            <DispTest/>
-          </TabPanel>
-      </UserProvider>
+        {/*Settings page */}
+        <TabPanel value={value} index={2} className={classes.tabpanel}>
+          Settings Page
+        </TabPanel>
+
+        {/* Context test values */}
+        <TabPanel value={value} index={3} className={classes.tabpanel}>
+          <StateTest />
+          <DispTest/>
+        </TabPanel>
     </div>
   );
 }
