@@ -2,23 +2,40 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 const {ipcRenderer} = window.require('electron');
 
-// we should be able to move this listener to any place in the renderer process and it should receive the path
-ipcRenderer.on("get-path-reply", (event, arg) => {
-    console.log("Got the path", arg);
-});
 
-export default function GetPathButton() {
+export default function GetPathButton(props) {
+    const [filePath, setFilePath ] = React.useState('');
+
+    /* Displays the filepath in the React button */
+    var DisplayFilePath = () => {
+        if (filePath === ''){
+            return 'Select File Path...'
+        } else{
+            return filePath;
+        }
+    }
+    /* Send IPC to retrieve the selected filepath */
     const getPathIPC = () =>{
         ipcRenderer.send("get-path", null);
+
+        ipcRenderer.on("get-path-reply", (event, arg) => {
+            if(arg === 'Invalid'){
+                //need to add in some error feedback here
+                console.log('Invalid file path')
+            } else {
+                //received valid path
+                setFilePath(arg);
+                //send file path up to CreateCurrentProjectContent via callback function
+                props.path(arg)
+            }
+        });
     };
 
     return(
-        <div>
-            <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC}
-            >
-                ...
+        <div style={{marginTop:10}}>
+            <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC} >
+                <DisplayFilePath />
             </Button>
         </div>
     )
-
 }
