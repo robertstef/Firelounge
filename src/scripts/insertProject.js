@@ -36,6 +36,8 @@ module.exports = {
 	        //if no project name provided - use proj_id as name
 	        if(requestBody.name === undefined) {
 	        	proj_name = proj_id;
+	        } else {
+	        	proj_name = requestBody.name;
 	        }
 			
 	        // get features here
