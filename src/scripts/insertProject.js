@@ -20,7 +20,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
 	       	//get project id from .firebaserc file
 	        try {
-	        	var firebaserc = fs.readFileSync(proj_path + '.firebaserc')
+	        	var firebaserc = fs.readFileSync(proj_path + '/.firebaserc')
 	        	firebaserc = JSON.parse(firebaserc)
 	        	proj_id = firebaserc.projects.default
 	        } catch (error){
@@ -34,7 +34,7 @@ module.exports = {
 	        }
 
 	        //if no project name provided - use proj_id as name
-	        if(requestBody.name === undefined) {
+	        if(requestBody.name === '') {
 	        	proj_name = proj_id;
 	        } else {
 	        	proj_name = requestBody.name;
@@ -44,7 +44,7 @@ module.exports = {
 	         try {
 	         	//try to read firebase.json file
 	        	var featureList = [];
-		        var firebasejson = fs.readFileSync(proj_path + 'firebase.json')
+		        var firebasejson = fs.readFileSync(proj_path + '/firebase.json')
 				firebasejson = JSON.parse(firebasejson)	        
 		        //then check for modules -- push them to list
 		        if( firebasejson.hasOwnProperty('hosting')){
