@@ -33,11 +33,9 @@ class CreateCurrentProjectContent extends Component{
         //should return status 200 on request and the projectid as the message
         axios.post("http://localhost:5000/insertProject", body)
             .then((response) => {
-                if(response.status === 200){
                     // do something here with result lol
-                }
             }).catch(error => {
-                console.log(error)
+                console.error(error.response)
         })
     }
 

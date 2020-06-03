@@ -67,18 +67,16 @@ var body = {
     'path' ='/Users/benbaker/Documents/opench-370-project-dev',
     'name' = undefined,
     'username' = 'testusername'}
-Returns status 200 and project id on success - 400 on fail
+Returns status 200 and project id on success - 420 on fail
 */
 const insertProject_module = require('./scripts/insertProject.js')
 app.post("/insertProject", (req, res) => {
     insertProject_module.insertProject_function(req.body).then((output) => {
-        if( output === -1 ) {
-            res.status(400).send('NOT CHILL');            
-        } else {
-            //success - send project id
-            res.status(200).send(output);
-        }
-    })
+        res.status(200).send(output);
+    }).catch(err => {
+        console.log(err)
+        res.status(400).send(err);                    
+    });
 });
 
 

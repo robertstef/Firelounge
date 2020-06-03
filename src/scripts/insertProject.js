@@ -24,15 +24,13 @@ module.exports = {
 	        	firebaserc = JSON.parse(firebaserc)
 	        	proj_id = firebaserc.projects.default
 	        } catch (error){
-	        	throw new error ('File not found')
-	        	resolve(-1);
+	        	reject(new Error('No firebaserc file found'));
 	        }
 	      
 	        var user_json = require('../Users/' + username + '.json');
 			//check to see if its already in the file
 	        if (user_json.projects.hasOwnProperty(proj_id)) {
-	        	console.log('PROJECT EXISTS -- ABORT MISSION')
-	        	resolve(-1)
+	        	reject(new Error('PROJECT EXISTS -- ABORT MISSION'));
 	        }
 
 	        //if no project name provided - use proj_id as name
@@ -54,8 +52,7 @@ module.exports = {
 		        	featureList.push('database')
 		        }
 	        } catch (error){
-	        	throw new error ('File not found')
-	        	resolve(-1);
+	        	reject(new Error('No firebase.json file found'));
 	        }
 	        //..... add rest of the features later
 
@@ -69,12 +66,9 @@ module.exports = {
         	
         	fs.writeFileSync(`${path.join(__dirname, '../Users/' + username + '.json')}`, JSON.stringify(user_json), function(err) {
 	    		if (err) {
-	        		//if error resolve with error code
-	        		console.log(err);
-	        		resolve(-1)
+	        			reject(new Error(err));
 	    			}
 	    			//if success resolve with success code
-	    			console.log(proj_id)
 	    			resolve(proj_id);
 				})
         });
