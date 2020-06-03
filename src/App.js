@@ -24,16 +24,15 @@ Console logs will appear in terminal of dev server
 If using production version - use the log file created
 */
 
-const test_module = require('./scripts/test.js')
+const test_module = require('./scripts/newtest.js')
 app.get("/test", (req, res) => {
     test_module.test_function().then((output) => {
-        if( output.code === 0 ) {
-            res.status(200).send(output.stdout);
-        } else {
-            res.status(400).send();
-        }
-    }) ;
-
+        console.log(output)
+        res.status(200).send(output);
+    }).catch(err => {
+        console.log(err)
+        res.status(400).send(err);                    
+    });
 });
 
 /*
@@ -44,20 +43,18 @@ on success returns status 200 and data username
 const login_module = require('./scripts/login.js')
 app.get("/login", (req, res) => {
     login_module.login_function().then((output) => {
-        if( output.code === 0 ) {
            	//parse username
-           	let uname = output.stdout.split(" ");
+           	let uname = output.split(" ");
         	uname = uname[uname.length - 1];
 			uname = uname.split("@");
         	uname = uname[0];
         	uname = uname.slice(4);
-
             res.status(200).send(uname);
-        } else {
-            res.status(400).send(output.stderr);
-        }
-    }) ;
-})
+    }).catch(err => {
+        console.log(err)
+        res.status(400).send(err);                    
+    });
+});
 
 
 /*
