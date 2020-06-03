@@ -16,12 +16,12 @@ export default function StateTest() {
         <div>
 
 
-            {/* EG 1: Display current active proj and change active proj
+            {/* EG 1: Display current active proj and change active proj*/}
 
             <h1>{`Active project name: ${user.act_proj.name}`}</h1>
             <h1>{`Active project path: ${user.act_proj.path}`}</h1>
 
-            */}
+
 
             {/* EG 2: Display current projects and add a project
             {items.map((item, idx) => (
@@ -30,11 +30,11 @@ export default function StateTest() {
             */}
 
 
-            {/* EG 3: Remove project*/}
+            {/* EG 3: Remove project
                 {items.map((item, index) => (
                     item
                 ))}
-
+            */}
         </div>
     );
 }
