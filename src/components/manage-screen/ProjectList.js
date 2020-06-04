@@ -1,94 +1,73 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Box from '@material-ui/core/Box';
+import InputLabel from '@material-ui/core/InputLabel';
+import {UserDispatch, UserState} from '../../context/userContext'
+import NativeSelect from '@material-ui/core/NativeSelect'
 
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    marginLeft: '10%',
-    marginRight: 'auto',
-    minWidth: '200px',
-    height: '40px',
+    margin: theme.spacing(1),
+    minWidth: 200,
   },
-  selectEmpty: {
-    marginTop: '9px',
+  component: {
+    marginLeft: '75px'
   },
-  box: {
-    marginTop: '5px',
-    marginBottom: '5px',
-    marginLeft: '20%',
-    minWidth: '250px',
-    minHeight: '40px',
-    backgroundColor: 'white',
-    borderRadius: 10,
-  }
+
 }));
 
 
-function getProjects(username){
-  //concat strings
-  var user = username.concat('.json')
-
-  try {
-    //get project list
-    var data = require('../../Users/'.concat(user))  
-  } catch (err) {
-    console.log('User is not initalized')
-    console.log(err)
-  }
-
-  //add to array of projects
-  var projectList = []
-  for (var item in data){
-    projectList.push(item)
-  }
-  return projectList;
-}
-
-
-export default function ProjectList(props) {
+export default function ProjectList() {
   const classes = useStyles();
-  const [currProject, setCurrProject] = React.useState('');
 
+  // Context variables
+  const {user} = UserState();
+  const dispatch = UserDispatch();
+
+  let projectList = []; // array of available projects
+  let act_proj_name = user.act_proj.name; // name of current active project
+  const projs = user.projs; // current firelounge projects
+
+  // Fill projectList with MenuItem components to display to the user
+  for (let id of Object.keys(projs)) {
+    // For handleChange events.target.value is set to the project ID
+    let item = <option key={id} value={id}> {projs[id].name} </option>;
+    projectList.push(item);
+  }
+
+  /**
+   * Updates the active project to the project selected by the
+   * user using the drop down menu.
+   * @param event: An event object as defined by materialUI with
+   *               event.target.value equal to the project id.
+   */
   const handleChange = (event) => {
-    //update state of current project
-    //dont think this needs to be a state
-    setCurrProject(event.target.value);
-
-    //update the currproject state in the manage screen via callback function
-    props.getSelectedProject(event.target.value)
+    dispatch({type: 'setActive', args: event.target.value});
+    act_proj_name = user.act_proj.name;
   };
 
-  //get project list on render
-  //this could eventually be changed to only run on mount
-  var projectList = getProjects(props.username);
-
   return (
-      <Box className={classes.box} boxShadow={2}>
-         <FormControl className={classes.formControl}>
-        <Select
-          value={currProject}
+      <div className={classes.component}>
+        <FormControl className={classes.formControl}>
+        <InputLabel >Active Project</InputLabel>
+        <NativeSelect
+          value={act_proj_name}
           onChange={handleChange}
-          displayEmpty
-          className={classes.selectEmpty}
-          inputProps={{ 'aria-label': 'Without label' }}
+          name="name"
         >
-        <MenuItem value="">
-            <em>Select Project...</em>
-          </MenuItem>
-        {[...Array(projectList.length).keys()].map((value) => {
-
-          return (
-            <MenuItem key={value} value={ projectList[value] }>
-              { projectList[value] }
-            </MenuItem>
-            );
-          })}
-        </Select>
+          <optgroup label="Active">
+            <option value="active">{act_proj_name}</option>
+          </optgroup>
+          <optgroup label="Project List">
+            {projectList.map((item) => {
+              return (
+                  item
+              )
+            })}            
+          </optgroup>
+        </NativeSelect>
       </FormControl>
-      </Box>
+      </div>
   );
 }

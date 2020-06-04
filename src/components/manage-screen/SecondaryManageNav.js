@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SecondaryManageNav(props) {
+export default function SecondaryManageNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -136,7 +136,7 @@ export default function SecondaryManageNav(props) {
       </AppBar>
       <div className={classes.content}>
         <TabPanel value={value} index={0} >
-          <DeployScreen currProject={props.currProject} username={props.username}/>
+          <DeployScreen />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Database Page

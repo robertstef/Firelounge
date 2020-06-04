@@ -7,13 +7,13 @@ export default function DispTest() {
     return (
         <div>
 
-            { /* EG 1: Display current active proj and change active proj
+            { /* EG 1: Display current active proj and change active proj*/}
 
             <button onClick={() => dispatch({type: 'setActive',
                                             args:"321"})}>
                 Set Active
             </button>
-            */}
+
 
             {/* EG 2: List projects and add project
 
@@ -23,11 +23,12 @@ export default function DispTest() {
             </button>
             */}
 
-            {/* EG 3: Remove project*/}
+            {/* EG 3: Remove project
             <button onClick={() => dispatch({type: 'removeProj',
                 args:"123"})}>
                 Remove Project
             </button>
+            */}
 
 
         </div>

@@ -4,9 +4,16 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
+<<<<<<< HEAD
 const axios = require('axios');
+=======
+import {UserState} from '../../context/userContext';
 
-export default function SwitchesGroup(props) {
+export default function SwitchesGroup() {
+
+  const {user} = UserState();
+>>>>>>> 4d88a85bc69b6dc61769254149d55b4f9a84ca5f
+
   const [state, setState] = React.useState({
     all: false,
     hosting: false,
@@ -82,8 +89,8 @@ export default function SwitchesGroup(props) {
       <Button onClick={() => {deployItems({state})} } disabled={btnDisabled()} style={{backgroundColor: '#EDF2F4', color: '#EF233C'}}>
         DEPLOY! :-)
       </Button>
-      <p> username: {props.username}</p>
-      <p> active project: {props.currProject}</p>
+      <p> username: {user.uname}</p>
+      <p> active project: {user.act_proj.name}</p>
       <p> Deploying.... {JSON.stringify(displayState)} </p>
     </div>
   );

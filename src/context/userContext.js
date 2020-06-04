@@ -7,15 +7,16 @@ const userDispatchContext = React.createContext();
 
 /* Test user data */
 
-let projects = {123:{name:"proj1", path:"./Users/proj1"},
-                321:{name:"test_proj", path:"~/src/files"},
-                456:{name:"new_proj", path:"/users/robertstefanyshin/"}};
+let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
+                321:{name:"test_proj", path:"~/src/files", features:["H"]},
+                456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}
+            }
 
 let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
                    {name: "new_proj", id: "new_proj_id", num: "5678"},
                    {name: "last_proj", id: "list_proj_id", num: "23048"}];
 
-let test_user = new User("Robert", projects, fb_projects);
+let test_user = new User("Robert", projects, fb_projects, "123");
 
 /**
  * A reducer function for use by UserProvider to carry out
