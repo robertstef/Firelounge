@@ -4,15 +4,14 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-<<<<<<< HEAD
-const axios = require('axios');
-=======
 import {UserState} from '../../context/userContext';
+
+const axios = require('axios');
 
 export default function SwitchesGroup() {
 
   const {user} = UserState();
->>>>>>> 4d88a85bc69b6dc61769254149d55b4f9a84ca5f
+
 
   const [state, setState] = React.useState({
     all: false,
