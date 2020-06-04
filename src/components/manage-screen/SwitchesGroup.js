@@ -4,6 +4,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
+const axios = require('axios');
 
 export default function SwitchesGroup(props) {
   const [state, setState] = React.useState({
@@ -34,7 +35,8 @@ export default function SwitchesGroup(props) {
         functions: true,
       });
     }
-    
+
+
   };
 
   //used for testing purposes - state can be removed when ready along with <p> below
@@ -45,6 +47,10 @@ export default function SwitchesGroup(props) {
     setDisplayState({
       state
     });
+    // need to send an axios request here with the state state.state
+    axios.post("http://localhost:5000/deployProject", state.state).then(res => {
+      console.log(res.data) // log the data for the sake of viewing the result
+    })
   };
 
   return (

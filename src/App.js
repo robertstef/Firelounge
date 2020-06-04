@@ -24,7 +24,7 @@ Console logs will appear in terminal of dev server
 If using production version - use the log file created
 */
 
-const test_module = require('./scripts/newtest.js')
+const test_module = require('./scripts/test.js');
 app.get("/test", (req, res) => {
     test_module.test_function().then((output) => {
         console.log(output)
@@ -76,6 +76,27 @@ app.post("/insertProject", (req, res) => {
     });
 });
 
+/*
+Endpoint for user project deployment
+Request Body formatted as such:
+var body = {
+        all: true,
+        hosting: true,
+        database: true,
+        storage: true,
+        functions: true,
+}
+Returns status 200 and deploy success and 400 on fail
+ */
+const deployModule = require('./scripts/deploy');
+app.post("/deployProject", (req, res) => {
+    deployModule.deployProject_function(req.body).then((output) => {
+        res.status(200).send(output)
+    }).catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+});
 
 
 
