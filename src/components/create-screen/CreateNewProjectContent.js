@@ -7,7 +7,6 @@ import {createMuiTheme} from "@material-ui/core/styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import Brightness1OutlinedIcon from '@material-ui/icons/Brightness1Outlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
-import Button from "@material-ui/core/Button";
 import GetPathButton from "./GetPathButton";
 
 
