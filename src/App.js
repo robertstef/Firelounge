@@ -24,7 +24,7 @@ Console logs will appear in terminal of dev server
 If using production version - use the log file created
 */
 
-const test_module = require('./scripts/newtest.js')
+const test_module = require('./scripts/test.js')
 app.get("/test", (req, res) => {
     test_module.test_function().then((output) => {
         console.log(output)

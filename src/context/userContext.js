@@ -9,7 +9,8 @@ const userDispatchContext = React.createContext();
 
 let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
                 321:{name:"test_proj", path:"~/src/files", features:["H"]},
-                456:{name:"new_proj", path:"/users/robertstefanyshin/"}, features:["H"]};
+                456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}
+            }
 
 let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
                    {name: "new_proj", id: "new_proj_id", num: "5678"},

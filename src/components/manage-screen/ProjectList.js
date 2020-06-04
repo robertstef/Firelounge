@@ -1,43 +1,20 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Box from '@material-ui/core/Box';
 import InputLabel from '@material-ui/core/InputLabel';
 import {UserDispatch, UserState} from '../../context/userContext'
+import NativeSelect from '@material-ui/core/NativeSelect'
 
-/*
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    marginLeft: '10%',
-    marginRight: 'auto',
-    minWidth: '200px',
-    height: '40px',
-  },
-  selectEmpty: {
-    marginTop: '9px',
-  },
-  box: {
-    marginTop: '5px',
-    marginBottom: '5px',
-    marginLeft: '20%',
-    minWidth: '250px',
-    minHeight: '40px',
-    backgroundColor: 'white',
-    borderRadius: 10,
-  }
-}));
-*/
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 200,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+  component: {
+    marginLeft: '75px'
   },
+
 }));
 
 
@@ -54,10 +31,8 @@ export default function ProjectList() {
 
   // Fill projectList with MenuItem components to display to the user
   for (let id of Object.keys(projs)) {
-
     // For handleChange events.target.value is set to the project ID
-    let item = <MenuItem key={id} value={id}> {projs[id].name} </MenuItem>;
-
+    let item = <option key={id} value={id}> {projs[id].name} </option>;
     projectList.push(item);
   }
 
@@ -73,21 +48,26 @@ export default function ProjectList() {
   };
 
   return (
-      <div>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel>Current Project</InputLabel>
-          <Select
-              value={act_proj_name}
-              onChange={handleChange}
-              label="Current Project"
-          >
+      <div className={classes.component}>
+        <FormControl className={classes.formControl}>
+        <InputLabel >Active Project</InputLabel>
+        <NativeSelect
+          value={act_proj_name}
+          onChange={handleChange}
+          name="name"
+        >
+          <optgroup label="Active">
+            <option value="active">{act_proj_name}</option>
+          </optgroup>
+          <optgroup label="Project List">
             {projectList.map((item) => {
               return (
                   item
               )
-            })}
-          </Select>
-        </FormControl>
+            })}            
+          </optgroup>
+        </NativeSelect>
+      </FormControl>
       </div>
   );
 }
