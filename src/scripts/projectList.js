@@ -7,13 +7,14 @@ const { exec } = require('child_process');
  * @param callback: function to process the output of the
  *                  command after execution.
  */
-function get_projects(callback) {
-    exec("firebase projects:list", (error, stdout, stderr) => {
-        if (error) {
-            console.log(error.message);
-            return;
-        }
-        callback(stdout);
+function get_projects() {
+    return new Promise((resolve, reject) => {
+        exec("firebase projects:list", (error, stdout, stderr) => {
+            if (error) {
+                reject(error.message);
+            }
+            resolve(stdout);
+        })
     })
 }
 
@@ -21,15 +22,14 @@ function get_projects(callback) {
  * Parses the output of "firebase projects:list" into
  * an array of the format:
  *
- * [[project name, project id, project number, resource location id], ..., ...]
+ * [{name:String, id:String, num:String}, ...]
  *
- * @param callback: a function to use the users project information
- *                  as needed.
+ * @param projlist: output from call to firebase projects:list
  */
-function parse_output(callback) {
-    get_projects((stdout) => {
+function parse_projlist(projlist) {
 
-        let output = stdout.split("\n");
+    return new Promise((resolve, reject) => {
+        let output = projlist.split("\n");
         output = output.slice(0, -3);
 
         // get lines containing project info
@@ -50,15 +50,34 @@ function parse_output(callback) {
             projs_revised.push(temp);
         }
 
-        callback(projs_revised);
-    });
+        // create array of objects containing name, id, and number
+        // for creating a User object
+        let proj_objs = [];
+        for (let p of projs_revised) {
+            if (p.length !== 4 ) { reject("Project list does not contain correct number of elements")}
+            let obj = {};
+            for (let i = 0; i < p.length; i++) {
+                if (i === 0) { obj.name = p[i]}
+                else if (i === 1) { obj.id = p[i] }
+                else if (i === 2) { obj.num = p[i] }
+            }
+            proj_objs.push(obj);
+        }
+
+        resolve(proj_objs);
+    })
 }
 
 /**
- * Displays the users current projects to the console.
+ * Returns a parsed list of the users firebase projects of the form
+ * [{name:String, id:String, num:String}, ...]
  */
-function list_projects() {
-    parse_output((projects) => {
-           for (let p of projects) { console.log(p[0])}
-    });
+export default async function fb_projlist() {
+    try {
+        let raw_list = await get_projects();
+        return await parse_projlist(raw_list);
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
