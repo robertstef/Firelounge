@@ -1,5 +1,5 @@
 const ui = require('./userInfo');
-const fb = require('./projectList');
+const fb = require('./fbProjects');
 
 /**
  * Construct a user object with the information for the
