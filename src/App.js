@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const isDev = require("electron-is-dev");
 const { exec } = require('child_process');
 
+
 //setup logging info
 const log = require('electron-log')
 log.transports.file.level = 'info';
@@ -97,6 +98,32 @@ app.post("/deployProject", (req, res) => {
         console.log(err);
         res.status(400).send(err);
     })
+});
+
+
+
+app.get("/initDB", (req, res) => {
+        // Fetch the service account key JSON file contents
+    var serviceAccount = require('./cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json'); 
+
+    var admin = require("firebase-admin");
+
+    
+    // Initialize the app with a service account, granting admin privileges
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
+    });
+
+    // As an admin, the app has access to read and write all data, regardless of Security Rules
+    var db = admin.database();
+    var ref = db.ref();
+    ref.once("value", function(snapshot) {
+      // console.log(snapshot.val());
+      res.status(200).send(snapshot.val())
+    });
+
+    
 });
 
 
