@@ -1,62 +1,95 @@
 // Initializes the application after the user logs into firebase
-import {fb_projlist} from "./projectList";
 
 const os = require('os');
 const fs = require('fs');
 const { exec } = require('child_process');
 
 /**
- * Obtains the necessary credentials to access to current
- * users firelounge user file. Reading/writing to the file
- * will be specified in the callback function.
+ * Obtains the current users user name. On success resolves with
+ * the users username, on error rejects with the errors message.
  *
- * @param callback function to read/write to the users file
+ * @returns {Promise<any>}
  */
-function get_uname(callback) {
+function get_uname() {
 
-    // get path to firelounge directory
-    let path = os.userInfo().homedir + "/.firelounge/Users";
+    return new Promise((resolve, reject) => {
+        exec('firebase login --interactive', (error, stdout, stderr) => {
+            if (error) {
+                reject(error.message);
+            }
 
-    // get username
-    exec("firebase login --interactive", (error, stdout, stderr) => {
+            let res = stdout.split(" ");
+            res = res[res.length - 1];
 
-        if (error) { return error.message};
-        //if (stderr) { return stderr };
+            let uname = res.split("@");
+            uname = uname[0];
+            uname = uname.slice(4);
 
-        let res = stdout.split(" ");
-        res = res[res.length - 1];
-
-        let uname = res.split("@");
-        uname = uname[0];
-        uname = uname.slice(4);
-
-        callback(path, uname);
+            resolve(uname);
+        })
     });
 }
 
 /**
- * Reads in the user file from ~/.firelounge/Users if a
- * repeat user, or creates the the userfile if a first
- * time user.
+ * Loads the user file for the current user.
+ * @param uname
+ * @returns {Promise<any>}: Resolves with an Object of the form:
+ *                          {active_project:String,
+ *                           projects:{ proj1: { name: String
+ *                                               path: String
+ *                                               features: Array of strings }}}}
+ *
  */
-function load_ufile() {
+function get_ufile_info(uname) {
+    return new Promise((resolve, reject) => {
 
-    // Gets users info and access their user file
-    get_uname((path, uname) => {
+        // path to users firelounge file
+        let path = os.userInfo().homedir + "/.firelounge/Users" + `/${uname}.json`;
 
-        let u_path = path + `/${uname}.json`;
-        let ufile = {};
+        // existing user - load their info
+        if (fs.existsSync(path)) {
+            let rawdata = fs.readFileSync(path);
+            let data = JSON.parse(rawdata);
 
-        // first time user
-        if (! fs.existsSync(u_path)) {
-            ufile.uname = uname;
+            if (data.activeProject === undefined) {
+                reject("User file corrupted - active project information not found");
+            }
+            else if (data.projects === undefined) {
+                reject("User file corrupted  - project information not found");
+            }
+            else {
+                resolve(data);
+            }
         }
-        // existing user
+        // new user - resolve with object with empty fields
         else {
-            let rawdata = fs.readFileSync(u_path);
-            ufile = JSON.parse(rawdata);
-            console.log(ufile);
+            resolve({act_proj: "", projects: {}});
         }
     });
+}
+
+/**
+ * Returns an object with all necessary fields to create a new User object.
+ * @returns An object of the form:
+ *          {uname: String,
+ *           act_proj:String,
+ *           projects:{}}
+ */
+export default async function user_info() {
+    try {
+        let uname = await get_uname();
+        let ufile = await get_ufile_info(uname);
+        let user = {};
+
+        // log username
+        user.uname = uname;
+        user.act_proj = ufile.activeProject;
+        user.projects = ufile.projects;
+
+        return user;
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
