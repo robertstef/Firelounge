@@ -16,16 +16,14 @@ ipcMain.on('get-path', (event, arg) => {
                     //confirm filepath has .firebaserc file
                     const validDir = require('./scripts/validDir.js');
                     validDir.validDir_function(res.filePaths[0]).then((output) => {
-                        //if valid - send back path
-                        if( output === 1 ) {
                             event.reply('get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
-                        } else {
+                        }).catch(err => {
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Invalid");
                             ipcMain.removeAllListeners('get-path-reply')
-                        }
-                    }) ;
+
+                        });
                 }
             }
         );
