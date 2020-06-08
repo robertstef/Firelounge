@@ -14,6 +14,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import StateTest from './ContextStateTest';
 import DispTest from './ContextDispTest';
+import {UserDispatch} from "../context/userContext";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -104,7 +105,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-//export default function MainNav(props) {
 export default function MainNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
