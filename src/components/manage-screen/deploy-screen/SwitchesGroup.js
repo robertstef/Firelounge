@@ -4,7 +4,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-import {UserState} from '../../context/userContext';
+import {UserState} from '../../../context/userContext';
 
 const axios = require('axios');
 
