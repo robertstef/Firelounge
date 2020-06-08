@@ -72,7 +72,7 @@ function parse_projlist(projlist) {
  * Returns a parsed list of the users firebase projects of the form
  * [{name:String, id:String, num:String}, ...]
  */
-export default async function fb_projlist() {
+let fb_projlist = async function() {
     try {
         let raw_list = await get_projects();
         return await parse_projlist(raw_list);
@@ -80,4 +80,7 @@ export default async function fb_projlist() {
     catch(err) {
         console.log(err);
     }
-}
+};
+
+/* Export fb_projlist() */
+exports.fb_projlist = fb_projlist;

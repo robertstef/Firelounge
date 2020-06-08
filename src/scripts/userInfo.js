@@ -75,7 +75,7 @@ function get_ufile_info(uname) {
  *           act_proj:String,
  *           projects:{}}
  */
-export default async function user_info() {
+let user_info = async function() {
     try {
         let uname = await get_uname();
         let ufile = await get_ufile_info(uname);
@@ -91,5 +91,7 @@ export default async function user_info() {
     catch (err) {
         console.log(err);
     }
-}
+};
 
+/* Export user_info() */
+exports.user_info = user_info;
