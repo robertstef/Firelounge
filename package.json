@@ -28,6 +28,7 @@
     "prop-types": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-object-tree": "^1.0.1",
     "react-router-dom": "latest",
     "react-scripts": "3.4.1"
   },
