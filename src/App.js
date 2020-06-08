@@ -99,7 +99,26 @@ app.post("/deployProject", (req, res) => {
     })
 });
 
+/*
+Endpoint for application intialization. Loads the
+current users information.
 
+Request body:
+let body = {
+    uname:String
+    projects:{}
+    fb_projs:{}
+    active_proj:String}
+ */
+const initModule = require('./scripts/init');
+app.post('/init', (req, res) => {
+    initModule.init(req.body).then((output) => {
+        res.status(200).send(output);
+    }).catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+});
 
 app.listen(5000, () => log.info('App listening on port 5000'));
 
