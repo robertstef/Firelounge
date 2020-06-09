@@ -8,7 +8,7 @@ export default class User {
      *               {id: {name:"", path: "", features: ["", ...]}, ...,}
      * @param fb_projs: users current firebase projects in an
      *                  object of the form:
-     *                  [{id:"", name:"", number:""}, ...,]
+     *                  [{id:"", name:"", num:""}, ...,]
      * @param act_proj: current active project - will default to empty
      *                  string if no argument provided
      */
@@ -96,7 +96,7 @@ export default class User {
         }
     }
 
-
+    
     /* PRIVATE METHODS */
 
     /**
