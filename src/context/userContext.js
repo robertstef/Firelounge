@@ -6,7 +6,6 @@ const userStateContext = React.createContext();
 const userDispatchContext = React.createContext();
 
 /* Test user data */
-/*
 let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
                 321:{name:"test_proj", path:"~/src/files", features:["H"]},
                 456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}};
@@ -16,7 +15,6 @@ let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
                    {name: "last_proj", id: "list_proj_id", num: "23048"}];
 
 let test_user = new User("Robert", projects, fb_projects, "123");
- */
 
 /**
  * A reducer function for use by UserProvider to carry out
@@ -44,6 +42,7 @@ function UserReducer(state, action) {
         case 'createUser':
             let params = action.args;
             let new_user = new User(params.uname, params.projs, params.fb_projs, params.act_proj);
+            console.log(new_user);
             return {user: new_user};
         case 'setActive':
             state.user.setActive(action.args);
@@ -64,7 +63,7 @@ function UserReducer(state, action) {
  * All components nested within UserProvider will be able to
  * access the UserState and UserDispatch.
  */
-async function UserProvider({children}) {
+function UserProvider({children}) {
 
     const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
     return (
