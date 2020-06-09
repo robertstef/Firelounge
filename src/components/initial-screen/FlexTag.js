@@ -3,6 +3,8 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CallMissedOutgoingRoundedIcon from '@material-ui/icons/CallMissedOutgoingRounded';
 import {makeStyles} from "@material-ui/core/styles";
+import {UserDispatch} from "../../context/userContext";
+
 const axios = require('axios');
 
 const hoveredTextColor = '#000000';
@@ -40,23 +42,21 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
-
-function completeSignIn(){
-    // this is a test request to run a script
-    //should return 'hello world' as response data
-    axios.get("http://localhost:5000/test")
-            .then((response) => {
-                //set username
-                // var username = response.data;
-                //for dev purposes
-                var username = 'testusername'
-
-                //switch screen to project window with username as param
-                window.location.href="#/project?username=" + username
-            }).catch(error => {
-                console.log(error)
-        })
+/**
+ * Calls the init endpoint to initialize a new user
+ * for the current session.
+ *
+ * @param dispatch: Context dispatch to create user
+ */
+async function completeSignIn(dispatch) {
+    try {
+       let resp = await axios.get("http://localhost:5000/init");
+       await dispatch({type: 'createUser', args: resp.data});
+       window.location.href = "#/project";
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
 
 
@@ -64,9 +64,10 @@ function completeSignIn(){
 
 function FlexTag(props) {
     const classes = useStyles();
+    const dispatch = UserDispatch();
     return(
         <Box className={classes.parent}>
-            <Button classes={{ root: classes.root, label: classes.label}} onClick={() => completeSignIn()}>
+            <Button classes={{ root: classes.root, label: classes.label}} onClick={() => completeSignIn(dispatch)}>
                 {props.title}
                 <CallMissedOutgoingRoundedIcon className={classes.icon} />
             </Button>
