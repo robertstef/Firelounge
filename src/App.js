@@ -111,8 +111,9 @@ let body = {
     active_proj:String}
  */
 const initModule = require('./scripts/init');
-app.post('/init', (req, res) => {
-    initModule.init(req.body).then((output) => {
+app.get('/init', (req, res) => {
+    initModule.init_function().then((output) => {
+        console.log(output);
         res.status(200).send(output);
     }).catch(err => {
         console.log(err);
@@ -121,22 +122,3 @@ app.post('/init', (req, res) => {
 });
 
 app.listen(5000, () => log.info('App listening on port 5000'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
