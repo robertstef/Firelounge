@@ -23,6 +23,8 @@ export default class DbScreenCard extends Component {
 
     render() {
         var onEdit = true
+        var onAdd = true
+
         return(
             <div style={{height: '100%', width: '100%'}}>
                 <Card style={{height: '87vh', width: '100%', borderRadius: '5px'}}>
@@ -38,6 +40,14 @@ export default class DbScreenCard extends Component {
                               }
                             : false
                         }
+                    onAdd={
+                        onAdd
+                            ? result => {
+                                  console.log(result)
+                                  this.setState({ src: result.updated_src })
+                              }
+                            : false
+                    }
                 />
                 </Card>
             </div>
@@ -45,5 +55,41 @@ export default class DbScreenCard extends Component {
     }
 }
 
-
-
+/*Sampe usge of ReactJson View */
+// <ReactJson
+//                     name={false}
+//                     collapsed={collapsed}
+//                     style={style}
+//                     theme={theme}
+//                     src={src}
+//                     collapseStringsAfterLength={collapseStringsAfter}
+//                     onEdit={
+//                         onEdit
+//                             ? e => {
+//                                   console.log(e)
+//                                   this.setState({ src: e.updated_src })
+//                               }
+//                             : false
+//                     }
+//                     onDelete={
+//                         onDelete
+//                             ? e => {
+//                                   console.log(e)
+//                                   this.setState({ src: e.updated_src })
+//                               }
+//                             : false
+//                     }
+//                     onAdd={
+//                         onAdd
+//                             ? e => {
+//                                   console.log(e)
+//                                   this.setState({ src: e.updated_src })
+//                               }
+//                             : false
+//                     }
+//                     displayObjectSize={displayObjectSize}
+//                     enableClipboard={enableClipboard}
+//                     indentWidth={indentWidth}
+//                     displayDataTypes={displayDataTypes}
+//                     iconStyle={iconStyle}
+//                 />
