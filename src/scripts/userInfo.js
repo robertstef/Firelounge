@@ -51,10 +51,10 @@ function get_ufile_info(uname) {
             let rawdata = fs.readFileSync(path);
             let data = JSON.parse(rawdata);
 
-            if (data.activeProject === undefined) {
+            if (data.act_proj === undefined) {
                 reject("User file corrupted - active project information not found");
             }
-            else if (data.projects === undefined) {
+            else if (data.projs === undefined) {
                 reject("User file corrupted  - project information not found");
             }
             else {
@@ -63,7 +63,7 @@ function get_ufile_info(uname) {
         }
         // new user - resolve with object with empty fields
         else {
-            resolve({act_proj: "", projects: {}});
+            resolve({act_proj: "", projs: {}});
         }
     });
 }
@@ -83,13 +83,13 @@ let user_info = async function() {
 
         // log username
         user.uname = uname;
-        user.act_proj = ufile.activeProject;
-        user.projects = ufile.projects;
+        user.act_proj = ufile.act_proj;
+        user.projs = ufile.projs;
 
         return user;
     }
     catch (err) {
-        console.log(err);
+        throw new Error(err);
     }
 };
 
