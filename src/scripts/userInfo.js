@@ -2,6 +2,7 @@
 
 const os = require('os');
 const fs = require('fs');
+const path = require('path');
 const { exec } = require('child_process');
 
 /**
@@ -44,11 +45,11 @@ function get_ufile_info(uname) {
     return new Promise((resolve, reject) => {
 
         // path to users firelounge file
-        let path = os.userInfo().homedir + "/.firelounge/Users" + `/${uname}.json`;
+        let ufile_path = path.join(__dirname, '../Users/' + uname + '.json');
 
         // existing user - load their info
-        if (fs.existsSync(path)) {
-            let rawdata = fs.readFileSync(path);
+        if (fs.existsSync(ufile_path)) {
+            let rawdata = fs.readFileSync(ufile_path);
             let data = JSON.parse(rawdata);
 
             if (data.act_proj === undefined) {
