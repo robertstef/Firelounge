@@ -12,7 +12,6 @@ export default function SwitchesGroup() {
 
   const {user} = UserState();
 
-
   const [state, setState] = React.useState({
     all: false,
     hosting: false,
