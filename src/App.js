@@ -17,6 +17,7 @@ app.use(cors);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 /*
@@ -102,19 +103,17 @@ app.post("/deployProject", (req, res) => {
 
 
 
-app.get("/initDB", (req, res) => {
-        // Fetch the service account key JSON file contents
+
+// Fetch the service account key JSON file contents
     var serviceAccount = require('./cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json'); 
-
     var admin = require("firebase-admin");
-
-    
-    // Initialize the app with a service account, granting admin privileges
+// Initialize the app with a service account, granting admin privileges
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
       databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
     });
 
+app.get("/initDB", (req, res) => {
     // As an admin, the app has access to read and write all data, regardless of Security Rules
     var db = admin.database();
     var ref = db.ref();
@@ -125,7 +124,6 @@ app.get("/initDB", (req, res) => {
 
     
 });
-
 
 
 app.listen(5000, () => log.info('App listening on port 5000'));
