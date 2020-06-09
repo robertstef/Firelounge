@@ -14,7 +14,6 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import StateTest from './ContextStateTest';
 import DispTest from './ContextDispTest';
-import {UserDispatch} from "../context/userContext";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
