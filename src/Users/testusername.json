@@ -1,6 +1,6 @@
 {
-	"activeProject": "projectid1",
-	"projects": {
+	"act_proj": "projectid1",
+	"projs": {
 		"projectid1": {
 			"name": "project1",
 			"path": "~/Documents",
