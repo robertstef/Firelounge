@@ -78,7 +78,7 @@ let fb_projlist = async function() {
         return await parse_projlist(raw_list);
     }
     catch(err) {
-        console.log(err);
+        throw new Error(err);
     }
 };
 
