@@ -20,12 +20,12 @@ function Routes() {
 	return (
 		<HashRouter>
 			<MuiThemeProvider theme={theme}>
-			 	<Switch>
+				<Switch>
 					<UserProvider>
 						<Route path="/project" component={Main} />
 						<Route exact path="/" component={Initial}/>
 					</UserProvider>
-			  	</Switch>
+				</Switch>
 		  	</MuiThemeProvider>
 		</HashRouter>
 	)

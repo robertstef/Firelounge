@@ -7,7 +7,7 @@ const fb = require('./fbProjects');
  * @type {{init: module.exports.init}}
  */
 module.exports = {
-    init: async function () {
+    init_function: async function () {
         try {
             let user = await ui.user_info();
             user.fb_projs = await fb.fb_projlist();
