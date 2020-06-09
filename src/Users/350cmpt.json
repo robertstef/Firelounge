@@ -1,0 +1,13 @@
+{
+  "act_proj": "benstestproject",
+  "projs": {
+    "bensnewproject": {
+      "name": "bensnewproject",
+      "features": ["hosting", "database"]
+    },
+    "benstestproject": {
+      "name": "benstestproject",
+      "features": ["hosting"]
+    }
+  }
+}
