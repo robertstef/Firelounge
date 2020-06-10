@@ -6,11 +6,9 @@ const userStateContext = React.createContext();
 const userDispatchContext = React.createContext();
 
 /* Test user data */
-
 let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
                 321:{name:"test_proj", path:"~/src/files", features:["H"]},
-                456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}
-            }
+                456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}};
 
 let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
                    {name: "new_proj", id: "new_proj_id", num: "5678"},
@@ -25,18 +23,27 @@ let test_user = new User("Robert", projects, fb_projects, "123");
  * @param state: the current context state
  * @param action: object specifying the operation to be carried out
  *                on the current User context. Must be of the form:
- *                {type: "", args: ""}
+ *                {type: String, args: {}}
  *
  *                type must be set to on of:
- *                setActive, addProj, removeProj
+ *                createUser, setActive, addProj, removeProj
  *
- *                args must be of the form:
- *                {name: "", path: "" , id: ""}
+ *                args format:
+ *                createUser: {uname: String,
+ *                             projs: {id:{name:"", path:"", features:["", ...]}, ...},
+ *                             fb_projs: [{name: "", number:"", id:""}, ...],
+ *                             act_proj: String}
+ *                all other cases: String
  *
  * @returns {user: (*|User|number|string)}: updated User state
  */
 function UserReducer(state, action) {
     switch(action.type) {
+        case 'createUser':
+            let params = action.args;
+            let new_user = new User(params.uname, params.projs, params.fb_projs, params.act_proj);
+            console.log(new_user);
+            return {user: new_user};
         case 'setActive':
             state.user.setActive(action.args);
             return {user: state.user};
@@ -57,7 +64,8 @@ function UserReducer(state, action) {
  * access the UserState and UserDispatch.
  */
 function UserProvider({children}) {
-    const [state, dispatch] = React.useReducer(UserReducer, {user: test_user});
+
+    const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
     return (
         <userStateContext.Provider value={state}>
             <userDispatchContext.Provider value={dispatch}>

@@ -1,56 +1,20 @@
-// Initializes the application after the user logs into firebase
-
-const os = require('os');
-const fs = require('fs');
-const { exec } = require('child_process');
+const ui = require('./userInfo');
+const fb = require('./fbProjects');
 
 /**
- * Obtains the necessary credentials to access to current
- * users firelounge user file. Reading/writing to the file
- * will be specified in the callback function.
- *
- * @param callback function to read/write to the users file
+ * Construct a user object with the information for the
+ * current user.
+ * @type {{init: module.exports.init}}
  */
-function access_userfile(callback) {
-
-    // get path to firelounge directory
-    let path = os.userInfo().homedir + "/.firelounge/Users";
-
-    // get username
-    exec("firebase login --interactive", (error, stdout, stderr) => {
-
-        if (error) { return error.message};
-        //if (stderr) { return stderr };
-
-        let res = stdout.split(" ");
-        res = res[res.length - 1];
-
-        let uname = res.split("@");
-        uname = uname[0];
-        uname = uname.slice(4);
-
-        callback(path, uname);
-    });
-}
-
-/**
- * Reads in the user file from ~/.firelounge/Users if a
- * repeat user, or creates the the userfile if a first
- * time user.
- */
-function ufile_init() {
-
-    // Gets users info and access their user file
-    access_userfile((path, uname) => {
-
-        let u_path = path + `/${uname}.json`;
-
-        // first time user
-        if (! fs.existsSync(u_path)) {
-            const content = {uname: uname};
-            fs.writeFileSync(u_path, JSON.stringify(content), (err) => {
-                if (err) {console.log(err.message)}
-            })
+module.exports = {
+    init_function: async function () {
+        try {
+            let user = await ui.user_info();
+            user.fb_projs = await fb.fb_projlist();
+            return user;
         }
-    });
-}
+        catch (err) {
+            return err;
+        }
+    }
+};

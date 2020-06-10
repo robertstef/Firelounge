@@ -3,16 +3,23 @@ import {UserDispatch} from "../context/userContext";
 
 export default function DispTest() {
     const dispatch = UserDispatch();
+    const info = {uname:'robertstefanyshin',
+                  act_proj: 'projectid1',
+                  projs: {projectid1: {name: "project1", path: "~/Documents", features: ["H"]},
+                          projectid2: {name: "project2", path: "~/Documents", features: ["H"]}},
+                  fb_projs: [{name: 'roberttestproj', id: 'roberttestproj', num: '74287604654'}]};
+
 
     return (
         <div>
 
-            { /* EG 1: Display current active proj and change active proj*/}
+            { /* EG 1: Display current active proj and change active proj
 
             <button onClick={() => dispatch({type: 'setActive',
                                             args:"321"})}>
                 Set Active
             </button>
+            */}
 
 
             {/* EG 2: List projects and add project
@@ -29,6 +36,10 @@ export default function DispTest() {
                 Remove Project
             </button>
             */}
+
+            <button onClick={() => dispatch({type: 'createUser', args: info})}>
+                Change User
+            </button>
 
 
         </div>

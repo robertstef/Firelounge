@@ -101,7 +101,27 @@ app.post("/deployProject", (req, res) => {
     })
 });
 
+/*
+Endpoint for application intialization. Loads the
+current users information.
 
+Request body:
+let body = {
+    uname:String
+    projects:{}
+    fb_projs:{}
+    active_proj:String}
+ */
+const initModule = require('./scripts/init');
+app.get('/init', (req, res) => {
+    initModule.init_function().then((output) => {
+        console.log(output);
+        res.status(200).send(output);
+    }).catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+});
 
 
 // Fetch the service account key JSON file contents
@@ -127,22 +147,3 @@ app.get("/initDB", (req, res) => {
 
 
 app.listen(5000, () => log.info('App listening on port 5000'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

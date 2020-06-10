@@ -104,7 +104,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-//export default function MainNav(props) {
 export default function MainNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
