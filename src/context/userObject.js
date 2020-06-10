@@ -96,7 +96,45 @@ export default class User {
         }
     }
 
-    
+    /**
+     * Returns the array of firebase projects that have not been added
+     * to firelounge.
+     * @returns {Array}: [{name:String, id: String, num: String}, ...]
+     */
+    firebase_projs() {
+        let projects = [];
+        for (let p of this._fb_projs) {
+            if (! this._projExists(p.id)) { projects.push(p) }
+        }
+        return projects;
+    }
+
+    /**
+     * Returns an array of firebase projects that have been added to firelounge.
+     * @returns {Array}: [{id: String, name: String, path: String, features: [String]}
+     */
+    firelounge_projs() {
+        let projects = [];
+        for (let p of this._fb_projs) {
+            let res = {};
+            let proj = this._projs.id;
+
+            if (this._projExists(p.id)) {
+                let res = {};
+                let proj = this._projs[p.id];
+
+                res.id = p.id;
+                res.name = proj.name;
+                res.path = proj.path;
+                res.features = proj.features;
+
+                projects.push(res)
+            }
+
+        }
+        return projects;
+    }
+
     /* PRIVATE METHODS */
 
     /**
@@ -106,7 +144,7 @@ export default class User {
      * @param b: second object to compare
      * @returns {boolean}: true if equal, false if not
      */
-    static _isEqual(a, b) {
+    static _projsEqual(a, b) {
         return ((a.name === b.name) && (a.path === b.path) && (a.features === b.features));
     }
 
@@ -127,9 +165,32 @@ export default class User {
          else {
              const projs = Object.this._projs.keys();
              for (let key of projs) {
-                 if (User._isEqual(comp, this._projs[key])) { return true }
+                 if (User._projsEqual(comp, this._projs[key])) { return true }
              }
              return false;
          }
     }
+
+    /**
+     * Checks if the project with the given id exists in firelounge.
+     * @param id: id of the project we are checking
+     * @returns {boolean}: true if found, false if not
+     */
+    _projExists(id) {
+         return this._projs.hasOwnProperty(id);
+    }
 }
+
+/* Some simple test data */
+/*
+let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
+    456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}};
+
+let fb_projects = [{name: "proj1", id: "123", num: "1234"},
+    {name: "test_proj", id: "321", num: "5678"},
+    {name: "new_proj", id: "456", num: "23048"}];
+
+let test_user = new User("Robert", projects, fb_projects, "123");
+
+console.log(test_user.firelounge_projs());
+ */
