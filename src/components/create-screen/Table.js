@@ -14,6 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import AddProjButton from './AddProjButton'
+import {UserDispatch, UserState} from '../../context/userContext';
 
 
 // Component for individual table cell
@@ -42,11 +43,13 @@ function createData(pName, pId, pNumber) {
     return {pName, pId, pNumber};
 }
 
+/*
 const rows = [
     createData('testProj', 'testProj', '1234'),
     createData('opench', 'openchProj', '2340589'),
     createData('robert', 'Robert', '123048')
 ];
+ */
 
 const useStyles = makeStyles({
     table: {
@@ -57,6 +60,17 @@ const useStyles = makeStyles({
 export default function CustomizedTable() {
 
     const classes = useStyles();
+    const {user} = UserState();
+    let projects = user.firebase_projs;
+
+    /* Create rows of firebase projects for table */
+    let rows = [];
+    for (let p of projects) {
+        let r = createData(p.name, p.id, p.num);
+        rows.push(r);
+    }
+
+    /* TODO need to handle case when user has no firebase projects */
 
     return (
         <TableContainer component={Paper}>
