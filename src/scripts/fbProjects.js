@@ -54,7 +54,7 @@ function parse_projlist(projlist) {
         // for creating a User object
         let proj_objs = [];
         for (let p of projs_revised) {
-            if (p.length !== 3 ) { reject("Project list does not contain correct number of elements")}
+            if (p.length !== 4 ) { reject("Project list does not contain correct number of elements")}
             let obj = {};
             for (let i = 0; i < p.length; i++) {
                 if (i === 0) { obj.name = p[i]}
