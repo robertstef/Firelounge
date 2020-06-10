@@ -40,6 +40,44 @@ export default class User {
     }
 
     /**
+     * Returns the array of firebase projects that have not been added
+     * to firelounge.
+     * @returns {Array}: [{name:String, id: String, num: String}, ...]
+     */
+    get firebase_projs() {
+        let projects = [];
+        for (let p of this._fb_projs) {
+            if (! this._projExists(p.id)) { projects.push(p) }
+        }
+        return projects;
+    }
+
+    /**
+     * Returns an array of firebase projects that have been added to firelounge.
+     * @returns {Array}: [{id: String, name: String, path: String, features: [String]}
+     */
+    get firelounge_projs() {
+        let projects = [];
+        for (let p of this._fb_projs) {
+            let res = {};
+            let proj = this._projs.id;
+
+            if (this._projExists(p.id)) {
+                let res = {};
+                let proj = this._projs[p.id];
+
+                res.id = p.id;
+                res.name = proj.name;
+                res.path = proj.path;
+                res.features = proj.features;
+
+                projects.push(res)
+            }
+
+        }
+        return projects;
+    }
+    /**
      * Sets the users current active project.
      *
      * @param new_active: String representing the project ID
@@ -96,44 +134,6 @@ export default class User {
         }
     }
 
-    /**
-     * Returns the array of firebase projects that have not been added
-     * to firelounge.
-     * @returns {Array}: [{name:String, id: String, num: String}, ...]
-     */
-    firebase_projs() {
-        let projects = [];
-        for (let p of this._fb_projs) {
-            if (! this._projExists(p.id)) { projects.push(p) }
-        }
-        return projects;
-    }
-
-    /**
-     * Returns an array of firebase projects that have been added to firelounge.
-     * @returns {Array}: [{id: String, name: String, path: String, features: [String]}
-     */
-    firelounge_projs() {
-        let projects = [];
-        for (let p of this._fb_projs) {
-            let res = {};
-            let proj = this._projs.id;
-
-            if (this._projExists(p.id)) {
-                let res = {};
-                let proj = this._projs[p.id];
-
-                res.id = p.id;
-                res.name = proj.name;
-                res.path = proj.path;
-                res.features = proj.features;
-
-                projects.push(res)
-            }
-
-        }
-        return projects;
-    }
 
     /* PRIVATE METHODS */
 
