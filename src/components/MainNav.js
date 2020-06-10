@@ -78,7 +78,8 @@ const useStyles = makeStyles((theme) => ({
     left: '0px',
     height: '100%',
     width: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginTop: '-8px'
   },
   appbar: {
     height: '100%',

@@ -1,1 +1,14 @@
-{"act_proj":"benstestproject","projs":{"bensnewproject":{"name":"bensnewproject","features":["hosting","database"]},"benstestproject":{"name":"benstestproject","features":["hosting"]}}}
+{
+  "act_proj":"benstestproject",
+  "projs":{
+    "bensnewproject":{
+      "name":"bensnewproject",
+      "features":[
+        "hosting","database"],
+      "path":"/Users/jacksonschuler/FL_testdir/bensnewproject"},
+    "benstestproject":{
+      "name":"benstestproject",
+      "features":["hosting"],
+      "path":"/Users/jacksonschuler/FL_testdir/benstestproject"}
+  }
+}

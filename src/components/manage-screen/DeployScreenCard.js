@@ -10,9 +10,11 @@ const useStyles = makeStyles((theme) => ({
         width: '100%'
     },
     card: {
-        height: '87vh',
+        height: '83vh',
         width: '100%',
         borderRadius: '5px',
+        marginTop: -25,
+        marginLeft: -3,
     },
     cardBox: {
         marginLeft:'50px',

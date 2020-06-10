@@ -1,4 +1,3 @@
-
 const {exec} = require('child_process');
 
 
@@ -32,9 +31,10 @@ const {exec} = require('child_process');
 
  */
 
-module.exports = {
-    newProjectInit_function: function(requestBody) {
-        const filePath = requestBody.path;
+// module.exports = {
+//     newProjectInit_function: function(requestBody) {
+//         const filePath = requestBody.path;
+//
+//     }
+// };
 
-    }
-};
