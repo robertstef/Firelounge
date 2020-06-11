@@ -8,7 +8,6 @@ let dialogShown = false; // flag to represent whether the dialog is open or clos
 ipcMain.on('get-path', (event, arg) => {
     if (dialogShown === false) {
         dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
-                console.log('here')
                 if (res.canceled === true || res.filePaths.length > 0) {
                     dialogShown = false;
                     //confirm filepath has .firebaserc file

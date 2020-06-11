@@ -4,8 +4,8 @@ import {UserState} from "../context/userContext";
 export default function StateTest() {
 
     const {user} = UserState();
-    const projs = user.projs;
-    let items = [];
+    // const projs = user.projs;
+    // let items = [];
 
     /* for EG2/3 */
     /*

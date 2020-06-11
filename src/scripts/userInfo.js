@@ -7,7 +7,6 @@
  */
 function get_uname() {
     // Initializes the application after the user logs into firebase
-    const fs = window.require('fs');
     const { exec } = window.require('child_process');
 
 

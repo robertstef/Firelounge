@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component} from 'react'
 import ReactJson from 'react-json-view';
 
 const fs = window.require('fs');
@@ -27,7 +27,6 @@ export default class DbObjectDisplay extends Component {
             this.setState({src: snapshot.val()})
         });
     };
-
 
     render() {
         var onEdit = true
