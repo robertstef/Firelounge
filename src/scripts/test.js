@@ -1,7 +1,7 @@
-const { exec } = require('child_process');
-
 module.exports = {
     test_function: function () {
+        const { exec } = window.require('child_process');
+        
         return new Promise((resolve, reject) => {
             
             const child_process = exec('pwd');

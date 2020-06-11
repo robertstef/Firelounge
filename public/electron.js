@@ -28,10 +28,11 @@ ipcMain.on('get-path', (event, arg) => {
     }
 });
 
+let win;
 
 function createWindow () {
     // Create the browser window.
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 1000,
         height: 600,
         webPreferences: {

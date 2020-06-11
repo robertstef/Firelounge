@@ -1,7 +1,6 @@
-const fs = require('fs');
-
 module.exports = {
     validDir_function: function (path) {
+        const fs = require('fs');
 
         return new Promise((resolve, reject) => {
             if(path === '' || path === undefined) {

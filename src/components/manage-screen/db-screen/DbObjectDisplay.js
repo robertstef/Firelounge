@@ -1,18 +1,17 @@
 import React, { Component} from 'react'
 import ReactJson from 'react-json-view';
 
-const fs = window.require('fs');
 var admin = window.require("firebase-admin");
 
 // Fetch the service account key JSON file contents
-let rawdata = fs.readFileSync('./src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json');
-let serviceAccount = JSON.parse(rawdata);
+let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json');
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
 });
+
 
 export default class DbObjectDisplay extends Component {
     state={

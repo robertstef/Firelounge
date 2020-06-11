@@ -1,7 +1,7 @@
-const { exec } = window.require('child_process');
-
 module.exports = {
     login_function: function () {
+        const { exec } = window.require('child_process');
+        
         return new Promise((resolve, reject) => {
             var response;
             const child_process = exec('firebase login --interactive --reauth');

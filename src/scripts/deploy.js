@@ -7,11 +7,12 @@
 /*
  */
 
-const {exec} = window.require('child_process');
+
 
 module.exports = {
     deployProject_function: function(requestBody) {
-
+        const {exec} = window.require('child_process');
+        
         //var user_json = require('../Users/' + username + '.json');
 
         var user_json = require("../Users/testusername.json"); // just use the testing json for now

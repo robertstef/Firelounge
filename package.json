@@ -4,8 +4,7 @@
   "description": "Opench Firebase Overlay",
   "author": "Opench Incorporated.",
   "build": {
-    "appId": "opench.firebase",
-    "extends": null
+    "appId": "opench.firebase"
   },
   "homepage": "./",
   "main": "public/electron.js",
