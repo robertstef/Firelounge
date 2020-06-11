@@ -5,8 +5,6 @@ import CallMissedOutgoingRoundedIcon from '@material-ui/icons/CallMissedOutgoing
 import {makeStyles} from "@material-ui/core/styles";
 import {UserDispatch} from "../../context/userContext";
 
-const axios = require('axios');
-
 const hoveredTextColor = '#000000';
 
 
@@ -49,14 +47,15 @@ const useStyles = makeStyles(theme => ({
  * @param dispatch: Context dispatch to create user
  */
 async function completeSignIn(dispatch) {
-    try {
-       let resp = await axios.get("http://localhost:5000/init");
-       await dispatch({type: 'createUser', args: resp.data});
-       window.location.href = "#/project";
-    }
-    catch(err) {
+    const initModule = require('../../scripts/init');
+    
+    initModule.init_function().then(async (output) => {
+        // console.log(output);
+        await dispatch({type: 'createUser', args: output});
+        window.location.href = "#/project"; 
+    }).catch(err => {
         console.log(err);
-    }
+    })
 }
 
 

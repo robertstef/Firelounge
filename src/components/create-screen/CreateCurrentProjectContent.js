@@ -3,7 +3,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import GetPathButton from "./GetPathButton";
-const axios = require('axios');
 
 
 class CreateCurrentProjectContent extends Component{
@@ -29,14 +28,13 @@ class CreateCurrentProjectContent extends Component{
             'username': 'testusername'
         }
         
-        //call script to add project
-        axios.post("http://localhost:5000/insertProject", body)
-            .then((response) => {
-                    // do something here with result lol
-                    console.log('Success!')
-            }).catch(error => {
-                console.error(error.response)
-        })
+        const insertProject_module = require('../../scripts/insertProject.js')
+        
+        insertProject_module.insertProject_function(body).then((output) => {
+                console.log('Success!')
+            }).catch(err => {
+                console.log(err)
+            });
     }
 
     /* Used to get the input from the textfield for the project name */

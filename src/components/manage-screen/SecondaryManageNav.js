@@ -9,7 +9,8 @@ import Box from '@material-ui/core/Box';
 import GroupIcon from '@material-ui/icons/Group';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import StorageIcon from '@material-ui/icons/Storage';
-import DeployScreen from './DeployScreen.js'
+import DeployScreen from './deploy-screen/DeployScreen.js'
+import DbScreen from './db-screen/DbScreen.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -139,7 +140,7 @@ export default function SecondaryManageNav() {
           <DeployScreen />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Database Page
+          <DbScreen />
         </TabPanel>
         <TabPanel value={value} index={2}>
           Users Page

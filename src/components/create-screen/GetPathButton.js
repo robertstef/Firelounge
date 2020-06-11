@@ -1,9 +1,10 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-const {ipcRenderer} = window.require('electron');
 
 
 export default function GetPathButton(props) {
+    const {ipcRenderer} = window.require('electron');
+    
     const [filePath, setFilePath ] = React.useState('');
 
     /* Displays the filepath in the React button */
@@ -26,7 +27,7 @@ export default function GetPathButton(props) {
                 //received valid path
                 setFilePath(arg);
                 //send file path up to CreateCurrentProjectContent via callback function
-                props.path(arg)
+                
             }
         });
     };

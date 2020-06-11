@@ -4,9 +4,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-import {UserState} from '../../context/userContext';
-
-const axios = require('axios');
+import {UserState} from '../../../context/userContext';
 
 export default function SwitchesGroup() {
 
@@ -52,10 +50,14 @@ export default function SwitchesGroup() {
     setDisplayState({
       state
     });
-    // need to send an axios request here with the state state.state
-    axios.post("http://localhost:5000/deployProject", state.state).then(res => {
-      console.log(res.data) // log the data for the sake of viewing the result
+
+    const deployModule = require('../../../scripts/deploy');
+    deployModule.deployProject_function(state.state).then((output) => {
+        console.log(output) // log the data for the sake of viewing the result
+    }).catch(err => {
+        console.log(err);
     })
+
   };
 
   return (

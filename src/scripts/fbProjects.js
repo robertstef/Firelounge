@@ -1,4 +1,3 @@
-const { exec } = require('child_process');
 
 /**
  * Calls the firebase projects:list to obtain a list
@@ -8,6 +7,7 @@ const { exec } = require('child_process');
  *                  command after execution.
  */
 function get_projects() {
+    const { exec } = window.require('child_process');
     return new Promise((resolve, reject) => {
         exec("firebase projects:list", (error, stdout, stderr) => {
             if (error) {

@@ -1,5 +1,4 @@
-var fs = require('fs');
-const path = require('path');
+
 
 /*
 Endpoint used to insert a project into the users .json file
@@ -12,6 +11,9 @@ Returns status 200 and project id on success - 400 on fail
 */
 module.exports = {
     insertProject_function: function (requestBody) {
+    	var fs = window.require('fs');
+		const path = window.require('path');
+
         var username = requestBody.username;
         let proj_id;
         let proj_name;
