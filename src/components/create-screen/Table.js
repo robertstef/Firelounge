@@ -39,8 +39,16 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 
-function createData(pName, pId, pNumber) {
-    return {pName, pId, pNumber};
+/**
+ * Creates and object to be used as data for the
+ * table row.
+ * @param name: String - project name
+ * @param id: String - project id
+ * @param num: String - project number
+ * @returns {{num: *, name: *, id: *}}
+ */
+function createData(name, id, num) {
+    return {name, id, num};
 }
 
 /*
@@ -91,7 +99,7 @@ export default function CustomizedTable() {
                             </StyledTableCell>
                             <StyledTableCell align='center'>{row.pId}</StyledTableCell>
                             <StyledTableCell align='center'>{row.pNumber}</StyledTableCell>
-                            <StyledTableCell align='center'><AddProjButton/></StyledTableCell>
+                            <StyledTableCell align='center'><AddProjButton curproj={row}/></StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
