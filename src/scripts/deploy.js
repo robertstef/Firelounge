@@ -8,16 +8,16 @@
  */
 
 
-
 module.exports = {
     deployProject_function: function(requestBody) {
+
         const {exec} = window.require('child_process');
-        
+
         //var user_json = require('../Users/' + username + '.json');
 
         var user_json = require("../Users/testusername.json"); // just use the testing json for now
 
-        var active_proj = user_json.activeProject; // get the active project of the current user
+        var active_proj = 'benstestproject'; // get the active project of the current user
 
         if (active_proj === undefined) {
             console.log("NO ACTIVE PROJECT");
@@ -26,7 +26,7 @@ module.exports = {
 
        //var active_path = user_json.projects[active_proj].path.toString(); // get the path to the active project
 
-        var active_path = '/Users/jacksonschuler/WebstormProjects/opench-firebase';
+        var active_path = "/Users/jacksonschuler/FL_testdir/benstestproject";
 
         var deploy_options = requestBody;
 
@@ -62,7 +62,7 @@ module.exports = {
                     .filter(function(k){return deploy_options[k]})
                     .map(String);
 
-                const deploy_some = exec("firebase deploy --only" + options_arr.join(','), {cwd: active_path});
+                const deploy_some = exec("firebase deploy --only " + options_arr.join(','), {cwd: active_path});
 
                 deploy_some.stdin.setEncoding('utf-8');
                 deploy_some.stdin.write('n\n');
