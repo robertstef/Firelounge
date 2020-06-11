@@ -26,38 +26,38 @@ Console logs will appear in terminal of dev server
 If using production version - use the log file created
 */
 
-const test_module = require('./scripts/test.js');
+// const test_module = require('./scripts/test.js');
 
-app.get("/test", (req, res) => {
-    test_module.test_function().then((output) => {
-        console.log(output)
-        res.status(200).send(output);
-    }).catch(err => {
-        console.log(err)
-        res.status(400).send(err);                    
-    });
-});
+// app.get("/test", (req, res) => {
+//     test_module.test_function().then((output) => {
+//         console.log(output)
+//         res.status(200).send(output);
+//     }).catch(err => {
+//         console.log(err)
+//         res.status(400).send(err);                    
+//     });
+// });
 
 /*
 End point for user login 
 currently forces a login no matter current status
 on success returns status 200 and data username
-*/
-const login_module = require('./scripts/login.js')
-app.get("/login", (req, res) => {
-    login_module.login_function().then((output) => {
-           	//parse username
-           	let uname = output.split(" ");
-        	uname = uname[uname.length - 1];
-			uname = uname.split("@");
-        	uname = uname[0];
-        	uname = uname.slice(4);
-            res.status(200).send(uname);
-    }).catch(err => {
-        console.log(err)
-        res.status(400).send(err);                    
-    });
-});
+// */
+// const login_module = require('./scripts/login.js')
+// app.get("/login", (req, res) => {
+//     login_module.login_function().then((output) => {
+//            	//parse username
+//            	let uname = output.split(" ");
+//         	uname = uname[uname.length - 1];
+// 			uname = uname.split("@");
+//         	uname = uname[0];
+//         	uname = uname.slice(4);
+//             res.status(200).send(uname);
+//     }).catch(err => {
+//         console.log(err)
+//         res.status(400).send(err);                    
+//     });
+// });
 
 
 /*
@@ -69,15 +69,15 @@ var body = {
     'username' = 'testusername'}
 Returns status 200 and project id on success - 420 on fail
 */
-const insertProject_module = require('./scripts/insertProject.js')
-app.post("/insertProject", (req, res) => {
-    insertProject_module.insertProject_function(req.body).then((output) => {
-        res.status(200).send(output);
-    }).catch(err => {
-        console.log(err)
-        res.status(400).send(err);                    
-    });
-});
+// const insertProject_module = require('./scripts/insertProject.js')
+// app.post("/insertProject", (req, res) => {
+//     insertProject_module.insertProject_function(req.body).then((output) => {
+//         res.status(200).send(output);
+//     }).catch(err => {
+//         console.log(err)
+//         res.status(400).send(err);                    
+//     });
+// });
 
 /*
 Endpoint for user project deployment
@@ -91,15 +91,15 @@ var body = {
 }
 Returns status 200 and deploy success and 400 on fail
  */
-const deployModule = require('./scripts/deploy');
-app.post("/deployProject", (req, res) => {
-    deployModule.deployProject_function(req.body).then((output) => {
-        res.status(200).send(output)
-    }).catch(err => {
-        console.log(err);
-        res.status(400).send(err);
-    })
-});
+// const deployModule = require('./scripts/deploy');
+// app.post("/deployProject", (req, res) => {
+//     deployModule.deployProject_function(req.body).then((output) => {
+//         res.status(200).send(output)
+//     }).catch(err => {
+//         console.log(err);
+//         res.status(400).send(err);
+//     })
+// });
 
 /*
 Endpoint for application intialization. Loads the
@@ -112,38 +112,38 @@ let body = {
     fb_projs:{}
     active_proj:String}
  */
-const initModule = require('./scripts/init');
-app.get('/init', (req, res) => {
-    initModule.init_function().then((output) => {
-        console.log(output);
-        res.status(200).send(output);
-    }).catch(err => {
-        console.log(err);
-        res.status(400).send(err);
-    })
-});
+// const initModule = require('./scripts/init');
+// app.get('/init', (req, res) => {
+//     initModule.init_function().then((output) => {
+//         console.log(output);
+//         res.status(200).send(output);
+//     }).catch(err => {
+//         console.log(err);
+//         res.status(400).send(err);
+//     })
+// });
 
 
-// Fetch the service account key JSON file contents
-    var serviceAccount = require('./cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json'); 
-    var admin = require("firebase-admin");
-// Initialize the app with a service account, granting admin privileges
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
-    });
+// // Fetch the service account key JSON file contents
+//     var serviceAccount = require('./cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json'); 
+//     var admin = require("firebase-admin");
+// // Initialize the app with a service account, granting admin privileges
+//     admin.initializeApp({
+//       credential: admin.credential.cert(serviceAccount),
+//       databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
+//     });
 
-app.get("/initDB", (req, res) => {
-    // As an admin, the app has access to read and write all data, regardless of Security Rules
-    var db = admin.database();
-    var ref = db.ref();
-    ref.once("value", function(snapshot) {
-      // console.log(snapshot.val());
-      res.status(200).send(snapshot.val())
-    });
+// app.get("/initDB", (req, res) => {
+//     // As an admin, the app has access to read and write all data, regardless of Security Rules
+//     var db = admin.database();
+//     var ref = db.ref();
+//     ref.once("value", function(snapshot) {
+//       // console.log(snapshot.val());
+//       res.status(200).send(snapshot.val())
+//     });
 
     
-});
+// });
 
 
 app.listen(5000, () => log.info('App listening on port 5000'));

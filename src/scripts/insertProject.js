@@ -1,5 +1,5 @@
-var fs = require('fs');
-const path = require('path');
+var fs = window.require('fs');
+const path = window.require('path');
 
 /*
 Endpoint used to insert a project into the users .json file

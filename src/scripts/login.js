@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { exec } = window.require('child_process');
 
 module.exports = {
     login_function: function () {

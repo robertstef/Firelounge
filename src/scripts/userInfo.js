@@ -1,9 +1,7 @@
 // Initializes the application after the user logs into firebase
-
-const os = require('os');
-const fs = require('fs');
-const path = require('path');
-const { exec } = require('child_process');
+const fs = window.require('fs');
+const path = window.require('path');
+const { exec } = window.require('child_process');
 
 /**
  * Obtains the current users user name. On success resolves with
@@ -45,13 +43,12 @@ function get_ufile_info(uname) {
     return new Promise((resolve, reject) => {
 
         // path to users firelounge file
-        let ufile_path = path.join(__dirname, '../Users/' + uname + '.json');
+        let ufile_path = './src/Users/' + uname + '.json';
 
         // existing user - load their info
         if (fs.existsSync(ufile_path)) {
             let rawdata = fs.readFileSync(ufile_path);
             let data = JSON.parse(rawdata);
-
             if (data.act_proj === undefined) {
                 reject("User file corrupted - active project information not found");
             }
