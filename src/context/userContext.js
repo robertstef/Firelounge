@@ -42,7 +42,6 @@ function UserReducer(state, action) {
         case 'createUser':
             let params = action.args;
             let new_user = new User(params.uname, params.projs, params.fb_projs, params.act_proj);
-            console.log(new_user);
             return {user: new_user};
         case 'setActive':
             state.user.setActive(action.args);

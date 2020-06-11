@@ -59,8 +59,6 @@ export default class User {
     get firelounge_projs() {
         let projects = [];
         for (let p of this._fb_projs) {
-            let res = {};
-            let proj = this._projs.id;
 
             if (this._projExists(p.id)) {
                 let res = {};
