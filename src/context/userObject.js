@@ -18,7 +18,7 @@ export default class User {
         this._fb_projs = fb_projs;   // firebase projects
 
         // if active project empty, set to dummy object to avoid rendering errors
-        (act_proj === "") ? this._act_proj = {name: "", path: ""} : this._act_proj = act_proj;
+        (act_proj === "") ? this._act_proj = {id: "", name: "", path: "", features:[]} : this._act_proj = act_proj;
     }
 
 
@@ -56,7 +56,13 @@ export default class User {
         if (typeof this._act_proj === 'object') {
             return this._act_proj
         } else {
-            return this._projs[this._act_proj];
+            let res = {};
+            res.id = this._act_proj;
+            res.name = this._projs[this._act_proj].name;
+            res.path = this._projs[this._act_proj].path;
+            res.features = this._projs[this._act_proj].features;
+            return res;
+            //return this._projs[this._act_proj];
         }
     }
 
@@ -163,7 +169,7 @@ export default class User {
     }
 
 
-    
+
     /*********** PRIVATE METHODS **************/
 
     /**
@@ -219,7 +225,7 @@ let fb_projects = [{name: "proj1", id: "123", num: "1234"},
     {name: "test_proj", id: "321", num: "5678"},
     {name: "new_proj", id: "456", num: "23048"}];
 
-let test_user = new User("Robert", projects, fb_projects, "123");
+let test_user = new User("Robert", projects, fb_projects);
 
-console.log(test_user.firelounge_projs());
+console.log(test_user.act_proj);
  */
