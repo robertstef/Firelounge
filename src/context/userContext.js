@@ -1,20 +1,11 @@
 import React from 'react';
 import User from './userObject';
 
+const test = require('./testUserInfo');
+
 /* Create a state context and a dispatch context */
 const userStateContext = React.createContext();
 const userDispatchContext = React.createContext();
-
-/* Test user data */
-// let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
-//                 321:{name:"test_proj", path:"~/src/files", features:["H"]},
-//                 456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}};
-
-// let fb_projects = [{name: "test_proj", id: "test_proj_id", num: "1234"},
-//                    {name: "new_proj", id: "new_proj_id", num: "5678"},
-//                    {name: "last_proj", id: "list_proj_id", num: "23048"}];
-
-// let test_user = new User("Robert", projects, fb_projects, "123");
 
 /**
  * A reducer function for use by UserProvider to carry out
@@ -64,7 +55,11 @@ function UserReducer(state, action) {
  */
 function UserProvider({children}) {
 
-    const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
+    //const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
+    const info = test.test_user();
+    let new_user = new User(info.uname, info.projs, info.fb_projs, info.act_proj);
+
+    const [state, dispatch] = React.useReducer(UserReducer, {user: new_user});
     return (
         <userStateContext.Provider value={state}>
             <userDispatchContext.Provider value={dispatch}>
