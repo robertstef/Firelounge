@@ -126,7 +126,7 @@ export default class DbObjectDisplay extends Component {
         var onAdd = true
 
         return(
-            <div style={{height: '100%', width: '100%'}}>
+            <div style={{height: '100%', width: '100%', overflow: 'auto'}}>
                 <ReactJson 
                     name={false}
                     src={this.state.src}
