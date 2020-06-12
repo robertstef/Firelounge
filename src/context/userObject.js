@@ -22,15 +22,36 @@ export default class User {
     }
 
 
-    /* PUBLIC METHODS */
+    /************** PUBLIC METHODS **************/
 
-    /* Getters for each instance variable */
+    /* GETTER METHODS */
+
+    /**
+     * Returns users username.
+     *
+     * @return String
+     */
     get uname() { return this._uname; }
 
+    /**
+     * Returns users projects.
+     *
+     * @return Object: {id: {name:String, path:String, features: [String, ...]}, ...}
+     */
     get projs() { return this._projs; }
 
+    /**
+     * Returns users firebase projects
+     *
+     * @return Array: [{name:String, id:String, num:String}, ...]
+     */
     get fb_projs() { return this._fb_projs; }
 
+    /**
+     * Returns current active project
+     *
+     * @returns Object: {id:String, name:String, path:String, features:[String, ...]}
+     */
     get act_proj() {
         if (typeof this._act_proj === 'object') {
             return this._act_proj
@@ -42,7 +63,8 @@ export default class User {
     /**
      * Returns the array of firebase projects that have not been added
      * to firelounge.
-     * @returns {Array}: [{name:String, id: String, num: String}, ...]
+     *
+     * @returns Array: [{name:String, id: String, num: String}, ...]
      */
     get firebase_projs() {
         let projects = [];
@@ -54,7 +76,8 @@ export default class User {
 
     /**
      * Returns an array of firebase projects that have been added to firelounge.
-     * @returns {Array}: [{id: String, name: String, path: String, features: [String]}
+     *
+     * @returns Array: [{id: String, name: String, path: String, features: [String]}
      */
     get firelounge_projs() {
         let projects = [];
@@ -75,17 +98,24 @@ export default class User {
         }
         return projects;
     }
+
+
+    /* SETTER METHODS */
+
     /**
      * Sets the users current active project.
      *
      * @param new_active: String representing the project ID
      */
-    setActive(new_active) {
+    set setActive(new_active) {
         if (this._projs[new_active] === undefined) {
             throw new Error(`A project with the id ${new_active} does not exist in firelounge`);
         }
         this._act_proj = new_active;
     }
+
+
+    /* ADDITIONAL METHODS */
 
     /**
      * Adds a new project the firelounge. Throws an error if
@@ -133,7 +163,8 @@ export default class User {
     }
 
 
-    /* PRIVATE METHODS */
+    
+    /*********** PRIVATE METHODS **************/
 
     /**
      * Checks if two objects of the form: {name: "", path: "", features: ["", ...]}
