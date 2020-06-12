@@ -12,20 +12,48 @@ admin.initializeApp({
   databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
 });
 
-
+// As an admin, the app has access to read and write all data, regardless of Security Rules
+var db = admin.database();
+var ref = db.ref();
 export default class DbObjectDisplay extends Component {
     state={
         src: {}
     }
     
     componentDidMount() {
-        // As an admin, the app has access to read and write all data, regardless of Security Rules
-        var db = admin.database();
-        var ref = db.ref();
-        ref.once("value", (snapshot) => {
+        ref.on("value", (snapshot) => {
             this.setState({src: snapshot.val()})
         });
     };
+
+    /* 
+        When object is edited...
+        Updates the display in Firelounge and updates the reference in Firebase
+    */
+    makeEdit(result){
+        //update object display in firelounge
+        this.setState({ src: result.updated_src })
+
+        /*
+            create string to traverse json object and update in firebase
+            namespace = array of keys to get to changed value
+            name = key that was changed
+            new_value = the new value lol 
+        */
+        let query_string = '';
+        for(var i = 0; i < result.namespace.length; i++) {
+            console.log(result.namespace[i])
+            query_string += result.namespace[i]
+            query_string += '/'
+        }
+        
+        //traverse and update
+        db.ref(query_string).update({
+            [result.name] : result.new_value
+        })
+
+    }
+
 
     render() {
         var onEdit = true
@@ -40,8 +68,7 @@ export default class DbObjectDisplay extends Component {
                     onEdit={   
                         onEdit
                             ? result => {
-                                  console.log(result)
-                                  this.setState({ src: result.updated_src })
+                                  this.makeEdit(result)
                               }
                             : false
                         }
