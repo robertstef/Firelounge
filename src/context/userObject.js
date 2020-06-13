@@ -120,6 +120,8 @@ export default class User {
         this._act_proj = new_active;
     }
 
+    // TODO method to write user file
+
 
     /* ADDITIONAL METHODS */
 
@@ -129,28 +131,36 @@ export default class User {
      *
      * @param new_proj: project to be added in an object of
      *                  the form:
-     *                  {id: "", name: "", path: "", features: ["", ...]}
+     *                  {id: "", name: "", path: ""}
      */
     addProj(new_proj) {
 
-        // check input contains all required fields
-        if ( (new_proj.id === undefined)  ||
-             (new_proj.name === undefined)||
-             (new_proj.path === undefined)||
-             (new_proj.features === undefined))
-        {
-            throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", number: \"\", path:\"\"," +
-                " features \"\"} ")
+        const fs = window.require('fs');
+
+        // validate input
+        if ((new_proj.id === undefined)  || (new_proj.name === undefined) || (new_proj.path === undefined)) {
+            throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", path:\"\"}")
         }
         // check project does not already exist in firelounge
         else if (this._projsInclude(new_proj)) {
             throw new Error("This project already exists in firelounge");
         }
-        // add project to firelounge
-        else {
-            this._projs[new_proj.id] = {name: new_proj.name, number: new_proj.number,
-                path: new_proj.path, features: new_proj.features};
+
+        // get features from firebase.json file
+        let feats = ['hosting, database']; // TODO - add reamaining features as they are supported
+        let proj_features = [];
+        let fbjson = fs.readFileSync(new_proj.path + "/firebase.json");
+        fbjson = JSON.parse(fbjson);
+
+        for (let f of feats) {
+           if (fbjson.hasOwnProperty(f)) { proj_features.push(f) }
         }
+
+        // add project to firelounge
+        this._projs[new_proj.id] = {name: new_proj.name, number: new_proj.number,
+            path: new_proj.path, features: proj_features};
+
+        console.log(this._projs[new_proj.id]);
     }
 
     /**
@@ -188,7 +198,6 @@ export default class User {
      * @param comp: the object to be search for of the form:
      *              {name:"", path:"", features: ["", ...]}
      * @returns {boolean}: true if found, false if not
-     * @private
      */
      _projsInclude(comp) {
 
