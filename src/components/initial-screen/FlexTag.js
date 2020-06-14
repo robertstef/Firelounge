@@ -48,14 +48,19 @@ const useStyles = makeStyles(theme => ({
  */
 async function completeSignIn(dispatch) {
     const initModule = require('../../scripts/init');
-    
+
+    console.log("*********** INITIALIZING **************");
+    window.location.href = "#/project";
+    /*
     initModule.init_function().then(async (output) => {
-        // console.log(output);
+        console.log("Flex tag:");
+        console.log(output);
         await dispatch({type: 'createUser', args: output});
         window.location.href = "#/project"; 
     }).catch(err => {
         console.log(err);
     })
+     */
 }
 
 
