@@ -132,6 +132,9 @@ export default class User {
      * @param new_proj: project to be added in an object of
      *                  the form:
      *                  {id: "", name: "", path: ""}
+     *
+     * @precond path property must contain a valid path to a directory
+     *          with a firebase.json and .firebaserc file
      */
     addProj(new_proj) {
 
