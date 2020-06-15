@@ -18,31 +18,58 @@ export default class User {
         this._fb_projs = fb_projs;   // firebase projects
 
         // if active project empty, set to dummy object to avoid rendering errors
-        (act_proj === "") ? this._act_proj = {name: "", path: ""} : this._act_proj = act_proj;
+        (act_proj === "") ? this._act_proj = {id: "", name: "", path: "", features:[]} : this._act_proj = act_proj;
     }
 
 
-    /* PUBLIC METHODS */
+    /************** PUBLIC METHODS **************/
 
-    /* Getters for each instance variable */
+    /* GETTER METHODS */
+
+    /**
+     * Returns users username.
+     *
+     * @return String
+     */
     get uname() { return this._uname; }
 
+    /**
+     * Returns users projects.
+     *
+     * @return Object: {id: {name:String, path:String, features: [String, ...]}, ...}
+     */
     get projs() { return this._projs; }
 
+    /**
+     * Returns users firebase projects
+     *
+     * @return Array: [{name:String, id:String, num:String}, ...]
+     */
     get fb_projs() { return this._fb_projs; }
 
+    /**
+     * Returns current active project
+     *
+     * @returns Object: {id:String, name:String, path:String, features:[String, ...]}
+     */
     get act_proj() {
         if (typeof this._act_proj === 'object') {
             return this._act_proj
         } else {
-            return this._projs[this._act_proj];
+            let res = {};
+            res.id = this._act_proj;
+            res.name = this._projs[this._act_proj].name;
+            res.path = this._projs[this._act_proj].path;
+            res.features = this._projs[this._act_proj].features;
+            return res;
         }
     }
 
     /**
      * Returns the array of firebase projects that have not been added
      * to firelounge.
-     * @returns {Array}: [{name:String, id: String, num: String}, ...]
+     *
+     * @returns Array: [{name:String, id: String, num: String}, ...]
      */
     get firebase_projs() {
         let projects = [];
@@ -54,7 +81,8 @@ export default class User {
 
     /**
      * Returns an array of firebase projects that have been added to firelounge.
-     * @returns {Array}: [{id: String, name: String, path: String, features: [String]}
+     *
+     * @returns Array: [{id: String, name: String, path: String, features: [String]}
      */
     get firelounge_projs() {
         let projects = [];
@@ -75,6 +103,10 @@ export default class User {
         }
         return projects;
     }
+
+
+    /* SETTER METHODS */
+
     /**
      * Sets the users current active project.
      *
@@ -85,7 +117,11 @@ export default class User {
             throw new Error(`A project with the id ${new_active} does not exist in firelounge`);
         }
         this._act_proj = new_active;
+        this._writeUfile();
     }
+
+
+    /* ADDITIONAL METHODS */
 
     /**
      * Adds a new project the firelounge. Throws an error if
@@ -93,28 +129,39 @@ export default class User {
      *
      * @param new_proj: project to be added in an object of
      *                  the form:
-     *                  {id: "", name: "", path: "", features: ["", ...]}
+     *                  {id: "", name: "", path: ""}
+     *
+     * @precond path property must contain a valid path to a directory
+     *          with a firebase.json and .firebaserc file
      */
     addProj(new_proj) {
 
-        // check input contains all required fields
-        if ( (new_proj.id === undefined)  ||
-             (new_proj.name === undefined)||
-             (new_proj.path === undefined)||
-             (new_proj.features === undefined))
-        {
-            throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", number: \"\", path:\"\"," +
-                " features \"\"} ")
+        const fs = window.require('fs');
+
+        // validate input
+        if ((new_proj.id === undefined)  || (new_proj.name === undefined) || (new_proj.path === undefined)) {
+            throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", path:\"\"}")
         }
         // check project does not already exist in firelounge
         else if (this._projsInclude(new_proj)) {
             throw new Error("This project already exists in firelounge");
         }
-        // add project to firelounge
-        else {
-            this._projs[new_proj.id] = {name: new_proj.name, number: new_proj.number,
-                path: new_proj.path, features: new_proj.features};
+
+        // get features from firebase.json file
+        let feats = ['hosting', 'database', 'functions']; // TODO - add reamaining features as they are supported
+        let proj_features = [];
+        let fbjson = fs.readFileSync(new_proj.path + "/firebase.json");
+        fbjson = JSON.parse(fbjson);
+
+        for (let f of feats) {
+           if (fbjson.hasOwnProperty(f)) { proj_features.push(f) }
         }
+
+        // add project to firelounge
+        this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features};
+
+        // update user file
+        this._writeUfile();
     }
 
     /**
@@ -127,13 +174,14 @@ export default class User {
         if ( this._projs[old_proj] === undefined ) {
             throw new Error(`A project with project id ${old_proj} does not exist in firelounge`);
         }
-        else {
-            delete this._projs[old_proj];
-        }
+
+        delete this._projs[old_proj];
+        this._writeUfile();
     }
 
 
-    /* PRIVATE METHODS */
+
+    /*********** PRIVATE METHODS **************/
 
     /**
      * Checks if two objects of the form: {name: "", path: "", features: ["", ...]}
@@ -151,7 +199,6 @@ export default class User {
      * @param comp: the object to be search for of the form:
      *              {name:"", path:"", features: ["", ...]}
      * @returns {boolean}: true if found, false if not
-     * @private
      */
      _projsInclude(comp) {
 
@@ -177,6 +224,20 @@ export default class User {
     _projExists(id) {
          return this._projs.hasOwnProperty(id);
     }
+
+    /**
+     * Writes users active project and project information
+     * to a json file.
+     */
+    _writeUfile() {
+        const fs = window.require('fs');
+
+        let ufile = {};
+        ufile.act_proj = this._act_proj;
+        ufile.projs = this._projs;
+
+        fs.writeFileSync(`/Users/${this._uname}/${this._uname}.json`, JSON.stringify(ufile));
+    }
 }
 
 /* Some simple test data */
@@ -188,7 +249,7 @@ let fb_projects = [{name: "proj1", id: "123", num: "1234"},
     {name: "test_proj", id: "321", num: "5678"},
     {name: "new_proj", id: "456", num: "23048"}];
 
-let test_user = new User("Robert", projects, fb_projects, "123");
+let test_user = new User("Robert", projects, fb_projects);
 
-console.log(test_user.firelounge_projs());
+console.log(test_user.act_proj);
  */

@@ -15,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import AddProjButton from './AddProjButton'
 import {UserDispatch, UserState} from '../../context/userContext';
+import GetPathButton from './GetPathButton';
 
 
 // Component for individual table cell
@@ -93,13 +94,13 @@ export default function CustomizedTable() {
                 </TableHead>
                 <TableBody>
                     {rows.map((row) => (
-                        <StyledTableRow key={row.pName}>
+                        <StyledTableRow key={row.name}>
                             <StyledTableCell component="th" scope="row" align='center'>
-                                {row.pName}
+                                {row.name}
                             </StyledTableCell>
-                            <StyledTableCell align='center'>{row.pId}</StyledTableCell>
-                            <StyledTableCell align='center'>{row.pNumber}</StyledTableCell>
-                            <StyledTableCell align='center'><AddProjButton curproj={row}/></StyledTableCell>
+                            <StyledTableCell align='center'>{row.id}</StyledTableCell>
+                            <StyledTableCell align='center'>{row.num}</StyledTableCell>
+                            <StyledTableCell align='center'><AddProjButton cur_proj={row}/></StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
