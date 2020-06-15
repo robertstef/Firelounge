@@ -62,7 +62,6 @@ export default class User {
             res.path = this._projs[this._act_proj].path;
             res.features = this._projs[this._act_proj].features;
             return res;
-            //return this._projs[this._act_proj];
         }
     }
 
@@ -113,14 +112,13 @@ export default class User {
      *
      * @param new_active: String representing the project ID
      */
-    set setActive(new_active) {
+    setActive(new_active) {
         if (this._projs[new_active] === undefined) {
             throw new Error(`A project with the id ${new_active} does not exist in firelounge`);
         }
         this._act_proj = new_active;
+        this._writeUfile();
     }
-
-    // TODO method to write user file
 
 
     /* ADDITIONAL METHODS */
@@ -150,7 +148,7 @@ export default class User {
         }
 
         // get features from firebase.json file
-        let feats = ['hosting, database']; // TODO - add reamaining features as they are supported
+        let feats = ['hosting', 'database', 'functions']; // TODO - add reamaining features as they are supported
         let proj_features = [];
         let fbjson = fs.readFileSync(new_proj.path + "/firebase.json");
         fbjson = JSON.parse(fbjson);
@@ -160,10 +158,10 @@ export default class User {
         }
 
         // add project to firelounge
-        this._projs[new_proj.id] = {name: new_proj.name, number: new_proj.number,
-            path: new_proj.path, features: proj_features};
+        this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features};
 
-        console.log(this._projs[new_proj.id]);
+        // update user file
+        this._writeUfile();
     }
 
     /**
@@ -176,9 +174,9 @@ export default class User {
         if ( this._projs[old_proj] === undefined ) {
             throw new Error(`A project with project id ${old_proj} does not exist in firelounge`);
         }
-        else {
-            delete this._projs[old_proj];
-        }
+
+        delete this._projs[old_proj];
+        this._writeUfile();
     }
 
 
@@ -225,6 +223,20 @@ export default class User {
      */
     _projExists(id) {
          return this._projs.hasOwnProperty(id);
+    }
+
+    /**
+     * Writes users active project and project information
+     * to a json file.
+     */
+    _writeUfile() {
+        const fs = window.require('fs');
+
+        let ufile = {};
+        ufile.act_proj = this._act_proj;
+        ufile.projs = this._projs;
+
+        fs.writeFileSync(`/Users/${this._uname}/${this._uname}.json`, JSON.stringify(ufile));
     }
 }
 
