@@ -2,6 +2,8 @@ import React from 'react'
 import Card from "@material-ui/core/Card";
 import { makeStyles } from '@material-ui/core/styles';
 import SettingsSwitchesGroup from './SettingsSwitchesGroup';
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,6 +21,17 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         backgroundColor: '#EDF2F4',
     },
+    heading: {
+        marginTop: '10px',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    divider: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    }
 }));
 
 
@@ -31,6 +44,8 @@ export default function DbSettingsCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
+                <Typography className={classes.heading}> Database Settings </ Typography>
+                <Divider className={classes.divider}/>
                 <SettingsSwitchesGroup />
             </Card>
         </div>

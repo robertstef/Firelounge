@@ -6,20 +6,35 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
-    switches: {
-      margin: '10px'
+    formGroup: {
+      margin: '5%'
     },
+    list: {
+      padding: '0px',
+      columnCount: 2,
+    },
+    listItem: {
+      maxWidth: '100px',
+      marginRight: '0px',
+      padding: '0px'
+    },
+    label: {
+      fontSize: 12, 
+    }
 }));
 
 /* 
 Switches Group controlls the settings for the
 JSON Object viewer 
-
-Still needs to be connect to a Context/Database Object
-Still needs a few text fields to get non boolean setting fields
 */
+//TODO: Still needs to be connect to a Context/Database Object
+//TODO: Still needs a few text fields to get non boolean setting fields
+//TODO: Change List to loop 
 export default function SettingsSwitchesGroup() {
   const classes = useStyles();
   const [state, setState] = React.useState({
@@ -41,40 +56,58 @@ export default function SettingsSwitchesGroup() {
   };
 
   return (
-    <FormControl component="fieldset" className={classes.switches}>
+    <FormControl component="fieldset" className={classes.formGroup}>
       <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={state.Edit} onChange={handleChange} name="Edit" />}
-          label="Edit"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.Add} onChange={handleChange} name="Add" />}
-          label="Add"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.Delete} onChange={handleChange} name="Delete" />}
-          label="Delete"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.Collapsed} onChange={handleChange} name="Collapsed" />}
-          label="Collapsed"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.Clipboard} onChange={handleChange} name="Clipboard" />}
-          label="Clipboard"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.DisplayObjectSize} onChange={handleChange} name="DisplayObjectSize" />}
-          label="DisplayObjectSize"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.SortKeys} onChange={handleChange} name="SortKeys" />}
-          label="SortKeys"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.ValidationMessage} onChange={handleChange} name="ValidationMessage" />}
-          label="ValidationMessage"
-        />
+        <List dense={true} className={classes.list}>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.Edit} onChange={handleChange} name="Edit" />}
+               label={<Typography className={classes.label} >Edit</Typography>}
+            /> 
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.Add} onChange={handleChange} name="Add" />}
+              label={<Typography className={classes.label} >Add</Typography>}
+            />
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.Delete} onChange={handleChange} name="Delete" />}
+              label={<Typography className={classes.label} >Delete</Typography>}
+            />
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.Collapsed} onChange={handleChange} name="Collapsed" />}
+              label={<Typography className={classes.label} >Collapsed</Typography>}
+            />
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.Clipboard} onChange={handleChange} name="Clipboard" />}
+              label={<Typography className={classes.label} >Clipboard</Typography>}
+            />
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.DisplayObjectSize} onChange={handleChange} name="DisplayObjectSize" />}
+              label={<Typography className={classes.label} >DisplayObjectSize</Typography>}
+            />
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.SortKeys} onChange={handleChange} name="SortKeys" />}
+              label={<Typography className={classes.label} >SortKeys</Typography>}
+            />
+          </ListItem>
+          <ListItem className={classes.listItem} >
+            <FormControlLabel
+              control={<Switch checked={state.ValidationMessage} onChange={handleChange} name="ValidationMessage" />}
+              label={<Typography className={classes.label} >ValidationMessage</Typography>}
+            />
+          </ListItem>
+        </ List>
       </FormGroup>
     </FormControl>
   );
