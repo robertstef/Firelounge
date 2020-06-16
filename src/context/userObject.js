@@ -228,6 +228,8 @@ export default class User {
     /**
      * Writes users active project and project information
      * to a json file.
+     *
+     * @postcond the previous user.json file will be overwritten
      */
     _writeUfile() {
         const fs = window.require('fs');
@@ -236,6 +238,7 @@ export default class User {
         ufile.act_proj = this._act_proj;
         ufile.projs = this._projs;
 
+        // TODO #25 - write user file to local Users folder
         fs.writeFileSync(`/Users/${this._uname}/${this._uname}.json`, JSON.stringify(ufile));
     }
 }
