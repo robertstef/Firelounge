@@ -8,8 +8,8 @@ import SettingsNav from './SettingsNav.js';
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: '50%',
-    height: '50%',
+    width: '70%',
+    height: '70%',
     backgroundColor: theme.palette.background.paper,
   },
   button: {

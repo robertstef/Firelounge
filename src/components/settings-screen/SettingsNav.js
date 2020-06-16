@@ -4,13 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import HelpIcon from '@material-ui/icons/Help';
-import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import StorageIcon from '@material-ui/icons/Storage';
+import AirportShuttleIcon from '@material-ui/icons/AirportShuttle';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
@@ -51,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: '100%',
+    backgroundColor: '#8d99ae',
+    height: '100%',
   },
   appBar: {
     position: 'static',
@@ -69,27 +67,27 @@ export default function SettingsNav() {
 
   return (
     <div className={classes.root}>
-         <AppBar className={classes.appBar}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="off"
-          aria-label="scrollable prevent tabs example"
-        >
-          <Tab icon={<PhoneIcon />} aria-label="phone" {...a11yProps(0)} />
-          <Tab icon={<FavoriteIcon />} aria-label="favorite" {...a11yProps(1)} />
-          <Tab icon={<PersonPinIcon />} aria-label="person" {...a11yProps(2)} />
+        <AppBar className={classes.appBar}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="off"
+            aria-label="scrollable prevent tabs example"
+          >
+            <Tab icon={<AccountCircleIcon />} aria-label="phone" {...a11yProps(0)} />
+            <Tab icon={<StorageIcon />} aria-label="favorite" {...a11yProps(1)} />
+            <Tab icon={<AirportShuttleIcon />} aria-label="person" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Item One
+        User Settings
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        Database Settings
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        Another Type of Settings
       </TabPanel>
     </div>
   );
