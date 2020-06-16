@@ -78,7 +78,6 @@ export default class DbObjectDisplay extends Component {
             query_string += '/'
         }
         
-        console.log(query_string)
         //traverse and update
         db.ref(query_string).update({
             [result.name] : result.new_value
@@ -121,9 +120,37 @@ export default class DbObjectDisplay extends Component {
 
     }
 
+
+    /* 
+        When object is delete...
+        Updates reference in firebase
+        Concats a string to find element and removes it
+    */
+    makeDelete(result){
+        /*
+        Create string to traverse json object and update in firebase
+        namespace = array of keys to get to deleted element
+        name = key of item deleted
+        new_value = should be undefined.
+        */
+        
+        let query_string = '';
+        for(var i = 0; i < result.namespace.length; i++) {
+            query_string += result.namespace[i]
+            query_string += '/'
+        }
+        
+        //traverse and delete child
+        db.ref(query_string).child(result.name).remove();  
+
+    }
+
+
+
     render() {
         var onEdit = true
         var onAdd = true
+        var onDelete = true
 
         return(
             <div style={{height: '100%', width: '100%', overflow: 'auto'}}>
@@ -142,6 +169,13 @@ export default class DbObjectDisplay extends Component {
                         onAdd
                             ? result => {
                                   this.makeAdd(result)
+                              }
+                            : false
+                    }
+                    onDelete={
+                        onDelete
+                            ? result => {
+                                  this.makeDelete(result)
                               }
                             : false
                     }
