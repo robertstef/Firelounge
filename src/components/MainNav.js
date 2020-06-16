@@ -14,6 +14,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import StateTest from './ContextStateTest';
 import DispTest from './ContextDispTest';
+import SettingsScreen from './settings-screen/SettingsScreen.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -149,7 +150,7 @@ export default function MainNav() {
 
         {/*Settings page */}
         <TabPanel value={value} index={2} className={classes.tabpanel}>
-          Settings Page
+          <SettingsScreen/>
         </TabPanel>
 
         {/* Context test values */}
