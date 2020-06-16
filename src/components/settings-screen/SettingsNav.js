@@ -9,6 +9,8 @@ import StorageIcon from '@material-ui/icons/Storage';
 import AirportShuttleIcon from '@material-ui/icons/AirportShuttle';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import DbSettingsCard from './DbSettingsCard'
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -22,8 +24,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box>
+          <div >{children}</div>  
         </Box>
       )}
     </div>
@@ -80,12 +82,18 @@ export default function SettingsNav() {
             <Tab icon={<AirportShuttleIcon />} aria-label="person" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
+
+      {/* Tab for User Settings*/}
       <TabPanel value={value} index={0}>
         User Settings
       </TabPanel>
+
+      {/* Tab for Database Settings*/}
       <TabPanel value={value} index={1}>
-        Database Settings
+        <DbSettingsCard/>
       </TabPanel>
+
+    {/* Open Tab for More Settings */}
       <TabPanel value={value} index={2}>
         Another Type of Settings
       </TabPanel>
