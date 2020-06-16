@@ -8,13 +8,12 @@ import Box from '@material-ui/core/Box';
 import ManageScreen from './manage-screen/ManageScreen.js'
 import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import SettingsIcon from '@material-ui/icons/Settings';
 import CreateNav from "./create-screen/CreateNav"
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import StateTest from './ContextStateTest';
 import DispTest from './ContextDispTest';
-import SettingsScreen from './settings-screen/SettingsScreen.js'
+import SettingsModal from './settings-screen/SettingsModal.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -129,11 +128,12 @@ export default function MainNav() {
               >
                 <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
                 <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-                <LinkTab icon={<SettingsIcon />} {...a11yProps(2)} className={classes.settingsTab}/>
-
                 {/* Context Test Link */}
-                <LinkTab icon={<BathtubIcon />} {...a11yProps(3)} className={classes.linkTab}/>
+                <LinkTab icon={<BathtubIcon />} {...a11yProps(2)} className={classes.linkTab}/>
               </Tabs>
+              
+              {/* Opens Settings Modal */}
+              <SettingsModal className={classes.settingsTab}/>
             </ThemeProvider>
           </AppBar>
         </Box>
@@ -148,13 +148,8 @@ export default function MainNav() {
           <ManageScreen/>
         </TabPanel>
 
-        {/*Settings page */}
-        <TabPanel value={value} index={2} className={classes.tabpanel}>
-          <SettingsScreen/>
-        </TabPanel>
-
         {/* Context test values */}
-        <TabPanel value={value} index={3} className={classes.tabpanel}>
+        <TabPanel value={value} index={2} className={classes.tabpanel}>
           <StateTest />
           <DispTest/>
         </TabPanel>
