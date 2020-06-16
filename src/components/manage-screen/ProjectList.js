@@ -10,9 +10,11 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
+    height: 25
   },
   component: {
-    marginLeft: '75px'
+    marginLeft: '75px',
+    height: 50
   },
 
 }));
@@ -50,24 +52,25 @@ export default function ProjectList() {
   return (
       <div className={classes.component}>
         <FormControl className={classes.formControl}>
-        <InputLabel >Active Project</InputLabel>
-        <NativeSelect
-          value={act_proj_name}
-          onChange={handleChange}
-          name="name"
-        >
-          <optgroup label="Active">
-            <option value="active">{act_proj_name}</option>
-          </optgroup>
-          <optgroup label="Project List">
-            {projectList.map((item) => {
-              return (
-                  item
-              )
-            })}            
-          </optgroup>
-        </NativeSelect>
-      </FormControl>
+          <InputLabel >Active Project</InputLabel>
+            <NativeSelect
+              value={act_proj_name}
+              onChange={handleChange}
+              name="name"
+              style={{height: '25px'}}
+            >
+            <optgroup label="Active">
+              <option value="active">{act_proj_name}</option>
+            </optgroup>
+            <optgroup label="Project List">
+              {projectList.map((item) => {
+                return (
+                    item
+                )
+              })}            
+            </optgroup>
+          </NativeSelect>
+        </FormControl>
       </div>
   );
 }
