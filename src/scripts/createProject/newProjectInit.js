@@ -80,7 +80,7 @@ module.exports = {
     }
 };
 
-function random_hex() {
+let random_hex = () => {
     var letters = '0123456789abcdef';
     var hex_val = '';
     for (var i = 0; i < 6; i++) {
@@ -89,4 +89,4 @@ function random_hex() {
     return hex_val;
 }
 
-console.log(random_hex())
+exports.random_hex = random_hex;
