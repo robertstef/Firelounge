@@ -100,11 +100,11 @@ export default function SwitchesGroup() {
 
   };
 
-  //calc the number of cols displayed (this solution works poorly for 5 cols)
+  //calc the number of cols displayed (this solution works poorly for 4 cols)
   let num_cols;
   if (user.act_proj.features.length === 1 || user.act_proj.features.length === 3 ) {
     num_cols = 2
-  } else if (user.act_proj.features.length === 2 || user.act_proj.features.length === 6) {
+  } else if (user.act_proj.features.length === 2 ) {
     num_cols = 3
   } else {
     num_cols = 1
