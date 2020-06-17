@@ -45,8 +45,10 @@ export default function ProjectList() {
    *               event.target.value equal to the project id.
    */
   const handleChange = (event) => {
-    dispatch({type: 'setActive', args: event.target.value});
-    act_proj_name = user.act_proj.name;
+    if(event.target.value !== 'active'){
+      dispatch({type: 'setActive', args: event.target.value});
+      act_proj_name = user.act_proj.name;
+    }
   };
 
   return (
@@ -60,7 +62,7 @@ export default function ProjectList() {
               style={{height: '25px'}}
             >
             <optgroup label="Active">
-              <option value="active">{act_proj_name}</option>
+              <option value='active'>{act_proj_name}</option>
             </optgroup>
             <optgroup label="Project List">
               {projectList.map((item) => {
