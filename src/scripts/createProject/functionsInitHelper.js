@@ -41,6 +41,7 @@ let check_input = (input) => {
 
 /**
  * Produces a random 6 digit hexidecimal number.
+ *
  * @returns {string}: 6 digit hex number
  */
 let random_hex = () => {
@@ -55,9 +56,11 @@ let random_hex = () => {
 /**
  * Creates the functions directory in the users project directory
  * specified by the inputted path.
+ *
  * @param dir_path: String - path to users project directory
+ * @return {String} - the path to the newly created functions directory
  */
-let write_fcns_dir = (dir_path) => {
+let writeFcnsDir = (dir_path) => {
     let fcns_dir = path.join(dir_path, "/functions");
 
     // User already has a directory named functions
@@ -88,9 +91,86 @@ let write_fcns_dir = (dir_path) => {
     else {
         fs.mkdirSync(fcns_dir);
     }
-    // TODO set RESOURCE_DIR env variable for use by firebase.json
+
+    return fcns_dir;
 }
+
+/**
+ * Writes the following configuration files in the projects root directory
+ * when the user selects javascript as their language for functions:
+ *
+ * index.js
+ * package.json (with or without eslint dependency as per users selection)
+ * .eslintrc (only if user selects use of eslint)
+ * .gitignore
+ *
+ * NOTE: only use this function when the user selects javascript, if user selects
+ *       typescript use the function writeInitFilesTs().
+ *
+ * @param input: Object: {language:String, eslint: boolean, run_npm: boolean}
+ * @param fcns_path: String: path to functions directory in projects root directory
+ */
+let writeInitFilesJs = (input, fcns_path) => {
+
+    /**
+     * Writes the given content to the file specified by
+     * the path, p.
+     * @param p: String: path to file we want to write
+     * @param content: Object|String: content to be written
+     */
+    let writeProjFile = (p, content) => {
+        // Seems to be working without stringify???
+        // Keep here just in case
+        /*
+        if (typeof context !== 'string') {
+            content = JSON.stringify(content);
+        }
+         */
+
+        fs.writeFileSync(p, content, "utf8");
+    }
+
+    // sanity check - make sure user selected javascript
+    if (input.language !== 'javascript') {
+        throw new Error("writeInitFilesJs() can only be used for javascript functions");
+    }
+
+    // Read in file templates
+    const TEMPLATE_ROOT = path.resolve(__dirname, "../createProject/templates/javascript/")
+    const INDEX_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "index.js"), "utf8");
+    const PACKAGE_LINTING_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "package.lint.json"), "utf8");
+    const PACKAGE_NO_LINTING_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "package.nolint.json"), "utf8");
+    const ESLINT_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "eslint.json"), "utf8");
+    const GITIGNORE_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "_gitignore"), "utf8");
+
+    // user wants to use eslint
+    if (input.eslint) {
+        // package.json to include eslint as dependency
+        writeProjFile(path.join(fcns_path, "/package.json"), PACKAGE_LINTING_TEMPLATE);
+        // .eslintrc file
+        writeProjFile(path.join(fcns_path, "/.eslintrc.json"), ESLINT_TEMPLATE);
+
+        // TODO in firebase.json file need to set functions.predeploy to ['npm --prefix "$RESOURCE_DIR" run lint]
+        // TODO set $RESOURCE_DIR environment variable
+    }
+    // not using eslint
+    else {
+        // package.json not including eslint as dependecy
+        writeProjFile(path.join(fcns_path, "/package.json"), PACKAGE_NO_LINTING_TEMPLATE)
+    }
+
+    // index.js
+    writeProjFile(path.join(fcns_path, "/index.js"), INDEX_TEMPLATE);
+    // .gitignore
+    writeProjFile(path.join(fcns_path, "/.gitignore"), GITIGNORE_TEMPLATE);
+}
+
+/*
+let obj = {language: 'javascript', eslint:false, run_npm:false};
+writeInitFilesJs(obj, "/Users/robertstefanyshin/FL_testdir/functions");
+ */
 
 /* Export statements */
 exports.check_input = check_input;
-exports.write_fcns_dir = write_fcns_dir;
+exports.writeFcnsDir = writeFcnsDir;
+exports.writeInitFilesJs = writeInitFilesJs;

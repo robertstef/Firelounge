@@ -1,6 +1,5 @@
 const helpers = require('./functionsInitHelper');
 const fs = require("fs");
-const os = require("os");
 const path = require("path");
 
 let inputobj = {
@@ -9,6 +8,7 @@ let inputobj = {
     run_npm: true
 };
 
+// Read in file templates
 
 /**
  * Initializes all necessary components for the functions
@@ -24,14 +24,23 @@ let functionsInit = (path, input) => {
     helpers.check_input(input);
 
     // write functions directory
-    let dir_path = path.join(path, "/functions");
-    fs.mk
+    let fcns_path = helpers.writeFcnsDir(path);
+
+    // create init files in functions directory
+    if (input.language === 'javascript') {
+        helpers.writeInitFilesJs(fcns_path, input);
+    }
+    else {
+       // call function for typescript
+    }
 }
 
+/* Just for testing */
+/*
 try {
     let obj = {language:'javascript', eslint:true, run_npm:true};
-    functionsInit("/", obj);
-    console.log("all good");
+    functionsInit("/Users/robertstefanyshin/FL_testdir/", obj);
 } catch(err) {
     console.log(err.message);
 }
+ */
