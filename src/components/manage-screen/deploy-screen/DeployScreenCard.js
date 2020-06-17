@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 import SwitchesGroup from './SwitchesGroup.js';
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -23,8 +24,16 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '5px',
     },
     heading: {
-        textAlign: 'center',
-        verticalAlign: 'center'
+        marginTop: '10px',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontSize: 24
+    },
+    divider: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
     }
 }));
 
@@ -33,9 +42,8 @@ function DeployScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Box boxShadow={2} className={classes.cardBox}>
-                    <h2 className={classes.heading}> Deploy Page </h2>
-                </Box>
+                <Typography className={classes.heading}> Deploy Project </Typography>
+                <Divider className={classes.divider}/>
                 <SwitchesGroup />
             </Card>
         </div>
