@@ -1,13 +1,14 @@
 /* Defines helper functions for functionsInit.js */
 const fs = require("fs");
 const path = require("path");
+const { spawn } = require("cross-spawn");
 
 /**
  * Checks input to functionsInit() is of the correct form.
  *
  * @param input: Object given as input to functionsInit()
  */
-let check_input = (input) => {
+exports.check_input = (input) => {
 
     const propertyError = () => {
         throw new Error("functionsInit() input object must be of the form {input:String, eslint: bool," +
@@ -60,7 +61,7 @@ let random_hex = () => {
  * @param dir_path: String - path to users project directory
  * @return {String} - the path to the newly created functions directory
  */
-let writeFcnsDir = (dir_path) => {
+exports.writeFcnsDir = (dir_path) => {
     let fcns_dir = path.join(dir_path, "/functions");
 
     // User already has a directory named functions
@@ -107,10 +108,10 @@ let writeFcnsDir = (dir_path) => {
  * NOTE: only use this function when the user selects javascript, if user selects
  *       typescript use the function writeInitFilesTs().
  *
- * @param input: Object: {language:String, eslint: boolean, run_npm: boolean}
  * @param fcns_path: String: path to functions directory in projects root directory
+ * @param input: Object: {language:String, eslint: boolean, run_npm: boolean}
  */
-let writeInitFilesJs = (input, fcns_path) => {
+exports.writeInitFilesJs = (fcns_path, input) => {
 
     /**
      * Writes the given content to the file specified by
@@ -128,11 +129,6 @@ let writeInitFilesJs = (input, fcns_path) => {
          */
 
         fs.writeFileSync(p, content, "utf8");
-    }
-
-    // sanity check - make sure user selected javascript
-    if (input.language !== 'javascript') {
-        throw new Error("writeInitFilesJs() can only be used for javascript functions");
     }
 
     // Read in file templates
@@ -165,12 +161,36 @@ let writeInitFilesJs = (input, fcns_path) => {
     writeProjFile(path.join(fcns_path, "/.gitignore"), GITIGNORE_TEMPLATE);
 }
 
+/**
+ * Install the dependencies for the functions
+ * @param fcns_dir
+ */
+exports.npmInstaller = (fcns_dir) => {
+    let installer = spawn("npm", ["install"], {
+        cwd: fcns_dir.valueOf(),
+        stdio: "inherit",
+    });
+
+    // May want to throw error here instead
+    installer.on("error", (err) => {
+        console.log(err.message());
+    });
+
+    // All done - make sure npm exited with code 0, else throw error
+    installer.on('close', (code) => {
+        if (code !== 0) {
+            throw new Error("NPM install failed, please manually install dependencies using 'npm install' after" +
+                " initialization");
+        }
+    });
+}
+
 /*
 let obj = {language: 'javascript', eslint:false, run_npm:false};
 writeInitFilesJs(obj, "/Users/robertstefanyshin/FL_testdir/functions");
  */
 
 /* Export statements */
-exports.check_input = check_input;
-exports.writeFcnsDir = writeFcnsDir;
-exports.writeInitFilesJs = writeInitFilesJs;
+//exports.check_input = check_input;
+//exports.writeFcnsDir = writeFcnsDir;
+//exports.writeInitFilesJs = writeInitFilesJs;
