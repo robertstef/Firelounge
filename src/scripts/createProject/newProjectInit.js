@@ -39,10 +39,8 @@ module.exports = {
 
         console.log("RequestBody: ", requestBody);
 
-
-
         const active_path = ''; // this is taken from the user as well
-        
+
         return new Promise((resolve, reject) => {
 
                     const {exec} = window.require('child_process');

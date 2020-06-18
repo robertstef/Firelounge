@@ -13,12 +13,6 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 
-
-const useStyles = makeStyles({
-    root: {
-        width: '100%',
-    },
-});
 class NewProjectExpansion extends Component{
     constructor(props) {
         super(props);
@@ -39,6 +33,40 @@ class NewProjectExpansion extends Component{
         }
     }
 
+    /**
+     * Handler for project naming
+     * @param: Event e
+     *
+     */
+    handleProj_Name(e) {
+        this.setState({proj_name: e.target.value})
+    }
+
+    handleFeatureSelection(feature) {
+        switch(feature) {
+            case "hosting":
+                this.setState({isHostingOpen: !this.state.isHostingOpen});
+                this.setState({config: {...this.state.config, hosting: !this.state.isHostingOpen}});
+                break;
+            default:
+                console.log("Invalid Feature");
+        }
+    }
+
+    handleHostingPreferences(e, pref) {
+        switch (pref) {
+            case "public-dir":
+                this.setState({hosting: {...this.state.hosting, public_dir: e.target.value}});
+                break;
+            case "single-pg":
+                this.setState({hosting: {...this.state.hosting, single_page_app: e.target.value}});
+                break;
+            default:
+                console.log("Invalid Preference");
+        }
+    }
+
+
 
     render() {
         return (
@@ -52,11 +80,11 @@ class NewProjectExpansion extends Component{
                         placeholder="Enter your project name"
                         variant={"outlined"}
                         color={'secondary'}
-                        onChange={(e) => {this.setState({proj_name: e.target.value})}}
+                        onChange={(e) => this.handleProj_Name(e)}
                     />
                 </div>
                 <div style={{marginTop: 10}}/>
-                <ExpansionPanel expanded={this.state.isHostingOpen}>
+                <ExpansionPanel expanded={this.state.isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
                     <ExpansionPanelSummary
                         aria-label="Expand"
                         aria-controls="additional-actions1-content"
@@ -64,7 +92,7 @@ class NewProjectExpansion extends Component{
                     >
                         <FormControlLabel
                             control={<Checkbox />}
-                            onClick={(event) => {event.stopPropagation(); this.setState({isHostingOpen: !this.state.isHostingOpen}); this.setState({config: {...this.state.config, hosting: !this.state.isHostingOpen}})}}
+                            onClick={(event) => {event.stopPropagation(); this.handleFeatureSelection("hosting")}}
                             onFocus={(event) => event.stopPropagation()}
                             label="Hosting"
                         />
@@ -84,7 +112,7 @@ class NewProjectExpansion extends Component{
                                     placeholder="(public)"
                                     variant={"outlined"}
                                     color={'secondary'}
-                                    onChange={(e) => {this.setState({hosting: {...this.state.hosting, public_dir: e.target.value}})}}
+                                    onChange={(e) => this.handleHostingPreferences(e, "public-dir")}
                                 />
                             </div>
                             <div style={{marginTop: 10}}/>
@@ -95,7 +123,7 @@ class NewProjectExpansion extends Component{
                             </Typography>
                             <div style={{marginTop: 10}}/>
                             <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
-                                <Select value={this.state.hosting.single_page_app} onChange={(e) => {this.setState({hosting: {...this.state.hosting, single_page_app: e.target.value}})}}>
+                                <Select value={this.state.hosting.single_page_app} onChange={(e) => this.handleHostingPreferences(e, "single-pg")}>
                                     <MenuItem value={true}>Yes</MenuItem>
                                     <MenuItem value={false}>No</MenuItem>
                                 </Select>
@@ -105,15 +133,13 @@ class NewProjectExpansion extends Component{
                 </ExpansionPanel>
 
                 <Button onClick={() => {
-                    console.log(this.state);
+                    // NOTE: having the boolean variables for isFeatureXOpen is not necessary
                     const newProjectModule = require('../../scripts/createProject/newProjectInit');
                     newProjectModule.newProjectInit_function(this.state).then((output) => {
                         console.log(output) // log the data for the sake of viewing the result
                     }).catch(err => {
                         console.log(err);
                     })
-
-
                 }}>
                     Submit
                 </Button>
