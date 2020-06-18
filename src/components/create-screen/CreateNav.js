@@ -71,19 +71,19 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexGrow: 1,
     backgroundColor: 'inherit',
     position: 'absolute',
-    left: '51px',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%'
+    display: 'flex',
+    left: '0px',
+    right: '0px',
+    marginLeft: '51px',
+    top: '0px',
+    bottom: '0px',
   },
   appbar: {
-    height: '100%',
     width: '50px',
-    borderRadius: '0px 10px 10px 0px',
+    height: '100%',
+    borderRadius: '0px 10px 0px 0px',
     backgroundColor: '#8d99ae',
   },
   linkTab: {
@@ -102,11 +102,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    paddingRight: '90px',
-    marginLeft: '35px',
-    paddingBottom: '90px',
-    marginTop: '35px',
-    paddingTop: '0px',
+    margin: '15px',
+    marginTop: '10px',
   }
 }));
 

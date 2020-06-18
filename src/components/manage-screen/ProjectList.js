@@ -8,9 +8,7 @@ import NativeSelect from '@material-ui/core/NativeSelect'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
     minWidth: 200,
-    height: 25
   },
   component: {
     marginLeft: '75px',

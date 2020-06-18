@@ -5,8 +5,8 @@ import TopManageNav from './TopManageNav'
 function ManageScreen() {
     return (
         <div>
-            <TopManageNav/>
             <SecondaryManageNav/>
+            <TopManageNav/>
         </div>
     );
 }

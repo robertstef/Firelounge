@@ -10,26 +10,26 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '95%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    formControl: {
+    },
     formGroup: {
-      margin: '5%'
     },
     list: {
-      marginTop: '20px',
-      padding: '0px',
     },
     listItem: {
-      maxWidth: '100px',
-      marginRight: '0px',
-      padding: '0px'
     },
     label: {
       fontSize: 12, 
     },
     button: {
-      marginTop: '20px',
       backgroundColor: '#EDF2F4', 
       color: '#EF233C',
-      width: '90%',
+      width: '100%',
       marginLeft: 'auto',
       marginRight: 'auto',
     }
@@ -111,9 +111,9 @@ export default function SwitchesGroup() {
   }
 
   return (
-    <div style={{marginLeft: '50px'}}>
-      <FormControl component="fieldset" style={{width: '100%'}}>
-        <FormGroup>
+    <div className={classes.root}>
+      <FormControl component="fieldset" className={classes.formControl}>
+        <FormGroup className={classes.formGroup}>
           <List dense={true} className={classes.list} style={{columnCount:num_cols}}>
             {[...Array(user.act_proj.features.length).keys()].map(value => {
             return (

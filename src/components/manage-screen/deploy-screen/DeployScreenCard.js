@@ -7,33 +7,26 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: '100%',
-        width: '100%'
+        left: '0px',
+        right: '0px',
+        height: '100%'
     },
     card: {
-        height: '83vh',
-        width: '100%',
-        borderRadius: '5px',
-        marginTop: -25,
-        marginLeft: -3,
-    },
-    cardBox: {
-        marginLeft:'50px',
-        marginTop: '25px',
-        width: '175px',
-        borderRadius: '5px',
+        height: '100%'
     },
     heading: {
         marginTop: '10px',
-        width: '90%',
+        width: '95%',
         marginLeft: 'auto',
         marginRight: 'auto',
         fontSize: 24
     },
     divider: {
-        width: '90%',
+        width: '95%',
         marginLeft: 'auto',
         marginRight: 'auto',
+    },
+    switchesGroup: {
     }
 }));
 
@@ -44,7 +37,7 @@ function DeployScreenCard() {
             <Card className={classes.card}>
                 <Typography className={classes.heading}> Deploy Project </Typography>
                 <Divider className={classes.divider}/>
-                <SwitchesGroup />
+                <SwitchesGroup className={classes.switchesGroup}/>
             </Card>
         </div>
     )
