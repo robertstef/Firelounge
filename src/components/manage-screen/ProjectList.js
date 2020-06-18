@@ -8,13 +8,12 @@ import NativeSelect from '@material-ui/core/NativeSelect'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
     minWidth: 200,
-    height: 25
   },
   component: {
     marginLeft: '75px',
-    height: 50
+    height: 50,
+    marginTop: '10px',
   },
 
 }));
@@ -45,14 +44,15 @@ export default function ProjectList() {
    *               event.target.value equal to the project id.
    */
   const handleChange = (event) => {
-    dispatch({type: 'setActive', args: event.target.value});
-    act_proj_name = user.act_proj.name;
+    if(event.target.value !== 'active'){
+      dispatch({type: 'setActive', args: event.target.value});
+      act_proj_name = user.act_proj.name;
+    }
   };
 
   return (
       <div className={classes.component}>
         <FormControl className={classes.formControl}>
-          <InputLabel >Active Project</InputLabel>
             <NativeSelect
               value={act_proj_name}
               onChange={handleChange}
@@ -60,7 +60,7 @@ export default function ProjectList() {
               style={{height: '25px'}}
             >
             <optgroup label="Active">
-              <option value="active">{act_proj_name}</option>
+              <option value='active'>{act_proj_name}</option>
             </optgroup>
             <optgroup label="Project List">
               {projectList.map((item) => {

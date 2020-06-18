@@ -27,8 +27,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3} style={{padding: '0px'}}>
-          <div >{children}</div>
+        <Box p={3} style={{padding: '0px',left: '0px', top: '0px', height: '100%', width: '100%'}}>
+          <div style={{padding: '0px',left: '0px', top: '0px', height: '100%', width: '100%'}}>{children}</div>
         </Box>
       )}
     </div>
@@ -76,10 +76,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#EDF2F4',
     position: 'absolute',
     left: '0px',
+    top: '0px',
     height: '100%',
     width: '100%',
-    overflow: 'hidden',
-    marginTop: '-8px'
   },
   appbar: {
     height: '100%',

@@ -4,8 +4,7 @@ import ProjectList from './ProjectList.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    display: 'flex',
+    padding: '0px'
   }
 }));
 

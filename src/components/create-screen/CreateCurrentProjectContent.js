@@ -44,7 +44,7 @@ class CreateCurrentProjectContent extends Component{
 
     /* Callback to retrieve the selected path from GetPathButton */
     getSelectedPath = (selectedPath) => {
-        this.setState({projectPath: selectedPath})
+        this.setState({projectPath: selectedPath});
     }
 
     render(){
@@ -52,7 +52,6 @@ class CreateCurrentProjectContent extends Component{
             <div>
                 <div>
                     <Typography variant="h6" gutterBottom>Initialize a Pre-existing Firebase Project</Typography>
-                    
                     <div style={{marginTop:20}}>
                         <TextField
                             style={{width:'80%'}}

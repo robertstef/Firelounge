@@ -9,7 +9,6 @@ import Brightness1OutlinedIcon from '@material-ui/icons/Brightness1Outlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import GetPathButton from "./GetPathButton";
 
-
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -20,6 +19,7 @@ const theme = createMuiTheme({
         }
     }
 });
+
 
 class CreateNewProjectContent extends Component {
 
@@ -33,6 +33,8 @@ class CreateNewProjectContent extends Component {
     btnDisabled() {
         return true
     }
+
+
 
     render() {
         return(

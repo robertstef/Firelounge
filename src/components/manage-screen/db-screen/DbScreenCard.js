@@ -6,19 +6,20 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        left: '0px',
+        right: '0px',
         height: '100%',
-        width: '100%'
     },
     card: {
-        height: '83vh',
-        width: '100%',
-        borderRadius: '5px',
-        marginTop: -25,
-        marginLeft: -3,
-        overflow: 'hidden'
+        height: '100%',
+        padding: '10px'
     },
+    textField: {
+        width: '95%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    }
 }));
-
 
 
 export default function DbScreenCard() {
@@ -31,7 +32,7 @@ export default function DbScreenCard() {
                     label="Query"
                     multiline
                     defaultValue="Default Value"
-                    style={{width: '100%'}}
+                    className={classes.textField}
                 />
                 <DbObjectDisplay/>
             </Card>
