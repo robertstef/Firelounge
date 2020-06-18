@@ -16,9 +16,10 @@ firebase projects:create -n <proj-name> <proj-id>
 
     *******
     Create a google cloud project on firebase (no features)
+        firebase projects:create -n <project-name> <project-id>,
+
     *******
-        - functions, hosting, database are a go
-            - for functions we need a package.json, package-lock.json, index.js)
+
  */
 
 module.exports = {

@@ -42,6 +42,10 @@ class NewProjectExpansion extends Component{
         this.setState({proj_name: e.target.value})
     }
 
+    /**
+     * Handler for the state changing of the config and flag variables for the ExpansionPanel for the new project
+     * @param: feature: the feature being selected
+     */
     handleFeatureSelection(feature) {
         switch(feature) {
             case "hosting":
@@ -53,6 +57,13 @@ class NewProjectExpansion extends Component{
         }
     }
 
+    /**
+     * Handler for the state changing of feature preferences for feature Hosting
+     *  @param e: the event
+     *  @param pref: the preference being changed
+     *         "public-dir" - the public directory choice for hosting
+     *         "single-pg" - the choice of whether the user wants hosting to be configured as a single page app
+     */
     handleHostingPreferences(e, pref) {
         switch (pref) {
             case "public-dir":
@@ -65,9 +76,7 @@ class NewProjectExpansion extends Component{
                 console.log("Invalid Preference");
         }
     }
-
-
-
+    
     render() {
         return (
             <div style={{width: '100%',}}>
