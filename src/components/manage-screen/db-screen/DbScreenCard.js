@@ -8,13 +8,16 @@ const useStyles = makeStyles((theme) => ({
     root: {
         left: '0px',
         right: '0px',
-        height: '100%'
+        height: '100%',
     },
     card: {
-        height: '100%'
+        height: '100%',
+        padding: '10px'
     },
     textField: {
-        width: '100%'
+        width: '95%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
     }
 }));
 

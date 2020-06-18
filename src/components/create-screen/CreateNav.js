@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     left: '0px',
     right: '0px',
-    marginLeft: '51px',
+    marginLeft: '52px',
     top: '0px',
     bottom: '0px',
   },
@@ -103,7 +103,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     width: '100%',
     margin: '15px',
-    marginTop: '10px',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    justifyContent: 'center'
   }
 }));
 
