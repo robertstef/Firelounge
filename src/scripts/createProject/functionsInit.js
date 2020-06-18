@@ -8,8 +8,6 @@ let inputobj = {
     run_npm: true
 };
 
-// Read in file templates
-
 /**
  * Initializes all necessary components for the functions
  * feature when initializing a new firebase project.
@@ -33,14 +31,17 @@ let functionsInit = (path, input) => {
     else {
        // call function for typescript
     }
+
+    // run npm
+    if (input.run_npm) {
+        helpers.npmInstaller(fcns_path);
+    }
 }
 
 /* Just for testing */
-/*
 try {
     let obj = {language:'javascript', eslint:true, run_npm:true};
     functionsInit("/Users/robertstefanyshin/FL_testdir/", obj);
 } catch(err) {
     console.log(err.message);
 }
- */
