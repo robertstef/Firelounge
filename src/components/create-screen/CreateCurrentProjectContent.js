@@ -44,7 +44,7 @@ class CreateCurrentProjectContent extends Component{
 
     /* Callback to retrieve the selected path from GetPathButton */
     getSelectedPath = (selectedPath) => {
-        this.setState({projectPath: selectedPath})
+        this.setState({projectPath: selectedPath});
     }
 
     render(){

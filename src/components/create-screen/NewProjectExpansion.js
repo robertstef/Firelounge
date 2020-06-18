@@ -7,11 +7,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
+import GetPathButton from "./GetPathButton";
 
 class NewProjectExpansion extends Component{
     constructor(props) {
@@ -36,7 +36,6 @@ class NewProjectExpansion extends Component{
     /**
      * Handler for project naming
      * @param: Event e
-     *
      */
     handleProj_Name(e) {
         this.setState({proj_name: e.target.value})
@@ -52,6 +51,9 @@ class NewProjectExpansion extends Component{
                 this.setState({isHostingOpen: !this.state.isHostingOpen});
                 this.setState({config: {...this.state.config, hosting: !this.state.isHostingOpen}});
                 break;
+
+            //  more will be added as we increase feature support
+
             default:
                 console.log("Invalid Feature");
         }
@@ -76,7 +78,8 @@ class NewProjectExpansion extends Component{
                 console.log("Invalid Preference");
         }
     }
-    
+    //TODO: get a directory path for the location of the project initialization
+    //TODO: components styling (if you dare)
     render() {
         return (
             <div style={{width: '100%',}}>

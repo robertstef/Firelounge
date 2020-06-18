@@ -7,9 +7,6 @@
  ◯ Storage: Deploy Cloud Storage security rules (NEED RESOURCE LOCATION)
  ◯ Emulators: Set up local emulators for Firebase features
 
-
-firebase projects:create -n <proj-name> <proj-id>
-
     At then end:
     - create a firebase.json (config file that lists the projects configuration) (CHECK)
     - .firebaserc - stores the project aliases (CHECK)
@@ -24,7 +21,7 @@ firebase projects:create -n <proj-name> <proj-id>
 
 module.exports = {
     newProjectInit_function: function(requestBody) {
-        const proj_name = requestBody.proj_name; // get the project name from the user
+        const proj_name = requestBody.proj_name;
 
         const proj_id = proj_name + "-" + random_hex(); //create a project id
 
@@ -34,13 +31,13 @@ module.exports = {
 
         console.log('Name:', proj_name);
 
+        console.log('Path:', proj_path);
+
         console.log('ID:', proj_id);
 
         console.log('Features:', features);
 
         console.log("RequestBody: ", requestBody);
-
-        const active_path = ''; // this is taken from the user as well
 
         return new Promise((resolve, reject) => {
 
@@ -50,7 +47,7 @@ module.exports = {
 
                     //const create_proj = exec("firebase projects:create -n " +  proj_name +  " " + proj_id, {cwd: active_path});
 
-                    const create_proj = exec("echo \"running my stuff\"");
+                    const create_proj = exec("echo \"running...\""); // for testing
 
                     create_proj.stdin.setEncoding('utf-8');
                     create_proj.stdin.write('n\n');
@@ -82,7 +79,10 @@ module.exports = {
          */
     }
 };
-
+/**
+ * Generate a random 5 digit hex value to ensure a unique project id
+ * @returns {string} - the randomized 5 digit hex value
+ */
 let random_hex = () => {
     var letters = '0123456789abcdef';
     var hex_val = '';
