@@ -52,7 +52,6 @@ class CreateCurrentProjectContent extends Component{
             <div>
                 <div>
                     <Typography variant="h6" gutterBottom>Initialize a Pre-existing Firebase Project</Typography>
-                    
                     <div style={{marginTop:20}}>
                         <TextField
                             style={{width:'80%'}}

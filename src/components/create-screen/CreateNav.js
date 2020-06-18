@@ -13,6 +13,7 @@ import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import NewProjectExpansion from "./NewProjectExpansion";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -144,7 +145,8 @@ export default function SecondaryManageNav() {
         <TabPanel value={value} index={0} >
           <div style={{marginTop: -10}}/>
           <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
-            <CreateNewProjectContent/>
+            {/*<CreateNewProjectContent/>*/}
+            <NewProjectExpansion/>
           </Card>
         </TabPanel>
 

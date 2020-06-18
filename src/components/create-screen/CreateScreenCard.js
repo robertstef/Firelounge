@@ -17,6 +17,7 @@ class CreateScreenCard extends Component{
                             <Grid container spacing={3}>
                                 <Grid item style={{width:'48%'}}>
                                     <CreateNewProjectContent/>
+                                    <NewProjectExpansion/>
                                 </Grid>
                                 <Grid item>
                                     <Divider orientation={'vertical'} style={{height: '87vh'}}/>
