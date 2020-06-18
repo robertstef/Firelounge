@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         height: '100%',
-        padding: '10px'
     },
     textField: {
         width: '95%',
@@ -21,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
+//adding padding to the textfield causes the whole div to overflow the card
+//need to put it in another div or pass down props to label etc. 
 export default function DbScreenCard() {
     const classes = useStyles();
     return(

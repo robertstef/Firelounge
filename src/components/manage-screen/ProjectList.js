@@ -9,11 +9,11 @@ import NativeSelect from '@material-ui/core/NativeSelect'
 const useStyles = makeStyles((theme) => ({
   formControl: {
     minWidth: 200,
+    padding: '10px'
   },
   component: {
     marginLeft: '75px',
     height: 50,
-    marginTop: '10px',
   },
 
 }));
