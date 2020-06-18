@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     position: 'absolute',
-    top: '-45px',
+    top: '-47px',
     right: '15px',
   }
 }));

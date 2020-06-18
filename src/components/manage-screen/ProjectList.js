@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
   },
   component: {
     marginLeft: '75px',
-    height: 50
+    height: 50,
+    marginTop: '10px',
   },
 
 }));
@@ -52,7 +53,6 @@ export default function ProjectList() {
   return (
       <div className={classes.component}>
         <FormControl className={classes.formControl}>
-          <InputLabel >Active Project</InputLabel>
             <NativeSelect
               value={act_proj_name}
               onChange={handleChange}
