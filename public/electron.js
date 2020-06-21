@@ -21,7 +21,6 @@ ipcMain.on('get-path', (event, arg) => {
                             event.reply('new_proj-get-path-reply', "Invalid");
                             ipcMain.removeAllListeners('get-path-reply')
                         });
-
                     } else if (arg === "init-path") {
                         //confirm filepath has .firebaserc file
                         const validDir = require('../src/scripts/validDir.js');

@@ -12,7 +12,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import GetPathButtonNewProject from "./GetPathButtonNewProject";
-import GetPathButton from "./GetPathButton";
+
 
 class NewProjectExpansion extends Component{
     constructor(props) {
@@ -79,6 +79,11 @@ class NewProjectExpansion extends Component{
                 console.log("Invalid Preference");
         }
     }
+
+    handlePathSelection = (path) => {
+        this.setState({proj_path: path})
+    };
+
     //TODO: get a directory path for the location of the project initialization
     //TODO: components styling (if you dare)
     render() {
@@ -97,8 +102,7 @@ class NewProjectExpansion extends Component{
                     />
                 </div>
                 <div style={{marginTop: 10}}/>
-                <GetPathButtonNewProject/>
-                <GetPathButton/>
+                <GetPathButtonNewProject path={this.handlePathSelection}/>
                 <div style={{marginTop: 10}}/>
                 <ExpansionPanel expanded={this.state.isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
                     <ExpansionPanelSummary

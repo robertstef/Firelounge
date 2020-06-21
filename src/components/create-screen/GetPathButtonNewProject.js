@@ -24,6 +24,7 @@ export default function GetPathButton(props) {
                 console.log('Invalid file path')
             } else {
                 //received valid path
+                props.path(arg);
                 setFilePath(arg);
                 //send file path up to CreateCurrentProjectContent via callback function
             }
