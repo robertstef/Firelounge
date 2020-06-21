@@ -11,15 +11,14 @@ export default function GetPathButton(props) {
     var DisplayFilePath = () => {
         if (filePath === ''){
             return 'Select File Path...'
-        } else{
+        } else {
             return filePath;
         }
     };
     /* Send IPC to retrieve the selected filepath */
     const getPathIPC = () =>{
-        ipcRenderer.send("get-path", 'init-path');
-
-        ipcRenderer.on("get-path-reply", (event, arg) => {
+        ipcRenderer.send("get-path", "new-path");
+        ipcRenderer.on("new_proj-get-path-reply", (event, arg) => {
             if(arg === 'Invalid'){
                 //need to add in some error feedback here
                 console.log('Invalid file path')

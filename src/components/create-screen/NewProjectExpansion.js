@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
+import GetPathButtonNewProject from "./GetPathButtonNewProject";
 import GetPathButton from "./GetPathButton";
 
 class NewProjectExpansion extends Component{
@@ -95,6 +96,9 @@ class NewProjectExpansion extends Component{
                         onChange={(e) => this.handleProj_Name(e)}
                     />
                 </div>
+                <div style={{marginTop: 10}}/>
+                <GetPathButtonNewProject/>
+                <GetPathButton/>
                 <div style={{marginTop: 10}}/>
                 <ExpansionPanel expanded={this.state.isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
                     <ExpansionPanelSummary
