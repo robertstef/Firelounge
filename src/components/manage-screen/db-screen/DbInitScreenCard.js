@@ -6,10 +6,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import GetFilePath from './GetDbFilePathButton'
+import GetFilePath from './GetDbFilePathButton';
+import DbStepper from './DbStepper';
 const { shell } = window.require('electron')
-
-
 
 
 export default class DbInitScreenCard extends Component{
@@ -21,10 +20,8 @@ export default class DbInitScreenCard extends Component{
         }
     }
 
-
     /* Callback to retrieve the selected path from GetPathButton */
     getSelectedPath = (selectedPath) => {
-        console.log(selectedPath)
         this.setState({dbPath: selectedPath});
     }
 
@@ -34,25 +31,28 @@ export default class DbInitScreenCard extends Component{
         this.setState({dbName: event.target.value})
     }
 
-
-    openBrowser = () => {
-        shell.openExternal('https://console.firebase.google.com/u/0/project/_/settings/serviceAccounts/adminSDK')
-    }
-
+    /* Saves path to private key, and db name in user file*/
     initialize = () => {
-        console.log('initialize')
-        console.log(this.state.dbName)
-        console.log(this.state.dbPath)
+        //call initialization script here
+        console.log(this.state)
     }
 
     render() {
-        console.log(this.state)
         return(
             <div >
-                <Card >
-                    <Typography > Initialize Database </ Typography>
-                    <Divider />
-                    <Button onClick={this.openBrowser}> Get New Admin Key </Button> 
+                <Card style={{height: '67vh', width: '95%', margin: '10px', borderRadius: '5px', overflow: 'hidden', backgroundColor: '#EDF2F4'}}>
+                    <Typography style={{marginTop: '10px', width: '90%', marginLeft: 'auto', marginRight: 'auto'}}> Initialize Database </ Typography>
+                    <Divider style={{ width: '90%', marginLeft: 'auto',marginRight: 'auto'}} />
+                    <DbStepper/>
+                </Card>
+            </div>
+        )
+    }
+}
+
+
+
+/*
                     <GetFilePath path={this.getSelectedPath}/>
                     <TextField  
                         style={{width:'80%'}}
@@ -64,9 +64,4 @@ export default class DbInitScreenCard extends Component{
                         value={this.state.dbName}
                         onChange={this.handleInput}
                     />
-                    <Button onClick={this.initialize}> Initialize </Button> 
-                </Card>
-            </div>
-        )
-    }
-}
+                    */  
