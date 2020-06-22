@@ -28,6 +28,27 @@ ipcMain.on('get-path', (event, arg) => {
     }
 });
 
+
+/* ****** IPC ********* */
+let dbDialogShown = false; // flag to represent whether the dialog is open or closed
+ipcMain.on('get-db-path', (event, arg) => {
+    if (dbDialogShown === false) {
+        dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openFile"] }).then( function(res) {
+                if (res.canceled === true || res.filePaths.length > 0) {
+                    dbDialogShown = false;
+                    /* TODO: write script to confirm file selected is private key  */
+                    event.reply('get-db-path-reply', res.filePaths[0]);
+                    ipcMain.removeAllListeners('get-db-path-reply')
+                }
+            }
+        );
+        dbDialogShown = true;
+    }
+});
+
+
+
+
 let win;
 
 function createWindow () {
