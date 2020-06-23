@@ -10,7 +10,7 @@
 
 module.exports = {
     createCloudProject_function: function(requestBody) {
-        const proj_name = requestBody[0]; // the project name, given by the user
+        let proj_name = requestBody[0]; // the project name, given by the user
 
         let proj_id = proj_name + "-" + random_hex(); // project id, a name with a hex value associated with, cannot have spaces
 
@@ -18,7 +18,9 @@ module.exports = {
 
         const proj_path = requestBody[1]; // path to location the user intends to store the project
 
-        console.log(proj_id);
+        console.log("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'");
+
+
 
         return new Promise((resolve, reject) => {
 
@@ -26,9 +28,9 @@ module.exports = {
 
                     var response;
 
-                    //const create_proj = exec("firebase projects:create -n " +  proj_name +  " " + proj_id, {cwd: proj_path});
+                    const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
 
-                    const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
+                    //const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
 
                     create_proj.stdin.setEncoding('utf-8');
                     create_proj.stdin.write('n\n');
@@ -47,6 +49,7 @@ module.exports = {
                     //when child is finished, resolve the promise
                     create_proj.on('close', (code) => {
                         if(code === 0) {
+                            console.log("PROJECT HAS BEEN CREATED!!!");
                             resolve(response);
                         } else {
                             reject(code)

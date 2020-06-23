@@ -7,5 +7,7 @@
 module.exports = {
     initFireBasejson_function: function(requestBody) {
 
+        const proj_path = requestBody.path // the path of the users project
+
     }
 }
