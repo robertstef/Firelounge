@@ -1,7 +1,11 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 
-
+/*
+Gets the selected file path of the firebase admin private key
+Props:
+    path = callback function to retreive the path name
+*/
 export default function GetPathButton(props) {
     const {ipcRenderer} = window.require('electron');
     
@@ -24,10 +28,10 @@ export default function GetPathButton(props) {
                 //need to add in some error feedback here
                 console.log('Invalid file path')
             } else {
-                //received valid path
+                //updates the display of the file path
                 setFilePath(arg);
+                //updates the state of the stepper
                 props.path(arg)
-                //send file path up to CreateCurrentProjectContent via callback function
                 
             }
         });

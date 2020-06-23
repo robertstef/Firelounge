@@ -5,9 +5,6 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
 
@@ -74,14 +71,19 @@ export default function VerticalLinearStepper() {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    //if last step - call script to insert database name and path into user file
+    if(activeStep === 2) {
+      console.log('call script here..')
+      console.log(dbPath)
+      console.log(dbName)
+    }
+
+
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   /* Callback to retrieve the selected path from GetPathButton */
@@ -90,15 +92,13 @@ export default function VerticalLinearStepper() {
     setdbPath(selectedPath);
   }
 
-  /* Used to get the input from the textfield for the project name */
+  /* Callback used to retrieve the input from the textfield for the database name */
    const [dbName, setdbName] = React.useState('');
    const handleInput = (event) => {
       setdbName(event);   
     }
 
 
-  console.log(dbPath)
-  console.log(dbName)
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical" className={classes.stepper}>
