@@ -154,12 +154,12 @@ class NewProjectExpansion extends Component{
 
                 <Button onClick={() => {
                     // NOTE: having the boolean variables for isFeatureXOpen is not necessary
-                    const newProjectModule = require('../../scripts/createProject/newProjectInit');
-                    newProjectModule.newProjectInit_function(this.state).then((output) => {
+                    const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
+                    createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path]).then((output) => {
                         console.log(output) // log the data for the sake of viewing the result
                     }).catch(err => {
                         console.log(err);
-                    })
+                    });
                 }}>
                     Submit
                 </Button>
