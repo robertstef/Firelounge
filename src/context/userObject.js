@@ -61,6 +61,7 @@ export default class User {
             res.name = this._projs[this._act_proj].name;
             res.path = this._projs[this._act_proj].path;
             res.features = this._projs[this._act_proj].features;
+            res.database = this._projs[this._act_proj].database;
             return res;
         }
     }
@@ -96,6 +97,7 @@ export default class User {
                 res.name = proj.name;
                 res.path = proj.path;
                 res.features = proj.features;
+                res.database = proj.database
 
                 projects.push(res)
             }

@@ -33,12 +33,16 @@ let test_user = () => {
         },
         benbaker: {
             uname: "benbaker",
-            act_proj: "benstestproject",
+            act_proj: "bensnewproject",
             projs: {
                 bensnewproject: {
                     name: "bensnewproject",
                     features: ["hosting", "database"],
-                    path: "/Users/benbaker/FL_testdir/bensnewproject"
+                    path: "/Users/benbaker/FL_testdir/bensnewproject",
+                    database: [
+                        { name: "Test Database", path: "/Users/benbaker/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json" },
+                        { name: "Test Database2", path: "/Users/benbaker/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json" }
+                    ]
                 },
                 benstestproject: {
                     name: "benstestproject",
