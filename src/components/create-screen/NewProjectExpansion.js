@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -11,7 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
-import GetPathButton from "./GetPathButton";
+import GetPathButtonNewProject from "./GetPathButtonNewProject";
+
 
 class NewProjectExpansion extends Component{
     constructor(props) {
@@ -78,6 +78,11 @@ class NewProjectExpansion extends Component{
                 console.log("Invalid Preference");
         }
     }
+
+    handlePathSelection = (path) => {
+        this.setState({proj_path: path})
+    };
+
     //TODO: get a directory path for the location of the project initialization
     //TODO: components styling (if you dare)
     render() {
@@ -95,6 +100,8 @@ class NewProjectExpansion extends Component{
                         onChange={(e) => this.handleProj_Name(e)}
                     />
                 </div>
+                <div style={{marginTop: 10}}/>
+                <GetPathButtonNewProject path={this.handlePathSelection}/>
                 <div style={{marginTop: 10}}/>
                 <ExpansionPanel expanded={this.state.isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
                     <ExpansionPanelSummary
@@ -146,12 +153,12 @@ class NewProjectExpansion extends Component{
 
                 <Button onClick={() => {
                     // NOTE: having the boolean variables for isFeatureXOpen is not necessary
-                    const newProjectModule = require('../../scripts/createProject/newProjectInit');
-                    newProjectModule.newProjectInit_function(this.state).then((output) => {
+                    const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
+                    createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path]).then((output) => {
                         console.log(output) // log the data for the sake of viewing the result
                     }).catch(err => {
                         console.log(err);
-                    })
+                    });
                 }}>
                     Submit
                 </Button>
