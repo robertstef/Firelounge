@@ -22,7 +22,7 @@ class NewProjectExpansion extends Component{
             isHostingOpen: false,
             hosting: {
                 public_dir: '',
-                single_page_app: false,
+                single_page_app: null,
             },
             config: {
                 hosting: false,
@@ -143,6 +143,7 @@ class NewProjectExpansion extends Component{
                             <div style={{marginTop: 10}}/>
                             <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
                                 <Select value={this.state.hosting.single_page_app} onChange={(e) => this.handleHostingPreferences(e, "single-pg")}>
+                                    <MenuItem value={null}></MenuItem>
                                     <MenuItem value={true}>Yes</MenuItem>
                                     <MenuItem value={false}>No</MenuItem>
                                 </Select>
@@ -152,10 +153,11 @@ class NewProjectExpansion extends Component{
                 </ExpansionPanel>
 
                 <Button onClick={() => {
-                    // NOTE: having the boolean variables for isFeatureXOpen is not necessary
                     const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
                     createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path]).then((output) => {
-                        console.log(output) // log the data for the sake of viewing the result
+                        console.log(output); // log the data for the sake of viewing the result
+                        const initFirebase = require('../../scripts/createProject/initFirebasejson');
+                        initFirebase.initFireBasejson_function(this.state)
                     }).catch(err => {
                         console.log(err);
                     });

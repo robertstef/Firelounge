@@ -18,19 +18,15 @@ module.exports = {
 
         const proj_path = requestBody[1]; // path to location the user intends to store the project
 
-        console.log("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'");
-
-
-
         return new Promise((resolve, reject) => {
 
                     const {exec} = window.require('child_process');
 
                     var response;
 
-                    const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
+                    //const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
 
-                    //const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
+                    const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
 
                     create_proj.stdin.setEncoding('utf-8');
                     create_proj.stdin.write('n\n');
