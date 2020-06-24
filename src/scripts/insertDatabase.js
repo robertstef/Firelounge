@@ -15,16 +15,14 @@ module.exports = {
 
         	
         	var db_obj = {
-        		[dbName]: filepath
+        		name: dbName,
+                path: filepath
         	}
 
         	try {
         		var json = fs.readFileSync(`${path.join(remote.app.getAppPath(), 'src/Users/' + username + '.json')}`)	
         		json = JSON.parse(json)
         		
-        		//get active project
-        		console.log(active_proj)
-        		console.log(json['projs'][active_proj])
 
         		if(json['projs'][active_proj]['database'] === undefined) {
         			json['projs'][active_proj]['database'] = []
