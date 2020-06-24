@@ -1,15 +1,1 @@
-{
-	"act_proj": "projectid1",
-	"projs": {
-		"projectid1": {
-			"name": "project1",
-			"path": "~/Documents",
-			"features": "H"
-		},
-		"projectid2": {
-			"name": "project2",
-			"path": "~/Documents",
-			"features": "H"
-		}
-	}
-}
+{"act_proj":"benstestproject","projs":{"bensnewproject":{"name":"bensnewproject","features":["hosting","database"],"path":"/Users/benbaker/FL_testdir/bensnewproject"},"benstestproject":{"name":"benstestproject","features":["hosting"],"path":"/Users/benbaker/FL_testdir/benstestproject","database":[{"asdf":"/Users/benbaker/Desktop/IMG_0930 (2).jpeg"}]}}}

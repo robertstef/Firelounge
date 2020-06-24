@@ -7,6 +7,7 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
+import {UserState} from '../../../context/userContext'
 
 const { shell } = window.require('electron')
 
@@ -70,6 +71,7 @@ function getStepContent(step, pathCallback, inputCallback) {
 }
 
 export default function VerticalLinearStepper() {
+  const {user} = UserState();
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -79,9 +81,14 @@ export default function VerticalLinearStepper() {
 
     //if last step - call script to insert database name and path into user file
     if(activeStep === 2) {
-      console.log('call script here..')
-      console.log(dbPath)
-      console.log(dbName)
+      const insertDatabase_module = require('../../../scripts/insertDatabase.js')
+        
+        insertDatabase_module.insertDatabase_function(dbPath, dbName, 'testusername', user.act_proj.id).then((output) => {
+                console.log('Success!')
+                console.log(output)
+            }).catch(err => {
+                console.log(err)
+            });
     }
 
 
