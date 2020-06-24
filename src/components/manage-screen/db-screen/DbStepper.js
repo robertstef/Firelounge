@@ -18,19 +18,20 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    backgroundColor: '#8d99ae'
   },
   actionsContainer: {
     marginBottom: theme.spacing(2),
     backgroundColor: '#EDF2F4'
   },
   stepper: {
-    backgroundColor: '#EDF2F4'
+    backgroundColor: '#EDF2F4',
   },
   step: {
-    backgroundColor: '#EDF2F4'
   },
   stepContent: {
-    backgroundColor: '#EDF2F4'
+  },
+  stepLabel: {
   }
 }));
 
@@ -40,7 +41,7 @@ const openBrowser = () => {
     }
 
 function getSteps() {
-  return ['Generate New Key', 'Import Key', 'Create Name'];
+  return ['Generate Admin Key', 'Select the filepath to your Firebase Admin Key', 'Create Name for Database'];
 }
 
 function getStepContent(step, pathCallback, inputCallback) {
@@ -48,7 +49,11 @@ function getStepContent(step, pathCallback, inputCallback) {
     case 0:
       return (
         <div>
-          <Button onClick={openBrowser}> Get New Admin Key </Button> 
+          <p> If you don't already have a Firebase Admin Key on your local machine, 'Get Key' will open Firebase console where you can: </p>
+          <p> a) Select your current project </p> 
+          <p> b) Select 'Generate New Key' </p> 
+          <p> c) Store key in safe location </p> 
+          <Button variant="contained" color="secondary" onClick={openBrowser}> Get New Key </Button> 
         </div>
         )
     case 1:
@@ -103,8 +108,8 @@ export default function VerticalLinearStepper() {
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical" className={classes.stepper}>
         {steps.map((label, index) => (
-          <Step key={label} className={classes.step}>
-            <StepLabel>{label}</StepLabel>
+          <Step key={label} >
+            <StepLabel classes={{root: classes.stepLabel, completed: classes.completed, active:classes.active}}>{label}</StepLabel>
             <StepContent className={classes.stepContent}>
               <div>{getStepContent(index, getSelectedPath, handleInput)}</div>
               <div className={classes.actionsContainer}>
@@ -118,6 +123,7 @@ export default function VerticalLinearStepper() {
                   </Button>
                   <Button
                     variant="contained"
+                    disabled={activeStep === 1 && dbPath === '' || activeStep === 2 && dbName === ''  }
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}

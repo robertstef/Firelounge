@@ -18,11 +18,12 @@ export default function DbNameInput(props) {
 
     return(
         <div style={{marginTop:10}}>
+            <p> Give a display name for your Database in Firelounge </p>
             <TextField  
                 style={{width:'80%'}}
                 id="outlined-size-small"
                 size={'small'}
-                placeholder="Enter the Name of your Database"
+                placeholder="..."
                 variant={"outlined"}
                 color={'secondary'}
                 value={dbName}
