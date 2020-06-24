@@ -71,6 +71,8 @@ module.exports = {
             }
         });
 
+        //TODO add project to the userObject
+
         const fs = window.require('fs');
 
         let fbjson_path = proj_path + '/firebase.json';
