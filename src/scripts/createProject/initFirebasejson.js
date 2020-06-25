@@ -27,9 +27,9 @@ module.exports = {
 
         const fs = window.require('fs');
 
-        const user_obj = require('../../context/userObject');
-
         const proj_path = requestBody.proj_path; // the path of the users project
+
+        console.log(requestBody.proj_id);
 
         let firebase = {}; // the firebase.json object we will be writing
 
@@ -89,6 +89,11 @@ module.exports = {
 
         //TODO add project to the userObject
 
+        // {id: "", name: "", path: ""}
+
+        let new_proj = {
+
+        }
 
         let fbjson_path = proj_path + '/firebase.json';
 

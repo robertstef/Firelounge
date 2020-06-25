@@ -23,6 +23,8 @@ class NewProjectExpansion extends Component{
         this.state = {
             proj_name: '',
             proj_path: '',
+            proj_id: '',
+            hex: this.random_hex(),
             isHostingOpen: false,
             hosting: {
                 public_dir: '',
@@ -43,6 +45,7 @@ class NewProjectExpansion extends Component{
      */
     handleProj_Name(e) {
         this.setState({proj_name: e.target.value});
+        this.setState({proj_id: `${e.target.value.replace(/\s+/g, '-').toLowerCase()}-` + this.state.hex})
     }
 
 
@@ -74,9 +77,7 @@ class NewProjectExpansion extends Component{
                 console.log("Invalid Feature");
         }
     }
-
-
-
+    
     /**
      * Handler for the state changing of feature preferences for feature Hosting
      *  @param e: the event
@@ -172,7 +173,7 @@ class NewProjectExpansion extends Component{
 
                 <Button onClick={() => {
                     const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
-                    createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path, this.state.proj_name.replace(/\s+/g, '-').toLowerCase() + "-" + this.random_hex()]).then((output) => {
+                    createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path, this.state.proj_id]).then((output) => {
                         console.log(output); // log the data for the sake of viewing the result
                         const initFirebase = require('../../scripts/createProject/initFirebasejson');
                         initFirebase.initFireBasejson_function(this.state)
