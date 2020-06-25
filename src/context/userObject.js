@@ -61,7 +61,8 @@ export default class User {
             res.name = this._projs[this._act_proj].name;
             res.path = this._projs[this._act_proj].path;
             res.features = this._projs[this._act_proj].features;
-            res.database = this._projs[this._act_proj].database;
+            res.db_all = this._projs[this._act_proj].database.all;
+            res.db_active = this._projs[this._act_proj].database.active;
             return res;
         }
     }
@@ -97,7 +98,8 @@ export default class User {
                 res.name = proj.name;
                 res.path = proj.path;
                 res.features = proj.features;
-                res.database = proj.database
+                res.db_all = proj.db_all
+                res.db_active = proj.db_active
 
                 projects.push(res)
             }

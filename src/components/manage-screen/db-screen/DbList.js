@@ -26,13 +26,16 @@ export default function DbList() {
   // Context variables
   const {user} = UserState();
 
+
+  console.log(user.act_proj)
   let dbList = [];
-  let act_db_name = user.act_proj.database[0].name; // name of current active project
-  const dbs = user.act_proj.database; // current firelounge projects
+  let act_db_name = user.act_proj.db_active;
+  const dbs = user.act_proj.db_all; 
 
   for (let i of Object.keys(dbs)) {
     // For handleChange events.target.value is set to the project ID
-    let item = <option key={i} value={dbs[i].name}> {dbs[i].name} </option>;
+    console.log(i)
+    let item = <option key={i} value={i}> {i} </option>;
     dbList.push(item);
   }
 
@@ -43,7 +46,7 @@ export default function DbList() {
    *               event.target.value equal to the project id.
    */
   const handleChange = (event) => {
-    console.log(event.target.value)
+    //insert context dispatch here to rerender list
     act_db_name = event.target.value
   };
 
