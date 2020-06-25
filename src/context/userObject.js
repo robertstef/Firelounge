@@ -162,7 +162,7 @@ export default class User {
         }
 
         // add project to firelounge
-        this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features};
+        this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features, database: {active: '', all:{} }};
 
         // update user file
         this._writeUfile();
