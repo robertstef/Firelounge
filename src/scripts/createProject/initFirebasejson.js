@@ -25,13 +25,15 @@ config:
 module.exports = {
     initFireBasejson_function: function(requestBody) {
 
+        const fs = window.require('fs');
+
+        const user_obj = require('../../context/userObject');
+
         const proj_path = requestBody.proj_path; // the path of the users project
 
         let firebase = {}; // the firebase.json object we will be writing
 
         const features = requestBody.config; // the features that the project will have
-
-        console.log(requestBody);
 
         let options_arr = Object.keys(features)  //get the features for the project
             .filter(function(k){return features[k]})
@@ -47,6 +49,20 @@ module.exports = {
                     const options = requestBody[value];
 
                     //TODO: check that the selected public dir exists in the cwd, if yes, use that directory, else create directory with an index.html file
+
+                    let public_dir = `${proj_path}/${options.public_dir}`;
+
+                    if (!fs.existsSync(public_dir)){    // if the dir doesnt exist
+                        fs.mkdirSync(public_dir);   // create it
+                    } else {
+                        // the folder exists check for the index.html, if it exists, do we overwrite?
+                        if (!fs.existsSync(`${public_dir}/index.html`)) {
+                            //the index.html doesnt exist so use Googles default
+                        } else {
+                            // the index.html file exists (probably want to use it)
+                            //TODO possibly prompt the user and somehow ask if they want to use this index.html or the default
+                        }
+                    }
 
                     firebase[value] = {
                         "public": options.public_dir,
@@ -73,7 +89,10 @@ module.exports = {
 
         //TODO add project to the userObject
 
-        const fs = window.require('fs');
+        const proj = {
+            id: `${requestBody.proj_id}`
+        };
+
 
         let fbjson_path = proj_path + '/firebase.json';
 

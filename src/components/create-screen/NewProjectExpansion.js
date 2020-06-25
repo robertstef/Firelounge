@@ -12,6 +12,18 @@ import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import GetPathButtonNewProject from "./GetPathButtonNewProject";
 
+/**
+ * Generate a random 5 digit hex value to ensure a unique project id
+ * @returns {string} - the randomized 5 digit hex value
+ */
+let random_hex = () => {
+    var letters = '0123456789abcdef';
+    var hex_val = '';
+    for (var i = 0; i < 5; i++) {
+        hex_val += letters[Math.floor(Math.random() * 16)];
+    }
+    return hex_val;
+};
 
 class NewProjectExpansion extends Component{
     constructor(props) {
@@ -38,8 +50,10 @@ class NewProjectExpansion extends Component{
      * @param: Event e
      */
     handleProj_Name(e) {
-        this.setState({proj_name: e.target.value})
+        this.setState({proj_name: e.target.value});
     }
+
+
 
     /**
      * Handler for the state changing of the config and flag variables for the ExpansionPanel for the new project
@@ -57,6 +71,17 @@ class NewProjectExpansion extends Component{
             default:
                 console.log("Invalid Feature");
         }
+    }
+
+
+
+    async set_id() {
+        // let proj_id = this.state.proj_name + "-" + random_hex(); // project id, a name with a hex value associated with, cannot have spaces
+        //
+        // proj_id = proj_id.replace(/\s+/g, '-').toLowerCase(); // format "the-name-e84ef"
+        //
+        // this.setState({proj_id: proj_id});
+
     }
 
     /**
@@ -154,10 +179,10 @@ class NewProjectExpansion extends Component{
 
                 <Button onClick={() => {
                     const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
-                    createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path]).then((output) => {
+                    createCloudProj.createCloudProject_function([this.state.proj_name, this.state.proj_path, this.state.proj_name.replace(/\s+/g, '-').toLowerCase() + "-" + random_hex()]).then((output) => {
                         console.log(output); // log the data for the sake of viewing the result
-                        const initFirebase = require('../../scripts/createProject/initFirebasejson');
-                        initFirebase.initFireBasejson_function(this.state)
+                        //const initFirebase = require('../../scripts/createProject/initFirebasejson');
+                        //initFirebase.initFireBasejson_function(this.state)
                     }).catch(err => {
                         console.log(err);
                     });
