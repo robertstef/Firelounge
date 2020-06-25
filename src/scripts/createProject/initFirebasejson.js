@@ -89,10 +89,6 @@ module.exports = {
 
         //TODO add project to the userObject
 
-        const proj = {
-            id: `${requestBody.proj_id}`
-        };
-
 
         let fbjson_path = proj_path + '/firebase.json';
 
