@@ -130,7 +130,7 @@ export default function VerticalLinearStepper() {
                   </Button>
                   <Button
                     variant="contained"
-                    disabled={activeStep === 1 && dbPath === '' || activeStep === 2 && dbName === ''  }
+                    disabled={ (activeStep === 1 && dbPath === '') || ( activeStep === 2 && dbName === '' )  }
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}

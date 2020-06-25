@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import {UserDispatch, UserState} from '../../../context/userContext'
 import NativeSelect from '@material-ui/core/NativeSelect'
 
@@ -27,14 +26,12 @@ export default function DbList() {
   const {user} = UserState();
 
 
-  console.log(user.act_proj)
   let dbList = [];
   let act_db_name = user.act_proj.db_active;
   const dbs = user.act_proj.db_all; 
 
   for (let i of Object.keys(dbs)) {
     // For handleChange events.target.value is set to the project ID
-    console.log(i)
     let item = <option key={i} value={i}> {i} </option>;
     dbList.push(item);
   }
@@ -62,7 +59,7 @@ export default function DbList() {
             <optgroup label="Active">
               <option value='active'>{act_db_name}</option>
             </optgroup>
-            <optgroup label="Project List">
+            <optgroup label="Database List">
               {dbList.map((item) => {
                 return (
                     item
