@@ -22,14 +22,6 @@ config:
     functions: false
  */
 
-/*
-{
-  "projects": {
-    "default": "jacksonschulerwebsite-9e17c"
-  }
-}
-
- */
 
 module.exports = {
     initFireBasejson_function: function(requestBody) {
@@ -68,11 +60,21 @@ module.exports = {
                     let public_dir = `${proj_path}/${options.public_dir}`;
 
                     if (!fs.existsSync(public_dir)){    // if the dir doesnt exist
-                        fs.mkdirSync(public_dir);   // create it
+                        fs.mkdirSync(public_dir);   // create the directory and add the index.html file
+                        fs.copyFile('src/template/index.html', `${public_dir}/index.html`, (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
                     } else {
                         // the folder exists check for the index.html, if it exists, do we overwrite?
                         if (!fs.existsSync(`${public_dir}/index.html`)) {
                             //the index.html doesnt exist so use Googles default
+                            fs.copyFile('src/template/index.html', `${public_dir}/index.html`, (err) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            });
                         } else {
                             // the index.html file exists (probably want to use it)
                             //TODO possibly prompt the user and somehow ask if they want to use this index.html or the default
@@ -97,21 +99,20 @@ module.exports = {
                         }]
                     } else {
                         //provide Google's 404.html file in public directory
-
-
-
+                        fs.copyFile('src/template/404.html', `${public_dir}/404.html`, (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
                     }
                     break;
             }
         });
 
-        //TODO create the .firebaserc file
+        let fbjson_path = proj_path + '/firebase.json'; // path to the firebase.json file
 
-        let fbjson_path = proj_path + '/firebase.json';
-
-        let fbrc_path = proj_path + '/.firebaserc';
-
-
+        let fbrc_path = proj_path + '/.firebaserc'; // path to the .firebaserc file
+        
         fs.writeFile(fbrc_path, JSON.stringify(firebaserc, null, 4), function (err, data) {
             if (err) {
                 console.log(err);
