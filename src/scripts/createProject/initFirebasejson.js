@@ -22,6 +22,15 @@ config:
     functions: false
  */
 
+/*
+{
+  "projects": {
+    "default": "jacksonschulerwebsite-9e17c"
+  }
+}
+
+ */
+
 module.exports = {
     initFireBasejson_function: function(requestBody) {
 
@@ -35,7 +44,11 @@ module.exports = {
 
         let firebase = {}; // the firebase.json object we will be writing
 
+        let firebaserc = {}; // the .firebaserc object we will be writing
+
         const features = requestBody.config; // the features that the project will have
+
+        firebaserc['projects'] = {'default': proj_id};
 
         let options_arr = Object.keys(features)  //get the features for the project
             .filter(function(k){return features[k]})
@@ -92,9 +105,18 @@ module.exports = {
             }
         });
 
+        //TODO create the .firebaserc file
+
         let fbjson_path = proj_path + '/firebase.json';
 
-        console.log("Writing firebase.json file....");
+        let fbrc_path = proj_path + '/.firebaserc';
+
+
+        fs.writeFile(fbrc_path, JSON.stringify(firebaserc, null, 4), function (err, data) {
+            if (err) {
+                console.log(err);
+            }
+        });
 
         fs.writeFile(fbjson_path, JSON.stringify(firebase,null, 4),  function (err, data) {
             if (err) {
