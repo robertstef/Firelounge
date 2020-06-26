@@ -77,7 +77,7 @@ class NewProjectExpansion extends Component{
                 console.log("Invalid Feature");
         }
     }
-    
+
     /**
      * Handler for the state changing of feature preferences for feature Hosting
      *  @param e: the event

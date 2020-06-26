@@ -29,7 +29,9 @@ module.exports = {
 
         const proj_path = requestBody.proj_path; // the path of the users project
 
-        console.log(requestBody.proj_id);
+        const proj_id = requestBody.proj_id;
+
+        const proj_name = requestBody.proj_name;
 
         let firebase = {}; // the firebase.json object we will be writing
 
@@ -82,28 +84,38 @@ module.exports = {
                         }]
                     } else {
                         //provide Google's 404.html file in public directory
+
+
+
                     }
                     break;
             }
+        });
+
+        let fbjson_path = proj_path + '/firebase.json';
+
+        console.log("Writing firebase.json file....");
+
+        fs.writeFile(fbjson_path, JSON.stringify(firebase,null, 4),  function (err, data) {
+            if (err) {
+               console.log(err)
+           }
         });
 
         //TODO add project to the userObject
 
         // {id: "", name: "", path: ""}
 
+        // this needs to happen AFTER the files have been written
+
         let new_proj = {
+            id: `${proj_id}`,
+            name: `${proj_name}`,
+            path: `${proj_path}`
+        };
 
-        }
 
-        let fbjson_path = proj_path + '/firebase.json';
 
-        console.log("Writing firebase.json file....");
-
-        fs.writeFile(fbjson_path, JSON.stringify(firebase,null, 4), function (err, data) {
-           if (err) {
-               console.log(err)
-           }
-        });
         //TODO some sort of confirmation message that the project has been created
     }
 };
