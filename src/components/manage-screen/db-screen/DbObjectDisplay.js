@@ -1,4 +1,4 @@
-import React, { Component} from 'react'
+import React, {useState, useEffect} from 'react'
 import ReactJson from 'react-json-view';
 
 
@@ -34,7 +34,7 @@ function diff(obj1, obj2) {
 var admin = window.require("firebase-admin");
 
 // Fetch the service account key JSON file contents
-let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json');
+let serviceAccount = require('../../../Users/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json');
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
@@ -48,24 +48,21 @@ var ref = db.ref();
 
 
 
-export default class DbObjectDisplay extends Component {
-    state={
-        //object that displayed
-        src: {}
-    }
+export default function DbObjectDisplay() {
+    const [objectSrc, setObjectSrc] = useState({})
     
-    componentDidMount() {
+    useEffect(() => {
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
-            this.setState({src: snapshot.val()})
-        });
-    };
+            setObjectSrc(snapshot.val())
+        })
+    }, [] );
 
     /* 
         When object is edited...
         Updates the reference in Firebase
     */
-    makeEdit(result){
+    const makeEdit = (result) => {
         /*
             create string to traverse json object and update in firebase
             namespace = array of keys to get to changed value
@@ -91,7 +88,7 @@ export default class DbObjectDisplay extends Component {
         Actual null entries arent allowed in firebase 
         Need to find a solution to adding nested components
     */
-    makeAdd(result){
+    const makeAdd = (result) => {
         /*
         Create string to traverse json object and update in firebase
         namespace = array of keys to get to added value
@@ -126,7 +123,7 @@ export default class DbObjectDisplay extends Component {
         Updates reference in firebase
         Concats a string to find element and removes it
     */
-    makeDelete(result){
+    const makeDelete = (result) => {
         /*
         Create string to traverse json object and update in firebase
         namespace = array of keys to get to deleted element
@@ -140,47 +137,53 @@ export default class DbObjectDisplay extends Component {
             query_string += '/'
         }
         
-        //traverse and delete child
-        db.ref(query_string).child(result.name).remove();  
-
+        //if deleting an item from the root
+        if(query_string === '') {
+            console.log('here')
+            db.ref().child(result.name).remove();      
+        } else {
+            // traverse and delete child
+            db.ref(query_string).child(result.name).remove();  
+        }
+        
     }
 
 
 
-    render() {
-        var onEdit = true
-        var onAdd = true
-        var onDelete = true
 
-        return(
-            <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
-                <ReactJson 
-                    name={false}
-                    src={this.state.src}
-                    collapsed={1}
-                    onEdit={   
-                        onEdit
-                            ? result => {
-                                  this.makeEdit(result)
-                              }
-                            : false
-                        }
-                    onAdd={
-                        onAdd
-                            ? result => {
-                                  this.makeAdd(result)
-                              }
-                            : false
+    var onEdit = true
+    var onAdd = true
+    var onDelete = true
+
+    return(
+        <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
+            <ReactJson 
+                name={false}
+                src={objectSrc }
+                collapsed={1}
+                onEdit={   
+                    onEdit
+                        ? result => {
+                                makeEdit(result)
+                            }
+                        : false
                     }
-                    onDelete={
-                        onDelete
-                            ? result => {
-                                  this.makeDelete(result)
-                              }
-                            : false
-                    }
-                />
-            </div>
-        )
-    }
+                onAdd={
+                    onAdd
+                        ? result => {
+                                makeAdd(result)
+                            }
+                        : false
+                }
+                onDelete={
+                    onDelete
+                        ? result => {
+                                makeDelete(result)
+                            }
+                        : false
+                }
+            />
+        </div>
+    )
 }
+
