@@ -26,6 +26,8 @@ config:
 module.exports = {
     initFireBasejson_function: function(requestBody) {
 
+        console.log("init firebase");
+
         const fs = window.require('fs');
 
         const proj_path = requestBody.proj_path; // the path of the users project
@@ -43,12 +45,14 @@ module.exports = {
         firebaserc['projects'] = {'default': proj_id};
 
         let options_arr = Object.keys(features)  //get the features for the project
-            .filter(function(k){return features[k]})
+            .filter(function (k) {
+                return features[k]
+            })
             .map(String);
 
         options_arr.forEach((value, index, array) => {
 
-            switch(value) {
+            switch (value) {
                 case "hosting":
                     // full hosting config
                     // https://firebase.google.com/docs/hosting/full-config
@@ -59,7 +63,7 @@ module.exports = {
 
                     let public_dir = `${proj_path}/${options.public_dir}`;
 
-                    if (!fs.existsSync(public_dir)){    // if the dir doesnt exist
+                    if (!fs.existsSync(public_dir)) {    // if the dir doesnt exist
                         fs.mkdirSync(public_dir);   // create the directory and add the index.html file
                         fs.copyFile('src/template/index.html', `${public_dir}/index.html`, (err) => {
                             if (err) {
@@ -112,33 +116,28 @@ module.exports = {
         let fbjson_path = proj_path + '/firebase.json'; // path to the firebase.json file
 
         let fbrc_path = proj_path + '/.firebaserc'; // path to the .firebaserc file
-        
-        fs.writeFile(fbrc_path, JSON.stringify(firebaserc, null, 4), function (err, data) {
-            if (err) {
-                console.log(err);
-            }
-        });
 
-        fs.writeFile(fbjson_path, JSON.stringify(firebase,null, 4),  function (err, data) {
-            if (err) {
-               console.log(err)
-           }
-        });
+        fs.writeFileSync(fbrc_path, JSON.stringify(firebaserc, null, 4));
 
-        //TODO add project to the userObject
-
-        // {id: "", name: "", path: ""}
-
-        // this needs to happen AFTER the files have been written
-
-        let new_proj = {
-            id: `${proj_id}`,
-            name: `${proj_name}`,
-            path: `${proj_path}`
-        };
-
-
-
+        fs.writeFileSync(fbjson_path, JSON.stringify(firebase, null, 4));
         //TODO some sort of confirmation message that the project has been created
     }
 };
+
+// let fbjson_path = proj_path + '/firebase.json'; // path to the firebase.json file
+//
+// let fbrc_path = proj_path + '/.firebaserc'; // path to the .firebaserc file
+//
+// fs.writeFileSync(fbrc_path, JSON.stringify(firebaserc, null, 4), function (err, data) {
+//     console.log('.firebaserc');
+//     if (err) {
+//         console.log(err);
+//     }
+// });
+//
+// fs.writeFileSync(fbjson_path, JSON.stringify(firebase,null, 4),  function (err, data) {
+//     console.log("firebase.json");
+//     if (err) {
+//         console.log(err)
+//     }
+// });

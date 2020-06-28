@@ -11,6 +11,8 @@
 module.exports = {
     deployProject_function: function(requestBody) {
 
+        //TODO get the active project from the user and deploy that
+
         const {exec} = window.require('child_process');
 
         //var user_json = require('../Users/' + username + '.json');
@@ -18,6 +20,8 @@ module.exports = {
         var user_json = require("../Users/testusername.json"); // just use the testing json for now
 
         var active_proj = 'benstestproject'; // get the active project of the current user
+
+        const project_id = "...";
 
         if (active_proj === undefined) {
             console.log("NO ACTIVE PROJECT");
@@ -33,7 +37,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             var response;
             if (deploy_options.all === true) {
-                const deploy_all = exec("firebase deploy", {cwd: active_path});
+                const deploy_all = exec("firebase -P " + project_id + " deploy", {cwd: active_path});
 
                 deploy_all.stdin.setEncoding('utf-8');
                 deploy_all.stdin.write('n\n');
