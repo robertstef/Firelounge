@@ -162,12 +162,12 @@ exports.writeInitFilesJs = (fcns_path, input) => {
 }
 
 /**
- * Install the dependencies for the functions
- * @param fcns_dir
+ * Installs the dependencies for the given directory.
+ * @param dirpath: path to directory we want to init
  */
-exports.npmInstaller = (fcns_dir) => {
+exports.npmInstaller = (dirpath) => {
     let installer = spawn("npm", ["install"], {
-        cwd: fcns_dir.valueOf(),
+        cwd: dirpath,
         stdio: "inherit",
     });
 
