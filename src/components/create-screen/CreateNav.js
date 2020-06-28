@@ -13,6 +13,7 @@ import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import NewProjectExpansion from "./NewProjectExpansion";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,19 +72,19 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexGrow: 1,
     backgroundColor: 'inherit',
     position: 'absolute',
-    left: '51px',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%'
+    display: 'flex',
+    left: '0px',
+    right: '0px',
+    marginLeft: '52px',
+    top: '0px',
+    bottom: '0px',
   },
   appbar: {
-    height: '100%',
     width: '50px',
-    borderRadius: '0px 10px 10px 0px',
+    height: '100%',
+    borderRadius: '0px 10px 0px 0px',
     backgroundColor: '#8d99ae',
   },
   linkTab: {
@@ -102,11 +103,10 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    paddingRight: '90px',
-    marginLeft: '35px',
-    paddingBottom: '90px',
-    marginTop: '35px',
-    paddingTop: '0px',
+    margin: '15px',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    justifyContent: 'center'
   }
 }));
 
@@ -144,7 +144,8 @@ export default function SecondaryManageNav() {
         <TabPanel value={value} index={0} >
           <div style={{marginTop: -10}}/>
           <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
-            <CreateNewProjectContent/>
+            {/*<CreateNewProjectContent/>*/}
+            <NewProjectExpansion/>
           </Card>
         </TabPanel>
 

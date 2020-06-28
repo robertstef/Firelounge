@@ -34,7 +34,7 @@ function diff(obj1, obj2) {
 var admin = window.require("firebase-admin");
 
 // Fetch the service account key JSON file contents
-let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-4a8416d60e.json');
+let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json');
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
@@ -153,7 +153,7 @@ export default class DbObjectDisplay extends Component {
         var onDelete = true
 
         return(
-            <div style={{height: '100%', width: '100%', overflow: 'auto'}}>
+            <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
                 <ReactJson 
                     name={false}
                     src={this.state.src}

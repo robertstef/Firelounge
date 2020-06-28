@@ -25,8 +25,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3} style={{padding: '0px', height: '100%', width: '100%'}}>
-          <div style={{height: '100%', width: '100%'}}>{children}</div>
+        <Box p={3} style={{padding: '0px',left: '0px', top: '0px', height: '100%', width: '100%'}}>
+          <div style={{padding: '0px',left: '0px', top: '0px', height: '100%', width: '100%'}}>{children}</div>
         </Box>
       )}
     </div>
@@ -69,19 +69,20 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexGrow: 1,
+    marginTop: '49px',
     backgroundColor: 'inherit',
     position: 'absolute',
-    left: '51px',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%'
+    display: 'flex',
+    left: '0px',
+    right: '0px',
+    marginLeft: '52px',
+    top: '0px',
+    bottom: '0px',
   },
   appbar: {
-    height: '100%',
     width: '50px',
-    borderRadius: '0px 10px 10px 0px',
+    height: '100%',
+    borderRadius: '0px 10px 0px 0px',
     backgroundColor: '#8d99ae',
   },
   linkTab: {
@@ -100,11 +101,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    paddingRight: '90px',
-    marginLeft: '35px',
-    paddingBottom: '90px',
-    marginTop: '35px',
-    paddingTop: '0px',
+    margin: '15px',
+    marginTop: '0px',
   }
 }));
 

@@ -5,28 +5,43 @@ const isDev = require("electron-is-dev");
 
 /* ****** IPC ********* */
 let dialogShown = false; // flag to represent whether the dialog is open or closed
+
 ipcMain.on('get-path', (event, arg) => {
     if (dialogShown === false) {
         dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
                 if (res.canceled === true || res.filePaths.length > 0) {
                     dialogShown = false;
-                    //confirm filepath has .firebaserc file
-                    const validDir = require('../src/scripts/validDir.js');
-                    validDir.validDir_function(res.filePaths[0]).then((output) => {
+                    if (arg === "new-path") {
+                        const new_proj_validDir = require('../src/scripts/new_projvalidDir.js');
+                        new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
+                            event.reply('new_proj-get-path-reply', res.filePaths[0]);
+                            ipcMain.removeAllListeners('get-path-reply')
+                        }).catch(err => {
+                            //else invalid - send back invalid
+                            event.reply('new_proj-get-path-reply', "Invalid");
+                            ipcMain.removeAllListeners('get-path-reply')
+                        });
+                    } else if (arg === "init-path") {
+                        //confirm filepath has .firebaserc file
+                        const validDir = require('../src/scripts/validDir.js');
+                        validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Invalid");
                             ipcMain.removeAllListeners('get-path-reply')
-
                         });
+                    } else {
+                        console.log("INVALID ARGUMENT INTO IPC")
+                    }
                 }
             }
         );
         dialogShown = true;
     }
 });
+
 
 let win;
 
