@@ -38,18 +38,13 @@ module.exports = {
                         response = data
                     });
 
-                    // if error reject promise
-                    create_proj.stderr.on('data', (data) => {
-                        reject(data);
-                    });
-
                     //when child is finished, resolve the promise
                     create_proj.on('close', (code) => {
                         if(code === 0) {
                             console.log("PROJECT HAS BEEN CREATED!!!");
-                            resolve(response);
+                            resolve("SUCCESS");
                         } else {
-                            reject(code)
+                            reject("FAIL")
                         }
                     })
                 });
