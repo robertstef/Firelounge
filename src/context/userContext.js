@@ -43,6 +43,9 @@ function UserReducer(state, action) {
         case 'removeProj':
             state.user.removeProj(action.args);
             return {user: state.user};
+        case 'setActiveDb':
+            state.user.setActiveDb(action.args);
+            return {user: state.user};
         default:
             throw new Error("Unspecified action");
     }

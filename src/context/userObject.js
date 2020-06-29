@@ -124,6 +124,20 @@ export default class User {
         this._writeUfile();
     }
 
+    /**
+     * Sets the active database for the current active project.
+     *
+     * @param new_active_db: the name given to the new db
+     */
+    setActiveDb(new_active_db) {
+        if (this.projs[this._act_proj]['database']['all'][new_active_db] === undefined) {
+            throw new Error(`A database with the name ${new_active_db} does not exist in this project's firelounge`);
+        }
+        this.projs[this._act_proj]['database']['active'] = new_active_db;
+        this._writeUfile();
+    }
+
+
 
     /* ADDITIONAL METHODS */
 

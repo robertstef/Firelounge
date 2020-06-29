@@ -24,7 +24,7 @@ export default function DbList() {
 
   // Context variables
   const {user} = UserState();
-
+  const dispatch = UserDispatch();
 
   let dbList = [];
   let act_db_name = user.act_proj.db_active;
@@ -44,6 +44,8 @@ export default function DbList() {
    */
   const handleChange = (event) => {
     //insert context dispatch here to rerender list
+    console.log(user)
+    dispatch({type: 'setActiveDb', args: event.target.value});
     act_db_name = event.target.value
   };
 
