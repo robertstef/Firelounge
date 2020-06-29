@@ -27,3 +27,4 @@ yarn-error.log*
 *.log
 350cmpt.json
 cmpt350*.json
+opench*.json

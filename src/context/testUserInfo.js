@@ -61,7 +61,7 @@ let test_user = () => {
                                 path: "/Users/benbaker/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"           
                             },
                             "Test Database2": {
-                                path: "/Users/benbaker/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"  
+                                path: "/Users/benbaker/Documents/OpenchFirebase/src/opench-app-firebase-adminsdk-hmem8-066d6d6ee3.json"  
                             } 
                         }
                     }

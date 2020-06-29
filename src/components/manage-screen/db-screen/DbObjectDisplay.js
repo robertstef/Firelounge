@@ -35,15 +35,14 @@ var admin = window.require("firebase-admin");
 
 // Fetch the service account key JSON file contents
 let serviceAccount = require('../../../Users/cmpt350-project-ed891-firebase-adminsdk-q24yr-26a62e5c53.json');
-
+console.log(serviceAccount.project_id)
 // Initialize the app with a service account, granting admin privileges
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
+var app = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = admin.database();
+var db = app.database("https://cmpt350-project-ed891.firebaseio.com");
 var ref = db.ref();
 
 
@@ -139,7 +138,6 @@ export default function DbObjectDisplay() {
         
         //if deleting an item from the root
         if(query_string === '') {
-            console.log('here')
             db.ref().child(result.name).remove();      
         } else {
             // traverse and delete child

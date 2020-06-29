@@ -44,7 +44,6 @@ export default function DbList() {
    */
   const handleChange = (event) => {
     //insert context dispatch here to rerender list
-    console.log(user)
     dispatch({type: 'setActiveDb', args: event.target.value});
     act_db_name = event.target.value
   };

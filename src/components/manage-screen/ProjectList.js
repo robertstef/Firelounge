@@ -31,7 +31,6 @@ export default function ProjectList() {
 
   // Fill projectList with MenuItem components to display to the user
   for (let id of Object.keys(projs)) {
-    console.log(id)
     // For handleChange events.target.value is set to the project ID
     let item = <option key={id} value={id}> {projs[id].name} </option>;
     projectList.push(item);
