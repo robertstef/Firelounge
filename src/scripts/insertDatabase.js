@@ -13,11 +13,6 @@ module.exports = {
 
         return new Promise((resolve, reject) => {
 
-        	console.log(filepath)
-            console.log(dbName)
-            console.log(username)
-            console.log(active_proj)
-
         	try {
         		var json = fs.readFileSync(`${path.join(remote.app.getAppPath(), 'src/Users/' + username + '.json')}`)	
         		json = JSON.parse(json)
@@ -32,8 +27,8 @@ module.exports = {
 
                 
         		//TODO: add check to see if db is already in there
-				json['projs'][active_proj]['database']['all'][dbName] = { 'path': filepath}	
-                json['projs'][active_proj]['database']['active'] = dbName
+				json['projs'][active_proj]['database']['active'] = dbName
+                json['projs'][active_proj]['database']['all'][dbName] = { 'path': filepath}	
         		
                 console.log(json)
 
