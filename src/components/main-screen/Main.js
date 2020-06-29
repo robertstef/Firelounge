@@ -1,15 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import MainNav from "../MainNav";
 
-class Main extends Component{
-
-    render() {
-        return(
-            <div>
-                <MainNav />
-            </div>
-        )
-    }
+function Main() {
+    return(
+        <div>
+            <MainNav />
+        </div>
+    )
 }
 
 export default Main;
