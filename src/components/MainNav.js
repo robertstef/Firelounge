@@ -10,9 +10,6 @@ import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import CreateNav from "./create-screen/CreateNav"
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import BathtubIcon from '@material-ui/icons/Bathtub';
-import StateTest from './ContextStateTest';
-import DispTest from './ContextDispTest';
 import SettingsModal from './settings-screen/SettingsModal.js'
 
 function TabPanel(props) {
@@ -127,8 +124,6 @@ export default function MainNav() {
               >
                 <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
                 <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-                {/* Context Test Link */}
-                <LinkTab icon={<BathtubIcon />} {...a11yProps(2)} className={classes.linkTab}/>
               </Tabs>
               
               {/* Opens Settings Modal */}
@@ -145,12 +140,6 @@ export default function MainNav() {
         {/* Manage exisiting projects tab */}
         <TabPanel value={value} index={1} className={classes.tabpanel}>
           <ManageScreen/>
-        </TabPanel>
-
-        {/* Context test values */}
-        <TabPanel value={value} index={2} className={classes.tabpanel}>
-          <StateTest />
-          <DispTest/>
         </TabPanel>
     </div>
   );
