@@ -54,21 +54,23 @@ let test_user = () => {
                     name: "bensnewproject",
                     features: ["hosting", "database"],
                     path: "/Users/benbaker/FL_testdir/bensnewproject",
+                    admin: "/Users/benbaker/Documents/OpenchFirebase/src/Users/cmpt350-project-ed891-firebase-adminsdk-q24yr-26a62e5c53.json",
                     database: {
                         active: "Test Database",
                         all: {
                             "Test Database": {
-                                path: "/Users/benbaker/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"           
-                            },
+                                url: ""
+                            },           
                             "Test Database2": {
-                                path: "/Users/benbaker/Documents/OpenchFirebase/src/opench-app-firebase-adminsdk-hmem8-066d6d6ee3.json"  
+                                url: "cmpt350-project-ed891"  
                             } 
                         }
                     }
                 },
                 benstestproject: {
                     name: "benstestproject",
-                    features: ["hosting"],
+                    features: ["hosting", "database"],
+                    admin: "/Users/benbaker/Documents/OpenchFirebase/src/Users/opench-app-firebase-adminsdk-hmem8-066d6d6ee3.json",
                     path: "/Users/benbaker/FL_testdir/benstestproject",
                     database: {
                         active: '',

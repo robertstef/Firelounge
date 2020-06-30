@@ -28,7 +28,7 @@ module.exports = {
                 
         		//TODO: add check to see if db is already in there
 				json['projs'][active_proj]['database']['active'] = dbName
-                json['projs'][active_proj]['database']['all'][dbName] = { 'path': filepath}	
+                json['projs'][active_proj]['admin'] = { 'path': filepath}	
 				if(dbURL !== '') {
 					json['projs'][active_proj]['database']['all'][dbName]['url'] = dbURL
 				}

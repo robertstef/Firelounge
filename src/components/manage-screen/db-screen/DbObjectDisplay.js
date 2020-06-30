@@ -33,17 +33,25 @@ export default function DbObjectDisplay() {
     const {user} = UserState();
     const [objectSrc, setObjectSrc] = useState({})
     
-    // As an admin, the app has access to read and write all data, regardless of Security Rules
-    console.log(user)
-    var db = user.admin.database("https://" + user.admin.options_.credential.projectId + ".firebaseio.com");
-    var ref = db.ref();
+    var db;
+    var ref;
 
     useEffect(() => {
+        if(user.admin === '' || user.db === undefined ){
+            return
+        }
+        //update the context database reference 
+        db = user.db
+        ref = db.ref();
+
+
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
+            console.log('updating snap')
             setObjectSrc(snapshot.val())
-        })
-    }, []);
+        })   
+    }, [user.db])
+ 
 
     /* 
         When object is edited...

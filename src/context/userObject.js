@@ -1,4 +1,5 @@
 import { act } from 'react-dom/test-utils';
+import { isJsxFragment } from 'typescript';
 
 export default class User {
 
@@ -23,12 +24,12 @@ export default class User {
         (act_proj === "") ? this._act_proj = {id: "", name: "", path: "", features:[]} : this._act_proj = act_proj;
         
         //if there is an active project -- initialize firebase admin sdk 
-    
-        if(projs[act_proj].database.active !== ""){
+        if(projs[act_proj].admin !== ""){
             let admin = window.require("firebase-admin");
+            
             // Fetch the service account key JSON file contents
-            let db_path = projs[act_proj].database.all[projs[act_proj].database.active].path
-            let serviceAccount = window.require(db_path);
+            let path = projs[act_proj].admin
+            let serviceAccount = window.require(path);
 
             // Initialize the app with a service account, granting admin privileges
             var app = admin.initializeApp({
@@ -36,10 +37,25 @@ export default class User {
             });
 
             this.admin = app
+
+            //init active database 
+            //check if theres a database url in User file -- if not use project name
+            if( this._hasActiveDb() ) {
+                if (this._isDefaultDb) {
+                    //no db url found... use default project name
+                    let db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
+                    this.db = db; 
+                } else {
+                    //database url exists
+                    let db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
+                    this.db = db; 
+                }
+            }
+        
         } else{
+            //there is no Admin SDK file path initialized
             this.admin = ''
         }
-
     }
 
 
@@ -85,6 +101,7 @@ export default class User {
             res.admin = this._projs[this._act_proj].admin;
             res.db_all = this._projs[this._act_proj].database.all;
             res.db_active = this._projs[this._act_proj].database.active;
+            
             return res;
         }
     }
@@ -131,6 +148,13 @@ export default class User {
         return projects;
     }
 
+    get active_db_name(){
+        return this.projs[this.act_proj.id]['database']['active'];
+    }
+
+    get active_db_url(){
+        return this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['url'];
+    }
 
     /* SETTER METHODS */
 
@@ -144,6 +168,27 @@ export default class User {
             throw new Error(`A project with the id ${new_active} does not exist in firelounge`);
         }
         this._act_proj = new_active;
+
+        //update admin sdk with active proj -- where available
+        if(this.projs[new_active].admin !== undefined || this.projs[new_active].admin !== ""){
+            let admin = window.require("firebase-admin");
+            // Fetch the service account key JSON file contents
+            let path = this.projs[new_active].admin
+            let serviceAccount = window.require(path);
+            
+            //if there is already an initialzed app, delete it and initialize the new admin sdk
+            if( admin.apps.length > 0 ) {
+                admin.apps[0].delete()
+            }
+
+            var app = admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            });
+            this.admin = app
+        } else{
+            this.admin = ''
+        }
+
         this._writeUfile();
     }
 
@@ -153,12 +198,21 @@ export default class User {
      * @param new_active_db: the name given to the new db
      */
     setActiveDb(new_active_db) {
-        if (this.projs[this._act_proj]['database']['all'][new_active_db] === undefined) {
+        if (!this._doesDbExist(new_active_db)) {
             throw new Error(`A database with the name ${new_active_db} does not exist in this project's firelounge`);
         }
         this.projs[this._act_proj]['database']['active'] = new_active_db;
-
-        //firebase admin sdk initialization here
+        
+        //check if theres a database url in User file -- if not use project name
+        if (this._isDefaultDb) {
+            //no db url found... use default project name
+            let db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
+            this.db = db; 
+        } else {
+            //database url exists
+            let db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
+            this.db = db; 
+        }
 
         this._writeUfile();
     }
@@ -285,18 +339,28 @@ export default class User {
         // TODO #25 - write user file to local Users folder
         fs.writeFileSync(`/Users/${this._uname}/${this._uname}.json`, JSON.stringify(ufile));
     }
+
+    _hasActiveDb(){
+        if(this.projs[this.act_proj.id]['database']['active'] === '' || this.projs[this.act_proj.id]['database']['active'] === undefined ){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    _isDefaultDb(){
+        if(this.active_db_url === '' || this.active_db_url === undefined){
+            return false;
+        } else{
+            return true;
+        }
+    }
+    _doesDbExist(dbName){
+        if (this.projs[this._act_proj]['database']['all'][dbName] === undefined) {
+            return false
+        }else {
+            return true
+        }
+    }
+
 }
-
-/* Some simple test data */
-/*
-let projects = {123:{name:"proj1", path:"./Users/proj1", features:["H"]},
-    456:{name:"new_proj", path:"/users/robertstefanyshin/", features:["H"]}};
-
-let fb_projects = [{name: "proj1", id: "123", num: "1234"},
-    {name: "test_proj", id: "321", num: "5678"},
-    {name: "new_proj", id: "456", num: "23048"}];
-
-let test_user = new User("Robert", projects, fb_projects);
-
-console.log(test_user.act_proj);
- */
