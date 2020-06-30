@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import ReactJson from 'react-json-view';
-
+import {UserState} from '../../../context/userContext'
 
 /*  
     Used to compare two different Json Objects 
@@ -29,33 +29,21 @@ function diff(obj1, obj2) {
 }
 
 
-/* ***** INITIALIZE FIREBASE ADMIN APP WILL BE MOVED WHEN DYNAMIC DB SELECTION IS POSSIBLE ****** */
-
-var admin = window.require("firebase-admin");
-
-// Fetch the service account key JSON file contents
-let serviceAccount = require('../../../Users/cmpt350-project-ed891-firebase-adminsdk-q24yr-26a62e5c53.json');
-console.log(serviceAccount.project_id)
-// Initialize the app with a service account, granting admin privileges
-var app = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = app.database("https://cmpt350-project-ed891.firebaseio.com");
-var ref = db.ref();
-
-
-
 export default function DbObjectDisplay() {
+    const {user} = UserState();
     const [objectSrc, setObjectSrc] = useState({})
     
+    // As an admin, the app has access to read and write all data, regardless of Security Rules
+    console.log(user)
+    var db = user.admin.database("https://" + user.admin.options_.credential.projectId + ".firebaseio.com");
+    var ref = db.ref();
+
     useEffect(() => {
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
             setObjectSrc(snapshot.val())
         })
-    }, [] );
+    }, []);
 
     /* 
         When object is edited...
@@ -112,8 +100,6 @@ export default function DbObjectDisplay() {
         db.ref(query_string).update({
             [newKey] : 'NULL'
         })
-
-
     }
 
 

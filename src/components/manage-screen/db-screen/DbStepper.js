@@ -45,7 +45,7 @@ function getSteps() {
   return ['Generate Admin Key', 'Select the filepath to your Firebase Admin Key', 'Create Name for Database'];
 }
 
-function getStepContent(step, pathCallback, inputCallback) {
+function getStepContent(step, pathCallback, inputCallback, urlCallback) {
   switch (step) {
     case 0:
       return (
@@ -59,11 +59,11 @@ function getStepContent(step, pathCallback, inputCallback) {
         )
     case 1:
       return (
-          <GetFilePath path={pathCallback}/>
+          <GetFilePath path={pathCallback} />
         )
     case 2:
       return (
-         <DbNameInput input={inputCallback} />
+         <DbNameInput input={inputCallback} url={urlCallback} />
         )
     default:
       return 'Unknown step';
@@ -83,15 +83,13 @@ export default function VerticalLinearStepper() {
     if(activeStep === 2) {
       const insertDatabase_module = require('../../../scripts/insertDatabase.js')
         
-        insertDatabase_module.insertDatabase_function(dbPath, dbName, 'testusername', user.act_proj.id).then((output) => {
+        insertDatabase_module.insertDatabase_function(dbPath, dbName, 'testusername', user.act_proj.id, dbURL).then((output) => {
                 console.log('Success!')
                 console.log(output)
             }).catch(err => {
                 console.log(err)
             });
     }
-
-
   };
 
   const handleBack = () => {
@@ -106,10 +104,15 @@ export default function VerticalLinearStepper() {
 
   /* Callback used to retrieve the input from the textfield for the database name */
    const [dbName, setdbName] = React.useState('');
-   const handleInput = (event) => {
-      setdbName(event);   
+   const pathInput = (event) => {
+    setdbName(event);   
     }
 
+  /* Callback used to retrieve the input from the textfield for the database url */
+  const [dbURL, setdbURL] = React.useState('');
+  const urlInput = (event) => {
+   setdbURL(event);   
+   }
 
   return (
     <div className={classes.root}>
@@ -118,7 +121,7 @@ export default function VerticalLinearStepper() {
           <Step key={label} >
             <StepLabel classes={{root: classes.stepLabel, completed: classes.completed, active:classes.active}}>{label}</StepLabel>
             <StepContent className={classes.stepContent}>
-              <div>{getStepContent(index, getSelectedPath, handleInput)}</div>
+              <div>{getStepContent(index, getSelectedPath, pathInput, urlInput)}</div>
               <div className={classes.actionsContainer}>
                 <div>
                   <Button

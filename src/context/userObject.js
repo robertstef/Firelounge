@@ -1,3 +1,5 @@
+import { act } from 'react-dom/test-utils';
+
 export default class User {
 
     /**
@@ -16,9 +18,28 @@ export default class User {
         this._uname = uname;         // user name
         this._projs = projs;         // firelounge projects
         this._fb_projs = fb_projs;   // firebase projects
-
+        
         // if active project empty, set to dummy object to avoid rendering errors
         (act_proj === "") ? this._act_proj = {id: "", name: "", path: "", features:[]} : this._act_proj = act_proj;
+        
+        //if there is an active project -- initialize firebase admin sdk 
+    
+        if(projs[act_proj].database.active !== ""){
+            let admin = window.require("firebase-admin");
+            // Fetch the service account key JSON file contents
+            let db_path = projs[act_proj].database.all[projs[act_proj].database.active].path
+            let serviceAccount = window.require(db_path);
+
+            // Initialize the app with a service account, granting admin privileges
+            var app = admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            });
+
+            this.admin = app
+        } else{
+            this.admin = ''
+        }
+
     }
 
 
@@ -61,6 +82,7 @@ export default class User {
             res.name = this._projs[this._act_proj].name;
             res.path = this._projs[this._act_proj].path;
             res.features = this._projs[this._act_proj].features;
+            res.admin = this._projs[this._act_proj].admin;
             res.db_all = this._projs[this._act_proj].database.all;
             res.db_active = this._projs[this._act_proj].database.active;
             return res;
@@ -98,6 +120,7 @@ export default class User {
                 res.name = proj.name;
                 res.path = proj.path;
                 res.features = proj.features;
+                res.admin = proj.admin
                 res.db_all = proj.db_all
                 res.db_active = proj.db_active
 
@@ -134,6 +157,9 @@ export default class User {
             throw new Error(`A database with the name ${new_active_db} does not exist in this project's firelounge`);
         }
         this.projs[this._act_proj]['database']['active'] = new_active_db;
+
+        //firebase admin sdk initialization here
+
         this._writeUfile();
     }
 
@@ -176,7 +202,7 @@ export default class User {
         }
 
         // add project to firelounge
-        this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features, database: {active: '', all:{} }};
+        this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features, admin: '', database: {active: '', all:{} }};
 
         // update user file
         this._writeUfile();

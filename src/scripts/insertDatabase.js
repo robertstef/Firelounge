@@ -6,7 +6,7 @@ path: path to the admin key
 
 */
 module.exports = {
-    insertDatabase_function: function (filepath, dbName, username, active_proj) {
+    insertDatabase_function: function (filepath, dbName, username, active_proj, dbURL) {
     	var fs = window.require('fs');
 		const path = window.require('path');
 		const {remote} = window.require('electron')
@@ -29,8 +29,10 @@ module.exports = {
         		//TODO: add check to see if db is already in there
 				json['projs'][active_proj]['database']['active'] = dbName
                 json['projs'][active_proj]['database']['all'][dbName] = { 'path': filepath}	
-        		
-                console.log(json)
+				if(dbURL !== '') {
+					json['projs'][active_proj]['database']['all'][dbName]['url'] = dbURL
+				}
+				
 
 				fs.writeFileSync(`${path.join(remote.app.getAppPath(), 'src/Users/' + username + '.json')}`, JSON.stringify(json), function(err) {
 	    		if (err) {
