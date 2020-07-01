@@ -7,7 +7,7 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
-import {UserState} from '../../../context/userContext'
+import {UserState, UserDispatch} from '../../../context/userContext'
 
 const { shell } = window.require('electron')
 
@@ -70,25 +70,27 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
   }
 }
 
+
 export default function VerticalLinearStepper() {
   const {user} = UserState();
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
+  const dispatch = UserDispatch();
 
-  const handleNext = () => {
+  const handleNext = (dispatch) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     //if last step - call script to insert database name and path into user file
     if(activeStep === 2) {
-      const insertDatabase_module = require('../../../scripts/insertDatabase.js')
-        
-        insertDatabase_module.insertDatabase_function(dbPath, dbName, 'testusername', user.act_proj.id, dbURL).then((output) => {
-                console.log('Success!')
-                console.log(output)
-            }).catch(err => {
-                console.log(err)
-            });
+      let dbObj = {
+        'path': dbPath,
+        'dbName': dbName,
+        'act_proj': user.act_proj.id,
+        'url': dbURL
+      };
+      
+      dispatch({type:"addDb", args: dbObj});
     }
   };
 
@@ -135,7 +137,7 @@ export default function VerticalLinearStepper() {
                     variant="contained"
                     disabled={ (activeStep === 1 && dbPath === '') || ( activeStep === 2 && dbName === '' )  }
                     color="primary"
-                    onClick={handleNext}
+                    onClick={() => handleNext(dispatch)}
                     className={classes.button}
                   >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

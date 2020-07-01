@@ -185,7 +185,6 @@ export default class User {
                 credential: admin.credential.cert(serviceAccount)
             });
             this.admin = app
-
             this.setActiveDb(this.active_db_name)
         } else{
             this.admin = ''
@@ -277,6 +276,45 @@ export default class User {
 
         delete this._projs[old_proj];
         this._writeUfile();
+    }
+
+
+
+    /*
+      let dbObj = {
+        'path': dbPath,
+        'dbName': dbName,
+        'act_proj': user.act_proj.id,
+        'url': dbURL
+      };
+    */
+    addDb(newDb){
+        console.log(newDb)
+        
+        var fs = window.require('fs');
+        
+        var json = fs.readFileSync("./src/Users/testusername.json")	
+        json = JSON.parse(json)
+        console.log(json)
+        
+        //TODO: check to see if the projects actually supports databases   
+        //if there is no databases in there already, create structures     		
+        if(json['projs'][this.act_proj.id]['database'] === undefined) {
+            json['projs'][this.act_proj.id]['database'] = {}
+            json['projs'][this.act_proj.id]['database']['all'] = {}
+            
+        }
+
+        //TODO: add check to see if db is already in there
+        json['projs'][this.act_proj.id]['database']['active'] = newDb.dbName
+        json['projs'][this.act_proj.id]['admin'] = newDb.path	
+        json['projs'][this.act_proj.id]['database']['all'][newDb.dbName] = {'url': ""}
+        if(newDb.url !== '') {
+            json['projs'][this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url
+        }
+
+
+        fs.writeFileSync("./src/Users/testusername.json", JSON.stringify(json));
     }
 
 

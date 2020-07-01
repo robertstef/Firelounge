@@ -73,8 +73,12 @@ let test_user = () => {
                     admin: "/Users/benbaker/Documents/OpenchFirebase/src/Users/opench-app-firebase-adminsdk-hmem8-066d6d6ee3.json",
                     path: "/Users/benbaker/FL_testdir/benstestproject",
                     database: {
-                        active: '',
-                        all: {}
+                        active: "Opench Database",
+                        all: {
+                            "Opench Database": {
+                                url: ""
+                            } 
+                        }
                     }
                 }
             },

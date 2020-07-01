@@ -46,6 +46,9 @@ function UserReducer(state, action) {
         case 'setActiveDb':
             state.user.setActiveDb(action.args);
             return {user: state.user};
+        case 'addDb':
+            state.user.addDb(action.args);
+            return {user: state.user};
         default:
             throw new Error("Unspecified action");
     }

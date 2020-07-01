@@ -13,8 +13,6 @@ export default function DbNameInput(props) {
     
     const handleInput = (event) => {
       //update the text display
-    //   console.log(event.target.id)
-
       if(event.target.id === 'db-url') {
         setdbURL(event.target.value);
         //update the value stored in the stepper state
