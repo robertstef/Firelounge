@@ -148,10 +148,19 @@ export default class User {
         return projects;
     }
 
+    /**
+     * Returns the name of the projects active database
+     *
+     * @returns string: name
+     */
     get active_db_name(){
         return this.projs[this.act_proj.id]['database']['active'];
     }
-
+    /**
+     * Returns the name of the projects active database url
+     *
+     * @returns string: url
+     */
     get active_db_url(){
         return this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['url'];
     }
@@ -197,6 +206,7 @@ export default class User {
      * Sets the active database for the current active project.
      *
      * @param new_active_db: the name given to the new db
+     * @postcondition overwrites the Users file
      */
     setActiveDb(new_active_db) {
         if (!this._doesDbExist(new_active_db)) {
@@ -281,6 +291,8 @@ export default class User {
 
 
     /*
+    
+
       let dbObj = {
         'path': dbPath,
         'dbName': dbName,
@@ -288,14 +300,23 @@ export default class User {
         'url': dbURL
       };
     */
+     /**
+     * Adds a new database to the Users current project 
+     * 
+     * @param dbObj: {
+     *                 'path': the path the Admin SDK key
+     *                 'dbName': the name given to the database,
+     *                   'url': the url
+     *              }
+     * 
+     * @returns none
+     */
+
     addDb(newDb){
-        console.log(newDb)
-        
         var fs = window.require('fs');
         
         var json = fs.readFileSync("./src/Users/testusername.json")	
         json = JSON.parse(json)
-        console.log(json)
         
         //TODO: check to see if the projects actually supports databases   
         //if there is no databases in there already, create structures     		
@@ -312,8 +333,7 @@ export default class User {
         if(newDb.url !== '') {
             json['projs'][this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url
         }
-
-
+        //can switch this to uwrite once dynamic users are available
         fs.writeFileSync("./src/Users/testusername.json", JSON.stringify(json));
     }
 
@@ -380,6 +400,13 @@ export default class User {
         fs.writeFileSync(`/Users/${this._uname}/${this._uname}.json`, JSON.stringify(ufile));
     }
 
+
+    /**
+     * Checks if there is an active db for the current project
+     * 
+     *
+     * @returns {boolean} true if there is an active db defined, false otherwise
+     */
     _hasActiveDb(){
         if(this.projs[this.act_proj.id]['database']['active'] === '' || this.projs[this.act_proj.id]['database']['active'] === undefined ){
             return false;
@@ -388,6 +415,13 @@ export default class User {
         }
     }
 
+    /**
+     * Checks is the active db is the default database 
+     * (ie is there a URL defined to access it)
+     * 
+     *
+     * @returns {boolean} true the active db is the default, false otherwise
+     */
     _isDefaultDb(){
         if(this.active_db_url === '' || this.active_db_url === undefined){
             return false;
@@ -395,6 +429,14 @@ export default class User {
             return true;
         }
     }
+
+
+    /**
+     * Checks if there is a database with a provided id
+     * @param dbName the name of the database you want to look up
+     *
+     * @returns {boolean} true if a db exists with that name, false otherwise
+     */
     _doesDbExist(dbName){
         if (this.projs[this._act_proj]['database']['all'][dbName] === undefined) {
             return false

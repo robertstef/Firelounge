@@ -36,11 +36,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
+/* Opens a browser window to get an AdminSDK key */
 const openBrowser = () => {
         shell.openExternal('https://console.firebase.google.com/u/0/project/_/settings/serviceAccounts/adminSDK')
     }
 
+/* Handles the step titles */
 function getSteps() {
   return ['Generate Admin Key', 'Select the filepath to your Firebase Admin Key', 'Create Name for Database'];
 }
@@ -78,22 +79,23 @@ export default function VerticalLinearStepper() {
   const steps = getSteps();
   const dispatch = UserDispatch();
 
+  /* Handles the next button */
   const handleNext = (dispatch) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-    //if last step - call script to insert database name and path into user file
+    //if last step - add database to the User file
     if(activeStep === 2) {
       let dbObj = {
         'path': dbPath,
         'dbName': dbName,
-        'act_proj': user.act_proj.id,
         'url': dbURL
       };
-      
+
       dispatch({type:"addDb", args: dbObj});
     }
   };
 
+  /* Handles the back button */
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
