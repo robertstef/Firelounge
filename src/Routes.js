@@ -22,8 +22,7 @@ function Routes() {
 			<MuiThemeProvider theme={theme}>
 				<Switch>
 					<UserProvider>
-						<Route path="/project" component={Main} />
-						<Route exact path="/" component={Initial}/>
+						<Route path="/" component={Main} />
 					</UserProvider>
 				</Switch>
 		  	</MuiThemeProvider>
