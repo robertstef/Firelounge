@@ -123,21 +123,3 @@ module.exports = {
         //TODO some sort of confirmation message that the project has been created
     }
 };
-
-// let fbjson_path = proj_path + '/firebase.json'; // path to the firebase.json file
-//
-// let fbrc_path = proj_path + '/.firebaserc'; // path to the .firebaserc file
-//
-// fs.writeFileSync(fbrc_path, JSON.stringify(firebaserc, null, 4), function (err, data) {
-//     console.log('.firebaserc');
-//     if (err) {
-//         console.log(err);
-//     }
-// });
-//
-// fs.writeFileSync(fbjson_path, JSON.stringify(firebase,null, 4),  function (err, data) {
-//     console.log("firebase.json");
-//     if (err) {
-//         console.log(err)
-//     }
-// });
