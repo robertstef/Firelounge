@@ -185,6 +185,8 @@ export default class User {
                 credential: admin.credential.cert(serviceAccount)
             });
             this.admin = app
+
+            this.setActiveDb(this.active_db_name)
         } else{
             this.admin = ''
         }

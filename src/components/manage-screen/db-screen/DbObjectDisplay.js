@@ -31,26 +31,22 @@ function diff(obj1, obj2) {
 
 export default function DbObjectDisplay() {
     const {user} = UserState();
-    const [objectSrc, setObjectSrc] = useState({})
+    const [displaySrc, setDisplaySrc] = useState({})    
     
-    var db;
-    var ref;
+    //update the context database reference 
+    var db = user.db
+    var ref = db.ref();
 
     useEffect(() => {
         if(user.admin === '' || user.db === undefined ){
+            console.log('admin undefined')
             return
         }
-        //update the context database reference 
-        db = user.db
-        ref = db.ref();
-
-
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
-            console.log('updating snap')
-            setObjectSrc(snapshot.val())
+            setDisplaySrc(snapshot.val())
         })   
-    }, [user.db])
+    }, [db])
  
 
     /* 
@@ -151,7 +147,7 @@ export default function DbObjectDisplay() {
         <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
             <ReactJson 
                 name={false}
-                src={objectSrc }
+                src={displaySrc}
                 collapsed={1}
                 onEdit={   
                     onEdit
