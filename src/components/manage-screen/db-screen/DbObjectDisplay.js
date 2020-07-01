@@ -34,7 +34,7 @@ function diff(obj1, obj2) {
 var admin = window.require("firebase-admin");
 
 // Fetch the service account key JSON file contents
-let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json');
+let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-26a62e5c53.json');
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
