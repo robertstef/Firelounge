@@ -1,5 +1,3 @@
-import { act } from 'react-dom/test-utils';
-import { isJsxFragment } from 'typescript';
 
 export default class User {
 
@@ -56,6 +54,7 @@ export default class User {
             //there is no Admin SDK file path initialized
             this.admin = ''
         }
+
     }
 
 
@@ -315,7 +314,7 @@ export default class User {
     addDb(newDb){
         var fs = window.require('fs');
         
-        var json = fs.readFileSync("./src/Users/testusername.json")	
+        var json = fs.readFileSync("./src/Users/" + `${this._uname}`+ ".json")	
         json = JSON.parse(json)
         
         //TODO: check to see if the projects actually supports databases   
@@ -334,7 +333,7 @@ export default class User {
             json['projs'][this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url
         }
         //can switch this to uwrite once dynamic users are available
-        fs.writeFileSync("./src/Users/testusername.json", JSON.stringify(json));
+        fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(json));
     }
 
 
@@ -397,7 +396,7 @@ export default class User {
         ufile.projs = this._projs;
 
         // TODO #25 - write user file to local Users folder
-        fs.writeFileSync(`/Users/${this._uname}/${this._uname}.json`, JSON.stringify(ufile));
+        fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(ufile));
     }
 
 

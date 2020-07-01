@@ -1,7 +1,7 @@
 import React from 'react';
 import User from './userObject';
 
-const test = require('./testUserInfo');
+// const test = require('./testUserInfo');
 
 /* Create a state context and a dispatch context */
 const userStateContext = React.createContext();
@@ -33,7 +33,7 @@ function UserReducer(state, action) {
         case 'createUser':
             let params = action.args;
             let new_user = new User(params.uname, params.projs, params.fb_projs, params.act_proj);
-            return {user: params.new_user};
+            return {user: new_user};
         case 'setActive':
             state.user.setActive(action.args);
             return {user: state.user};
@@ -59,12 +59,12 @@ function UserReducer(state, action) {
  * All components nested within UserProvider will be able to
  * access the UserState and UserDispatch.
  */
-const info = test.test_user();
-let new_user = new User(info.uname, info.projs, info.fb_projs, info.act_proj);
+
+
 
 function UserProvider({children}) {
-    // const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
-    const [state, dispatch] = React.useReducer(UserReducer, {user: new_user});
+    const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
+
     return (
         <userStateContext.Provider value={state}>
             <userDispatchContext.Provider value={dispatch}>

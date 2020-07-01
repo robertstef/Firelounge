@@ -70,7 +70,7 @@ export default function CustomizedTable() {
 
     const classes = useStyles();
     const {user} = UserState();
-    let projects = user.firebase_projs;
+    let projects = user.fb_projs;
 
     /* Create rows of firebase projects for table */
     let rows = [];
