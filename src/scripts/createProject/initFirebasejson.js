@@ -110,6 +110,27 @@ module.exports = {
                         });
                     }
                     break;
+
+                case "database":
+                    const rules_file = requestBody[value].rules;
+                    //TODO check validity of the file chosen (the file is a json file with correct structure)
+                    if (!fs.existsSync(`${proj_path}/${rules_file}`)) { // if the rules file doesnt exist
+                        // create the file
+                        let db_rules = {
+                            rules : {
+                                ".read": "auth != null",
+                                ".write": "auth != null"
+                            }
+                        };
+
+                        fs.writeFileSync(`${proj_path}/${rules_file}`, JSON.stringify(db_rules, null, 4));
+
+                        firebase[value] = {
+                            rules: rules_file
+                        }
+                    }
+
+
             }
         });
 

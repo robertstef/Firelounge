@@ -177,6 +177,9 @@ export default function NewProjectExpansion(){
                                 public_dir: hosting_options.public_dir,
                                 single_page_app: hosting_options.single_page_app,
                             },
+                            database: {
+                                rules: database_options.rules,
+                            },
                             config: {
                                 hosting: config.hosting,
                                 database: config.database,
