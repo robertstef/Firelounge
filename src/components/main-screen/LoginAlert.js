@@ -5,18 +5,31 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {UserDispatch} from "../../context/userContext";
+const login = require('../../scripts/login');
+const initModule = require('../../scripts/init');
 
 export default function LoginAlert(props) {
-
-  const [open, setOpen] = React.useState(props.isOpen);
-
-  //if props have changed... update state
-  if(open !== props.isOpen){
-    setOpen(props.isOpen)
-  }
+  const dispatch = UserDispatch();
+  const [open, setOpen] = React.useState(props.isOpen);  
 
   const handleClose = () => {
-    setOpen(false);
+    
+    async function userLogin() {
+
+      let response = await login.login_function();
+
+      initModule.init_function().then(async (output) => {
+        await dispatch({type: 'createUser', args: output});
+        setOpen(false)
+      }).catch(err => {
+        console.log(err);
+      })
+    };
+
+    userLogin();
+
+
   };
 
   return (
