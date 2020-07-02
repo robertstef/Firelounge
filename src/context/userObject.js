@@ -17,12 +17,10 @@ export default class User {
         this._uname = uname;         // user name
         this._projs = projs;         // firelounge projects
         this._fb_projs = fb_projs;   // firebase projects
-        
-        // if active project empty, set to dummy object to avoid rendering errors
-        (act_proj === "") ? this._act_proj = {id: "", name: "", path: "", features:[]} : this._act_proj = act_proj;
-        
+        this._act_proj = act_proj;   // active project
+
         //if there is an active project -- initialize firebase admin sdk 
-        if(projs[act_proj].admin !== ""){
+        if (act_proj !== "" && typeof(projs[act_proj].admin) === 'string' && projs[act_proj].admin !== ""){
             let admin = window.require("firebase-admin");
             
             // Fetch the service account key JSON file contents
@@ -49,12 +47,9 @@ export default class User {
                     this.db = db; 
                 }
             }
-        
-        } else{
-            //there is no Admin SDK file path initialized
-            this.admin = ''
-        }
-
+        } 
+        console.log(this)
+        this._writeUfile()
     }
 
 
@@ -89,8 +84,16 @@ export default class User {
      * @returns Object: {id:String, name:String, path:String, features:[String, ...]}
      */
     get act_proj() {
-        if (typeof this._act_proj === 'object') {
-            return this._act_proj
+        if (this._act_proj === '') {
+            let res = {};
+            res.id = '';
+            res.name = '';
+            res.path = '';
+            res.features = '';
+            res.admin = '';
+            res.db_all = '';
+            res.db_active = '';
+            return res
         } else {
             let res = {};
             res.id = this._act_proj;

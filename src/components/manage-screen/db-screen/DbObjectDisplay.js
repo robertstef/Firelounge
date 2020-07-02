@@ -33,9 +33,15 @@ export default function DbObjectDisplay() {
     const {user} = UserState();
     const [displaySrc, setDisplaySrc] = useState({})    
     
-    //update the context database reference 
-    var db = user.db
-    var ref = db.ref();
+    //update the context database reference
+    //catch error where there is no database defined.  
+    try {
+        var db = user.db
+        var ref = db.ref();
+    }catch(error) {
+        // console.log(error)
+    }
+    
 
     useEffect(() => {
         if(user.admin === '' || user.db === undefined ){
