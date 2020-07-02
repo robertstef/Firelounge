@@ -288,17 +288,6 @@ export default class User {
     }
 
 
-
-    /*
-    
-
-      let dbObj = {
-        'path': dbPath,
-        'dbName': dbName,
-        'act_proj': user.act_proj.id,
-        'url': dbURL
-      };
-    */
      /**
      * Adds a new database to the Users current project 
      * 
@@ -332,6 +321,10 @@ export default class User {
         if(newDb.url !== '') {
             json['projs'][this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url
         }
+        
+        //update project object in context
+        this._projs[this.act_proj.id] = json['projs'][this.act_proj.id]
+        
         //can switch this to uwrite once dynamic users are available
         fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(json));
     }
