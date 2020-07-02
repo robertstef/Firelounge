@@ -4,7 +4,7 @@ module.exports = {
         
         return new Promise((resolve, reject) => {
             var response;
-            const child_process = exec('firebase login');
+            const child_process = exec('firebase login --interactive');
 
             child_process.stdin.setEncoding('utf-8');
             child_process.stdin.write('n\n');
@@ -20,9 +20,11 @@ module.exports = {
                 if(response === 'Already') {
                     //logged in
                     resolve('Logged In')
+                    child_process.kill('SIGINT');
                 } else {
                     //not logged int
                     resolve('')
+                    child_process.kill('SIGINT');
                 }
 
                 
@@ -30,6 +32,7 @@ module.exports = {
 
             //if error - reject the promise
             child_process.stderr.on('data', (data) => {
+                
                 reject(data);
             });
                 

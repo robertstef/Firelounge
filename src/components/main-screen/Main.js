@@ -9,7 +9,7 @@ const initModule = require('../../scripts/init');
 function Main() {
     const dispatch = UserDispatch();
     const {user} = UserState();
-    const [showModal, setShowModal] = useState(true)
+    const [showModal, setShowModal] = useState(false)
     const [loading, setLoading] = useState(true)
 
     useEffect( () => {
@@ -27,6 +27,7 @@ function Main() {
                 })
             } else {
                 //user is not logged in -- show dialog to prompt login
+                setShowModal(true)
                 setLoading(false)
             }
         }
