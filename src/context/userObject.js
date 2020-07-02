@@ -174,14 +174,14 @@ export default class User {
      *
      * @param new_active: String representing the project ID
      */
-    setActive(new_active) {
+    setActive(new_active) { 
         if (this._projs[new_active] === undefined) {
             throw new Error(`A project with the id ${new_active} does not exist in firelounge`);
         }
         this._act_proj = new_active;
 
         //update admin sdk with active proj -- where available
-        if(this.projs[new_active].admin !== undefined || this.projs[new_active].admin !== ""){
+        if(this._act_proj !== "" && this.projs[new_active].admin !== undefined && this.projs[new_active].admin !== ""){
             let admin = window.require("firebase-admin");
             // Fetch the service account key JSON file contents
             let path = this.projs[new_active].admin
@@ -246,7 +246,6 @@ export default class User {
      *          with a firebase.json and .firebaserc file
      */
     addProj(new_proj) {
-
         const fs = window.require('fs');
 
         // validate input
@@ -270,6 +269,9 @@ export default class User {
 
         // add project to firelounge
         this._projs[new_proj.id] = {name: new_proj.name, path: new_proj.path, features: proj_features, admin: '', database: {active: '', all:{} }};
+
+        //set new project as active project
+        this.setActive(new_proj.id)
 
         // update user file
         this._writeUfile();
@@ -360,13 +362,13 @@ export default class User {
              return false;
          }
          // if yes, check if objects are equal
-         else {
+         else if (this._projs.length > 1 ) {
              const projs = Object.this._projs.keys();
              for (let key of projs) {
                  if (User._projsEqual(comp, this._projs[key])) { return true }
              }
-             return false;
-         }
+         } 
+         return false;
     }
 
     /**
