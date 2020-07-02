@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: '95%',
     margin: '10px',
     borderRadius: '5px',
-    overflow: 'hidden', 
+    overflow: 'auto', 
     backgroundColor: '#EDF2F4'
   },
   heading: {
