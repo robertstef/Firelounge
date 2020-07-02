@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Checkbox from '@material-ui/core/Checkbox';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
@@ -11,8 +11,8 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import GetPathButtonNewProject from "./GetPathButtonNewProject";
-
 import {UserDispatch} from "../../context/userContext";
+
 
 let project_name = "";
 
@@ -23,6 +23,10 @@ let project_id = '';
 let hosting_options = {
     public_dir: '',
     single_page_app: null,
+};
+
+let database_options = {
+    rules: '',
 };
 
 let config = {
@@ -37,7 +41,9 @@ export default function NewProjectExpansion(){
 
     const [isHostingOpen, setHostingOpen] = useState(false);
 
-    const [selectSinglePg, setSinglePg] = useState(null);
+    const [selectSinglePg, setSinglePg] = useState('');
+
+    const [isDatabaseOpen, setDatabaseOpen] = useState(false);
 
     /**
      * Generate a random 5 digit hex value to ensure a unique project id
@@ -70,8 +76,9 @@ export default function NewProjectExpansion(){
             <div style={{marginTop: 10}}/>
             <GetPathButtonNewProject path={(path) => {project_path = path}}/>
             <div style={{marginTop: 10}}/>
-            <ExpansionPanel expanded={isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
-                <ExpansionPanelSummary
+            {/**                            -----HOSTING------                        */}
+            <Accordion expanded={isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
+                <AccordionSummary
                     aria-label="Expand"
                     aria-controls="additional-actions1-content"
                     id="additional-actions1-header"
@@ -82,8 +89,8 @@ export default function NewProjectExpansion(){
                         onFocus={(event) => event.stopPropagation()}
                         label="Hosting"
                     />
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails style={{flexDirection: 'column', marginTop: -15}}>
+                </AccordionSummary>
+                <AccordionDetails style={{flexDirection: 'column', marginTop: -15}}>
                     <div>
                         <Typography color="textSecondary" variant="body1">
                             What do you want to use as your public directory?
@@ -116,8 +123,45 @@ export default function NewProjectExpansion(){
                             </Select>
                         </FormControl>
                     </div>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                </AccordionDetails>
+            </Accordion>
+
+            {/**                            -----DATABASE------                        */}
+
+            <Accordion expanded={isDatabaseOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
+                <AccordionSummary
+                    aria-label="Expand"
+                    aria-controls="additional-actions1-content"
+                    id="additional-actions1-header"
+                >
+                    <FormControlLabel
+                        control={<Checkbox />}
+                        onClick={(event) => {event.stopPropagation(); setDatabaseOpen(!isDatabaseOpen); config.database = !config.database}}
+                        onFocus={(event) => event.stopPropagation()}
+                        label="Database"
+                    />
+                </AccordionSummary>
+                <AccordionDetails style={{flexDirection: 'column', marginTop: -15}}>
+                    <div>
+                        <Typography color="textSecondary" variant="body1">
+                            What file should be used for Database Rules?
+                        </Typography>
+                        <div style={{marginTop: 10}}/>
+                        <div>
+                            <TextField
+                                style={{width:'30%'}}
+                                id="outlined-size-small"
+                                size={'small'}
+                                placeholder="(database.rules.json)"
+                                variant={"outlined"}
+                                color={'secondary'}
+                                onChange={(e) => {database_options.rules = e.target.value}}
+                            />
+                        </div>
+                        <div style={{marginTop: 10}}/>
+                    </div>
+                </AccordionDetails>
+            </Accordion>
             <Button onClick={() => {
 
                 const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
@@ -132,6 +176,9 @@ export default function NewProjectExpansion(){
                             hosting: {
                                 public_dir: hosting_options.public_dir,
                                 single_page_app: hosting_options.single_page_app,
+                            },
+                            database: {
+                                rules: database_options.rules,
                             },
                             config: {
                                 hosting: config.hosting,
