@@ -18,6 +18,7 @@ export default function LoginAlert(props) {
     async function userLogin() {
 
       let response = await login.login_function();
+      //TODO: check response -- should contain a login success message
 
       initModule.init_function().then(async (output) => {
         await dispatch({type: 'createUser', args: output});

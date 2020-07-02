@@ -7,7 +7,7 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
-import {UserState, UserDispatch} from '../../../context/userContext'
+import {UserDispatch} from '../../../context/userContext'
 
 const { shell } = window.require('electron')
 
@@ -73,7 +73,6 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
 
 
 export default function VerticalLinearStepper() {
-  const {user} = UserState();
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
