@@ -48,7 +48,6 @@ export default class User {
                 }
             }
         } 
-        console.log(this)
         this._writeUfile()
     }
 
@@ -156,7 +155,11 @@ export default class User {
      * @returns string: name
      */
     get active_db_name(){
-        return this.projs[this.act_proj.id]['database']['active'];
+        try {
+            return this.projs[this.act_proj.id]['database']['active'];
+        } catch (error){
+            return ''
+        }
     }
     /**
      * Returns the name of the projects active database url
@@ -164,7 +167,11 @@ export default class User {
      * @returns string: url
      */
     get active_db_url(){
-        return this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['url'];
+        try {
+            return this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['url'];
+        } catch( error) {
+            return ''
+        }
     }
 
     /* SETTER METHODS */
@@ -217,14 +224,18 @@ export default class User {
         this.projs[this._act_proj]['database']['active'] = new_active_db;
         
         //check if theres a database url in User file -- if not use project name
-        if (this._isDefaultDb) {
-            //no db url found... use default project name
-            let db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
-            this.db = db; 
-        } else {
-            //database url exists
-            let db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
-            this.db = db; 
+        console.log(this)
+        if (this.admin !== undefined && this.admin !== '') {
+            
+            if (this._isDefaultDb) {
+                //no db url found... use default project name
+                let db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
+                this.db = db; 
+            } else {
+                //database url exists
+                let db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
+                this.db = db; 
+            }
         }
 
         this._writeUfile();
@@ -312,14 +323,25 @@ export default class User {
         json = JSON.parse(json)
         
         //TODO: check to see if the projects actually supports databases   
-        //if there is no databases in there already, create structures     		
-        if(json['projs'][this.act_proj.id]['database'] === undefined) {
-            json['projs'][this.act_proj.id]['database'] = {}
-            json['projs'][this.act_proj.id]['database']['all'] = {}
-            
+        
+        //if admin is undefined or admin doesnt match current projects 
+        if(this.admin === '' || this.admin.options_.credential.projectId !== this.act_proj.id) {
+            let admin = window.require("firebase-admin");
+            // Fetch the service account key JSON file contents
+            let serviceAccount = window.require(newDb.path);
+            //if there is already an initialzed app, delete it and initialize the new admin sdk
+            if( admin.apps.length > 0 ) {
+                admin.apps[0].delete()
+            }
+            var app = admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            });
+            this.admin = app
         }
 
         //TODO: add check to see if db is already in there
+        
+        //add new db info in json object
         json['projs'][this.act_proj.id]['database']['active'] = newDb.dbName
         json['projs'][this.act_proj.id]['admin'] = newDb.path	
         json['projs'][this.act_proj.id]['database']['all'][newDb.dbName] = {'url': ""}
@@ -327,10 +349,11 @@ export default class User {
             json['projs'][this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url
         }
         
-        //update project object in context
+        //set updated json object to the context
         this._projs[this.act_proj.id] = json['projs'][this.act_proj.id]
-        
-        //can switch this to uwrite once dynamic users are available
+        this.setActiveDb(newDb.dbName)
+
+        //write user file
         fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(json));
     }
 

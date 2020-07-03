@@ -32,27 +32,31 @@ function diff(obj1, obj2) {
 export default function DbObjectDisplay() {
     const {user} = UserState();
     const [displaySrc, setDisplaySrc] = useState({})    
-    
+
+
     //update the context database reference
     //catch error where there is no database defined.  
     try {
         var db = user.db
         var ref = db.ref();
+        console.log(db)
     }catch(error) {
         // console.log(error)
     }
     
-
     useEffect(() => {
         if(user.admin === '' || user.db === undefined ){
-            console.log('admin undefined')
+            // console.log('No admin file found')
             return
         }
+        
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
             setDisplaySrc(snapshot.val())
         })   
-    }, [db])
+        
+        console.log('calling hook')
+    }, [db, setDisplaySrc])
  
 
     /* 
