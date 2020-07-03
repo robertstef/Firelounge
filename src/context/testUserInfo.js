@@ -14,12 +14,27 @@ let test_user = () => {
                 bensnewproject: {
                     name: "bensnewproject",
                     features: ["hosting", "database"],
-                    path: "/Users/robertstefanyshin/FL_testdir/bensnewproject"
+                    path: "/Users/robertstefanyshin/FL_testdir/bensnewproject",
+                    database: {
+                        active: "Test Database",
+                        all: {
+                            "Test Database": {
+                                path: "/Users/robertstefanyshin/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"           
+                            },
+                            "Test Database2": {
+                                path: "/Users/robertstefanyshin/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"  
+                            } 
+                        }
+                    }
                 },
                 benstestproject: {
                     name: "benstestproject",
                     features: ["hosting"],
-                    path: "/Users/robertstefanyshin/FL_testdir/benstestproject"
+                    path: "/Users/robertstefanyshin/FL_testdir/benstestproject",
+                    database: {
+                        active: '',
+                        all: {}
+                    }
                 }
 
             },
@@ -33,19 +48,39 @@ let test_user = () => {
         },
         benbaker: {
             uname: "benbaker",
-            act_proj: "benstestproject",
+            act_proj: "bensnewproject",
             projs: {
                 bensnewproject: {
                     name: "bensnewproject",
                     features: ["hosting", "database"],
-                    path: "/Users/benbaker/FL_testdir/bensnewproject"
+                    path: "/Users/benbaker/FL_testdir/bensnewproject",
+                    admin: "/Users/benbaker/Documents/OpenchFirebase/src/Users/cmpt350-project-ed891-firebase-adminsdk-q24yr-26a62e5c53.json",
+                    database: {
+                        active: "Test Database",
+                        all: {
+                            "Test Database": {
+                                url: ""
+                            },           
+                            "Test Database2": {
+                                url: "cmpt350-project-ed891"  
+                            } 
+                        }
+                    }
                 },
                 benstestproject: {
                     name: "benstestproject",
-                    features: ["hosting"],
-                    path: "/Users/benbaker/FL_testdir/benstestproject"
+                    features: ["hosting", "database"],
+                    admin: "/Users/benbaker/Documents/OpenchFirebase/src/Users/opench-app-firebase-adminsdk-hmem8-066d6d6ee3.json",
+                    path: "/Users/benbaker/FL_testdir/benstestproject",
+                    database: {
+                        active: "Opench Database",
+                        all: {
+                            "Opench Database": {
+                                url: ""
+                            } 
+                        }
+                    }
                 }
-
             },
             fb_projs: [
                 {name: "bensnewproject", id: "bensnewproject", num: "742369165416"},
@@ -62,14 +97,28 @@ let test_user = () => {
                 bensnewproject: {
                     name: "bensnewproject",
                     features: ["hosting", "database"],
-                    path: "/Users/jacksonschuler/FL_testdir/bensnewproject"
+                    path: "/Users/jacksonschuler/FL_testdir/bensnewproject",
+                    database: {
+                        active: "Test Database",
+                        all: {
+                            "Test Database": {
+                                path: "/Users/jacksonschuler/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"           
+                            },
+                            "Test Database2": {
+                                path: "/Users/jacksonschuler/Documents/OpenchFirebase/src/cmpt350-project-ed891-firebase-adminsdk-q24yr-4db1b76965.json"  
+                            } 
+                        }
+                    }
                 },
                 benstestproject: {
                     name: "benstestproject",
                     features: ["hosting"],
-                    path: "/Users/jacksonschuler/FL_testdir/benstestproject"
+                    path: "/Users/jacksonschuler/FL_testdir/benstestproject",
+                    database: {
+                        active: '',
+                        all: {}
+                    }
                 }
-
             },
             fb_projs: [
                 {name: "bensnewproject", id: "bensnewproject", num: "742369165416"},

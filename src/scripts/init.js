@@ -11,8 +11,6 @@ module.exports = {
         try {
             let user = await ui.user_info();
             user.fb_projs = await fb.fb_projlist();
-            console.log("init_function:");
-            console.log(user);
             return user;
         }
         catch (err) {
