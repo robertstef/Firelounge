@@ -39,7 +39,6 @@ export default function DbObjectDisplay() {
     try {
         var db = user.db
         var ref = db.ref();
-        console.log(db)
     }catch(error) {
         // console.log(error)
     }
@@ -55,7 +54,6 @@ export default function DbObjectDisplay() {
             setDisplaySrc(snapshot.val())
         })   
         
-        console.log('calling hook')
     }, [db, setDisplaySrc])
  
 

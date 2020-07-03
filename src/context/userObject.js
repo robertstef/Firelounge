@@ -224,9 +224,7 @@ export default class User {
         this.projs[this._act_proj]['database']['active'] = new_active_db;
         
         //check if theres a database url in User file -- if not use project name
-        console.log(this)
         if (this.admin !== undefined && this.admin !== '') {
-            
             if (this._isDefaultDb) {
                 //no db url found... use default project name
                 let db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
