@@ -94,6 +94,18 @@ module.exports = {
                         rules: rules_file
                     };
                     break;
+                case 'functions':
+                    let arg = {
+                      language: 'javascript',
+                      eslint: requestBody.functions.lint,
+                      run_npm: requestBody.functions.npm
+                    };
+
+                    let initfunctions = require('../../scripts/createProject/functionsInit');
+
+                    initfunctions.functionsInit(proj_path, arg);
+
+                    break;
             }
         });
 
