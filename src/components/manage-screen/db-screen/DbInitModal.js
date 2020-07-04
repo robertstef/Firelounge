@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '500px'
+    minHeight: '600px'
   }
 }));
 
