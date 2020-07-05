@@ -91,8 +91,13 @@ export default function SwitchesGroup() {
       state
     });
 
+    let arg = {
+        deployOptions: state.state,
+        act_proj: user.act_proj,
+    };
+
     const deployModule = require('../../../scripts/deploy');
-    deployModule.deployProject_function(state.state).then((output) => {
+    deployModule.deployProject_function(arg).then((output) => {
         console.log(output) // log the data for the sake of viewing the result
     }).catch(err => {
         console.log(err);
