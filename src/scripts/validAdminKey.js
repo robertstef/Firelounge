@@ -20,7 +20,7 @@ module.exports = {
             }
             
             if(projectId !== key.project_id){
-                reject("The files Project Id does not match the active Firelounge Project");
+                reject("The selected file does not match the active Firelounge Project");
             } else if (key.private_key === undefined) {
                 reject("File does not contain a Private Key");
             }else {
