@@ -16,14 +16,19 @@ const useStyles = makeStyles((theme) => ({
     'bottom': 0,
     'right': 0,
   },
+  circle: {
+    'position': 'absolute',
+    marginLeft: '50%',
+    marginTop: '35%'
+  }
 }));
 
-export default function CircularIndeterminate(props) {
+export default function CircularIndeterminate() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <CircularProgress className={classes.circle}/>
     </div>
   );
 }

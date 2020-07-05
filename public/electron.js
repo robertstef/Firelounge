@@ -53,9 +53,15 @@ ipcMain.on('get-db-path', (event, arg) => {
                     ipcMain.removeAllListeners('get-db-path-reply')
                 } else if(res.filePaths.length > 0) {
                     dbDialogShown = false;
-                    /* TODO: write script to confirm file selected is private key  */
-                    event.reply('get-db-path-reply', res.filePaths[0]);
-                    ipcMain.removeAllListeners('get-db-path-reply')
+                    const validAdminKey = require('../src/scripts/validAdminKey');
+                        validAdminKey.validAdminKey_function(res.filePaths[0], arg).then((output) => {
+                            event.reply('get-db-path-reply', res.filePaths[0]);
+                            ipcMain.removeAllListeners('get-db-path-reply')
+                        }).catch(err => {
+                            //else invalid - send back invalid
+                            event.reply('get-db-path-reply', "Error: " + err);
+                            ipcMain.removeAllListeners('get-db-path-reply')
+                        });
                 }
             }
         );

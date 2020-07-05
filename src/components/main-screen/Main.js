@@ -3,20 +3,21 @@ import MainNav from "../MainNav";
 import LoginAlert from "./LoginAlert";
 import CircularProgress from "./CircularProgress"
 import {UserDispatch, UserState} from "../../context/userContext";
-const ui = require('../../scripts/userInfo');
+const checkLoginStatus = require('../../scripts/checkLoginStatus');
 const initModule = require('../../scripts/init');
 
 function Main() {
     const dispatch = UserDispatch();
     const {user} = UserState();
-    const [showModal, setShowModal] = useState(true)
+    const [showModal, setShowModal] = useState(false)
     const [loading, setLoading] = useState(true)
 
     useEffect( () => {
         async function fetchUsername() {
-            let user_check = await ui.user_info();
-            
-            if(user_check.name !== undefined || user_check.name !== '' ) {
+            //check if user it logged in -- returns 'Logged In' when user it logged in, '' when user is not logged in
+            let user_check = await checkLoginStatus.checkLoginStatus_function();
+            if(user_check === 'Logged In' ) {
+                //if user is logged in -- start init script
                 initModule.init_function().then(async (output) => {
                     await dispatch({type: 'createUser', args: output});
                     setLoading(false)
@@ -25,6 +26,8 @@ function Main() {
                     console.log(err);
                 })
             } else {
+                //user is not logged in -- show dialog to prompt login
+                setShowModal(true)
                 setLoading(false)
             }
         }

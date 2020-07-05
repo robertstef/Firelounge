@@ -9,14 +9,14 @@ import DbStepper from './DbStepper';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    backgroundColor: '#EDF2F4'
+    height: '95%',
   },
   card: {
-    height: '67vh',
+    height: '100%',
     width: '95%',
     margin: '10px',
     borderRadius: '5px',
-    overflow: 'hidden', 
+    overflow: 'auto', 
     backgroundColor: '#EDF2F4'
   },
   heading: {
@@ -37,7 +37,7 @@ export default function DbInitScreenCard() {
     const classes = useStyles();
 
     return(
-        <div>
+        <div className={classes.root}>
             <Card className={classes.card}>
                 <Typography className={classes.heading}> Initialize Database </ Typography>
                 <Divider className={classes.divider}/>
