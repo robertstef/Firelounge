@@ -41,16 +41,27 @@ const rcaTheme = createRcaTheme({
 	},
   });
 
+  const rcaStyles = {
+	width: '80%',
+	maxWidth: 450,
+	minWidth: 400,
+	position: 'fixed',
+	top: 10,
+	right: 16,
+	zIndex: 100000,
+  };
+  
+
 function Routes() {
 	return (
 		<HashRouter>
 			<MuiThemeProvider theme={theme}>
 				<Switch>
-					<AlertsProvider theme={rcaTheme} settings={rcaSettings}>
+					<AlertsProvider theme={rcaTheme} settings={rcaSettings} style={rcaStyles}>
 						<UserProvider>
 							<Route path="/" component={Main} />
 						</UserProvider>
-						</AlertsProvider>
+					</AlertsProvider>
 				</Switch>
 		  	</MuiThemeProvider>
 		</HashRouter>
