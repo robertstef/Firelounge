@@ -29,6 +29,11 @@ let database_options = {
     rules: '',
 };
 
+let functions_options = {
+    lint: null,
+    npm: null,
+};
+
 let config = {
     hosting: false,
     database: false,
@@ -43,7 +48,13 @@ export default function NewProjectExpansion(){
 
     const [selectSinglePg, setSinglePg] = useState('');
 
+    const [selectLint, setLint] = useState('');
+
+    const [selectNpm, setNpm] = useState('');
+
     const [isDatabaseOpen, setDatabaseOpen] = useState(false);
+
+    const [isFunctionsOpen, setFunctionsOpen] = useState(false);
 
     /**
      * Generate a random 5 digit hex value to ensure a unique project id
@@ -162,6 +173,53 @@ export default function NewProjectExpansion(){
                     </div>
                 </AccordionDetails>
             </Accordion>
+
+            {/**                                ---FUNCTIONS  ----                                     */}
+
+            <Accordion expanded={isFunctionsOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
+                <AccordionSummary
+                    aria-label="Expand"
+                    aria-controls="additional-actions1-content"
+                    id="additional-actions1-header"
+                >
+                    <FormControlLabel
+                        control={<Checkbox />}
+                        onClick={(event) => {event.stopPropagation(); setFunctionsOpen(!isFunctionsOpen); config.functions = !config.functions}}
+                        onFocus={(event) => event.stopPropagation()}
+                        label="Functions"
+                    />
+                </AccordionSummary>
+                <AccordionDetails style={{flexDirection: 'column', marginTop: -15}}>
+                    <div>
+                        <Typography color="textSecondary" variant="body1">
+                            Do you want to setup ESlint? (y/N)
+                        </Typography>
+                        <div style={{marginTop: 10}}/>
+                        <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
+                            <Select value={selectLint} onChange={(e) => {setLint(e.target.value); functions_options.lint = e.target.value}}>
+                                <MenuItem value={null}/>
+                                <MenuItem value={true}>Yes</MenuItem>
+                                <MenuItem value={false}>No</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div style={{marginTop: 10}}/>
+                    <div>
+                        <Typography color="textSecondary" variant="body1">
+                            Do you want to run 'npm install'? (y/N)
+                        </Typography>
+                        <div style={{marginTop: 10}}/>
+                        <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
+                            <Select value={selectNpm} onChange={(e) => {setNpm(e.target.value); functions_options.npm = e.target.value}}>
+                                <MenuItem value={null}/>
+                                <MenuItem value={true}>Yes</MenuItem>
+                                <MenuItem value={false}>No</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                </AccordionDetails>
+            </Accordion>
+
             <Button onClick={() => {
 
                 const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
@@ -179,6 +237,10 @@ export default function NewProjectExpansion(){
                             },
                             database: {
                                 rules: database_options.rules,
+                            },
+                            functions: {
+                              npm: functions_options.npm,
+                              lint: functions_options.lint,
                             },
                             config: {
                                 hosting: config.hosting,

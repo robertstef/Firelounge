@@ -6,24 +6,6 @@
  *
  */
 
-
-/*
-proj_name: "proj name"
-proj_path: "/Library"
-isHostingOpen: true
-hosting:
-    public_dir: "public_dir"
-    single_page_app: true
-
-config:
-    hosting: true
-    database: false
-    storage: false
-    functions: false
- */
-
-
-
 module.exports = {
     initFireBasejson_function: function(requestBody) {
 
@@ -53,12 +35,8 @@ module.exports = {
 
             switch (value) {
                 case "hosting":
-                    // full hosting config
-                    // https://firebase.google.com/docs/hosting/full-config
 
                     const options = requestBody[value];
-
-                    //TODO: check that the selected public dir exists in the cwd, if yes, use that directory, else create directory with an index.html file
 
                     const initHosting = require('../../scripts/createProject/initHosting');
 
@@ -93,6 +71,19 @@ module.exports = {
                     firebase[value] = {
                         rules: rules_file
                     };
+                    break;
+
+                case 'functions':
+                    let arg = {
+                      language: 'javascript', // default to js for now
+                      eslint: requestBody.functions.lint,
+                      run_npm: requestBody.functions.npm
+                    };
+
+                    let initfunctions = require('../../scripts/createProject/functionsInit');
+
+                    initfunctions.functionsInit(proj_path, arg);
+
                     break;
             }
         });
