@@ -7,7 +7,9 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
-import {UserDispatch} from '../../../context/userContext'
+import {UserDispatch, UserState} from '../../../context/userContext'
+import InfoIcon from '@material-ui/icons/Info';
+import Chip from '@material-ui/core/Chip';
 
 const { shell } = window.require('electron')
 
@@ -46,7 +48,19 @@ function getSteps() {
   return ['Generate Admin Key', 'Select the filepath to your Firebase Admin Key', 'Create Name for Database'];
 }
 
+
 function getStepContent(step, pathCallback, inputCallback, urlCallback) {
+  const {user} = UserState();
+
+  // chip label that states if there is an admin sdk key defined
+  const key_chip = <Chip 
+                variant="outlined" 
+                icon={<InfoIcon/> }
+                label='It appears you already have an Admin Key defined for this project.' 
+                color="primary"
+                style={{marginTop: '10px'}}
+              />
+
   switch (step) {
     case 0:
       return (
@@ -56,11 +70,15 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
           <p> b) Select 'Generate New Key' </p> 
           <p> c) Store key in safe location </p> 
           <Button variant="contained" color="secondary" onClick={openBrowser}> Get New Key </Button> 
+          { (user.admin === undefined || user.admin === '' ) ?  null : key_chip }
         </div>
         )
     case 1:
       return (
-          <GetFilePath path={pathCallback} />
+          <div>
+            <GetFilePath path={pathCallback} />
+            { (user.admin === undefined || user.admin === '' ) ?  null : key_chip }
+          </div>
         )
     case 2:
       return (
@@ -77,6 +95,8 @@ export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
   const dispatch = UserDispatch();
+  const {user} = UserState();
+  
 
   /* Handles the next button */
   const handleNext = (dispatch) => {
@@ -136,7 +156,7 @@ export default function VerticalLinearStepper() {
                   </Button>
                   <Button
                     variant="contained"
-                    disabled={ (activeStep === 1 && dbPath === '') || ( activeStep === 2 && dbName === '' )  }
+                    disabled={ (activeStep === 1 && dbPath === '' && user.admin === '' ) || ( activeStep === 2 && dbName === '' )  }
                     color="primary"
                     onClick={() => handleNext(dispatch)}
                     className={classes.button}
