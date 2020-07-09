@@ -1,3 +1,4 @@
+import {configureFbsql} from "fbsql";
 
 export default class User {
 
@@ -47,6 +48,14 @@ export default class User {
                     this.db = db; 
                 }
             }
+
+            // setup fbsql
+            configureFbsql({
+                app: this.admin,
+                isFirestore: false,
+                shouldCommitResults: false, // change back to true once we know its working
+                shouldExpandResults: false
+            });
         } 
         this._writeUfile()
     }
