@@ -8,7 +8,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
+
 
 let project_name = "";
 
@@ -59,24 +59,38 @@ let id_hex = () => {
 export default function HorizontalLabelPositionBelowStepper() {
     const classes = useStyles();
     const theme = useTheme();
+
+    // current active step in the stepper
     const [activeStep, setActiveStep] = React.useState(0);
-    
+
+    // the configuration of features the user wishes to add on the project
     const [config, setConfig] = React.useState({
         hosting: false,
         database: false,
         functions: false,
     });
 
+    // the current steps throughout the project initialization process
     const [currentSteps, setCurrentSteps] = React.useState(["Select Project Features"]);
 
+    /**
+     * Handle forward movement through the stepper
+     **/
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
+    /**
+     * Handle backward movement through the stepper
+     **/
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
+    /**
+     * Handle object modifications to the config state variable
+     * @param: feature: String -> the feature that the users wishes to add to the project
+     **/
     const handleConfig = (feature) => {
         if (feature === 'hosting') {
             setConfig(prevState => ({
@@ -96,6 +110,9 @@ export default function HorizontalLabelPositionBelowStepper() {
         }
     };
 
+    /**
+     * Handle based on the features that the user selected, add those steps to the stepper for project setup
+     **/
     const addFurtherSteps = () => {
         // start by getting all the features selected
         let featuresToBeAdded = Object.keys(config)
@@ -105,6 +122,10 @@ export default function HorizontalLabelPositionBelowStepper() {
         setCurrentSteps((prevState => prevState.concat(featuresToBeAdded)))
     };
 
+    /**
+     * Get the approapriate content for each step
+     * @param: step: String -> the current step (e.g. "hosting")
+     **/
     function getStepContent(step) {
         switch(step) {
             case 'hosting':
