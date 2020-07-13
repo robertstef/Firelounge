@@ -10,8 +10,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
-import GetPathButtonNewProject from "./GetPathButtonNewProject";
-import {UserDispatch} from "../../context/userContext";
+import GetPathButtonNewProject from "./../GetPathButtonNewProject";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {UserDispatch} from "../../../context/userContext";
 
 
 let project_name = "";
@@ -88,11 +89,8 @@ export default function NewProjectExpansion(){
             <GetPathButtonNewProject path={(path) => {project_path = path}}/>
             <div style={{marginTop: 10}}/>
             {/**                            -----HOSTING------                        */}
-            <Accordion expanded={isHostingOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
+            <Accordion expanded={isHostingOpen}>
                 <AccordionSummary
-                    aria-label="Expand"
-                    aria-controls="additional-actions1-content"
-                    id="additional-actions1-header"
                 >
                     <FormControlLabel
                         control={<Checkbox />}
@@ -139,12 +137,8 @@ export default function NewProjectExpansion(){
 
             {/**                            -----DATABASE------                        */}
 
-            <Accordion expanded={isDatabaseOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
-                <AccordionSummary
-                    aria-label="Expand"
-                    aria-controls="additional-actions1-content"
-                    id="additional-actions1-header"
-                >
+            <Accordion expanded={isDatabaseOpen}>
+                <AccordionSummary>
                     <FormControlLabel
                         control={<Checkbox />}
                         onClick={(event) => {event.stopPropagation(); setDatabaseOpen(!isDatabaseOpen); config.database = !config.database}}
@@ -176,11 +170,8 @@ export default function NewProjectExpansion(){
 
             {/**                                ---FUNCTIONS  ----                                     */}
 
-            <Accordion expanded={isFunctionsOpen} style={{boxShadow: 'none', WebkitBoxShadow: 'none', MozBoxShadow: 'none'}}>
+            <Accordion expanded={isFunctionsOpen}>
                 <AccordionSummary
-                    aria-label="Expand"
-                    aria-controls="additional-actions1-content"
-                    id="additional-actions1-header"
                 >
                     <FormControlLabel
                         control={<Checkbox />}
@@ -222,11 +213,11 @@ export default function NewProjectExpansion(){
 
             <Button onClick={() => {
 
-                const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
+                const createCloudProj = require('../../../scripts/createProject/CreateCloudProject');
 
                 createCloudProj.createCloudProject_function([project_name, project_path, project_id]).then((value) => {
                     if (value === 'SUCCESS') {
-                        const initFirebase = require('../../scripts/createProject/initFirebasejson');
+                        const initFirebase = require('../../../scripts/createProject/initFirebasejson');
                         initFirebase.initFireBasejson_function({
                             proj_name: project_name,
                             proj_path: project_path,
