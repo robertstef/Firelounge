@@ -241,12 +241,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                         </div>
                     </div>
                 );
-            case 'submit':
-                return(
-                  <div>
-                      Submission confirm page
-                  </div>
-                );
             default:
                 return(
                     <div>
@@ -301,12 +295,13 @@ export default function HorizontalLabelPositionBelowStepper() {
 
                                     setTimeout(function(){dispatch({type: 'addProj',
                                         args:{name:project_name, path: project_path, id:project_id}}) }, 3000);
+
+                                    handleNext();
                                 }
 
                             }).catch((err) => {
                                 console.log(err)
                             });
-                            handleNext();
                         } else {
                             if (activeStep === 0) {
                                 addFurtherSteps();
