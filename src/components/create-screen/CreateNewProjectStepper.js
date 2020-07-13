@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField";
@@ -8,6 +8,11 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import {UserDispatch} from "../../context/userContext";
 
 
 let project_name = "";
@@ -60,8 +65,19 @@ export default function HorizontalLabelPositionBelowStepper() {
     const classes = useStyles();
     const theme = useTheme();
 
+    const dispatch = UserDispatch();
+
     // current active step in the stepper
     const [activeStep, setActiveStep] = React.useState(0);
+
+    // selection for EsLint on functions setup
+    const [selectLint, setLint] = useState('');
+
+    // selection for running 'npm install' on functions setup
+    const [selectNpm, setNpm] = useState('');
+
+    // single page app state value on hosting setup
+    const [selectSinglePg, setSinglePg] = useState('');
 
     // the configuration of features the user wishes to add on the project
     const [config, setConfig] = React.useState({
@@ -72,6 +88,14 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     // the current steps throughout the project initialization process
     const [currentSteps, setCurrentSteps] = React.useState(["Select Project Features"]);
+
+    /**
+     * Check the fields of the corresponding steps to ensure that the user has provide valid input, and prevent
+     * them from moving forward if valid input has not been provided.
+     **/
+    function btnDisabled() {
+        return false
+    }
 
     /**
      * Handle forward movement through the stepper
@@ -131,20 +155,97 @@ export default function HorizontalLabelPositionBelowStepper() {
             case 'hosting':
                 return(
                     <div>
-                        Here is the hosting shit
+                        <div>
+                            <Typography color="textSecondary" variant="body1">
+                                What do you want to use as your public directory?
+                            </Typography>
+                            <div style={{marginTop: '2%'}}/>
+                            <div>
+                                {/* Will edit the public attribute within the "hosting"*/}
+                                <TextField
+                                    style={{width:'30%'}}
+                                    id="outlined-size-small"
+                                    size={'small'}
+                                    placeholder="(public)"
+                                    variant={"outlined"}
+                                    color={'secondary'}
+                                    onChange={(e) => {hosting_options.public_dir = e.target.value}}
+                                />
+                            </div>
+                            <div style={{marginTop: '2%'}}/>
+                        </div>
+                        <div>
+                            <Typography color="textSecondary" variant="body1">
+                                Configure as a single-page app (rewrite all urls to /index.html)? (y/N)
+                            </Typography>
+                            <div style={{marginTop: '2%'}}/>
+                            <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
+                                <Select value={selectSinglePg} onChange={(e) => {setSinglePg(e.target.value); hosting_options.single_page_app = e.target.value}}>
+                                    <MenuItem value={null}/>
+                                    <MenuItem value={true}>Yes</MenuItem>
+                                    <MenuItem value={false}>No</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
                     </div>
                 );
             case 'database':
                 return(
                     <div>
-                        Here is the database shit
+                        <Typography color="textSecondary" variant="body1">
+                            What file should be used for Database Rules?
+                        </Typography>
+                        <div style={{marginTop: '2%'}}/>
+                        <div>
+                            <TextField
+                                style={{width:'50%'}}
+                                id="outlined-size-small"
+                                size={'small'}
+                                placeholder="(database.rules.json)"
+                                variant={"outlined"}
+                                color={'secondary'}
+                                onChange={(e) => {database_options.rules = e.target.value}}
+                            />
+                        </div>
                     </div>
                 );
             case 'functions' :
                 return(
                     <div>
-                        Here is the functions shit
+                        <div>
+                            <Typography color="textSecondary" variant="body1">
+                                Do you want to setup ESlint? (y/N)
+                            </Typography>
+                            <div style={{marginTop: '2%'}}/>
+                            <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
+                                <Select value={selectLint} onChange={(e) => {setLint(e.target.value); functions_options.lint = e.target.value}}>
+                                    <MenuItem value={null}/>
+                                    <MenuItem value={true}>Yes</MenuItem>
+                                    <MenuItem value={false}>No</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div style={{marginTop: '2%'}}/>
+                        <div>
+                            <Typography color="textSecondary" variant="body1">
+                                Do you want to run 'npm install'? (y/N)
+                            </Typography>
+                            <div style={{marginTop: '2%'}}/>
+                            <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
+                                <Select value={selectNpm} onChange={(e) => {setNpm(e.target.value); functions_options.npm = e.target.value}}>
+                                    <MenuItem value={null}/>
+                                    <MenuItem value={true}>Yes</MenuItem>
+                                    <MenuItem value={false}>No</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
                     </div>
+                );
+            case 'submit':
+                return(
+                  <div>
+                      Submission confirm page
+                  </div>
                 );
             default:
                 return(
@@ -157,20 +258,6 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     return (
         <div className={classes.root}>
-            <div>
-                <TextField
-                    style={{width:'80%'}}
-                    id="outlined-size-small"
-                    size={'small'}
-                    placeholder="Enter your project name"
-                    variant={"outlined"}
-                    color={'secondary'}
-                    onChange={(e) => {project_name = e.target.value; project_id = e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex();}}
-                />
-            </div>
-            <div style={{marginTop: 10}}/>
-            <GetPathButtonNewProject path={(path) => {project_path = path}}/>
-            <div style={{marginTop: 10}}/>
             <MobileStepper
                 variant="progress"
                 steps={currentSteps.length}
@@ -179,17 +266,60 @@ export default function HorizontalLabelPositionBelowStepper() {
                 className={classes.root}
                 nextButton={
                     <Button size="small" onClick={()=>{
-                        if (activeStep === 0) {
-                            addFurtherSteps();
+                        // if we are submitting ....
+                        if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
+                            const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
+                            const cloudProjArg = [project_name, project_path, project_id];
+                            console.log(cloudProjArg);
+                            createCloudProj.createCloudProject_function(cloudProjArg).then((value) => {
+                                if (value === 'SUCCESS') {
+                                    const fbJsonObj = {
+                                        proj_name: project_name,
+                                        proj_path: project_path,
+                                        proj_id: project_id,
+                                        hosting: {
+                                            public_dir: hosting_options.public_dir,
+                                            single_page_app: hosting_options.single_page_app,
+                                        },
+                                        database: {
+                                            rules: database_options.rules,
+                                        },
+                                        functions: {
+                                            npm: functions_options.npm,
+                                            lint: functions_options.lint,
+                                        },
+                                        config: {
+                                            hosting: config.hosting,
+                                            database: config.database,
+                                            storage: config.storage,
+                                            functions: config.functions,
+                                        }
+                                    };
+
+                                    const initFirebase = require('../../scripts/createProject/initFirebasejson');
+                                    initFirebase.initFireBasejson_function(fbJsonObj);
+
+                                    setTimeout(function(){dispatch({type: 'addProj',
+                                        args:{name:project_name, path: project_path, id:project_id}}) }, 3000);
+                                }
+
+                            }).catch((err) => {
+                                console.log(err)
+                            });
+                            handleNext();
+                        } else {
+                            if (activeStep === 0) {
+                                addFurtherSteps();
+                            }
+                            handleNext();
                         }
-                        handleNext();
                     }} disabled={activeStep === currentSteps.length}>
-                        Next
+                        {((activeStep === currentSteps.length - 1) || (activeStep === currentSteps.length)) && (activeStep !== 0) ? 'Submit':'Next'}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
                     </Button>
                 }
                 backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    <Button size="small" onClick={handleBack} disabled={activeStep === 0 || activeStep === currentSteps.length}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                         Back
                     </Button>
@@ -199,12 +329,29 @@ export default function HorizontalLabelPositionBelowStepper() {
                 {activeStep === 0 ? (
                     <div>
                         <div>
-                            {currentSteps[activeStep]}
+                            <Typography>{'Enter Project Details: '}</Typography>
                         </div>
                         {/*
                         Here we will prompt the user to add the features that they desire
                         based on those features, we will add the necessary steps for project creation
                         */}
+                        <div>
+                            <TextField
+                                style={{width:'80%'}}
+                                id="outlined-size-small"
+                                size={'small'}
+                                placeholder="Enter your project name"
+                                variant={"outlined"}
+                                color={'secondary'}
+                                onChange={(e) => {project_name = e.target.value; project_id = e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex();}}
+                            />
+                        </div>
+                        <div style={{marginTop: '2%'}}/>
+                        <GetPathButtonNewProject path={(path) => {project_path = path}}/>
+                        <div style={{marginTop: '2%'}}/>
+                        <div>
+                            <Typography>{currentSteps[activeStep]}</Typography>
+                        </div>
                         <div>
                             <FormControlLabel
                                 control={<Checkbox checked={config.hosting}/>}
@@ -234,7 +381,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                     <div>
                         {activeStep === currentSteps.length ? (
                             <div>
-                                I am at the end
+                                Submission confirm
                             </div>
                         ): (
                             <div>
@@ -244,11 +391,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                     </div>
                 )}
             </div>
-            <Button
-                onClick={()=> {console.log(config, currentSteps)}}
-            >
-                TESTING BUTTON
-            </Button>
         </div>
     );
 }
