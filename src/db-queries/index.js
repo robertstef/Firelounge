@@ -1,5 +1,5 @@
-require("@babel/polyfill");
 import executeQuery from "./execute";
+//require("@babel/polyfill");
 
 class FbSql {
   constructor() {
