@@ -2,6 +2,10 @@ const { app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
 const url = require('url');
 const isDev = require("electron-is-dev");
+const log = require('electron-log');
+
+
+
 
 /* ****** IPC ********* */
 let dialogShown = false; // flag to represent whether the dialog is open or closed
@@ -17,6 +21,7 @@ ipcMain.on('get-path', (event, arg) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
+                            log.info(err);    
                             //else invalid - send back invalid
                             event.reply('new_proj-get-path-reply', "Invalid");
                             ipcMain.removeAllListeners('get-path-reply')
@@ -28,6 +33,7 @@ ipcMain.on('get-path', (event, arg) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
+                            log.info(err);
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Invalid");
                             ipcMain.removeAllListeners('get-path-reply')
@@ -111,6 +117,4 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-
 

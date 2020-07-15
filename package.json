@@ -20,6 +20,7 @@
     "cross-env": "^7.0.2",
     "cross-spawn": "^7.0.3",
     "electron-is-dev": "^1.2.0",
+    "electron-log": "^4.2.2",
     "firebase": "^7.15.0",
     "firebase-admin": "^8.12.1",
     "firebase-tools": "^8.4.2",
