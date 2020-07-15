@@ -27,6 +27,7 @@ class StringHelper {
     var stringToWorkWith = string.substring(0, startpos + 1);
     var lastIndexOf = -1;
     var nextStop = 0;
+    let result;
     while ((result = regex.exec(stringToWorkWith)) != null) {
       lastIndexOf = result.index;
       regex.lastIndex = ++nextStop;
