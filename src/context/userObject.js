@@ -256,7 +256,6 @@ export default class User {
      */
     addProj(new_proj) {
         const fs = window.require('fs');
-
         // validate input
         if ((new_proj.id === undefined)  || (new_proj.name === undefined) || (new_proj.path === undefined)) {
             throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", path:\"\"}")
@@ -316,12 +315,16 @@ export default class User {
 
     addDb(newDb){
         var fs = window.require('fs');
+        const {remote} = window.require('electron')
+        const path = require('path');
         
-        var json = fs.readFileSync("./src/Users/" + `${this._uname}`+ ".json")	
+        const userDir = remote.app.getPath('userData')
+        let ufile_path = path.join(userDir, "Users/" + `${this._uname}` + ".json")
+        var json = fs.readFileSync(ufile_path)
         json = JSON.parse(json)
-        
+
         //TODO: check to see if the projects actually supports databases   
-        
+    
         //if admin is undefined or admin doesnt match current projects 
         if(this.admin === '' || this.admin.options_.credential.projectId !== this.act_proj.id) {
             let admin = window.require("firebase-admin");
@@ -352,7 +355,9 @@ export default class User {
         this.setActiveDb(newDb.dbName)
 
         //write user file
-        fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(json));
+        // fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(json));
+        this._writeUfile();
+
     }
 
 
@@ -409,13 +414,19 @@ export default class User {
      */
     _writeUfile() {
         const fs = window.require('fs');
+        const {remote} = window.require('electron')
+        const path = require('path');
 
+        
+        
         let ufile = {};
         ufile.act_proj = this._act_proj;
         ufile.projs = this._projs;
 
-        // TODO #25 - write user file to local Users folder
-        fs.writeFileSync("./src/Users/" + `${this._uname}`+ ".json", JSON.stringify(ufile));
+        const userDir = remote.app.getPath('userData')
+        let file_path = path.join(userDir, 'Users/' + `${this._uname}` + ".json")
+        
+        fs.writeFileSync(file_path, JSON.stringify(ufile));
     }
 
 

@@ -11,10 +11,15 @@ module.exports = {
 		const path = window.require('path');
 		const {remote} = window.require('electron')
 
+
+
         return new Promise((resolve, reject) => {
 
         	try {
-        		var json = fs.readFileSync(`${path.join(remote.app.getAppPath(), 'src/Users/' + username + '.json')}`)	
+        		const userDir = remote.app.getPath('userData')
+        		let ufile_path = path.join(userDir, "Users/" + `${this._uname}` + ".json")
+
+				var json = fs.readFileSync(ufile_path);
         		json = JSON.parse(json)
                 
                 //TODO: check to see if the projects actually supports databases        		
@@ -22,7 +27,6 @@ module.exports = {
         		if(json['projs'][active_proj]['database'] === undefined) {
         			json['projs'][active_proj]['database'] = {}
                     json['projs'][active_proj]['database']['all'] = {}
-                    
         		}
 
                 
@@ -34,7 +38,7 @@ module.exports = {
 				}
 				
 
-				fs.writeFileSync(`${path.join(remote.app.getAppPath(), 'src/Users/' + username + '.json')}`, JSON.stringify(json), function(err) {
+				fs.writeFileSync(ufile_path, JSON.stringify(json), function(err) {
 	    		if (err) {
 	        			reject(new Error(err));
 	    			}

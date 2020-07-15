@@ -41,12 +41,25 @@ function get_uname() {
 function get_ufile_info(uname) {
     // Initializes the application after the user logs into firebase
     const fs = window.require('fs');
+    const {remote} = window.require('electron')
+    const path = require('path');
 
     return new Promise((resolve, reject) => {
+        const userDir = remote.app.getPath('userData')
 
+        //check to see if User folder already exists
+        let ufolder = path.join(userDir, "Users")
+        if (!fs.existsSync(ufolder)){
+            //if not, make dir
+            fs.mkdir(path.join(userDir, 'Users'), (err) => { 
+                if (err) { 
+                    console.log(err) 
+                } 
+            }); 
+        }
+        
         // path to users firelounge file
-        let ufile_path = './src/Users/' + uname + '.json';
-
+        let ufile_path = path.join(userDir, "Users/" + uname + ".json")
         // existing user - load their info
         if (fs.existsSync(ufile_path)) {
             let rawdata = fs.readFileSync(ufile_path);
@@ -94,4 +107,5 @@ let user_info = async function() {
 };
 
 /* Export user_info() */
-exports.user_info = user_info;
+const _user_info = user_info;
+export { _user_info as user_info };

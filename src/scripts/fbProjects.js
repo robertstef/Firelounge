@@ -83,4 +83,5 @@ let fb_projlist = async function() {
 };
 
 /* Export fb_projlist() */
-exports.fb_projlist = fb_projlist;
+const _fb_projlist = fb_projlist;
+export { _fb_projlist as fb_projlist };
