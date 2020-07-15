@@ -1,5 +1,3 @@
-import {configureFbsql} from "fbsql";
-
 export default class User {
 
     /**
@@ -27,35 +25,33 @@ export default class User {
             // Fetch the service account key JSON file contents
             let path = projs[act_proj].admin
             let serviceAccount = window.require(path);
-
+            console.log(serviceAccount);
             // Initialize the app with a service account, granting admin privileges
-            var app = admin.initializeApp({
+            this.admin = admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount)
             });
 
-            this.admin = app
-
-            //init active database 
+            //init active database
             //check if theres a database url in User file -- if not use project name
             if( this._hasActiveDb() ) {
                 if (this._isDefaultDb) {
                     //no db url found... use default project name
-                    let db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
-                    this.db = db; 
+                    this.db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
                 } else {
                     //database url exists
-                    let db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
-                    this.db = db; 
+                    this.db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
                 }
             }
 
+            /*
             // setup fbsql
             configureFbsql({
-                app: this.admin,
+                app: app,
                 isFirestore: false,
                 shouldCommitResults: false, // change back to true once we know its working
                 shouldExpandResults: false
             });
+             */
         } 
         this._writeUfile()
     }
