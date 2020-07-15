@@ -96,7 +96,7 @@ export function updateItemWithSets(obj, sets) {
       if (newVal.includes(".")) {
         let props = newVal.split(".");
         finalValue = updateObject[props[0]];
-        for (let i = 1; updateObjecti < props.length; i++) {
+        for (let i = 1; updateObject < props.length; i++) {
           finalValue = finalValue[props[i]];
         }
       }
