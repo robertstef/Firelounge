@@ -3,23 +3,10 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {createMuiTheme} from "@material-ui/core/styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import Brightness1OutlinedIcon from '@material-ui/icons/Brightness1Outlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import GetPathButton from "./GetPathButton";
-
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#ef223c'
-        },
-        secondary: {
-            main: '#8d99ae'
-        }
-    }
-});
-
 
 class CreateNewProjectContent extends Component {
 
@@ -42,7 +29,6 @@ class CreateNewProjectContent extends Component {
                 <div>
                     <Typography variant="h6" gutterBottom>Create a New Project</Typography>
                     <div style={{marginTop:10}}/>
-                    <ThemeProvider theme={theme}>
                         <div>
                             <TextField
                                 style={{width:'80%'}}
@@ -53,11 +39,9 @@ class CreateNewProjectContent extends Component {
                                 color={'secondary'}
                             />
                         </div>
-                    </ThemeProvider>
                     <div style={{marginTop:20}}/>
                     <Typography variant="h6" gutterBottom>Select Project's Features</Typography>
                     <div style={{marginTop:10}}/>
-                    <ThemeProvider theme={theme}>
                         <div>
                             <FormControlLabel
                                 control={<Checkbox color="primary" icon={<Brightness1OutlinedIcon fontSize="small" />} checkedIcon={<CheckCircleOutlinedIcon fontSize="small" />}/>}
@@ -100,8 +84,6 @@ class CreateNewProjectContent extends Component {
                             <GetPathButton/>
                         </div>
                         <div style={{marginTop:20}}/>
-
-                    </ThemeProvider>
                 </div>
             </div>
         );

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -59,14 +58,6 @@ function LinkTab(props) {
   );
 }
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ef223c'
-    },
-  }
-});
-
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '49px',
@@ -117,7 +108,6 @@ export default function SecondaryManageNav() {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appbar}>
-        <ThemeProvider theme={theme}>
           <Tabs
               orientation='vertical'
               variant="fullWidth"
@@ -131,7 +121,6 @@ export default function SecondaryManageNav() {
             <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
             <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} />
           </Tabs>
-        </ThemeProvider>
       </AppBar>
       <div className={classes.content}>
         <TabPanel value={value} index={0} >

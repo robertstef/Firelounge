@@ -4,25 +4,11 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Brightness1OutlinedIcon from "@material-ui/icons/Brightness1Outlined";
 import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
-import {createMuiTheme} from "@material-ui/core/styles";
 import GetPathButton from "./GetPathButton";
-
-
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#ef223c'
-        },
-        secondary: {
-            main: '#8d99ae'
-        }
-    }
-});
 
 
 class AddProjectContent extends Component{
@@ -62,7 +48,6 @@ class AddProjectContent extends Component{
                             <div style={{marginTop:20}}/>
                             <Typography variant="h6" gutterBottom>Select Project's Features</Typography>
                             <div style={{marginTop:10}}/>
-                            <ThemeProvider theme={theme}>
                                 <div>
                                     <FormControlLabel
                                         control={<Checkbox color="primary" icon={<Brightness1OutlinedIcon fontSize="small" />} checkedIcon={<CheckCircleOutlinedIcon fontSize="small" />}/>}
@@ -91,7 +76,6 @@ class AddProjectContent extends Component{
                                         labelPlacement="end"
                                     />
                                 </div>
-                            </ThemeProvider>
                             <div style={{marginTop:20}}/>
                             <Button variant={'outlined'} disabled={this.btnDisabled()} size={'small'}>Initialize</Button>
                         </Grid>
