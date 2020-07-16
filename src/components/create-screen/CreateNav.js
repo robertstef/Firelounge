@@ -8,12 +8,11 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import CreateNewProjectContent from "./CreateNewProjectContent";
 import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import NewProjectExpansion from "./NewProjectExpansion";
+import CreateNewProjectStepper from "./CreateNewProjectStepper";
 
 
 function TabPanel(props) {
@@ -130,13 +129,12 @@ export default function SecondaryManageNav() {
           </Tabs>
       </AppBar>
       <div className={classes.content}>
-
         {/* Create page */}
         <TabPanel value={value} index={0} >
           <div style={{marginTop: -10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
-            {/*<CreateNewProjectContent/>*/}
-            <NewProjectExpansion/>
+          <Card style={{height: '95vh'}}>
+            <CreateNewProjectStepper/>
+            {/*<NewProjectExpansion/>*/}
           </Card>
         </TabPanel>
 
