@@ -14,7 +14,7 @@ ipcMain.on('get-path', (event, arg) => {
                 if (res.canceled === true || res.filePaths.length > 0) {
                     dialogShown = false;
                     if (arg === "new-path") {
-                        const new_proj_validDir = require('../build/new_projvalidDir.js');
+                        const new_proj_validDir = require(isDev ? './public/new_projvalidDir.js' : '../build/new_projvalidDir.js');
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
@@ -26,7 +26,7 @@ ipcMain.on('get-path', (event, arg) => {
                         });
                     } else if (arg === "init-path") {
                         //confirm filepath has .firebaserc file
-                        const validDir = require('../build/validDir.js');
+                        const validDir = require(isDev ? './public/validDir.js' : '../build/validDir.js');
                         validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
@@ -57,7 +57,7 @@ ipcMain.on('get-db-path', (event, arg) => {
                     ipcMain.removeAllListeners('get-db-path-reply')
                 } else if(res.filePaths.length > 0) {
                     dbDialogShown = false;
-                    const validAdminKey = require('../src/scripts/validAdminKey');
+                    const validAdminKey = require(isDev ? './public/validAdminKey.js' : '../build/validAdminKey');
                         validAdminKey.validAdminKey_function(res.filePaths[0], arg).then((output) => {
                             event.reply('get-db-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-db-path-reply')
