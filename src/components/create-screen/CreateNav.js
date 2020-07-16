@@ -12,7 +12,6 @@ import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import NewProjectExpansion from "./depreciated/NewProjectExpansion";
 import CreateNewProjectStepper from "./CreateNewProjectStepper";
 
 

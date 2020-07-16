@@ -39,7 +39,15 @@ let functions_options = {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
+        width: '99%',
+        backgroundColor: 'transparent',
+    },
+    stepContent: {
+        padding: '3%',
+    },
+    pgTitle: {
+        paddingLeft: '2%',
+        paddingTop: '2%',
     },
     backButton: {
         marginRight: theme.spacing(1),
@@ -92,8 +100,18 @@ export default function HorizontalLabelPositionBelowStepper() {
     /**
      * Check the fields of the corresponding steps to ensure that the user has provide valid input, and prevent
      * them from moving forward if valid input has not been provided.
+     * @param: step: String - the step that the user is on, this will determine the attributes to which
+     * the movement through the stepper is allowed.
      **/
-    function btnDisabled() {
+    function btnDisabled(step) {
+        // if we are on the first step and
+
+        switch(step) {
+            case "Select Project Features":
+                if (project_name === "" || project_path === "" || project_id === "") {
+                    return true;
+                }
+        }
         return false
     }
 
@@ -251,7 +269,8 @@ export default function HorizontalLabelPositionBelowStepper() {
     }
 
     return (
-        <div className={classes.root}>
+        <div>
+            <Typography className={classes.pgTitle}>Create a new FireLounge project</Typography>
             <MobileStepper
                 variant="progress"
                 steps={currentSteps.length}
@@ -308,7 +327,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                             }
                             handleNext();
                         }
-                    }} disabled={activeStep === currentSteps.length}>
+                    }} disabled={activeStep === currentSteps.length || btnDisabled(currentSteps[activeStep])}>
                         {((activeStep === currentSteps.length - 1) || (activeStep === currentSteps.length)) && (activeStep !== 0) ? 'Submit':'Next'}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
                     </Button>
@@ -322,7 +341,7 @@ export default function HorizontalLabelPositionBelowStepper() {
             />
             <div>
                 {activeStep === 0 ? (
-                    <div>
+                    <div className={classes.stepContent}>
                         <div>
                             <Typography>{'Enter Project Details: '}</Typography>
                         </div>
@@ -375,11 +394,11 @@ export default function HorizontalLabelPositionBelowStepper() {
                 ) : (
                     <div>
                         {activeStep === currentSteps.length ? (
-                            <div>
+                            <div className={classes.stepContent}>
                                 Submission confirm
                             </div>
                         ): (
-                            <div>
+                            <div className={classes.stepContent}>
                                 {getStepContent(currentSteps[activeStep])}
                             </div>
                         )}
