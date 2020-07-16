@@ -13,7 +13,6 @@ ipcMain.on('get-path', (event, arg) => {
                 if (res.canceled === true ) {
                     dialogShown = false;
                     event.reply('get-path-reply', "Invalid");
-                    ipcMain.removeAllListeners('get-path-reply')
                 }  else if (res.filePaths.length > 0) {
                     dialogShown = false;
                     /* Select a file path that doesnt contain firebase files*/
@@ -21,23 +20,19 @@ ipcMain.on('get-path', (event, arg) => {
                         const new_proj_validDir = require(isDev ? './new_projvalidDir.js' : '../build/new_projvalidDir.js');
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
-                            ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
                             log.info(err);    
                             event.reply('new_proj-get-path-reply', "Error: " + err);
-                            ipcMain.removeAllListeners('get-path-reply')
                         });
                     } else if (arg === "init-path") {
                         /* Select a file path that doesnt contain firebase files*/
                         const validDir = require(isDev ? './validDir.js' : '../build/validDir.js');
                         validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
-                            ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
                             log.info(err);
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Error: " + err);
-                            ipcMain.removeAllListeners('get-path-reply')
                         });
                     } else {
                         console.log("INVALID ARGUMENT INTO IPC")
@@ -57,17 +52,14 @@ ipcMain.on('get-db-path', (event, arg) => {
                 if (res.canceled === true) {
                     dbDialogShown = false;
                     event.reply('get-db-path-reply', "Invalid");
-                    ipcMain.removeAllListeners('get-db-path-reply')
                 } else if(res.filePaths.length > 0) {
                     dbDialogShown = false;
                     const validAdminKey = require(isDev ? './validAdminKey.js' : '../build/validAdminKey');
                         validAdminKey.validAdminKey_function(res.filePaths[0], arg).then((output) => {
                             event.reply('get-db-path-reply', res.filePaths[0]);
-                            ipcMain.removeAllListeners('get-db-path-reply')
                         }).catch(err => {
                             //else invalid - send back invalid
                             event.reply('get-db-path-reply', "Error: " + err);
-                            ipcMain.removeAllListeners('get-db-path-reply')
                         });
                 }
             }
