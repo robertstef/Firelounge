@@ -7,7 +7,9 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
-import {UserDispatch} from '../../../context/userContext'
+import {UserDispatch, UserState} from '../../../context/userContext'
+import InfoIcon from '@material-ui/icons/Info';
+import Chip from '@material-ui/core/Chip';
 
 const { shell } = window.require('electron')
 
@@ -19,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
-    backgroundColor: '#8d99ae'
+    backgroundColor: '#8d99ae',
   },
   actionsContainer: {
     marginBottom: theme.spacing(2),
@@ -33,7 +35,18 @@ const useStyles = makeStyles((theme) => ({
   stepContent: {
   },
   stepLabel: {
-  }
+  },
+  icon: {
+    color: '#EF233C',
+    "&$activeIcon": {
+      color: "#EF233C"
+    },
+    "&$completedIcon": {
+      color: "#EF233C"
+    },
+  },
+  activeIcon: {},
+  completedIcon: {}
 }));
 
 /* Opens a browser window to get an AdminSDK key */
@@ -46,7 +59,19 @@ function getSteps() {
   return ['Generate Admin Key', 'Select the filepath to your Firebase Admin Key', 'Create Name for Database'];
 }
 
+
 function getStepContent(step, pathCallback, inputCallback, urlCallback) {
+  const {user} = UserState();
+
+  // chip label that states if there is an admin sdk key defined
+  const key_chip = <Chip 
+                variant="outlined" 
+                icon={<InfoIcon/> }
+                label='There already is an Admin Key defined for this project.' 
+                style={{ marginTop: '10px'}}
+                color='secondary'
+              />
+
   switch (step) {
     case 0:
       return (
@@ -55,12 +80,16 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
           <p> a) Select your current project </p> 
           <p> b) Select 'Generate New Key' </p> 
           <p> c) Store key in safe location </p> 
-          <Button variant="contained" color="secondary" onClick={openBrowser}> Get New Key </Button> 
+          <Button variant="contained" style={{background: '#EF233C'}} onClick={openBrowser}> Get New Key </Button> 
+          { (user.admin === undefined || user.admin === '' ) ?  null : key_chip }
         </div>
         )
     case 1:
       return (
-          <GetFilePath path={pathCallback} />
+          <div>
+            <GetFilePath path={pathCallback} />
+            { (user.admin === undefined || user.admin === '' ) ?  null : key_chip }
+          </div>
         )
     case 2:
       return (
@@ -77,6 +106,8 @@ export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
   const dispatch = UserDispatch();
+  const {user} = UserState();
+  
 
   /* Handles the next button */
   const handleNext = (dispatch) => {
@@ -121,33 +152,32 @@ export default function VerticalLinearStepper() {
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical" className={classes.stepper}>
         {steps.map((label, index) => (
-          <Step key={label} >
-            <StepLabel classes={{root: classes.stepLabel, completed: classes.completed, active:classes.active}}>{label}</StepLabel>
-            <StepContent className={classes.stepContent}>
-              <div>{getStepContent(index, getSelectedPath, pathInput, urlInput)}</div>
-              <div className={classes.actionsContainer}>
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    disabled={ (activeStep === 1 && dbPath === '') || ( activeStep === 2 && dbName === '' )  }
-                    color="primary"
-                    onClick={() => handleNext(dispatch)}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
+            <Step key={label}  >
+              <StepLabel StepIconProps={{ classes:{ root: classes.icon, active: classes.activeIcon, completed: classes.completedIcon } }} > {label}</StepLabel>
+              <StepContent className={classes.stepContent}>
+                <div>{getStepContent(index, getSelectedPath, pathInput, urlInput)}</div>
+                <div className={classes.actionsContainer}>
+                  <div>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.button}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      disabled={ (activeStep === 1 && dbPath === '' && user.admin === '' ) || ( activeStep === 2 && dbName === '' )  }
+                      onClick={() => handleNext(dispatch)}
+                      className={classes.button}
+                    >
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </StepContent>
-          </Step>
-        ))}
+              </StepContent>
+            </Step>
+          ))}
       </Stepper>
     </div>
   );
