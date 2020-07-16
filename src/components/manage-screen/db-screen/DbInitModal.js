@@ -8,8 +8,8 @@ import DbInitScreenCard from './DbInitScreenCard';
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: '70%',
-    height: '70%',
+    width: '60%',
+    height: '80%',
     backgroundColor: theme.palette.background.paper,
   },
   button: {
@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    minHeight: '600px'
   }
 }));
 

@@ -1,5 +1,19 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import {UserState} from '../../../context/userContext'
+import InfoIcon from '@material-ui/icons/Info';
+import Chip from '@material-ui/core/Chip';
+
+
+
+   // chip label that states if there is another db defined
+   const db_chip = <Chip 
+   variant="outlined" 
+   icon={<InfoIcon/> }
+   label='There is a default database defined for this project.' 
+   color='secondary'
+   style={{marginTop: '10px'}}
+ />
 
 /*
 Text field use to get the Name of a Database
@@ -7,6 +21,7 @@ Props:
     input = callback function to update the name
 */
 export default function DbNameInput(props) {
+    const {user} = UserState();  
     //dbName = the value displayed in the text field    
     const [dbName, setdbName] = React.useState('');
     const [dbURL, setdbURL] = React.useState('');
@@ -48,6 +63,7 @@ export default function DbNameInput(props) {
                 value={dbURL}
                 onChange={handleInput}
             />
+             { (user.act_proj.db_all.length > 0) ?  null : db_chip }
         </div>
     )
 }

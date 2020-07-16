@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function CircularIndeterminate(props) {
+export default function CircularIndeterminate() {
   const classes = useStyles();
 
   return (

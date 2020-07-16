@@ -6,12 +6,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {UserDispatch} from "../../context/userContext";
+import CircularProgress from "./CircularProgress"
 const login = require('../../scripts/login');
 const initModule = require('../../scripts/init');
 
 export default function LoginAlert(props) {
   const dispatch = UserDispatch();
   const [open, setOpen] = React.useState(props.isOpen);  
+  const [loading, setLoading] = React.useState(false);
 
   const handleClose = () => {
     
@@ -23,15 +25,26 @@ export default function LoginAlert(props) {
       initModule.init_function().then(async (output) => {
         await dispatch({type: 'createUser', args: output});
         setOpen(false)
+        setLoading(false)
       }).catch(err => {
         console.log(err);
+        
       })
     };
-
+    setLoading(true)
     userLogin();
 
 
   };
+
+  const showCircularProgress = () => {
+    if(loading){
+      return(
+        <CircularProgress/>
+      )
+    }
+
+  }
 
   return (
     <div>
@@ -53,6 +66,7 @@ export default function LoginAlert(props) {
           </Button> 
         </DialogActions>
       </Dialog>
+      {showCircularProgress()}
     </div>
   );
 }
