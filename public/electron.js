@@ -5,8 +5,6 @@ const isDev = require("electron-is-dev");
 const log = require('electron-log');
 
 
-
-
 /* ****** IPC ********* */
 let dialogShown = false; // flag to represent whether the dialog is open or closed
 
@@ -16,7 +14,7 @@ ipcMain.on('get-path', (event, arg) => {
                 if (res.canceled === true || res.filePaths.length > 0) {
                     dialogShown = false;
                     if (arg === "new-path") {
-                        const new_proj_validDir = require('../src/scripts/new_projvalidDir.js');
+                        const new_proj_validDir = require('../build/new_projvalidDir.js');
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
@@ -28,7 +26,7 @@ ipcMain.on('get-path', (event, arg) => {
                         });
                     } else if (arg === "init-path") {
                         //confirm filepath has .firebaserc file
-                        const validDir = require('../src/scripts/validDir.js');
+                        const validDir = require('../build/validDir.js');
                         validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
