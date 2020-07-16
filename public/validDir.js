@@ -13,11 +13,11 @@ module.exports = {
 
             // .firebaserc
             if ( ! fs.existsSync(path_rc) ) {
-                reject("Invalid directory, does not contain .firebaserc file");
+                reject("Invalid directory, it does not contain .firebaserc file");
             }
             // firebase.json
             else if ( ! fs.existsSync(path_json) ) {
-                reject("Invalid directory, does not contain firebase.json file");
+                reject("Invalid directory, it does not contain firebase.json file");
             }
             else { resolve(1) }
         });

@@ -1,11 +1,12 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-
+import { Alert } from 'react-context-alerts';
 
 export default function GetPathButton(props) {
     const {ipcRenderer} = window.require('electron');
     
     const [filePath, setFilePath ] = React.useState('');
+    const [error, setError]  = React.useState({display: false, message: ''});
 
     /* Displays the filepath in the React button */
     var DisplayFilePath = () => {
@@ -19,14 +20,14 @@ export default function GetPathButton(props) {
     const getPathIPC = () =>{
         ipcRenderer.send("get-path", "new-path");
         ipcRenderer.on("new_proj-get-path-reply", (event, arg) => {
-            if(arg === 'Invalid'){
-                //need to add in some error feedback here
-                console.log('Invalid file path')
-            } else {
-                //received valid path
-                props.path(arg);
+            if( (arg.split(' ', 1)[0]) === 'Error:'){
+                //display error message
+                setError({display: true, message: arg})
+            } else if (arg !== 'Invalid') {
+                //updates the display of the file path
                 setFilePath(arg);
-                //send file path up to CreateCurrentProjectContent via callback function
+                //updates the state of the stepper
+                props.path(arg)
             }
         });
     };
@@ -36,6 +37,7 @@ export default function GetPathButton(props) {
             <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC} >
                 <DisplayFilePath />
             </Button>
+            <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>
         </div>
     )
 }

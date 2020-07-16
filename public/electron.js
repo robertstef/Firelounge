@@ -7,33 +7,36 @@ const log = require('electron-log');
 
 /* ****** IPC ********* */
 let dialogShown = false; // flag to represent whether the dialog is open or closed
-
 ipcMain.on('get-path', (event, arg) => {
     if (dialogShown === false) {
         dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
-                if (res.canceled === true || res.filePaths.length > 0) {
+                if (res.canceled === true ) {
                     dialogShown = false;
+                    event.reply('get-path-reply', "Invalid");
+                    ipcMain.removeAllListeners('get-path-reply')
+                }  else if (res.filePaths.length > 0) {
+                    dialogShown = false;
+                    /* Select a file path that doesnt contain firebase files*/
                     if (arg === "new-path") {
-                        const new_proj_validDir = require(isDev ? './public/new_projvalidDir.js' : '../build/new_projvalidDir.js');
+                        const new_proj_validDir = require(isDev ? './new_projvalidDir.js' : '../build/new_projvalidDir.js');
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
                             log.info(err);    
-                            //else invalid - send back invalid
-                            event.reply('new_proj-get-path-reply', "Invalid");
+                            event.reply('new_proj-get-path-reply', "Error: " + err);
                             ipcMain.removeAllListeners('get-path-reply')
                         });
                     } else if (arg === "init-path") {
-                        //confirm filepath has .firebaserc file
-                        const validDir = require(isDev ? './public/validDir.js' : '../build/validDir.js');
+                        /* Select a file path that doesnt contain firebase files*/
+                        const validDir = require(isDev ? './validDir.js' : '../build/validDir.js');
                         validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-path-reply')
                         }).catch(err => {
                             log.info(err);
                             //else invalid - send back invalid
-                            event.reply('get-path-reply', "Invalid");
+                            event.reply('get-path-reply', "Error: " + err);
                             ipcMain.removeAllListeners('get-path-reply')
                         });
                     } else {
@@ -57,7 +60,7 @@ ipcMain.on('get-db-path', (event, arg) => {
                     ipcMain.removeAllListeners('get-db-path-reply')
                 } else if(res.filePaths.length > 0) {
                     dbDialogShown = false;
-                    const validAdminKey = require(isDev ? './public/validAdminKey.js' : '../build/validAdminKey');
+                    const validAdminKey = require(isDev ? './validAdminKey.js' : '../build/validAdminKey');
                         validAdminKey.validAdminKey_function(res.filePaths[0], arg).then((output) => {
                             event.reply('get-db-path-reply', res.filePaths[0]);
                             ipcMain.removeAllListeners('get-db-path-reply')
