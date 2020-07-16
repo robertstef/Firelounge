@@ -280,6 +280,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                 nextButton={
                     <Button size="small" onClick={()=>{
                         // if we are submitting ....
+                        {/*TODO add a circular progress after the submit button is clicked and the project is being created*/}
                         if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
                             const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
                             const cloudProjArg = [project_name, project_path, project_id];
@@ -395,6 +396,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                     <div>
                         {activeStep === currentSteps.length ? (
                             <div className={classes.stepContent}>
+                                {/* Once the project has been created user will arrive at the submission confirmed screen*/}
                                 Submission confirm
                             </div>
                         ): (
