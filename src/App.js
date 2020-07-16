@@ -7,7 +7,7 @@ import { AlertsProvider, createRcaSettings, createRcaTheme } from 'react-context
 
 
 const theme = createMuiTheme({
-    pallette: {
+    palette: {
         primary: {
             main: '#ef223c'
         },
