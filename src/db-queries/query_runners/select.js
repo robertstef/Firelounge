@@ -4,11 +4,8 @@ import QueryDetails from "../models/fbSqlQuery";
 import { SELECT_STATEMENT } from "../constants";
 import { getConfig } from "../index";
 
-export default function executeSelect(
-  query,
-  callback,
-  shouldApplyListener = true
-) {
+// FBSQL - changed shouldApplyListener default to false, added user parameter
+export default function executeSelect(query, user, callback, shouldApplyListener = false) {
   const col = queryParser.getCollection(query, SELECT_STATEMENT);
   const { collection, isFirestore } = queryParser.checkForCrossDbQuery(col);
 
@@ -21,14 +18,18 @@ export default function executeSelect(
     callback && shouldApplyListener ? true : false;
 
   return new Promise((resolve, reject) => {
+    // FBSQL
     queryParser.getWheres(query, async wheres => {
       queryDetails.wheres = wheres;
       if (callback) {
+        // FBSQL
         getDataForSelect(queryDetails, results => {
           callback(customizeResults(results));
-        });
+        },
+        user);
       } else {
-        const results = await getDataForSelectAsync(queryDetails);
+        // FBSQL
+        const results = await getDataForSelectAsync(queryDetails, user);
         resolve(customizeResults(results));
       }
     });
