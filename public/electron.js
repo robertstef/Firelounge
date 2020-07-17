@@ -17,7 +17,7 @@ ipcMain.on('get-path', (event, arg) => {
                     dialogShown = false;
                     /* Select a file path that doesnt contain firebase files*/
                     if (arg === "new-path") {
-                        const new_proj_validDir = require(isDev ? './new_projvalidDir.js' : '../build/new_projvalidDir.js');
+                        const new_proj_validDir = require(isDev ? './new_projValidDir.js' : '../build/new_projValidDir.js');
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                         }).catch(err => {
