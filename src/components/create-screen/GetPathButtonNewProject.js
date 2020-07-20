@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
            borderRadius: 12,
            background: '#d5d5d5',
        },
+       paddingLeft: 12,
+       paddingRight: 12
    },
 }));
 export default function GetPathButton(props) {
@@ -48,7 +50,7 @@ export default function GetPathButton(props) {
 
     return(
         <div style={{marginTop:10}}>
-            <Button size={'small'} variant={'filled'} className={classes.btn} onClick={getPathIPC} >
+            <Button size={'small'} className={classes.btn} onClick={getPathIPC} >
                 <DisplayFilePath />
             </Button>
             <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>

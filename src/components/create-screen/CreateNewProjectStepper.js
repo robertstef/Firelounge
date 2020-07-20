@@ -20,27 +20,6 @@ import Paper from "@material-ui/core/Paper";
 
 let RED = '#ef223c';
 
-let project_name = "";
-
-let project_path = "";
-
-let project_id = '';
-
-let hosting_options = {
-    public_dir: '',
-    single_page_app: null,
-};
-
-let database_options = {
-    rules: '',
-};
-
-let functions_options = {
-    lint: null,
-    npm: null,
-};
-
-
 const useStyles = makeStyles((theme) => ({
     stepper: {
         width: '99%',
@@ -158,17 +137,27 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     const dispatch = UserDispatch();
 
+    const [project_name, setProjectName] = React.useState('');
+
+    const [project_path, setProjectPath] = React.useState('');
+
+    const [project_id, setProjID] = React.useState('');
+
     // current active step in the stepper
     const [activeStep, setActiveStep] = React.useState(0);
 
     // selection for EsLint on functions setup
-    const [selectLint, setLint] = useState('');
+    const [selectLint, setLint] = React.useState('');
 
     // selection for running 'npm install' on functions setup
-    const [selectNpm, setNpm] = useState('');
+    const [selectNpm, setNpm] = React.useState('');
 
     // single page app state value on hosting setup
-    const [selectSinglePg, setSinglePg] = useState('');
+    const [selectSinglePg, setSinglePg] = React.useState('');
+
+    const [public_dir, setPublicDir] = React.useState('');
+
+    const [dbRules, setDbRules] = React.useState('');
 
     // the configuration of features the user wishes to add on the project
     const [config, setConfig] = React.useState({
@@ -187,15 +176,46 @@ export default function HorizontalLabelPositionBelowStepper() {
      * the movement through the stepper is allowed.
      **/
     function btnDisabled(step) {
-        // if we are on the first step and
+        switch(step) {  // if we are on the first step
+            case "Select Project Features: ":
+                //TODO project name must be at least 4 characters
+                if (project_name === "" || project_path === "" || project_id === "" || getFeatures().length === 0) {
+                    return true;
+                }
+                break;
+            case "hosting":
+                //TODO public dir name must be a certain number of characters
+                if (selectSinglePg === '' || public_dir === '') {
+                    return true;
+                }
+                break;
+            case "database":
+                //TODO valid.json extension
+                if (dbRules === '') {
+                    return true;
+                }
+                break;
+            case "functions": {
+                if (selectNpm.npm === "" || setLint.lint === "") {
+                    return true;
+                }
+                break;
+            }
+            default:
+                return true;
+        }
+        return false;
+    }
 
-        // switch(step) {
-        //     case "Select Project Features":
-        //         if (project_name === "" || project_path === "" || project_id === "") {
-        //             return true;
-        //         }
-        // }
-        return false
+    /**
+     * Get an array of the current features for a project
+     * @return {string[]} an array taking the form of ["hosting", "database", ...] based on which values are true in config
+     */
+    function getFeatures() {
+        return Object.keys(config)
+            .filter(function(k){return config[k]})
+            .map(String);
+
     }
 
     /**
@@ -240,9 +260,7 @@ export default function HorizontalLabelPositionBelowStepper() {
      **/
     const addFurtherSteps = () => {
         // start by getting all the features selected
-        let featuresToBeAdded = Object.keys(config)
-            .filter(function(k){return config[k]})
-            .map(String);
+        let featuresToBeAdded = getFeatures();
 
         setCurrentSteps((prevState => prevState.concat(featuresToBeAdded)))
     };
@@ -295,7 +313,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                         className={classes.textfield}
                                         placeholder="(public)"
                                         color={'secondary'}
-                                        onChange={(e) => {hosting_options.public_dir = e.target.value}}
+                                        onChange={(e) => {setPublicDir(e.target.value)}}
                                     />
                                 </Paper>
                             </div>
@@ -311,7 +329,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     disableUnderline
                                     classes={{root: classes.select}}
                                     value={selectSinglePg}
-                                    onChange={(e) => {setSinglePg(e.target.value); hosting_options.single_page_app = e.target.value}}
+                                    onChange={(e) => {setSinglePg(e.target.value)}}
                                     MenuProps={menuProps}
                                     IconComponent={iconProps}
                                 >
@@ -337,7 +355,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     className={classes.textfield}
                                     placeholder="(database.rules.json)"
                                     color={'secondary'}
-                                    onChange={(e) => {database_options.rules = e.target.value}}
+                                    onChange={(e) => {setDbRules(e.target.value)}}
                                 />
                             </Paper>
                         </div>
@@ -354,7 +372,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                             <FormControl>
                                 <Select
                                     value={selectLint}
-                                    onChange={(e) => {setLint(e.target.value); functions_options.lint = e.target.value}}
+                                    onChange={(e) => {setLint(e.target.value);}}
                                     disableUnderline
                                     MenuProps={menuProps}
                                     IconComponent={iconProps}
@@ -379,7 +397,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     MenuProps={menuProps}
                                     IconComponent={iconProps}
                                     classes={{root: classes.select}}
-                                    onChange={(e) => {setNpm(e.target.value); functions_options.npm = e.target.value}}
+                                    onChange={(e) => {setNpm(e.target.value)}}
                                 >
                                     <MenuItem value={''}/>
                                     <MenuItem value={true}>Yes</MenuItem>
@@ -415,7 +433,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                         if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
                             const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
                             const cloudProjArg = [project_name, project_path, project_id];
-                            console.log(cloudProjArg);
                             createCloudProj.createCloudProject_function(cloudProjArg).then((value) => {
                                 if (value === 'SUCCESS') {
                                     const fbJsonObj = {
@@ -423,15 +440,15 @@ export default function HorizontalLabelPositionBelowStepper() {
                                         proj_path: project_path,
                                         proj_id: project_id,
                                         hosting: {
-                                            public_dir: hosting_options.public_dir,
-                                            single_page_app: hosting_options.single_page_app,
+                                            public_dir: public_dir,
+                                            single_page_app: selectSinglePg,
                                         },
                                         database: {
-                                            rules: database_options.rules,
+                                            rules: dbRules,
                                         },
                                         functions: {
-                                            npm: functions_options.npm,
-                                            lint: functions_options.lint,
+                                            npm: selectNpm,
+                                            lint: selectLint,
                                         },
                                         config: {
                                             hosting: config.hosting,
@@ -502,12 +519,12 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     className={classes.textfield}
                                     placeholder="Enter your project name"
                                     color={'secondary'}
-                                    onChange={(e) => {project_name = e.target.value; project_id = e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex();}}
+                                    onChange={(e) => { setProjectName(e.target.value) ; setProjID(e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex());}}
                                 />
                             </Paper>
                         </div>
                         <div style={{marginTop: '2%'}}/>
-                        <GetPathButtonNewProject path={(path) => {project_path = path}}/>
+                        <GetPathButtonNewProject path={(path) => {setProjectPath(path)}}/>
                         <div style={{marginTop: '2%'}}/>
                         <div>
                             <Typography className={classes.text}>{currentSteps[activeStep]}</Typography>
@@ -539,6 +556,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 label={<Typography className={classes.text}>Functions</Typography>}
                             />
                         </div>
+                        <div style={{marginBottom: '2%'}}/>
                     </div>
                 ) : (
                     <div>
@@ -546,11 +564,14 @@ export default function HorizontalLabelPositionBelowStepper() {
                             <div className={classes.stepContent}>
                                 {/* Once the project has been created user will arrive at the submission confirmed screen*/}
                                 Submission confirm
+                                <div style={{marginBottom: '2%'}}/>
                             </div>
                         ): (
                             <div className={classes.stepContent}>
                                 {getStepContent(currentSteps[activeStep])}
+                                <div style={{marginBottom: '2%'}}/>
                             </div>
+
                         )}
                     </div>
                 )}
