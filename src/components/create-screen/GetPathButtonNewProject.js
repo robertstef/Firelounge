@@ -1,10 +1,24 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { Alert } from 'react-context-alerts';
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
+
+const useStyles = makeStyles((theme) => ({
+   btn: {
+       height:'40px',
+       backgroundColor: '#fff',
+       fontWeight:200,
+       borderRadius: 12,
+       "&:hover":{
+           borderRadius: 12,
+           background: '#d5d5d5',
+       },
+   },
+}));
 export default function GetPathButton(props) {
     const {ipcRenderer} = window.require('electron');
-    
+    const classes = useStyles();
     const [filePath, setFilePath ] = React.useState('');
     const [error, setError]  = React.useState({display: false, message: ''});
 
@@ -34,7 +48,7 @@ export default function GetPathButton(props) {
 
     return(
         <div style={{marginTop:10}}>
-            <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC} >
+            <Button size={'small'} variant={'filled'} className={classes.btn} onClick={getPathIPC} >
                 <DisplayFilePath />
             </Button>
             <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>

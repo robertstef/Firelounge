@@ -13,7 +13,12 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {UserDispatch} from "../../context/userContext";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import InputBase from "@material-ui/core/InputBase";
+import Paper from "@material-ui/core/Paper";
 
+
+let RED = '#ef223c';
 
 let project_name = "";
 
@@ -36,18 +41,89 @@ let functions_options = {
 };
 
 
-
 const useStyles = makeStyles((theme) => ({
-    root: {
+    stepper: {
         width: '99%',
-        backgroundColor: 'transparent',
+        // backgroundColor: RED,     //TODO swap in the primary color for theme here
+        backgroundColor: 'white',
+        paddingBottom: '2%'
+    },
+    select: {
+        minWidth: 200,
+        background: 'white',
+        color: theme.primary,
+        fontWeight:200,
+        borderStyle:'none',
+        borderWidth: 2,
+        borderRadius: 12,
+        paddingLeft: 24,
+        paddingTop: 14,
+        paddingBottom: 15,
+        boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
+        "&:focus":{
+            borderRadius: 12,
+            background: 'white',
+            borderColor: theme.primary
+        },
+    },
+    text: {
+        color: '#fff',
+        fontWeight:200,
+    },
+    paper: {
+        borderRadius: 12,
+        marginTop: 8,
+    },
+    list: {
+        paddingTop:0,
+        paddingBottom:0,
+        background:'white',
+        "& li":{
+            fontWeight:200,
+            paddingTop:12,
+            paddingBottom:12,
+        },
+        "& li:hover":{
+            color: 'white',
+            background: 'primary'
+        },
+        "& li.Mui-selected":{
+            color:'white',
+            background: 'primary'
+        },
+        "& li.Mui-selected:hover":{
+            color: 'white',
+            background: 'primary'
+        }
+    },
+    Menu_icon:{
+        color: theme.primary,
+        right: 12,
+        position: 'absolute',
+        userSelect: 'none',
+        pointerEvents: 'none'
+    },
+    textfield: {
+        height: 48,
+        background: 'white',
+        color: theme.primary,
+        fontWeight:200,
+        borderStyle:'none',
+        borderRadius: 12,
+        paddingLeft: 24,
+        paddingTop: 14,
+        paddingBottom: 13,
+        boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
     },
     stepContent: {
         padding: '3%',
+        backgroundColor: RED, //TODO swap in the primary color for theme here
     },
     pgTitle: {
-        paddingLeft: '2%',
-        paddingTop: '2%',
+        paddingLeft: '3%',
+        paddingTop: '3%',
+        backgroundColor: 'white',  //TODO swap in the primary color for theme here
+        fontWeight:200,
     },
     backButton: {
         marginRight: theme.spacing(1),
@@ -56,6 +132,13 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
+    wave: {
+        position: 'relative',
+        display: 'block',
+        width: 'calc(100% + 1.3px)',
+        height: '150px',
+        marginBottom: '-12vh',
+    }
 }));
 
 
@@ -95,7 +178,7 @@ export default function HorizontalLabelPositionBelowStepper() {
     });
 
     // the current steps throughout the project initialization process
-    const [currentSteps, setCurrentSteps] = React.useState(["Select Project Features"]);
+    const [currentSteps, setCurrentSteps] = React.useState(["Select Project Features: "]);
 
     /**
      * Check the fields of the corresponding steps to ensure that the user has provide valid input, and prevent
@@ -106,12 +189,12 @@ export default function HorizontalLabelPositionBelowStepper() {
     function btnDisabled(step) {
         // if we are on the first step and
 
-        switch(step) {
-            case "Select Project Features":
-                if (project_name === "" || project_path === "" || project_id === "") {
-                    return true;
-                }
-        }
+        // switch(step) {
+        //     case "Select Project Features":
+        //         if (project_name === "" || project_path === "" || project_id === "") {
+        //             return true;
+        //         }
+        // }
         return false
     }
 
@@ -164,8 +247,34 @@ export default function HorizontalLabelPositionBelowStepper() {
         setCurrentSteps((prevState => prevState.concat(featuresToBeAdded)))
     };
 
+    const menuProps = {
+        classes: {
+            paper: classes.paper,
+            list: classes.list
+        },
+        anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "left"
+        },
+        transformOrigin: {
+            vertical: "top",
+            horizontal: "left"
+        },
+        getContentAnchorEl: null
+    };
+
+    const linearProgressProps = {
+        color: 'primary', // i can set the color to either primary or secondary here
+    };
+
+
+    const iconProps = () => {
+        return (
+            <ExpandMoreIcon className={classes.Menu_icon}/>
+        )};
+
     /**
-     * Get the approapriate content for each step
+     * Get the appropriate content for each step
      * @param: step: String -> the current step (e.g. "hosting")
      **/
     function getStepContent(step) {
@@ -174,32 +283,39 @@ export default function HorizontalLabelPositionBelowStepper() {
                 return(
                     <div>
                         <div>
-                            <Typography color="textSecondary" variant="body1">
+                            <Typography color="textSecondary" variant="body1" className={classes.text}>
                                 What do you want to use as your public directory?
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <div>
+                            <div style={{width: '65%', maxWidth: 248}}>
                                 {/* Will edit the public attribute within the "hosting"*/}
-                                <TextField
-                                    style={{width:'30%'}}
-                                    id="outlined-size-small"
-                                    size={'small'}
-                                    placeholder="(public)"
-                                    variant={"outlined"}
-                                    color={'secondary'}
-                                    onChange={(e) => {hosting_options.public_dir = e.target.value}}
-                                />
+                                <Paper component={'form'} className={classes.paper} elevation={0}>
+                                    <InputBase
+                                        fullWidth
+                                        className={classes.textfield}
+                                        placeholder="(public)"
+                                        color={'secondary'}
+                                        onChange={(e) => {hosting_options.public_dir = e.target.value}}
+                                    />
+                                </Paper>
                             </div>
                             <div style={{marginTop: '2%'}}/>
                         </div>
                         <div>
-                            <Typography color="textSecondary" variant="body1">
+                            <Typography color="textSecondary" variant="body1" className={classes.text}>
                                 Configure as a single-page app (rewrite all urls to /index.html)? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
-                                <Select value={selectSinglePg} onChange={(e) => {setSinglePg(e.target.value); hosting_options.single_page_app = e.target.value}}>
-                                    <MenuItem value={null}/>
+                            <FormControl>
+                                <Select
+                                    disableUnderline
+                                    classes={{root: classes.select}}
+                                    value={selectSinglePg}
+                                    onChange={(e) => {setSinglePg(e.target.value); hosting_options.single_page_app = e.target.value}}
+                                    MenuProps={menuProps}
+                                    IconComponent={iconProps}
+                                >
+                                    <MenuItem value={''}/>
                                     <MenuItem value={true}>Yes</MenuItem>
                                     <MenuItem value={false}>No</MenuItem>
                                 </Select>
@@ -210,20 +326,20 @@ export default function HorizontalLabelPositionBelowStepper() {
             case 'database':
                 return(
                     <div>
-                        <Typography color="textSecondary" variant="body1">
+                        <Typography color="textSecondary" variant="body1" className={classes.text}>
                             What file should be used for Database Rules?
                         </Typography>
                         <div style={{marginTop: '2%'}}/>
-                        <div>
-                            <TextField
-                                style={{width:'50%'}}
-                                id="outlined-size-small"
-                                size={'small'}
-                                placeholder="(database.rules.json)"
-                                variant={"outlined"}
-                                color={'secondary'}
-                                onChange={(e) => {database_options.rules = e.target.value}}
-                            />
+                        <div style={{width: '65%'}}>
+                            <Paper component={'form'} className={classes.paper} elevation={0}>
+                                <InputBase
+                                    fullWidth
+                                    className={classes.textfield}
+                                    placeholder="(database.rules.json)"
+                                    color={'secondary'}
+                                    onChange={(e) => {database_options.rules = e.target.value}}
+                                />
+                            </Paper>
                         </div>
                     </div>
                 );
@@ -231,13 +347,20 @@ export default function HorizontalLabelPositionBelowStepper() {
                 return(
                     <div>
                         <div>
-                            <Typography color="textSecondary" variant="body1">
+                            <Typography color="textSecondary" variant="body1" className={classes.text}>
                                 Do you want to setup ESlint? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
-                                <Select value={selectLint} onChange={(e) => {setLint(e.target.value); functions_options.lint = e.target.value}}>
-                                    <MenuItem value={null}/>
+                            <FormControl>
+                                <Select
+                                    value={selectLint}
+                                    onChange={(e) => {setLint(e.target.value); functions_options.lint = e.target.value}}
+                                    disableUnderline
+                                    MenuProps={menuProps}
+                                    IconComponent={iconProps}
+                                    classes={{root: classes.select}}
+                                >
+                                    <MenuItem value={""}/>
                                     <MenuItem value={true}>Yes</MenuItem>
                                     <MenuItem value={false}>No</MenuItem>
                                 </Select>
@@ -245,13 +368,20 @@ export default function HorizontalLabelPositionBelowStepper() {
                         </div>
                         <div style={{marginTop: '2%'}}/>
                         <div>
-                            <Typography color="textSecondary" variant="body1">
+                            <Typography color="textSecondary" variant="body1" className={classes.text}>
                                 Do you want to run 'npm install'? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl variant="outlined" style={{margin:5, minWidth:120}}>
-                                <Select value={selectNpm} onChange={(e) => {setNpm(e.target.value); functions_options.npm = e.target.value}}>
-                                    <MenuItem value={null}/>
+                            <FormControl>
+                                <Select
+                                    value={selectNpm}
+                                    disableUnderline
+                                    MenuProps={menuProps}
+                                    IconComponent={iconProps}
+                                    classes={{root: classes.select}}
+                                    onChange={(e) => {setNpm(e.target.value); functions_options.npm = e.target.value}}
+                                >
+                                    <MenuItem value={''}/>
                                     <MenuItem value={true}>Yes</MenuItem>
                                     <MenuItem value={false}>No</MenuItem>
                                 </Select>
@@ -270,13 +400,14 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     return (
         <div>
-            <Typography className={classes.pgTitle}>Create a new FireLounge project</Typography>
+            <Typography variant={'h6'} className={classes.pgTitle}>Create a new FireLounge project</Typography>
             <MobileStepper
                 variant="progress"
                 steps={currentSteps.length}
+                LinearProgressProps={linearProgressProps}
                 position="static"
                 activeStep={activeStep}
-                className={classes.root}
+                className={classes.stepper}
                 nextButton={
                     <Button size="small" onClick={()=>{
                         // if we are submitting ....
@@ -341,54 +472,71 @@ export default function HorizontalLabelPositionBelowStepper() {
                 }
             />
             <div>
+                <div className={classes.wave}>
+                    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                         preserveAspectRatio="none">
+                        <path
+                            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
+                            opacity=".25" fill={'#fff'}/>
+                        <path
+                            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+                            opacity=".5" fill={'#fff'}/>
+                        <path
+                            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
+                            fill={'#fff'}/>
+                    </svg>
+                </div>
                 {activeStep === 0 ? (
                     <div className={classes.stepContent}>
                         <div>
-                            <Typography>{'Enter Project Details: '}</Typography>
+                            <Typography className={classes.text}>{'Enter Project Details: '}</Typography>
                         </div>
                         {/*
                         Here we will prompt the user to add the features that they desire
                         based on those features, we will add the necessary steps for project creation
                         */}
-                        <div>
-                            <TextField
-                                style={{width:'80%'}}
-                                id="outlined-size-small"
-                                size={'small'}
-                                placeholder="Enter your project name"
-                                variant={"outlined"}
-                                color={'secondary'}
-                                onChange={(e) => {project_name = e.target.value; project_id = e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex();}}
-                            />
+                        <div style={{width: '65%'}}>
+                            <Paper component={'form'} className={classes.paper} elevation={0}>
+                                <InputBase
+                                    fullWidth
+                                    className={classes.textfield}
+                                    placeholder="Enter your project name"
+                                    color={'secondary'}
+                                    onChange={(e) => {project_name = e.target.value; project_id = e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex();}}
+                                />
+                            </Paper>
                         </div>
                         <div style={{marginTop: '2%'}}/>
                         <GetPathButtonNewProject path={(path) => {project_path = path}}/>
                         <div style={{marginTop: '2%'}}/>
                         <div>
-                            <Typography>{currentSteps[activeStep]}</Typography>
+                            <Typography className={classes.text}>{currentSteps[activeStep]}</Typography>
                         </div>
                         <div>
                             <FormControlLabel
-                                control={<Checkbox checked={config.hosting}/>}
+                                className={classes.text}
+                                control={<Checkbox style={{color: '#fff'}} checked={config.hosting}/>}
                                 onClick={(event) => {event.stopPropagation(); handleConfig('hosting')}}
                                 onFocus={(event) => event.stopPropagation()}
-                                label="Hosting"
+                                label={<Typography className={classes.text}>Hosting</Typography>}
                             />
                         </div>
                         <div>
                             <FormControlLabel
-                                control={<Checkbox checked={config.database}/>}
+                                className={classes.text}
+                                control={<Checkbox style={{color: '#fff'}} checked={config.database}/>}
                                 onClick={(event) => {event.stopPropagation(); handleConfig('database')}}
                                 onFocus={(event) => event.stopPropagation()}
-                                label="Database"
+                                label={<Typography className={classes.text}>Database</Typography>}
                             />
                         </div>
                         <div>
                             <FormControlLabel
-                                control={<Checkbox checked={config.functions}/>}
+                                className={classes.text}
+                                control={<Checkbox style={{color: '#fff',}} checked={config.functions}/>}
                                 onClick={(event) => {event.stopPropagation(); handleConfig('functions')}}
                                 onFocus={(event) => event.stopPropagation()}
-                                label="Functions"
+                                label={<Typography className={classes.text}>Functions</Typography>}
                             />
                         </div>
                     </div>

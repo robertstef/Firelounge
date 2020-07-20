@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -132,16 +131,15 @@ export default function SecondaryManageNav() {
         {/* Create page */}
         <TabPanel value={value} index={0} >
           <div style={{marginTop: -10}}/>
-          <Card style={{height: '95vh'}}>
+          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <CreateNewProjectStepper/>
-            {/*<NewProjectExpansion/>*/}
           </Card>
         </TabPanel>
 
         {/* Init pre-existing or current project page */}
         <TabPanel value={value} index={1}>
           <div style={{marginTop: -10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
+          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20,}}>
             <CreateCurrentProjectContent/>
           </Card>
         </TabPanel>
