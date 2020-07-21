@@ -16,6 +16,8 @@ import {UserDispatch} from "../../context/userContext";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import InputBase from "@material-ui/core/InputBase";
 import Paper from "@material-ui/core/Paper";
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import Toolbar from "@material-ui/core/Toolbar";
 
 
 let RED = '#ef223c';
@@ -44,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
             background: 'white',
             borderColor: theme.primary
         },
+    },
+    toolbar: {
+        minHeight: 40,
     },
     text: {
         color: '#fff',
@@ -117,6 +122,9 @@ const useStyles = makeStyles((theme) => ({
         width: 'calc(100% + 1.3px)',
         height: '150px',
         marginBottom: '-12vh',
+    },
+    inputErr: {
+        background: 'pink',
     }
 }));
 
@@ -181,17 +189,23 @@ export default function HorizontalLabelPositionBelowStepper() {
                 //TODO project name must be at least 4 characters
                 if (project_name === "" || project_path === "" || project_id === "" || getFeatures().length === 0) {
                     return true;
+                } else if (project_name.length < 4 || project_name.length > 20) {
+                    return true;
                 }
                 break;
             case "hosting":
                 //TODO public dir name must be a certain number of characters
                 if (selectSinglePg === '' || public_dir === '') {
                     return true;
+                } else if (public_dir.length < 1 || public_dir.length > 15) {
+                    return true;
                 }
                 break;
             case "database":
                 //TODO valid.json extension
-                if (dbRules === '') {
+                if (dbRules === '' || dbRules.length < 5 || dbRules.length > 30 ) {
+                    return true;
+                } else if (dbRules.substring(dbRules.length - 5) !== ".json") {
                     return true;
                 }
                 break;
@@ -215,7 +229,32 @@ export default function HorizontalLabelPositionBelowStepper() {
         return Object.keys(config)
             .filter(function(k){return config[k]})
             .map(String);
+    }
+    /**
+     * function to check the input of field to determine whether or an error should be displayed on input
+     * @param step - a string representing the step the user is currently on (e.g. "hosting" )
+     * @return boolean - true if the input is invalid, false otherwise
+     */
+    function checkInput(step) {
+        switch (step) {
+            case "Select Project Features: ":
+                if ((project_name.length < 4 || project_name.length > 20) && project_name.length !== 0) {
+                    return true
+                }
+                break;
+            case "hosting":
+                if ((public_dir.length < 1 || public_dir.length > 15) && public_dir.length !== 0) {
+                    return true;
+                }
+                break;
+            case "database":
+                if ((dbRules.length < 5 || dbRules.length > 30) && dbRules.length !== 0 || dbRules.substring(dbRules.length - 5) !== ".json") {
+                    return true;
+                }
+                break;
+        }
 
+        return false;
     }
 
     /**
@@ -308,6 +347,12 @@ export default function HorizontalLabelPositionBelowStepper() {
                             <div style={{width: '65%', maxWidth: 248}}>
                                 {/* Will edit the public attribute within the "hosting"*/}
                                 <Paper component={'form'} className={classes.paper} elevation={0}>
+                                    {checkInput("hosting") ? (
+                                        <Toolbar disableGutters classes={{regular: classes.toolbar}}>
+                                            <FiberManualRecordIcon style={{color: RED, marginLeft: 5,}}/>
+                                            <Typography style={{fontWeight:200, marginLeft: 5, color: RED}} variant={'body2'}>Public directory must be between 1-15 characters.</Typography>
+                                        </Toolbar>
+                                    ) : null}
                                     <InputBase
                                         fullWidth
                                         className={classes.textfield}
@@ -350,6 +395,12 @@ export default function HorizontalLabelPositionBelowStepper() {
                         <div style={{marginTop: '2%'}}/>
                         <div style={{width: '65%'}}>
                             <Paper component={'form'} className={classes.paper} elevation={0}>
+                                {checkInput("database") ? (
+                                    <Toolbar disableGutters classes={{regular: classes.toolbar}}>
+                                        <FiberManualRecordIcon style={{color: RED, marginLeft: 5,}}/>
+                                        <Typography style={{fontWeight:200, marginLeft: 5, color: RED}} variant={'body2'}>Database rules file must have a valid .json extension and be between 1-25 characters</Typography>
+                                    </Toolbar>
+                                ) : null}
                                 <InputBase
                                     fullWidth
                                     className={classes.textfield}
@@ -514,9 +565,17 @@ export default function HorizontalLabelPositionBelowStepper() {
                         */}
                         <div style={{width: '65%'}}>
                             <Paper component={'form'} className={classes.paper} elevation={0}>
+                                {checkInput("Select Project Features: ") ? (
+                                    <Toolbar disableGutters classes={{regular: classes.toolbar}}>
+                                        <FiberManualRecordIcon style={{color: RED, marginLeft: 5,}}/>
+                                        <Typography style={{fontWeight:200, marginLeft: 5, color: RED}} variant={'body2'}>Project name must be between 4-20 characters.</Typography>
+                                    </Toolbar>
+                                ) : null}
                                 <InputBase
+                                    error={false}
                                     fullWidth
                                     className={classes.textfield}
+                                    classes={{error: classes.inputErr}}
                                     placeholder="Enter your project name"
                                     color={'secondary'}
                                     onChange={(e) => { setProjectName(e.target.value) ; setProjID(e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex());}}
