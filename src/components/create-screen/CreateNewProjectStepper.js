@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import TextField from "@material-ui/core/TextField";
 import GetPathButtonNewProject from "./GetPathButtonNewProject";
 import MobileStepper from "@material-ui/core/MobileStepper";
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -25,14 +24,12 @@ let RED = '#ef223c';
 const useStyles = makeStyles((theme) => ({
     stepper: {
         width: '99%',
-        // backgroundColor: RED,     //TODO swap in the primary color for theme here
         backgroundColor: 'white',
         paddingBottom: '2%'
     },
     select: {
         minWidth: 200,
         background: 'white',
-        color: theme.primary,
         fontWeight:200,
         borderStyle:'none',
         borderWidth: 2,
@@ -44,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
         "&:focus":{
             borderRadius: 12,
             background: 'white',
-            borderColor: theme.primary
         },
     },
     toolbar: {
@@ -67,21 +63,8 @@ const useStyles = makeStyles((theme) => ({
             paddingTop:12,
             paddingBottom:12,
         },
-        "& li:hover":{
-            color: 'white',
-            background: 'primary'
-        },
-        "& li.Mui-selected":{
-            color:'white',
-            background: 'primary'
-        },
-        "& li.Mui-selected:hover":{
-            color: 'white',
-            background: 'primary'
-        }
     },
     Menu_icon:{
-        color: theme.primary,
         right: 12,
         position: 'absolute',
         userSelect: 'none',
@@ -90,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
     textfield: {
         height: 48,
         background: 'white',
-        color: theme.primary,
         fontWeight:200,
         borderStyle:'none',
         borderRadius: 12,
@@ -106,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     pgTitle: {
         paddingLeft: '3%',
         paddingTop: '3%',
-        backgroundColor: 'white',  //TODO swap in the primary color for theme here
+        backgroundColor: 'white',
         fontWeight:200,
     },
     backButton: {
@@ -123,9 +105,6 @@ const useStyles = makeStyles((theme) => ({
         height: '150px',
         marginBottom: '-12vh',
     },
-    inputErr: {
-        background: 'pink',
-    }
 }));
 
 
@@ -184,9 +163,8 @@ export default function HorizontalLabelPositionBelowStepper() {
      * the movement through the stepper is allowed.
      **/
     function btnDisabled(step) {
-        switch(step) {  // if we are on the first step
+        switch(step) {
             case "Select Project Features: ":
-                //TODO project name must be at least 4 characters
                 if (project_name === "" || project_path === "" || project_id === "" || getFeatures().length === 0) {
                     return true;
                 } else if (project_name.length < 4 || project_name.length > 20) {
@@ -194,7 +172,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                 }
                 break;
             case "hosting":
-                //TODO public dir name must be a certain number of characters
                 if (selectSinglePg === '' || public_dir === '') {
                     return true;
                 } else if (public_dir.length < 1 || public_dir.length > 15) {
@@ -202,7 +179,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                 }
                 break;
             case "database":
-                //TODO valid.json extension
                 if (dbRules === '' || dbRules.length < 5 || dbRules.length > 30 ) {
                     return true;
                 } else if (dbRules.substring(dbRules.length - 5) !== ".json") {
@@ -248,7 +224,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                 }
                 break;
             case "database":
-                if ((dbRules.length < 5 || dbRules.length > 30) && dbRules.length !== 0 || dbRules.substring(dbRules.length - 5) !== ".json") {
+                if (((dbRules.length < 5 || dbRules.length > 30) && dbRules.length !== 0) || dbRules.substring(dbRules.length - 5) !== ".json") {
                     return true;
                 }
                 break;
@@ -572,10 +548,8 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     </Toolbar>
                                 ) : null}
                                 <InputBase
-                                    error={false}
                                     fullWidth
                                     className={classes.textfield}
-                                    classes={{error: classes.inputErr}}
                                     placeholder="Enter your project name"
                                     color={'secondary'}
                                     onChange={(e) => { setProjectName(e.target.value) ; setProjID(e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex());}}
