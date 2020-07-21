@@ -124,7 +124,6 @@ export default function SecondaryManageNav() {
             {/* Icons for nav bar */}
             <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
             <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
-            <LinkTab icon={<AddBoxIcon />} {...a11yProps(2)} />
           </Tabs>
       </AppBar>
       <div className={classes.content}>
@@ -136,18 +135,10 @@ export default function SecondaryManageNav() {
           </Card>
         </TabPanel>
 
-        {/* Init pre-existing or current project page */}
-        <TabPanel value={value} index={1}>
-          <div style={{marginTop: -10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20,}}>
-            <CreateCurrentProjectContent/>
-          </Card>
-        </TabPanel>
-
         {/* Add existing project to firelounge page */}
-        <TabPanel value={value} index={2}>
+        <TabPanel value={value} index={1}>
           <div style={{marginTop:-10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
+          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <AddProjContent/>
           </Card>
         </TabPanel>
