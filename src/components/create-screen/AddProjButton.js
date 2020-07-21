@@ -40,7 +40,7 @@ export default function AddProjButton(props) {
     return (
         <div className={classes.root}>
             <IconButton aria-label="Add" onClick={getPathIPC}>
-                <AddCircleIcon />
+                <AddCircleIcon style={{color: 'white'}}/>
             </IconButton>
         </div>
     );

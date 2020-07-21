@@ -61,9 +61,33 @@ const rows = [
  */
 
 const useStyles = makeStyles({
+    root: {
+        marginTop: '8%',
+        width: '90%',
+        margin: '0 auto'
+    },
     table: {
         minWidth: 300,
+        border: '0px',
+        margin: '0px',
+        marginBottom: '-1px',
+        backgroundColor: 'transparent'
     },
+    tableHead: {
+        borderBottom: 'hidden',
+    },
+    tableHeadCell: {
+        backgroundColor: 'white',
+        color: 'black',
+    },
+    tableBodyCell: {
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    addButton: {
+        backgroundColor: 'white',
+        
+    }
 });
 
 export default function CustomizedTable() {
@@ -82,25 +106,23 @@ export default function CustomizedTable() {
     /* TODO need to handle case when user has no firebase projects */
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer className={classes.root}>
             <Table className={classes.table} aria-label="customized table">
-                <TableHead>
+                <TableHead className={classes.tableHead}>
                     <TableRow>
-                        <StyledTableCell align='center'>Project Name</StyledTableCell>
-                        <StyledTableCell align='center'>Project ID</StyledTableCell>
-                        <StyledTableCell align='center'>Project Number</StyledTableCell>
-                        <StyledTableCell align='center'/>
+                        <StyledTableCell align='center' className={classes.tableHeadCell} style={{borderRadius: '16px 0px 0px 16px'}} >Project Name</StyledTableCell>
+                        <StyledTableCell align='center' className={classes.tableHeadCell}>Project ID</StyledTableCell>
+                        <StyledTableCell align='center' className={classes.tableHeadCell}>Project Number</StyledTableCell>
+                        <StyledTableCell align='center'className={classes.tableHeadCell} style={{borderRadius: '0px 16px 16px 0px'}}/>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className={classes.tableBody}>
                     {rows.map((row) => (
                         <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row" align='center'>
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell align='center'>{row.id}</StyledTableCell>
-                            <StyledTableCell align='center'>{row.num}</StyledTableCell>
-                            <StyledTableCell align='center'><AddProjButton cur_proj={row}/></StyledTableCell>
+                            <StyledTableCell align='center' className={classes.tableBodyCell}>{row.name}</StyledTableCell>
+                            <StyledTableCell align='center' className={classes.tableBodyCell}>{row.id}</StyledTableCell>
+                            <StyledTableCell align='center' className={classes.tableBodyCell}>{row.num}</StyledTableCell>
+                            <StyledTableCell align='center' className={classes.tableBodyCell}><AddProjButton cur_proj={row} /></StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
