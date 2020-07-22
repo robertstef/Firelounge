@@ -3,6 +3,8 @@ import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
 import DbObjectDisplay from './DbObjectDisplay.js'
 import { makeStyles } from '@material-ui/core/styles'
+import executeQuery from '../../../db-queries/execute';
+import {UserState} from '../../../context/userContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +26,14 @@ const useStyles = makeStyles((theme) => ({
 //need to put it in another div or pass down props to label etc. 
 export default function DbScreenCard() {
     const classes = useStyles();
+    const {user} = UserState();
+
+    async function sql_query(query) {
+
+        const result = await executeQuery(query, user);
+        console.log(result);
+    }
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -33,6 +43,12 @@ export default function DbScreenCard() {
                     multiline
                     defaultValue="Default Value"
                     className={classes.textField}
+                    onKeyPress={ (press) => {
+                        if (press.key === 'Enter') {
+                            console.log(press.target.value);
+                            sql_query(press.target.value);
+                        }
+                    }}
                 />
                 <DbObjectDisplay/>
             </Card>
