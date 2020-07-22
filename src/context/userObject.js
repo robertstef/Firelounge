@@ -25,7 +25,7 @@ export default class User {
             // Fetch the service account key JSON file contents
             let path = projs[act_proj].admin
             let serviceAccount = window.require(path);
-            console.log(serviceAccount);
+
             // Initialize the app with a service account, granting admin privileges
             this.admin = admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount)
@@ -37,22 +37,14 @@ export default class User {
                 if (this._isDefaultDb) {
                     //no db url found... use default project name
                     this.db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
+                    console.log(this.db);
                 } else {
                     //database url exists
                     this.db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
+                    console.log(this.db);
                 }
             }
-
-            /*
-            // setup fbsql
-            configureFbsql({
-                app: app,
-                isFirestore: false,
-                shouldCommitResults: false, // change back to true once we know its working
-                shouldExpandResults: false
-            });
-             */
-        } 
+        }
         this._writeUfile()
     }
 
@@ -178,6 +170,10 @@ export default class User {
             return ''
         }
     }
+
+    get app_admin() { return this.admin; }
+
+    get data_baby() { return this.db }
 
     /* SETTER METHODS */
 
