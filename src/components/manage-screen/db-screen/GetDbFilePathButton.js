@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import {UserState} from '../../../context/userContext'
-import SimpleError from '../../SimpleError'
+import { Alert } from 'react-context-alerts';
 
 /*
 Gets the selected file path of the firebase admin private key
@@ -12,8 +12,8 @@ export default function GetPathButton(props) {
     const {ipcRenderer} = window.require('electron');
     const {user} = UserState();
     const [filePath, setFilePath ] = React.useState('');
-    const [isError, setIsError ] = React.useState({isOpen: undefined ? isError : false, message: ''});
-
+    const [error, setError]  = React.useState({display: false, message: ''});
+    
     /* Displays the filepath in the React button */
     var DisplayFilePath = () => {
         if (filePath === ''){
@@ -29,7 +29,7 @@ export default function GetPathButton(props) {
         ipcRenderer.on("get-db-path-reply", (event, arg) => {
             if( (arg.split(' ', 1)[0]) === 'Error:'){
                 //display error message
-                setIsError({isOpen: true, message: arg})
+                setError({display: true, message: arg})
             } else if (arg !== 'Invalid') {
                 //updates the display of the file path
                 setFilePath(arg);
@@ -39,13 +39,12 @@ export default function GetPathButton(props) {
         });
     };
 
-    console.log('render')
     return(
         <div style={{marginTop:10}}>
             <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC} >
                 <DisplayFilePath />    
             </Button>
-            <SimpleError message={isError.message} isOpen={isError.isOpen} setIsOpen={setIsError}/>
+            <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>
         </div>
     )
 }
