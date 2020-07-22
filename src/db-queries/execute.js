@@ -21,7 +21,7 @@ export default function executeQuery(query, user, callback, shouldApplyListener)
             // FBSQL
             return executeSelect(query, user, callback, shouldApplyListener);
         case UPDATE_STATEMENT:
-            return executeUpdate(query, callback);
+            return executeUpdate(query, user, callback);
         case DELETE_STATEMENT:
             return executeDelete(query, callback);
         case INSERT_STATEMENT:

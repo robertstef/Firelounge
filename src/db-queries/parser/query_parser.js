@@ -337,7 +337,9 @@ class QueryParser {
     }
 
     checkForCrossDbQuery(collection) {
-        let isFirestore = getConfig().isFirestore;
+        // FBSQL
+        //let isFirestore = getConfig().isFirestore;
+        let isFirestore = false;
         if (/(db|firestore)/i.test(collection)) {
             if (
                 // only flip the db if it's not already enabled

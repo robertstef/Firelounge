@@ -11,7 +11,8 @@ import {
 import QueryDetails from "../models/fbSqlQuery";
 import { getConfig } from "..";
 
-export default async function executeUpdate(query, callback) {
+// FBSQL
+export default async function executeUpdate(query, user, callback) {
   const col = queryParser.getCollection(query, UPDATE_STATEMENT);
   const { collection, isFirestore } = queryParser.checkForCrossDbQuery(col);
   const commitResults = getConfig().shouldCommitResults;
@@ -27,7 +28,8 @@ export default async function executeUpdate(query, callback) {
       queryDetails.isFirestore = isFirestore;
       // queryDetails.db = db;
       queryDetails.wheres = wheres;
-      getDataForSelect(queryDetails, async dataToAlter => {
+      // FBSQL
+      getDataForSelect(queryDetails, user, async dataToAlter => {
         let data = dataToAlter.payload;
         const payload = generatePayload(data, sets);
         const results = {
