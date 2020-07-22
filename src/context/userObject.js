@@ -37,11 +37,9 @@ export default class User {
                 if (this._isDefaultDb) {
                     //no db url found... use default project name
                     this.db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
-                    console.log(this.db);
                 } else {
                     //database url exists
                     this.db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
-                    console.log(this.db);
                 }
             }
         }
