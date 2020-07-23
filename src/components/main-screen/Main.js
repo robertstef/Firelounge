@@ -8,7 +8,6 @@ const initModule = require('../../scripts/init');
 
 function Main() {
     const dispatch = UserDispatch();
-    const {user} = UserState();
     const [showModal, setShowModal] = useState(false)
     const [loading, setLoading] = useState(true)
 
