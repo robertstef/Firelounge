@@ -54,7 +54,12 @@ export default class User {
                 }
             }
         } 
-        this._writeUfile()
+
+        
+        if(uname !== undefined && uname !== ''){
+            this._writeUfile()
+        }
+        
     }
 
 
