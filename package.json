@@ -1,10 +1,10 @@
 {
-  "name": "opench-firebase",
+  "name": "FireLounge",
   "version": "0.1.0",
-  "description": "Opench Firebase Overlay",
-  "author": "Opench Incorporated.",
+  "description": "Firebase Management System",
+  "author": "Opench Incorporated",
   "build": {
-    "appId": "opench.firebase"
+    "appId": "FireLounge"
   },
   "homepage": "./",
   "main": "public/electron.js",

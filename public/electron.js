@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog} = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, nativeImage} = require('electron');
 const path = require('path');
 const url = require('url');
 const isDev = require("electron-is-dev");
@@ -78,7 +78,8 @@ function createWindow () {
         height: 600,
         webPreferences: {
             nodeIntegration: true    
-        }
+        },
+        icon: isDev ? app.getAppPath() + "/public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
     });
 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`)
@@ -96,6 +97,11 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow);
+
+const image = nativeImage.createFromPath(
+    isDev ? app.getAppPath() + "/public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
+  );
+app.dock.setIcon(image);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
