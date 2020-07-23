@@ -13,7 +13,7 @@ export default class User {
      * @param act_proj: current active project - will default to empty
      *                  string if no argument provided
      */
-    constructor(uname, projs, fb_projs, act_proj="") {
+    constructor(uname, projs="", fb_projs="", act_proj="") {
         this._uname = uname;         // user name
         this._projs = projs;         // firelounge projects
         this._fb_projs = fb_projs;   // firebase projects
