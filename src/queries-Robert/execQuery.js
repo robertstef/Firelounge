@@ -1,12 +1,3 @@
-import {
-    SELECT_STATEMENT,
-    UPDATE_STATEMENT,
-    INSERT_STATEMENT,
-    DELETE_STATEMENT,
-    INVALID_STATEMENT,
-    NO_EQUALITY_STATEMENTS
-} from "./statementTypes";
-
 const queryParser = require('./parser/queryParser');
 
 /**
@@ -22,15 +13,15 @@ export default function executeQuery(query, user) {
     const statementType = queryParser.determineStatementType(clean_query);
 
     switch (statementType) {
-        case SELECT_STATEMENT:
+        case "select":
             break;
-        case UPDATE_STATEMENT:
+        case "update":
             break;
-        case DELETE_STATEMENT:
+        case "delete":
             break;
-        case INSERT_STATEMENT:
+        case "insert":
             break;
-        case INVALID_STATEMENT:
+        case "invalid":
             throw new Error("Invalid SQL query. Query must be of type SELECT, UPDATE, DELETE, or INSERT");
         default:
             throw new Error("executeQuery(): executing default statement, something is very wrong");
