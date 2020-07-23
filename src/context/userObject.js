@@ -27,6 +27,12 @@ export default class User {
             let path = projs[act_proj].admin
             let serviceAccount = window.require(path);
 
+
+            //if there is already an initialzed app, delete it and initialize the new admin sdk
+            if( admin.apps !== undefined && admin.apps.length > 0 ) {
+                admin.apps[0].delete()
+            }
+
             // Initialize the app with a service account, granting admin privileges
             var app = admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount)
