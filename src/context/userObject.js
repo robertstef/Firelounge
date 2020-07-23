@@ -115,6 +115,7 @@ export default class User {
      */
     get firebase_projs() {
         let projects = [];
+        if(this._fb_projs === undefined) {return undefined};
         for (let p of this._fb_projs) {
             if (! this._projExists(p.id)) { projects.push(p) }
         }
