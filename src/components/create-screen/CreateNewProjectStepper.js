@@ -80,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 14,
         paddingBottom: 13,
         boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
+
     },
     stepContent: {
         padding: '3%',
@@ -142,9 +143,9 @@ export default function HorizontalLabelPositionBelowStepper() {
     // single page app state value on hosting setup
     const [selectSinglePg, setSinglePg] = React.useState('');
 
-    const [public_dir, setPublicDir] = React.useState('');
+    const [public_dir, setPublicDir] = React.useState('public');
 
-    const [dbRules, setDbRules] = React.useState('');
+    const [dbRules, setDbRules] = React.useState('database.rules.json');
 
     // the configuration of features the user wishes to add on the project
     const [config, setConfig] = React.useState({
@@ -332,7 +333,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     <InputBase
                                         fullWidth
                                         className={classes.textfield}
-                                        placeholder="(public)"
+                                        placeholder="public"
                                         color={'secondary'}
                                         onChange={(e) => {setPublicDir(e.target.value)}}
                                     />
@@ -380,7 +381,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 <InputBase
                                     fullWidth
                                     className={classes.textfield}
-                                    placeholder="(database.rules.json)"
+                                    placeholder="database.rules.json"
                                     color={'secondary'}
                                     onChange={(e) => {setDbRules(e.target.value)}}
                                 />

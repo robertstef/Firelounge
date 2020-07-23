@@ -1,16 +1,18 @@
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 999.25 336">
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 999.25 335.52">
     <defs>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200');
-            .cls-1{fill:#f7931e;}
-            .cls-2{fill:#f8ff5f;}
-            .cls-3{fill:#f4f421;}
-            .cls-4{fill:#ff0;}
-            .cls-5{font-size:141px;font-family:Raleway;font-weight:200;}
+            @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300');
+            .cls-1{fill:#ef233c;}
+            .cls-2{fill:#8d99ae;}
+            .cls-3{fill:#edf2f4;}
+            .cls-4{fill:#ccc;}
+            .cls-5{font-size:141px;font-family:Raleway}
             .cls-6{letter-spacing:-0.03em;}
-            .cls-7{letter-spacing:0em;}
-            .cls-8{letter-spacing:-0.02em;}
+            .cls-7{letter-spacing:-0.01em;}
+            .cls-8{letter-spacing:-0.01em;}
             .cls-9{font-size:66px;}
+            .cls-10{letter-spacing:0em;}
         </style>
     </defs>
-    <title>FireLoungeLogo</title><path class="cls-1" d="M483.8,542.05l-88.26,88.18a14.43,14.43,0,0,1-20.55,0l-88.26-88.18c-9.62-9.61-13.89-26.35-8.84-37.24l87.24-188.4c10.74-23.21,29.53-23.21,40.27,0l87.24,188.4C497.69,515.7,493.42,532.44,483.8,542.05Z" transform="translate(-275.75 -299)"/><path class="cls-2" d="M361.06,522.22l22.78,43.34a5.64,5.64,0,0,0,7.68,2.39l43.29-22.7c4.72-2.48,8.28-8.25,7.66-12.92l-10.66-81c-1.31-10-8.36-12.19-15.1-4.71l-54.64,60.58C358.92,510.72,358.57,517.5,361.06,522.22Z" transform="translate(-275.75 -299)"/><path class="cls-3" d="M436.87,544.93,390.7,591.06a7.54,7.54,0,0,1-10.73,0L333.86,545c-5-5-7.27-13.78-4.63-19.49l45.67-98.84c5.64-12.2,15.48-12.2,21.1,0l45.53,98.78C444.16,531.14,441.91,539.9,436.87,544.93Z" transform="translate(-275.75 -299)"/><path class="cls-4" d="M386.55,509.77l6.29,36.28a4.23,4.23,0,0,0,4.92,3.49l36-6.21c3.93-.67,7.78-4,8.41-7.46l10.93-60.39c1.35-7.46-3.16-10.66-9.67-6.88L390.7,499.28C387.66,501.05,385.86,505.81,386.55,509.77Z" transform="translate(-275.75 -299)"/><path class="cls-4" d="M384.29,510.3,378,546.58a4.24,4.24,0,0,1-4.91,3.5l-36-6.21c-3.93-.68-7.77-4-8.4-7.47L317.77,476c-1.35-7.45,3.15-10.66,9.66-6.87l52.71,30.67C383.19,501.58,385,506.35,384.29,510.3Z" transform="translate(-275.75 -299)"/><path class="cls-2" d="M409.4,522.22l-22.78,43.34a5.64,5.64,0,0,1-7.68,2.39l-43.29-22.7c-4.72-2.48-8.28-8.25-7.66-12.92l10.66-81c1.31-10,8.36-12.19,15.1-4.71l54.64,60.58C411.54,510.72,411.89,517.5,409.4,522.22Z" transform="translate(-275.75 -299)"/><text class="cls-5" transform="translate(255.51 187.93)">Fi<tspan class="cls-6" x="111.39" y="0">r</tspan><tspan class="cls-7" x="153.27" y="0">e</tspan><tspan class="cls-8" x="233.78" y="0">L</tspan><tspan x="312.45" y="0">ounge</tspan><tspan class="cls-9"><tspan x="109.49" y="79.2">opench industries</tspan></tspan></text></svg>
+
+    <title>FireLoungeLogoWithText</title><path class="cls-1" d="M483.8,542.05l-88.26,88.18a14.43,14.43,0,0,1-20.55,0l-88.26-88.18c-9.62-9.61-13.89-26.35-8.84-37.24l87.24-188.4c10.74-23.21,29.53-23.21,40.27,0l87.24,188.4C497.69,515.7,493.42,532.44,483.8,542.05Z" transform="translate(-275.75 -299)"/><path class="cls-2" d="M361.06,522.22l22.78,43.34a5.64,5.64,0,0,0,7.68,2.39l43.29-22.7c4.72-2.48,8.28-8.25,7.66-12.92l-10.66-81c-1.31-10-8.36-12.19-15.1-4.71l-54.64,60.58C358.92,510.72,358.57,517.5,361.06,522.22Z" transform="translate(-275.75 -299)"/><path class="cls-3" d="M436.87,544.93,390.7,591.06a7.54,7.54,0,0,1-10.73,0L333.86,545c-5-5-7.27-13.78-4.63-19.49l45.67-98.84c5.64-12.2,15.48-12.2,21.1,0l45.53,98.78C444.16,531.14,441.91,539.9,436.87,544.93Z" transform="translate(-275.75 -299)"/><path class="cls-4" d="M386.55,509.77l6.29,36.28a4.23,4.23,0,0,0,4.92,3.49l36-6.21c3.93-.67,7.78-4,8.41-7.46l10.93-60.39c1.35-7.46-3.16-10.66-9.67-6.88L390.7,499.28C387.66,501.05,385.86,505.81,386.55,509.77Z" transform="translate(-275.75 -299)"/><path class="cls-2" d="M409.4,522.22l-22.78,43.34a5.64,5.64,0,0,1-7.68,2.39l-43.29-22.7c-4.72-2.48-8.28-8.25-7.66-12.92l10.66-81c1.31-10,8.36-12.19,15.1-4.71l54.64,60.58C411.54,510.72,411.89,517.5,409.4,522.22Z" transform="translate(-275.75 -299)"/><path class="cls-4" d="M384.29,510.3,378,546.58a4.24,4.24,0,0,1-4.91,3.5l-36-6.21c-3.93-.68-7.77-4-8.4-7.47L317.77,476c-1.35-7.45,3.15-10.66,9.66-6.87l52.71,30.67C383.19,501.58,385,506.35,384.29,510.3Z" transform="translate(-275.75 -299)"/><text class="cls-5" transform="translate(255.51 185.11)"><tspan class="cls-6">F</tspan><tspan x="65" y="0">i</tspan><tspan class="cls-7" x="98" y="0">r</tspan><tspan x="142.69" y="0">e</tspan><tspan class="cls-8" x="213.33" y="0">L</tspan><tspan x="277.91" y="0">ounge</tspan><tspan class="cls-9"><tspan x="124.97" y="79.2">opench indust</tspan><tspan class="cls-10" x="522.28" y="79.2">r</tspan><tspan x="544.13" y="79.2">ies</tspan></tspan></text></svg>
