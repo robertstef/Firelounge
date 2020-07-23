@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import Chip from '@material-ui/core/Chip';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {UserDispatch, UserState} from "../../context/userContext";
 const logout = require('../../scripts/logout');
 
@@ -33,6 +35,23 @@ const useStyles = makeStyles((theme) => ({
         width: '90%',
         marginLeft: 'auto',
         marginRight: 'auto',
+    },
+    button: {
+        position: 'absolute',
+        right: '5%',
+        bottom: '5%',
+        backgroundColor: '#8D99AE'
+    },
+    chipArray: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        listStyle: 'none',
+        padding: theme.spacing(0.5),
+        margin: 0,
+    },
+    chip: {
+        margin: theme.spacing(0.5),
     }
 }));
 
@@ -48,9 +67,6 @@ export default function UserSettingsCard(props) {
     const {user} = UserState();  
     const dispatch = UserDispatch();
     const classes = useStyles();
-    
-    // console.log(user.firebase_projs)
-    // console.log(user.firelounge_projs)
 
     const handleClick = async () => {
         let response = await logout.logout_function();
@@ -67,15 +83,72 @@ export default function UserSettingsCard(props) {
 
     }
 
+    
+    let loung_projs = []
+    if(user.projs !== undefined && user.projs !== null ) {
+        Object.keys(user.projs).forEach(function(key) {
+            loung_projs.push(key)
+        });
+    }
+
+    let fb_projs = []
+    if(user.firebase_projs !== undefined && user.firebase_projs !== null  ) {
+        Object.keys(user.firebase_projs).forEach(function(key) {
+            fb_projs.push(user.firebase_projs[key].name)
+        });
+    }
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading}> User Settings </ Typography>
+                
+                {/* User Name */}
+                <Typography className={classes.heading}> Signed In As: </ Typography>
                 <Divider className={classes.divider}/>
-                <Typography className={classes.heading}> User: {user.uname} </ Typography>
+                <div className={classes.chipArray}>
+                <Chip
+                        icon={<AccountCircleIcon />}
+                        label={user.uname}
+                        className={classes.chip}
+                />
+                </div>
                 
                 
-                <Button onClick={handleClick}> Logout</Button>
+                {/* Firelounge projects */}
+                <Typography className={classes.heading}> Firelounge Projects: </ Typography>
+                <Divider className={classes.divider}/>
+                <div className={classes.chipArray}>
+                {loung_projs.map((data) => {
+                    return (
+                    <li key={data}>
+                        <Chip
+                        label={data}
+                        className={classes.chip}
+                        />
+                    </li>
+                    );
+                })}
+                </div>
+                
+
+                {/* FireBase projects */}
+                <Typography className={classes.heading}> Remaining Firebase Projects: </ Typography>
+                <Divider className={classes.divider}/>
+                <div className={classes.chipArray}>
+                {fb_projs.map((data) => {
+                    return (
+                    <li key={data}>
+                        <Chip
+                        label={data}
+                        className={classes.chip}
+                        />
+                    </li>
+                    );
+                })}
+                </div>
+
+
+                <Button className={classes.button} color={'default'} onClick={handleClick}> Logout</Button>
             </Card>
         </div>
     )
