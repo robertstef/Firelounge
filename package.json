@@ -4,7 +4,13 @@
   "description": "Firebase Management System",
   "author": "Opench Incorporated",
   "build": {
-    "appId": "FireLounge"
+    "appId": "FireLounge",
+    "win": {
+      "icon": "build/icon.png"
+    },
+    "mac": {
+      "icon": "build/icon.png"
+    }
   },
   "homepage": "./",
   "main": "public/electron.js",

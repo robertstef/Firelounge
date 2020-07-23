@@ -72,6 +72,7 @@ ipcMain.on('get-db-path', (event, arg) => {
 let win;
 
 function createWindow () {
+
     // Create the browser window.
     win = new BrowserWindow({
         width: 1000,
@@ -79,12 +80,11 @@ function createWindow () {
         webPreferences: {
             nodeIntegration: true    
         },
-        
         //beleive this sets icon for winwos/linux 
-        icon: isDev ? app.getAppPath() + "./public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
+        icon: isDev ? app.getAppPath() + "./public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
     });
 
-    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`)
+    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
 
     if(isDev){
         win.webContents.openDevTools();
@@ -100,11 +100,12 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow);
 
-//this sets icon for MacOS
+// this sets icon for MacOS
 const image = nativeImage.createFromPath(
-    isDev ? app.getAppPath() + "/public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
+    isDev ? app.getAppPath() + "/public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
   );
 app.dock.setIcon(image);
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
