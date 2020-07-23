@@ -4,6 +4,8 @@ const url = require('url');
 const isDev = require("electron-is-dev");
 const log = require('electron-log');
 
+//set to true to turn on loggin or electron errors
+const LOGGING = false
 
 /* ****** IPC ********* */
 let dialogShown = false; // flag to represent whether the dialog is open or closed
@@ -21,7 +23,7 @@ ipcMain.on('get-path', (event, arg) => {
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                         }).catch(err => {
-                            log.info(err);    
+                            if(LOGGING){log.info(err);}
                             event.reply('new_proj-get-path-reply', "Error: " + err);
                         });
                     } else if (arg === "init-path") {
@@ -30,7 +32,7 @@ ipcMain.on('get-path', (event, arg) => {
                         validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                         }).catch(err => {
-                            log.info(err);
+                            if(LOGGING){log.info(err);}
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Error: " + err);
                         });
@@ -58,6 +60,7 @@ ipcMain.on('get-db-path', (event, arg) => {
                         validAdminKey.validAdminKey_function(res.filePaths[0], arg).then((output) => {
                             event.reply('get-db-path-reply', res.filePaths[0]);
                         }).catch(err => {
+                            if(LOGGING){log.info(err);}
                             //else invalid - send back invalid
                             event.reply('get-db-path-reply', "Error: " + err);
                         });
