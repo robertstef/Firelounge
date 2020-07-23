@@ -30,8 +30,7 @@ let formatAndCleanQuery = (query) => {
  *                    Is one of: select, update, insert, delete.
  */
 let determineStatementType = (query) => {
-    let q = query.trim();
-    let firstTerm = q
+    let firstTerm = query
         .split(" ")[0]
         .trim()
         .toLowerCase();

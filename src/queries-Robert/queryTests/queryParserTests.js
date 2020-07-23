@@ -4,6 +4,7 @@ const mocha = require('mocha');
 const describe = mocha.describe;
 const it = mocha.it;
 
+/* Tests for formatAndCleanQuery() */
 describe( 'formatAndCleanQuery', () => {
     it('Remove double slash comment', () => {
         let result = qp.formatAndCleanQuery('select * from games //this is a comment');
@@ -44,4 +45,43 @@ describe( 'formatAndCleanQuery', () => {
         let result = qp.formatAndCleanQuery('  select * \r\n from \r\n games \r\n -- new comment');
         assert.equal(result, 'select * from games');
     })
+
+    it('Empty string', () => {
+        let result = qp.formatAndCleanQuery("");
+        assert.equal(result, "");
+    })
+})
+
+
+/* Tests for determineStatementType */
+describe("determineStatementType", () => {
+   it("select statement", () => {
+       let result = qp.determineStatementType("select * from games");
+       assert.equal(result, 'select');
+   });
+
+   it("update statement", () => {
+       let result = qp.determineStatementType("UPDATE games SET player = John");
+       assert.equal(result, 'update');
+   });
+
+   it("insert statement", () => {
+       let result = qp.determineStatementType("insert into games values a b c");
+       assert.equal(result, "insert");
+   });
+
+   it("delete statement", () => {
+       let result = qp.determineStatementType("DELETE FROM games WHERE a < b");
+       assert.equal(result, "delete");
+   });
+
+   it("invalid statement - incorrect keyword", () => {
+       let result = qp.determineStatementType("REMOVE this from games");
+       assert.equal(result, "invalid");
+   });
+
+   it("invalid statement - empty string", () => {
+       let result = qp.determineStatementType("");
+       assert.equal(result, "invalid");
+   })
 })
