@@ -74,13 +74,14 @@ let win;
 function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({
-        icon: 'src/logo/FireLoungeLogo.svg',
         width: 1000,
         height: 600,
         webPreferences: {
             nodeIntegration: true    
         },
-        icon: isDev ? app.getAppPath() + "/public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
+        
+        //beleive this sets icon for winwos/linux 
+        icon: isDev ? app.getAppPath() + "./public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
     });
 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`)
@@ -99,6 +100,7 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow);
 
+//this sets icon for MacOS
 const image = nativeImage.createFromPath(
     isDev ? app.getAppPath() + "/public/FireLoungeLogo.png" : `${path.join(__dirname, "../build/FireLoungeLogo.png")}`
   );
