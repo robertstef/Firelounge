@@ -1,27 +1,34 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {UserDispatch} from "../../context/userContext";
+import {UserDispatch, UserState} from "../../context/userContext";
 import CircularProgress from "./CircularProgress"
-const login = require('../../scripts/login');
-const initModule = require('../../scripts/init');
+
 
 export default function LoginAlert(props) {
   const dispatch = UserDispatch();
   const [open, setOpen] = React.useState(props.isOpen);  
   const [loading, setLoading] = React.useState(false);
+  const {user} = UserState();
+  const login = require('../../scripts/login');
+  const initModule = require('../../scripts/init');
+
+  useEffect(() => {
+    if(user.uname === '' || user.uname === undefined){
+      setOpen(true)
+    }
+  }, [user.uname])
+
 
   const handleClose = () => {
     
     async function userLogin() {
-
       let response = await login.login_function();
       //TODO: check response -- should contain a login success message
-
       initModule.init_function().then(async (output) => {
         await dispatch({type: 'createUser', args: output});
         setOpen(false)
@@ -33,19 +40,9 @@ export default function LoginAlert(props) {
     };
     setLoading(true)
     userLogin();
-
-
   };
 
-  const showCircularProgress = () => {
-    if(loading){
-      return(
-        <CircularProgress/>
-      )
-    }
-
-  }
-
+ 
   return (
     <div>
       <Dialog
@@ -66,7 +63,7 @@ export default function LoginAlert(props) {
           </Button> 
         </DialogActions>
       </Dialog>
-      {showCircularProgress()}
+      {loading ?  <CircularProgress/> : null}
     </div>
   );
 }

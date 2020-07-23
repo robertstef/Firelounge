@@ -84,10 +84,7 @@ const useStyles = makeStyles({
         color: 'white',
         backgroundColor: 'transparent'
     },
-    addButton: {
-        backgroundColor: 'white',
-        
-    }
+
 });
 
 export default function CustomizedTable() {
