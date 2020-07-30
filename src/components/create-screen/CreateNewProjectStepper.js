@@ -22,6 +22,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 let RED = '#ef223c';
 
 const useStyles = makeStyles((theme) => ({
+    //TODO make the placeholder text black, currently its a gray
     stepper: {
         width: '99%',
         backgroundColor: 'white',
