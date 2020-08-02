@@ -27,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
-    switchesGroup: {
-    },
     noActiveMSG: {
         padding: '3%',
         spacing: theme.spacing(2)

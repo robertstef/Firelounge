@@ -8,6 +8,10 @@ import {UserState} from '../../../context/userContext';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import {Alert} from "@material-ui/lab";
+import {AlertTitle} from "@material-ui/lab";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -86,6 +90,8 @@ export default function SwitchesGroup() {
   //calling the deploy python script can occur here
   const [displayState, setDisplayState] = React.useState({});
 
+  const [showAlert, setAlert] = React.useState({display: false, status: '', data: ''});
+
   const deployItems = (state) =>{
     setDisplayState({
       state
@@ -98,9 +104,26 @@ export default function SwitchesGroup() {
 
     const deployModule = require('../../../scripts/deploy');
     deployModule.deployProject_function(arg).then((output) => {
-        console.log(output) // log the data for the sake of viewing the result
+        console.log(output); // log the data for the sake of viewing the result
+
+        let results = {
+            display: true,
+            status: output.resp,
+            data: output.data
+
+        };
+        setAlert(prevState => results)
+        // display a success alert
+
     }).catch(err => {
         console.log(err);
+        // display an error alert
+        let results = {
+            display: true,
+            status: err.resp,
+            data: err.data,
+        };
+        setAlert(prevState => results)
     })
 
   };
@@ -148,6 +171,37 @@ export default function SwitchesGroup() {
       <p> username: {user.uname}</p>
       <p> active project: {user.act_proj.name}</p>
       <p> Deploying.... {JSON.stringify(displayState)} </p>
+        {showAlert.display === true ? (
+            <Alert variant={'filled'} severity={`${showAlert.status}`}
+                   action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                            setAlert(prevState => ({
+                                ...prevState,
+                                display: false
+                            }))
+                        }}
+                >
+                    <CloseIcon fontSize="inherit" />
+                </IconButton>
+            }>
+                {showAlert.status === 'success' ? (
+                    <div>
+                        <AlertTitle>Project has been deployed!</AlertTitle>
+                        {/*TODO: make the output data not look terrible*/}
+                        <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
+                    </div>
+                    ) : (
+                    <div>
+                        <AlertTitle>Project could not be deployed!</AlertTitle>
+                        <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
+                    </div>
+                    )}
+            </Alert>
+        ) : null}
     </div>
   );
 }
