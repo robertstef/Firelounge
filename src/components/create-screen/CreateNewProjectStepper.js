@@ -17,6 +17,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Paper from "@material-ui/core/Paper";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Toolbar from "@material-ui/core/Toolbar";
+import CircularIndeterminate from "../main-screen/CircularProgress";
 
 
 let RED = '#ef223c';
@@ -157,6 +158,8 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     // the current steps throughout the project initialization process
     const [currentSteps, setCurrentSteps] = React.useState(["Select Project Features: "]);
+
+    const [showProgress, setProgress] = React.useState(false);
 
     /**
      * Check the fields of the corresponding steps to ensure that the user has provide valid input, and prevent
@@ -460,6 +463,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                         // if we are submitting ....
                         {/*TODO add a circular progress after the submit button is clicked and the project is being created*/}
                         if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
+                            setProgress(true);
                             const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
                             const cloudProjArg = [project_name, project_path, project_id];
                             createCloudProj.createCloudProject_function(cloudProjArg).then((value) => {
@@ -486,6 +490,8 @@ export default function HorizontalLabelPositionBelowStepper() {
                                             functions: config.functions,
                                         }
                                     };
+
+                                    setProgress(false);
 
                                     const initFirebase = require('../../scripts/createProject/initFirebasejson');
                                     initFirebase.initFireBasejson_function(fbJsonObj);
@@ -532,6 +538,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                             fill={'#fff'}/>
                     </svg>
                 </div>
+                {showProgress === true ? (<CircularIndeterminate/>) : null}
                 {activeStep === 0 ? (
                     <div className={classes.stepContent}>
                         <div>
