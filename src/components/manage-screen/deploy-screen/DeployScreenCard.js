@@ -13,19 +13,14 @@ const useStyles = makeStyles((theme) => ({
         height: '100%'
     },
     card: {
-        height: '100%'
+        height: '100%',
+        borderRadius: 45,
     },
     heading: {
-        marginTop: '10px',
-        width: '95%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        fontSize: 24
-    },
-    divider: {
-        width: '95%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        paddingLeft: '3%',
+        paddingTop: '3%',
+        backgroundColor: 'white',
+        fontWeight:200,
     },
     noActiveMSG: {
         padding: '3%',
@@ -41,7 +36,7 @@ function DeployScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading}> Deploy Project </Typography>
+                <Typography className={classes.heading} variant={"h6"}> Deploy Project </Typography>
                 {user.act_proj.name === '' ? (
                     <div className={classes.noActiveMSG}>
                         <Divider/>
@@ -56,7 +51,6 @@ function DeployScreenCard() {
                     </div>
                 ): (
                     <div>
-                        <Divider className={classes.divider}/>
                         <SwitchesGroup className={classes.switchesGroup}/>
                     </div>
                 )}
