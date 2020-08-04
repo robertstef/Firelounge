@@ -5,23 +5,28 @@ import CustomizedTable from "./Table"
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        height: 'inherit'
+    },
+    textcontainer: {
+        height: '5%',
+    },
     title: {
-        paddingLeft: '3%',
-        paddingTop: '3%',
+        paddingLeft: '3vh',
+        paddingTop: '3vh',
         backgroundColor: 'white',  //TODO swap in the primary color for theme here
         fontWeight:200,
     },
     spacer: {
         width: '100%',
-        height: '5vh',
+        height: '5%',
         backgroundColor: 'white'
     },
     wave: {
         position: 'relative',
         display: 'block',
         width: 'calc(100% + 1.3px)',
-        height: '150px',
-        marginBottom: '-12vh',
+        height: '20%',
     }
 }));
 
@@ -30,8 +35,10 @@ export default function AddProjContent() {
     const classes = useStyles();
 
     return(
-        <div>
-            <Typography variant="h6" className={classes.title}> Already Have a Firebase Project? </Typography>
+        <div className={classes.root}>
+            <div className={classes.textcontainer}>
+                <Typography variant="h6" className={classes.title}> Already Have a Firebase Project? </Typography>
+            </div>
             <div className={classes.spacer}></div>
             <div className={classes.wave}>
                     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
