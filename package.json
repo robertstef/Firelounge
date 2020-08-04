@@ -1,16 +1,22 @@
 {
-  "name": "opench-firebase",
+  "name": "FireLounge",
   "version": "0.1.0",
-  "description": "Opench Firebase Overlay",
-  "author": "Opench Incorporated.",
+  "description": "Firebase Management System",
+  "author": "Opench Incorporated",
   "build": {
-    "appId": "opench.firebase"
+    "appId": "FireLounge",
+    "win": {
+      "icon": "build/icon.png"
+    },
+    "mac": {
+      "icon": "build/icon.png"
+    }
   },
   "homepage": "./",
   "main": "public/electron.js",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "latest",
@@ -19,13 +25,16 @@
     "@testing-library/user-event": "^7.2.1",
     "cross-env": "^7.0.2",
     "cross-spawn": "^7.0.3",
+    "deepmerge": "^4.2.2",
     "electron-is-dev": "^1.2.0",
+    "electron-log": "^4.2.2",
     "firebase": "^7.15.0",
     "firebase-admin": "^8.12.1",
     "firebase-tools": "^8.4.2",
     "path": "^0.12.7",
     "prop-types": "latest",
     "react": "^16.13.1",
+    "react-context-alerts": "^1.0.3",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
     "react-modal": "^3.11.2",

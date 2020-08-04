@@ -1,7 +1,7 @@
 /* Defines helper functions for functionsInit.js */
-const fs = require("fs");
-const path = require("path");
-const { spawn } = require("cross-spawn");
+const fs = window.require("fs");
+const path = window.require("path");
+const { spawn } = window.require("cross-spawn");
 
 /**
  * Checks input to functionsInit() is of the correct form.
@@ -132,7 +132,9 @@ exports.writeInitFilesJs = (fcns_path, input) => {
     }
 
     // Read in file templates
-    const TEMPLATE_ROOT = path.resolve(__dirname, "../createProject/templates/javascript/")
+    //const TEMPLATE_ROOT = path.resolve(__dirname, "../createProject/templates/javascript/");
+
+    const TEMPLATE_ROOT = "src/scripts/createProject/templates/javascript";
     const INDEX_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "index.js"), "utf8");
     const PACKAGE_LINTING_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "package.lint.json"), "utf8");
     const PACKAGE_NO_LINTING_TEMPLATE = fs.readFileSync(path.join(TEMPLATE_ROOT, "package.nolint.json"), "utf8");

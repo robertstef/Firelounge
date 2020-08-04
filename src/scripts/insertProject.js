@@ -1,13 +1,12 @@
 
 
 /*
-Endpoint used to insert a project into the users .json file
+Used to insert a project into the users .json file
 Request Body formatted as such:     
 var body = {
     'path' ='/Users/benbaker/Documents/opench-370-project-dev',
     'name' = undefined,
     'username' = 'testusername'}
-Returns status 200 and project id on success - 400 on fail
 */
 module.exports = {
     insertProject_function: function (requestBody) {

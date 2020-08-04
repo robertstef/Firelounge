@@ -7,9 +7,9 @@ import Tab from '@material-ui/core/Tab';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import StorageIcon from '@material-ui/icons/Storage';
 import AirportShuttleIcon from '@material-ui/icons/AirportShuttle';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import DbSettingsCard from './DbSettingsCard'
+import UserSettingsCard from './UserSettingsCard'
 
 
 function TabPanel(props) {
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function SettingsNav() {
+export default function SettingsNav(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -85,7 +85,7 @@ export default function SettingsNav() {
 
       {/* Tab for User Settings*/}
       <TabPanel value={value} index={0}>
-        User Settings
+        <UserSettingsCard close={props.close}/>
       </TabPanel>
 
       {/* Tab for Database Settings*/}

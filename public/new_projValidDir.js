@@ -13,11 +13,11 @@ module.exports = {
 
             // .firebaserc
             if (fs.existsSync(path_rc) ) {
-                reject("Invalid directory, contains .firebaserc file");
+                reject("Invalid directory, it already contains .firebaserc file");
             }
             // firebase.json
             else if (fs.existsSync(path_json) ) {
-                reject("Invalid directory, contains firebase.json file");
+                reject("Invalid directory, it already contains firebase.json file");
             }
             else { resolve(1) }
         });

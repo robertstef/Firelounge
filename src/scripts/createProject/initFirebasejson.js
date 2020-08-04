@@ -6,27 +6,8 @@
  *
  */
 
-
-/*
-proj_name: "proj name"
-proj_path: "/Library"
-isHostingOpen: true
-hosting:
-    public_dir: "public_dir"
-    single_page_app: true
-
-config:
-    hosting: true
-    database: false
-    storage: false
-    functions: false
- */
-
-
 module.exports = {
     initFireBasejson_function: function(requestBody) {
-
-        console.log("init firebase");
 
         const fs = window.require('fs');
 
@@ -54,36 +35,12 @@ module.exports = {
 
             switch (value) {
                 case "hosting":
-                    // full hosting config
-                    // https://firebase.google.com/docs/hosting/full-config
 
                     const options = requestBody[value];
 
-                    //TODO: check that the selected public dir exists in the cwd, if yes, use that directory, else create directory with an index.html file
+                    const initHosting = require('../../scripts/createProject/initHosting');
 
-                    let public_dir = `${proj_path}/${options.public_dir}`;
-
-                    if (!fs.existsSync(public_dir)) {    // if the dir doesnt exist
-                        fs.mkdirSync(public_dir);   // create the directory and add the index.html file
-                        fs.copyFile('src/template/index.html', `${public_dir}/index.html`, (err) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                    } else {
-                        // the folder exists check for the index.html, if it exists, do we overwrite?
-                        if (!fs.existsSync(`${public_dir}/index.html`)) {
-                            //the index.html doesnt exist so use Googles default
-                            fs.copyFile('src/template/index.html', `${public_dir}/index.html`, (err) => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
-                        } else {
-                            // the index.html file exists (probably want to use it)
-                            //TODO possibly prompt the user and somehow ask if they want to use this index.html or the default
-                        }
-                    }
+                    initHosting.initHosting_function({options: options, proj_path: proj_path});
 
                     firebase[value] = {
                         "public": options.public_dir,
@@ -101,14 +58,32 @@ module.exports = {
                             "source": "**",
                             "destination": "/index.html"
                         }]
-                    } else {
-                        //provide Google's 404.html file in public directory
-                        fs.copyFile('src/template/404.html', `${public_dir}/404.html`, (err) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
                     }
+                    break;
+
+                case "database":
+                    const rules_file = requestBody[value].rules;
+
+                    const initDatabase = require('../../scripts/createProject/initDatabase');
+
+                    initDatabase.initDatabase_function({rules_file: rules_file, proj_path: proj_path});
+
+                    firebase[value] = {
+                        rules: rules_file
+                    };
+                    break;
+
+                case 'functions':
+                    let arg = {
+                      language: 'javascript', // default to js for now
+                      eslint: requestBody.functions.lint,
+                      run_npm: requestBody.functions.npm
+                    };
+
+                    let initfunctions = require('../../scripts/createProject/functionsInit');
+
+                    initfunctions.functionsInit(proj_path, arg);
+
                     break;
             }
         });
@@ -123,21 +98,3 @@ module.exports = {
         //TODO some sort of confirmation message that the project has been created
     }
 };
-
-// let fbjson_path = proj_path + '/firebase.json'; // path to the firebase.json file
-//
-// let fbrc_path = proj_path + '/.firebaserc'; // path to the .firebaserc file
-//
-// fs.writeFileSync(fbrc_path, JSON.stringify(firebaserc, null, 4), function (err, data) {
-//     console.log('.firebaserc');
-//     if (err) {
-//         console.log(err);
-//     }
-// });
-//
-// fs.writeFileSync(fbjson_path, JSON.stringify(firebase,null, 4),  function (err, data) {
-//     console.log("firebase.json");
-//     if (err) {
-//         console.log(err)
-//     }
-// });

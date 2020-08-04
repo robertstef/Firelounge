@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import CreateNewProjectContent from "./CreateNewProjectContent";
 import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import NewProjectExpansion from "./NewProjectExpansion";
+import CreateNewProjectStepper from "./CreateNewProjectStepper";
 
 
 function TabPanel(props) {
@@ -62,14 +60,6 @@ function LinkTab(props) {
     />
   );
 }
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ef223c'
-    },
-  }
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,7 +112,6 @@ export default function SecondaryManageNav() {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appbar}>
-        <ThemeProvider theme={theme}>
           <Tabs
               orientation='vertical'
               variant="fullWidth"
@@ -135,33 +124,21 @@ export default function SecondaryManageNav() {
             {/* Icons for nav bar */}
             <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
             <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
-            <LinkTab icon={<AddBoxIcon />} {...a11yProps(2)} />
           </Tabs>
-        </ThemeProvider>
       </AppBar>
       <div className={classes.content}>
-
         {/* Create page */}
         <TabPanel value={value} index={0} >
           <div style={{marginTop: -10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
-            {/*<CreateNewProjectContent/>*/}
-            <NewProjectExpansion/>
-          </Card>
-        </TabPanel>
-
-        {/* Init pre-existing or current project page */}
-        <TabPanel value={value} index={1}>
-          <div style={{marginTop: -10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
-            <CreateCurrentProjectContent/>
+          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
+            <CreateNewProjectStepper/>
           </Card>
         </TabPanel>
 
         {/* Add existing project to firelounge page */}
-        <TabPanel value={value} index={2}>
+        <TabPanel value={value} index={1}>
           <div style={{marginTop:-10}}/>
-          <Card style={{height: '85vh',paddingLeft: 30,paddingRight: 20, paddingBottom: 20,paddingTop:20}}>
+          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <AddProjContent/>
           </Card>
         </TabPanel>

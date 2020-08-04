@@ -39,7 +39,7 @@ export default function SettingsModal() {
 
   const body = (
     <div className={classes.paper}>
-      <SettingsNav/>
+      <SettingsNav close={setOpen}/>
     </div>
   );
 

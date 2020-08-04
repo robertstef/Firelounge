@@ -1,7 +1,7 @@
 import React from 'react';
 import User from './userObject';
 
-const test = require('./testUserInfo');
+// const test = require('./testUserInfo');
 
 /* Create a state context and a dispatch context */
 const userStateContext = React.createContext();
@@ -43,6 +43,12 @@ function UserReducer(state, action) {
         case 'removeProj':
             state.user.removeProj(action.args);
             return {user: state.user};
+        case 'setActiveDb':
+            state.user.setActiveDb(action.args);
+            return {user: state.user};
+        case 'addDb':
+            state.user.addDb(action.args);
+            return {user: state.user};
         default:
             throw new Error("Unspecified action");
     }
@@ -53,13 +59,12 @@ function UserReducer(state, action) {
  * All components nested within UserProvider will be able to
  * access the UserState and UserDispatch.
  */
+
+
+
 function UserProvider({children}) {
+    const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
 
-    //const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
-    const info = test.test_user();
-    let new_user = new User(info.uname, info.projs, info.fb_projs, info.act_proj);
-
-    const [state, dispatch] = React.useReducer(UserReducer, {user: new_user});
     return (
         <userStateContext.Provider value={state}>
             <userDispatchContext.Provider value={dispatch}>

@@ -4,6 +4,7 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import SwitchesGroup from './SwitchesGroup.js';
 import { makeStyles } from '@material-ui/core/styles'
+import {UserState} from "../../../context/userContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -12,32 +13,48 @@ const useStyles = makeStyles((theme) => ({
         height: '100%'
     },
     card: {
-        height: '100%'
+        height: '100%',
+        borderRadius: 45,
     },
     heading: {
-        marginTop: '10px',
-        width: '95%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        fontSize: 24
+        paddingLeft: '3%',
+        paddingTop: '3%',
+        backgroundColor: 'white',
+        fontWeight:200,
     },
-    divider: {
-        width: '95%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+    noActiveMSG: {
+        padding: '3%',
+        spacing: theme.spacing(2)
+
     },
-    switchesGroup: {
-    }
 }));
 
 function DeployScreenCard() {
     const classes = useStyles();
+    const {user} = UserState();
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading}> Deploy Project </Typography>
-                <Divider className={classes.divider}/>
-                <SwitchesGroup className={classes.switchesGroup}/>
+                <Typography className={classes.heading} variant={"h6"}> Deploy Project </Typography>
+                {user.act_proj.name === '' ? (
+                    <div className={classes.noActiveMSG}>
+                        <Divider/>
+                        <div style={{margin:'5%'}}/>
+                        <Typography>
+                            You dont have any active projects on FireLounge.
+                        </Typography>
+                        <div style={{margin:'10%'}}/>
+                        <Typography>
+                            Head over to the project creation tab to create a new project or initialize a current firebase project through FireLounge
+                        </Typography>
+                    </div>
+                ): (
+                    <div>
+                        <SwitchesGroup className={classes.switchesGroup}/>
+                    </div>
+                )}
+
             </Card>
         </div>
     )

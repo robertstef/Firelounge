@@ -3,12 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import QueueIcon from '@material-ui/icons/Queue';
 import IconButton from '@material-ui/core/IconButton';
+import DbInitScreenCard from './DbInitScreenCard';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: '70%',
-    height: '70%',
+    width: '60%',
+    height: '80%',
     backgroundColor: theme.palette.background.paper,
   },
   button: {
@@ -19,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    minHeight: '600px'
   }
 }));
 
@@ -37,17 +39,14 @@ export default function DbInitModal() {
 
   const body = (
     <div className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        DATABASE INIT HERE
-      </p>
+        <DbInitScreenCard/>
     </div>
   );
 
   return (
     <div>
       <IconButton type="button" onClick={handleOpen} className={classes.button}>
-        <QueueIcon style={{zIndex: 5}}/>
+        <QueueIcon />
       </IconButton>
       <Modal
         open={open}

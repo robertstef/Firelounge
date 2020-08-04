@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -9,10 +9,6 @@ import ManageScreen from './manage-screen/ManageScreen.js'
 import CreateIcon from '@material-ui/icons/Create';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import CreateNav from "./create-screen/CreateNav"
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import BathtubIcon from '@material-ui/icons/Bathtub';
-import StateTest from './ContextStateTest';
-import DispTest from './ContextDispTest';
 import SettingsModal from './settings-screen/SettingsModal.js'
 
 function TabPanel(props) {
@@ -61,14 +57,6 @@ function LinkTab(props) {
   );
 }
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ef223c'
-    },
-  }
-});
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -116,7 +104,6 @@ export default function MainNav() {
     <div className={classes.root}>
         <Box>
           <AppBar position="static" color="default" className={classes.appbar}>
-            <ThemeProvider theme={theme}>
               <Tabs
                   className={classes.tabs}
                   orientation="vertical"
@@ -127,13 +114,10 @@ export default function MainNav() {
               >
                 <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
                 <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
-                {/* Context Test Link */}
-                <LinkTab icon={<BathtubIcon />} {...a11yProps(2)} className={classes.linkTab}/>
               </Tabs>
               
               {/* Opens Settings Modal */}
               <SettingsModal className={classes.settingsTab}/>
-            </ThemeProvider>
           </AppBar>
         </Box>
 
@@ -145,12 +129,6 @@ export default function MainNav() {
         {/* Manage exisiting projects tab */}
         <TabPanel value={value} index={1} className={classes.tabpanel}>
           <ManageScreen/>
-        </TabPanel>
-
-        {/* Context test values */}
-        <TabPanel value={value} index={2} className={classes.tabpanel}>
-          <StateTest />
-          <DispTest/>
         </TabPanel>
     </div>
   );

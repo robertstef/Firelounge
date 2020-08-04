@@ -1,41 +1,32 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import {UserState} from '../../../context/userContext'
 import { Alert } from 'react-context-alerts';
-import makeStyles from "@material-ui/core/styles/makeStyles";
 
-
-const useStyles = makeStyles((theme) => ({
-   btn: {
-       height:'40px',
-       backgroundColor: '#fff',
-       fontWeight:200,
-       borderRadius: 12,
-       "&:hover":{
-           borderRadius: 12,
-           background: '#d5d5d5',
-       },
-       paddingLeft: 12,
-       paddingRight: 12
-   },
-}));
+/*
+Gets the selected file path of the firebase admin private key
+Props:
+    path = callback function to retreive the path name
+*/
 export default function GetPathButton(props) {
     const {ipcRenderer} = window.require('electron');
-    const classes = useStyles();
+    const {user} = UserState();
     const [filePath, setFilePath ] = React.useState('');
     const [error, setError]  = React.useState({display: false, message: ''});
-
+    
     /* Displays the filepath in the React button */
     var DisplayFilePath = () => {
         if (filePath === ''){
             return 'Select File Path...'
-        } else {
+        } else{
             return filePath;
         }
-    };
+    }
     /* Send IPC to retrieve the selected filepath */
     const getPathIPC = () =>{
-        ipcRenderer.send("get-path", "new-path");
-        ipcRenderer.on("new_proj-get-path-reply", (event, arg) => {
+        ipcRenderer.send("get-db-path", user.act_proj.id);
+
+        ipcRenderer.on("get-db-path-reply", (event, arg) => {
             if( (arg.split(' ', 1)[0]) === 'Error:'){
                 //display error message
                 setError({display: true, message: arg})
@@ -50,8 +41,8 @@ export default function GetPathButton(props) {
 
     return(
         <div style={{marginTop:10}}>
-            <Button size={'small'} className={classes.btn} onClick={getPathIPC} >
-                <DisplayFilePath />
+            <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC} >
+                <DisplayFilePath />    
             </Button>
             <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>
         </div>

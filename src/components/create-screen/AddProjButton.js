@@ -23,7 +23,7 @@ export default function AddProjButton(props) {
     const dispatch = UserDispatch();
 
     const getPathIPC = () =>{
-        ipcRenderer.send("get-path", null);
+        ipcRenderer.send("get-path", 'init-path');
 
         ipcRenderer.on("get-path-reply", (event, response) => {
             if( response === "Invalid" ){
@@ -40,7 +40,7 @@ export default function AddProjButton(props) {
     return (
         <div className={classes.root}>
             <IconButton aria-label="Add" onClick={getPathIPC}>
-                <AddCircleIcon />
+                <AddCircleIcon style={{color: 'white'}}/>
             </IconButton>
         </div>
     );

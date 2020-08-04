@@ -8,6 +8,12 @@ import {UserState} from '../../../context/userContext';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import {Alert} from "@material-ui/lab";
+import {AlertTitle} from "@material-ui/lab";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Fade from "@material-ui/core/Fade";
+import Typography from "@material-ui/core/Typography"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,11 +33,18 @@ const useStyles = makeStyles((theme) => ({
       fontSize: 12, 
     },
     button: {
-      backgroundColor: '#EDF2F4', 
+      backgroundColor: '#EDF2F4',
+      fontWeight: 200,
       color: '#EF233C',
       width: '100%',
       marginLeft: 'auto',
       marginRight: 'auto',
+    },
+    alert: {
+        borderRadius : 25,
+        position: 'absolute',
+        bottom: '2%',
+        width: '80%',
     }
 }));
 
@@ -86,16 +99,40 @@ export default function SwitchesGroup() {
   //calling the deploy python script can occur here
   const [displayState, setDisplayState] = React.useState({});
 
+  const [showAlert, setAlert] = React.useState({display: false, status: '', data: ''});
+
   const deployItems = (state) =>{
     setDisplayState({
       state
     });
 
+    let arg = {
+        deployOptions: state.state,
+        act_proj: user.act_proj,
+    };
+
     const deployModule = require('../../../scripts/deploy');
-    deployModule.deployProject_function(state.state).then((output) => {
-        console.log(output) // log the data for the sake of viewing the result
+    deployModule.deployProject_function(arg).then((output) => {
+        console.log(output); // log the data for the sake of viewing the result
+
+        let results = {
+            display: true,
+            status: output.resp,
+            data: output.data
+
+        };
+        setAlert(prevState => results)
+        // display a success alert
+
     }).catch(err => {
         console.log(err);
+        // display an error alert
+        let results = {
+            display: true,
+            status: err.resp,
+            data: err.data,
+        };
+        setAlert(prevState => results)
     })
 
   };
@@ -140,9 +177,43 @@ export default function SwitchesGroup() {
       <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >
         DEPLOY PROJECT
       </Button>
-      <p> username: {user.uname}</p>
-      <p> active project: {user.act_proj.name}</p>
-      <p> Deploying.... {JSON.stringify(displayState)} </p>
+      <Typography> Username: {user.uname}</Typography>
+      <Typography> Active Project: {user.act_proj.name}</Typography>
+        {/*TODO: show some project information prior to deploy? */}
+      {/*<Typography> Deploying.... {JSON.stringify(displayState)} </Typography> /!* Might want to show some other information*!/*/}
+        {showAlert.display === true ? (
+            <Fade in={showAlert.display}>
+                <Alert variant={'filled'} severity={`${showAlert.status}`}
+                       className={classes.alert}
+                       action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setAlert(prevState => ({
+                                    ...prevState,
+                                    display: false
+                                }))
+                            }}
+                    >
+                        <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                }>
+                    {showAlert.status === 'success' ? (
+                        <div>
+                            <AlertTitle>Project has been deployed!</AlertTitle>
+                            <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
+                        </div>
+                        ) : (
+                        <div>
+                            <AlertTitle>Project could not be deployed!</AlertTitle>
+                            <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
+                        </div>
+                        )}
+                </Alert>
+            </Fade>
+        ) : <div/>}
     </div>
   );
 }

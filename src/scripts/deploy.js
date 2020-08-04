@@ -1,43 +1,36 @@
 
 /**
  * Deploys a users project to Firebase Hosting
- * @param: options - json object {'hosting': true, 'storage': false, ...}
+ * @param: requestBody: object
+ * Structure: {
+ *     act_proj: the current active project
+ *     deploy_options: {'hosting': true, 'storage': false, ...}
+ * }
+ *
+ *  Note: will need to update the version number in the template file
+ *
  */
-
-/*
- */
-
 
 module.exports = {
     deployProject_function: function(requestBody) {
 
-        //TODO get the active project from the user and deploy that
-
         const {exec} = window.require('child_process');
 
-        //var user_json = require('../Users/' + username + '.json');
+        const project_id = requestBody.act_proj.id;
 
-        var user_json = require("../Users/testusername.json"); // just use the testing json for now
+        const proj_path = requestBody.act_proj.path;
 
-        var active_proj = 'benstestproject'; // get the active project of the current user
-
-        const project_id = "...";
-
-        if (active_proj === undefined) {
+        if (requestBody.act_proj === '' || requestBody.act_proj === null) {
             console.log("NO ACTIVE PROJECT");
             return;
         }
 
-       //var active_path = user_json.projects[active_proj].path.toString(); // get the path to the active project
-
-        var active_path = "/Users/jacksonschuler/FL_testdir/benstestproject";
-
-        var deploy_options = requestBody;
+        var deploy_options = requestBody.deployOptions;
 
         return new Promise((resolve, reject) => {
             var response;
             if (deploy_options.all === true) {
-                const deploy_all = exec("firebase -P " + project_id + " deploy", {cwd: active_path});
+                const deploy_all = exec("firebase -P " + project_id + " deploy", {cwd: proj_path});
 
                 deploy_all.stdin.setEncoding('utf-8');
                 deploy_all.stdin.write('n\n');
@@ -50,15 +43,15 @@ module.exports = {
 
                 // if error reject promise
                 deploy_all.stderr.on('data', (data) => {
-                    reject(data);
+                    reject({resp: "error", data: data});
                 });
 
                 //when child is finished, resolve the promise
                 deploy_all.on('close', (code) => {
                     if(code === 0) {
-                        resolve(response);
+                        resolve({resp: "success", data: response});
                     } else {
-                        reject(code)
+                        reject({resp: "error", data: response})
                     }
                 })
             } else {
@@ -66,7 +59,7 @@ module.exports = {
                     .filter(function(k){return deploy_options[k]})
                     .map(String);
 
-                const deploy_some = exec("firebase deploy --only " + options_arr.join(','), {cwd: active_path});
+                const deploy_some = exec(`firebase -P ${project_id} deploy --only ` + options_arr.join(','), {cwd: proj_path});
 
                 deploy_some.stdin.setEncoding('utf-8');
                 deploy_some.stdin.write('n\n');
@@ -79,15 +72,15 @@ module.exports = {
 
                 // if error reject promise
                 deploy_some.stderr.on('data', (data) => {
-                    reject(data);
+                    reject({resp: "error", data: data});
                 });
 
                 //when child is finished, resolve the promise
                 deploy_some.on('close', (code) => {
                     if(code === 0) {
-                        resolve(response);
+                        resolve({resp: "success", data: response});
                     } else {
-                        reject(code)
+                        reject({resp: "error", data: response})
                     }
                 })
             }

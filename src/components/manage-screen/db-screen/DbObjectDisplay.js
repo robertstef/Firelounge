@@ -1,6 +1,6 @@
-import React, { Component} from 'react'
+import React, {useState, useEffect} from 'react'
 import ReactJson from 'react-json-view';
-
+import {UserState} from '../../../context/userContext'
 
 /*  
     Used to compare two different Json Objects 
@@ -45,27 +45,39 @@ admin.initializeApp({
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 var db = admin.database();
 var ref = db.ref();
+export default function DbObjectDisplay() {
+    const {user} = UserState();
+    const [displaySrc, setDisplaySrc] = useState({})    
 
 
-
-export default class DbObjectDisplay extends Component {
-    state={
-        //object that displayed
-        src: {}
+    //update the context database reference
+    //catch error where there is no database defined.  
+    try {
+        var db = user.db
+        var ref = db.ref();
+    }catch(error) {
+        // console.log(error)
     }
     
-    componentDidMount() {
+    useEffect(() => {
+        if(user.admin === '' || user.db === undefined ){
+            // console.log('No admin file found')
+            return
+        }
+        
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
-            this.setState({src: snapshot.val()})
-        });
-    };
+            setDisplaySrc(snapshot.val())
+        })   
+        
+    }, [db, setDisplaySrc])
+ 
 
     /* 
         When object is edited...
         Updates the reference in Firebase
     */
-    makeEdit(result){
+    const makeEdit = (result) => {
         /*
             create string to traverse json object and update in firebase
             namespace = array of keys to get to changed value
@@ -91,7 +103,7 @@ export default class DbObjectDisplay extends Component {
         Actual null entries arent allowed in firebase 
         Need to find a solution to adding nested components
     */
-    makeAdd(result){
+    const makeAdd = (result) => {
         /*
         Create string to traverse json object and update in firebase
         namespace = array of keys to get to added value
@@ -116,8 +128,6 @@ export default class DbObjectDisplay extends Component {
         db.ref(query_string).update({
             [newKey] : 'NULL'
         })
-
-
     }
 
 
@@ -126,7 +136,7 @@ export default class DbObjectDisplay extends Component {
         Updates reference in firebase
         Concats a string to find element and removes it
     */
-    makeDelete(result){
+    const makeDelete = (result) => {
         /*
         Create string to traverse json object and update in firebase
         namespace = array of keys to get to deleted element
@@ -140,47 +150,52 @@ export default class DbObjectDisplay extends Component {
             query_string += '/'
         }
         
-        //traverse and delete child
-        db.ref(query_string).child(result.name).remove();  
-
+        //if deleting an item from the root
+        if(query_string === '') {
+            db.ref().child(result.name).remove();      
+        } else {
+            // traverse and delete child
+            db.ref(query_string).child(result.name).remove();  
+        }
+        
     }
 
 
 
-    render() {
-        var onEdit = true
-        var onAdd = true
-        var onDelete = true
 
-        return(
-            <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
-                <ReactJson 
-                    name={false}
-                    src={this.state.src}
-                    collapsed={1}
-                    onEdit={   
-                        onEdit
-                            ? result => {
-                                  this.makeEdit(result)
-                              }
-                            : false
-                        }
-                    onAdd={
-                        onAdd
-                            ? result => {
-                                  this.makeAdd(result)
-                              }
-                            : false
+    var onEdit = true
+    var onAdd = true
+    var onDelete = true
+
+    return(
+        <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
+            <ReactJson 
+                name={false}
+                src={displaySrc}
+                collapsed={1}
+                onEdit={   
+                    onEdit
+                        ? result => {
+                                makeEdit(result)
+                            }
+                        : false
                     }
-                    onDelete={
-                        onDelete
-                            ? result => {
-                                  this.makeDelete(result)
-                              }
-                            : false
-                    }
-                />
-            </div>
-        )
-    }
+                onAdd={
+                    onAdd
+                        ? result => {
+                                makeAdd(result)
+                            }
+                        : false
+                }
+                onDelete={
+                    onDelete
+                        ? result => {
+                                makeDelete(result)
+                            }
+                        : false
+                }
+            />
+        </div>
+    )
 }
+
