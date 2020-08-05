@@ -80,7 +80,6 @@ export default function SettingsNav(props) {
           >
             <Tab icon={<AccountCircleIcon />} aria-label="phone" {...a11yProps(0)} />
             <Tab icon={<StorageIcon />} aria-label="favorite" {...a11yProps(1)} />
-            <Tab icon={<AirportShuttleIcon />} aria-label="person" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
 
@@ -94,12 +93,6 @@ export default function SettingsNav(props) {
         <DbSettingsCard/>
       </TabPanel>
 
-    {/* Open Tab for More Settings */}
-      {/*
-      <TabPanel value={value} index={2} className={classes.tabPanel}>
-        Another Type of Settings
-      </TabPanel>
-      */}
     </div>
   );
 }
