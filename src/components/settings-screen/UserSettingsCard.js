@@ -37,9 +37,11 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 'auto',
     },
     button: {
+        height: '7%',
+        width: '15%',
         position: 'absolute',
-        right: '5%',
-        bottom: '5%',
+        right: '7%',
+        bottom: '7%',
         backgroundColor: '#8D99AE'
     },
     chipArray: {
