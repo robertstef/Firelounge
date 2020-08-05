@@ -7,10 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
 import AddProjContent from "./AddProjContent"
 import Card from "@material-ui/core/Card";
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import CreateNewProjectStepper from "./CreateNewProjectStepper";
 
 

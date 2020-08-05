@@ -12,10 +12,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+
 import AddProjButton from './AddProjButton'
-import {UserDispatch, UserState} from '../../context/userContext';
-import GetPathButton from './GetPathButton';
+import {UserState} from '../../context/userContext';
+
 
 
 // Component for individual table cell
@@ -62,16 +62,15 @@ const rows = [
 
 const useStyles = makeStyles({
     root: {
-        marginTop: '8%',
+        height: '70%',
         width: '90%',
-        margin: '0 auto'
+        margin: '0 auto',
     },
     table: {
-        minWidth: 300,
         border: '0px',
         margin: '0px',
         marginBottom: '-1px',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     tableHead: {
         borderBottom: 'hidden',
@@ -79,6 +78,8 @@ const useStyles = makeStyles({
     tableHeadCell: {
         backgroundColor: 'white',
         color: 'black',
+    },
+    tableBody: {
     },
     tableBodyCell: {
         color: 'white',
@@ -104,7 +105,7 @@ export default function CustomizedTable() {
 
     return (
         <TableContainer className={classes.root}>
-            <Table className={classes.table} aria-label="customized table">
+            <Table stickyHeader className={classes.table} aria-label="customized table">
                 <TableHead className={classes.tableHead}>
                     <TableRow>
                         <StyledTableCell align='center' className={classes.tableHeadCell} style={{borderRadius: '16px 0px 0px 16px'}} >Project Name</StyledTableCell>

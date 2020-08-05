@@ -10,18 +10,17 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     width: '60%',
     height: '80%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#8D99AE',
+    outline: 0,
+    borderRadius: '25px',
   },
   button: {
-    position: 'absolute',
-    top: '-47px',
-    right: '15px',
   },
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '600px'
+    minHeight: '600px',
   }
 }));
 

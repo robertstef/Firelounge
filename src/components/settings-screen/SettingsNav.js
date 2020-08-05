@@ -6,8 +6,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import StorageIcon from '@material-ui/icons/Storage';
-import AirportShuttleIcon from '@material-ui/icons/AirportShuttle';
-import Box from '@material-ui/core/Box';
 import DbSettingsCard from './DbSettingsCard'
 import UserSettingsCard from './UserSettingsCard'
 
@@ -24,9 +22,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box>
-          <div >{children}</div>  
-        </Box>
+          <div style={{height: 'calc(100% - 48px)'}}>{children}</div>  
       )}
     </div>
   );
@@ -55,7 +51,10 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'static',
     marginTop: '0px'
-  }
+  },
+  tabPanel: {
+    height: '100%',
+  },
 
 }));
 
@@ -79,24 +78,19 @@ export default function SettingsNav(props) {
           >
             <Tab icon={<AccountCircleIcon />} aria-label="phone" {...a11yProps(0)} />
             <Tab icon={<StorageIcon />} aria-label="favorite" {...a11yProps(1)} />
-            <Tab icon={<AirportShuttleIcon />} aria-label="person" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
 
       {/* Tab for User Settings*/}
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} className={classes.tabPanel}>
         <UserSettingsCard close={props.close}/>
       </TabPanel>
 
       {/* Tab for Database Settings*/}
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={1} className={classes.tabPanel}>
         <DbSettingsCard/>
       </TabPanel>
 
-    {/* Open Tab for More Settings */}
-      <TabPanel value={value} index={2}>
-        Another Type of Settings
-      </TabPanel>
     </div>
   );
 }

@@ -14,9 +14,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center'
     },
     card: {
-        height: '58vh',
+        height: 'calc(100% - 48px)',
         width: '95%',
-        margin: '10px',
         borderRadius: '5px',
         overflow: 'hidden',
         backgroundColor: '#EDF2F4',
