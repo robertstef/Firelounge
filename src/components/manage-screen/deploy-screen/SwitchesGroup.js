@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 200,
         color: '#EF233C',
         width: '100%',
+        margin: 'auto',
         marginLeft: 'auto',
         marginRight: 'auto',
         borderRadius: 45,
@@ -172,7 +173,7 @@ export default function SwitchesGroup() {
           </ List>
         </FormGroup>
       </FormControl>
-        <div style={{margin: '3%'}}/>
+        <div style={{margin: '2%'}}/>
       <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >
         DEPLOY PROJECT
       </Button>
@@ -182,14 +183,14 @@ export default function SwitchesGroup() {
                     ...prevState,
                     display: false
                 }))
-            }} type={showAlert.status} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project has been deployed!"} />
+            }} type={'success'} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project has been deployed!"} />
         ) : (
             <Alert open={showAlert.display} onClose={() => {
                 setAlert(prevState => ({
                     ...prevState,
                     display: false
                 }))
-            }} timeout={null} type={showAlert.status} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project could not be deployed!"} />
+            }} timeout={null} type={'error'} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project could not be deployed!"} />
         )}
 
     </div>

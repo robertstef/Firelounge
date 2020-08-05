@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         left: '0px',
         right: '0px',
-        height: '100%'
+        height: '100%',
     },
     card: {
         height: '100%',
@@ -37,16 +37,15 @@ const useStyles = makeStyles((theme) => ({
         fontWeight:200,
     },
     content: {
-      height: '71%',
+        display: 'inlineBlock',
+        height: '69%',
     },
     footer: {
-        position: 'relative',
-        bottom: 0,
         backgroundColor: '#8D99AE',
-        height: '15%',
+        height: '100%',
     },
     divider: {
-        marginTop: '3%',
+        marginTop: '2%',
     },
     deployBullet: {
         paddingLeft: '4%',
@@ -98,6 +97,7 @@ function DeployScreenCard() {
                         </div>
                     )}
                 </div>
+                <div style={{height:'1vh'}}/>
                 <div className={classes.footer}/>
             </Card>
         </div>
