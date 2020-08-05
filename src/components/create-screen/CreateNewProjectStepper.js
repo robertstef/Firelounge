@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textfield: {
         height: 48,
+        color: '#000000',
         background: 'white',
         fontWeight:200,
         borderStyle:'none',
@@ -82,7 +83,6 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 14,
         paddingBottom: 13,
         boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
-
     },
     stepContent: {
         padding: '3%',
@@ -559,6 +559,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 <InputBase
                                     fullWidth
                                     className={classes.textfield}
+                                    classes={{colorSecondary: classes.color}}
                                     placeholder="Enter your project name"
                                     color={'secondary'}
                                     onChange={(e) => { setProjectName(e.target.value) ; setProjID(e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex());}}
@@ -605,7 +606,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                         {activeStep === currentSteps.length ? (
                             <div className={classes.stepContent}>
                                 {/* Once the project has been created user will arrive at the submission confirmed screen*/}
-                                Submission confirm
+                                <Typography variant={"h6"} className={classes.text}>Your Firelounge project has been created!</Typography>
                                 <div style={{marginBottom: '2%'}}/>
                             </div>
                         ): (

@@ -8,12 +8,7 @@ import {UserState} from '../../../context/userContext';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import {Alert} from "@material-ui/lab";
-import {AlertTitle} from "@material-ui/lab";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Fade from "@material-ui/core/Fade";
-import Typography from "@material-ui/core/Typography"
+import { Alert } from 'react-context-alerts';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,22 +25,23 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
     },
     label: {
-      fontSize: 12, 
+        fontWeight: 200,
     },
     button: {
-      backgroundColor: '#EDF2F4',
-      fontWeight: 200,
-      color: '#EF233C',
-      width: '100%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
+        backgroundColor: '#EDF2F4',
+        fontWeight: 200,
+        color: '#EF233C',
+        width: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderRadius: 45,
     },
     alert: {
         borderRadius : 25,
         position: 'absolute',
         bottom: '2%',
         width: '80%',
-    }
+    },
 }));
 
 
@@ -156,64 +152,46 @@ export default function SwitchesGroup() {
             return (
             <ListItem key={`${value}`} className={classes.listItem}>
               <FormControlLabel
-                label={user.act_proj.features[`${value}`].charAt(0).toUpperCase() + user.act_proj.features[`${value}`].slice(1)}
-                control={
-                  <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
-                  onChange={handleChange}
-                  name={`${user.act_proj.features[`${value}`]}`} />}
+                  classes={{label: classes.label}}
+                  label={user.act_proj.features[`${value}`].charAt(0).toUpperCase() + user.act_proj.features[`${value}`].slice(1)}
+                  control={
+                      <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
+                      onChange={handleChange}
+                      name={`${user.act_proj.features[`${value}`]}`} />}
               />    
             </ListItem>
               );
             })}
             <ListItem className={classes.listItem}>
               <FormControlLabel
-                control={<Switch checked={state.all} onChange={handleChange} name="all" />}
-                label="All"
+                  classes={{label: classes.label}}
+                  control={<Switch checked={state.all} onChange={handleChange} name="all" />}
+                  label="All"
               />    
             </ListItem>
           </ List>
         </FormGroup>
       </FormControl>
+        <div style={{margin: '3%'}}/>
       <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >
         DEPLOY PROJECT
       </Button>
-      <Typography> Username: {user.uname}</Typography>
-      <Typography> Active Project: {user.act_proj.name}</Typography>
-        {/*TODO: show some project information prior to deploy? */}
-      {/*<Typography> Deploying.... {JSON.stringify(displayState)} </Typography> /!* Might want to show some other information*!/*/}
-        {showAlert.display === true ? (
-            <Fade in={showAlert.display}>
-                <Alert variant={'filled'} severity={`${showAlert.status}`}
-                       className={classes.alert}
-                       action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setAlert(prevState => ({
-                                    ...prevState,
-                                    display: false
-                                }))
-                            }}
-                    >
-                        <CloseIcon fontSize="inherit" />
-                    </IconButton>
-                }>
-                    {showAlert.status === 'success' ? (
-                        <div>
-                            <AlertTitle>Project has been deployed!</AlertTitle>
-                            <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
-                        </div>
-                        ) : (
-                        <div>
-                            <AlertTitle>Project could not be deployed!</AlertTitle>
-                            <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
-                        </div>
-                        )}
-                </Alert>
-            </Fade>
-        ) : <div/>}
+        {showAlert.status === 'success' ? (
+            <Alert open={showAlert.display} onClose={() => {
+                setAlert(prevState => ({
+                    ...prevState,
+                    display: false
+                }))
+            }} type={showAlert.status} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project has been deployed!"} />
+        ) : (
+            <Alert open={showAlert.display} onClose={() => {
+                setAlert(prevState => ({
+                    ...prevState,
+                    display: false
+                }))
+            }} timeout={null} type={showAlert.status} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project could not be deployed!"} />
+        )}
+
     </div>
   );
 }
