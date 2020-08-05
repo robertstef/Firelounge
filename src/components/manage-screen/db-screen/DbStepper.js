@@ -80,8 +80,10 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
           <p> a) Select your current project </p> 
           <p> b) Select 'Generate New Key' </p> 
           <p> c) Store key in safe location </p> 
-          <Button variant="contained" style={{background: '#EF233C'}} onClick={openBrowser}> Get New Key </Button> 
-          { (user.admin === undefined || user.admin === '' ) ?  null : key_chip }
+          <div style={{display: 'block'}} >
+            <Button variant="contained" style={{background: '#EF233C'}} onClick={openBrowser}> Get New Key </Button> 
+            <div>{ (user.admin === undefined || user.admin === '' ) ?  null : key_chip } </div>
+          </div>
         </div>
         )
     case 1:
