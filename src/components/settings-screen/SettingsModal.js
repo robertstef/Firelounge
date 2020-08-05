@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     height: '70%',
     backgroundColor: theme.palette.background.paper,
+    outline: 0,
   },
   button: {
     position: 'absolute',
@@ -20,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    outline: 0,
   }
 
 }));

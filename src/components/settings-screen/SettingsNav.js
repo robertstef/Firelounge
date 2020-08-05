@@ -95,9 +95,11 @@ export default function SettingsNav(props) {
       </TabPanel>
 
     {/* Open Tab for More Settings */}
+      {/*
       <TabPanel value={value} index={2} className={classes.tabPanel}>
         Another Type of Settings
       </TabPanel>
+      */}
     </div>
   );
 }
