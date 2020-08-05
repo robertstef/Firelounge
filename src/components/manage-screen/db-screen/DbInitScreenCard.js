@@ -14,12 +14,12 @@ const useStyles = makeStyles((theme) => ({
     height: '92%',
     width: '92%',
     margin: '4%',
-    borderRadius: '5px',
+    borderRadius: '25px',
     overflow: 'auto', 
     backgroundColor: '#EDF2F4'
   },
   heading: {
-    marginTop: '10px',
+    marginTop: '15px',
     width: '90%',
     marginLeft: 'auto', 
     marginRight: 'auto'

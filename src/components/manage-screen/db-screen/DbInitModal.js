@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     height: '80%',
     backgroundColor: '#8D99AE',
     outline: 0,
-    borderRadius: '5px',
+    borderRadius: '25px',
   },
   button: {
   },
