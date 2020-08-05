@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '5px',
   },
   button: {
-    position: 'absolute',
-    top: '-47px',
-    right: '15px',
   },
   modal: {
     display: 'flex',

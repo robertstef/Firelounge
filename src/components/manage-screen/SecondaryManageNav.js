@@ -92,16 +92,18 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    margin: '15px',
+    margin: '2%',
     marginTop: '0px',
   }
 }));
 
-export default function SecondaryManageNav() {
+export default function SecondaryManageNav(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    //callback to inform topNav what the active tab is
+    props.getActiveTab(newValue);
     setValue(newValue);
   };
 

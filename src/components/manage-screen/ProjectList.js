@@ -11,8 +11,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px'
   },
   component: {
-    marginLeft: '75px',
-    height: 50,
   },
 
 }));

@@ -11,9 +11,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px'
   },
   component: {
-    position: 'absolute',
-    top: '-47px',
-    right: '50px',
   },
 
 }));
