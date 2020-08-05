@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center'
     },
     card: {
-        height: '58vh',
+        height: 'calc(100% - 48px)',
         width: '95%',
         margin: '10px',
         borderRadius: '5px',
@@ -60,8 +60,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 /*
-Card for holding the DB settings Switches Group
-Appears as a Tab in the Settings Modal
+Card displays user info and a button to log out
+props: close -> toggles the display of the modal 
 */
 export default function UserSettingsCard(props) {
     const {user} = UserState();  

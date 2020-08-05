@@ -24,9 +24,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box>
-          <div >{children}</div>  
-        </Box>
+          <div style={{height: 'calc(100% - 48px)'}}>{children}</div>  
       )}
     </div>
   );
@@ -55,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'static',
     marginTop: '0px'
-  }
+  },
+  tabPanel: {
+    height: '100%',
+  },
 
 }));
 
@@ -84,17 +85,17 @@ export default function SettingsNav(props) {
       </AppBar>
 
       {/* Tab for User Settings*/}
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} className={classes.tabPanel}>
         <UserSettingsCard close={props.close}/>
       </TabPanel>
 
       {/* Tab for Database Settings*/}
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={1} className={classes.tabPanel}>
         <DbSettingsCard/>
       </TabPanel>
 
     {/* Open Tab for More Settings */}
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={2} className={classes.tabPanel}>
         Another Type of Settings
       </TabPanel>
     </div>
