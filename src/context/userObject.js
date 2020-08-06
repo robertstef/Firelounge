@@ -13,7 +13,7 @@ export default class User {
      * @param act_proj: current active project - will default to empty
      *                  string if no argument provided
      */
-    constructor(uname, projs, fb_projs, act_proj="") {
+    constructor(uname, projs="", fb_projs="", act_proj="") {
         this._uname = uname;         // user name
         this._projs = projs;         // firelounge projects
         this._fb_projs = fb_projs;   // firebase projects
@@ -26,6 +26,12 @@ export default class User {
             // Fetch the service account key JSON file contents
             let path = projs[act_proj].admin
             let serviceAccount = window.require(path);
+
+
+            //if there is already an initialzed app, delete it and initialize the new admin sdk
+            if( admin.apps !== undefined && admin.apps.length > 0 ) {
+                admin.apps[0].delete()
+            }
 
             // Initialize the app with a service account, granting admin privileges
             var app = admin.initializeApp({
@@ -48,7 +54,12 @@ export default class User {
                 }
             }
         } 
-        this._writeUfile()
+
+        
+        if(uname !== undefined && uname !== ''){
+            this._writeUfile()
+        }
+        
     }
 
 
@@ -115,6 +126,7 @@ export default class User {
      */
     get firebase_projs() {
         let projects = [];
+        if(this._fb_projs === undefined) {return undefined};
         for (let p of this._fb_projs) {
             if (! this._projExists(p.id)) { projects.push(p) }
         }
@@ -323,8 +335,8 @@ export default class User {
         var json = fs.readFileSync(ufile_path)
         json = JSON.parse(json)
 
-        //TODO: check to see if the projects actually supports databases   
-    
+        //TODO: check to see if the projects actually supports databases
+
         //if admin is undefined or admin doesnt match current projects 
         if(this.admin === '' || this.admin.options_.credential.projectId !== this.act_proj.id) {
             let admin = window.require("firebase-admin");

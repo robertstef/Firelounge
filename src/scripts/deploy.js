@@ -43,15 +43,15 @@ module.exports = {
 
                 // if error reject promise
                 deploy_all.stderr.on('data', (data) => {
-                    reject(data);
+                    reject({resp: "error", data: data});
                 });
 
                 //when child is finished, resolve the promise
                 deploy_all.on('close', (code) => {
                     if(code === 0) {
-                        resolve(response);
+                        resolve({resp: "success", data: response});
                     } else {
-                        reject(code)
+                        reject({resp: "error", data: response})
                     }
                 })
             } else {
@@ -72,15 +72,15 @@ module.exports = {
 
                 // if error reject promise
                 deploy_some.stderr.on('data', (data) => {
-                    reject(data);
+                    reject({resp: "error", data: data});
                 });
 
                 //when child is finished, resolve the promise
                 deploy_some.on('close', (code) => {
                     if(code === 0) {
-                        resolve(response);
+                        resolve({resp: "success", data: response});
                     } else {
-                        reject(code)
+                        reject({resp: "error", data: response})
                     }
                 })
             }

@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import MainNav from "../MainNav";
 import LoginAlert from "./LoginAlert";
 import CircularProgress from "./CircularProgress"
-import {UserDispatch, UserState} from "../../context/userContext";
+import {UserDispatch} from "../../context/userContext";
 const checkLoginStatus = require('../../scripts/checkLoginStatus');
 const initModule = require('../../scripts/init');
 
 function Main() {
     const dispatch = UserDispatch();
-    const {user} = UserState();
     const [showModal, setShowModal] = useState(false)
     const [loading, setLoading] = useState(true)
-
+    
     useEffect( () => {
         async function fetchUsername() {
             //check if user it logged in -- returns 'Logged In' when user it logged in, '' when user is not logged in
@@ -32,7 +31,7 @@ function Main() {
             }
         }
         fetchUsername();
-    }, [])
+    })
 
     if(loading) {
         return(

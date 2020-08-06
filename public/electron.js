@@ -1,9 +1,11 @@
-const { app, BrowserWindow, ipcMain, dialog} = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, nativeImage} = require('electron');
 const path = require('path');
 const url = require('url');
 const isDev = require("electron-is-dev");
 const log = require('electron-log');
 
+//set to true to turn on loggin or electron errors
+const LOGGING = false
 
 /* ****** IPC ********* */
 let dialogShown = false; // flag to represent whether the dialog is open or closed
@@ -21,18 +23,20 @@ ipcMain.on('get-path', (event, arg) => {
                         new_proj_validDir.new_proj_validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('new_proj-get-path-reply', res.filePaths[0]);
                         }).catch(err => {
-                            log.info(err);    
+                            if(LOGGING){log.info(err);}
                             event.reply('new_proj-get-path-reply', "Error: " + err);
                         });
+
                     } else if (arg === "init-path") {
                         /* Select a file path that doesnt contain firebase files*/
                         const validDir = require(isDev ? './validDir.js' : '../build/validDir.js');
                         validDir.validDir_function(res.filePaths[0]).then((output) => {
                             event.reply('get-path-reply', res.filePaths[0]);
                         }).catch(err => {
-                            log.info(err);
+                            if(LOGGING){log.info(err);}
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Error: " + err);
+
                         });
                     } else {
                         console.log("INVALID ARGUMENT INTO IPC")
@@ -58,6 +62,7 @@ ipcMain.on('get-db-path', (event, arg) => {
                         validAdminKey.validAdminKey_function(res.filePaths[0], arg).then((output) => {
                             event.reply('get-db-path-reply', res.filePaths[0]);
                         }).catch(err => {
+                            if(LOGGING){log.info(err);}
                             //else invalid - send back invalid
                             event.reply('get-db-path-reply', "Error: " + err);
                         });
@@ -72,16 +77,19 @@ ipcMain.on('get-db-path', (event, arg) => {
 let win;
 
 function createWindow () {
+
     // Create the browser window.
     win = new BrowserWindow({
         width: 1000,
         height: 600,
         webPreferences: {
             nodeIntegration: true    
-        }
+        },
+        //beleive this sets icon for winwos/linux 
+        icon: isDev ? app.getAppPath() + "./public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
     });
 
-    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`)
+    win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
 
     if(isDev){
         win.webContents.openDevTools();
@@ -96,6 +104,13 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow);
+
+// this sets icon for MacOS
+const image = nativeImage.createFromPath(
+    isDev ? app.getAppPath() + "/public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
+  );
+app.dock.setIcon(image);
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

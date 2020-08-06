@@ -8,6 +8,7 @@ import {UserState} from '../../../context/userContext';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { Alert } from 'react-context-alerts';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,15 +25,24 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
     },
     label: {
-      fontSize: 12, 
+        fontWeight: 200,
     },
     button: {
-      backgroundColor: '#EDF2F4', 
-      color: '#EF233C',
-      width: '100%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    }
+        backgroundColor: '#EDF2F4',
+        fontWeight: 200,
+        color: '#EF233C',
+        width: '100%',
+        margin: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderRadius: 45,
+    },
+    alert: {
+        borderRadius : 25,
+        position: 'absolute',
+        bottom: '2%',
+        width: '80%',
+    },
 }));
 
 
@@ -86,6 +96,8 @@ export default function SwitchesGroup() {
   //calling the deploy python script can occur here
   const [displayState, setDisplayState] = React.useState({});
 
+  const [showAlert, setAlert] = React.useState({display: false, status: '', data: ''});
+
   const deployItems = (state) =>{
     setDisplayState({
       state
@@ -98,9 +110,26 @@ export default function SwitchesGroup() {
 
     const deployModule = require('../../../scripts/deploy');
     deployModule.deployProject_function(arg).then((output) => {
-        console.log(output) // log the data for the sake of viewing the result
+        console.log(output); // log the data for the sake of viewing the result
+
+        let results = {
+            display: true,
+            status: output.resp,
+            data: output.data
+
+        };
+        setAlert(prevState => results)
+        // display a success alert
+
     }).catch(err => {
         console.log(err);
+        // display an error alert
+        let results = {
+            display: true,
+            status: err.resp,
+            data: err.data,
+        };
+        setAlert(prevState => results)
     })
 
   };
@@ -124,30 +153,46 @@ export default function SwitchesGroup() {
             return (
             <ListItem key={`${value}`} className={classes.listItem}>
               <FormControlLabel
-                label={user.act_proj.features[`${value}`].charAt(0).toUpperCase() + user.act_proj.features[`${value}`].slice(1)}
-                control={
-                  <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
-                  onChange={handleChange}
-                  name={`${user.act_proj.features[`${value}`]}`} />}
+                  classes={{label: classes.label}}
+                  label={user.act_proj.features[`${value}`].charAt(0).toUpperCase() + user.act_proj.features[`${value}`].slice(1)}
+                  control={
+                      <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
+                      onChange={handleChange}
+                      name={`${user.act_proj.features[`${value}`]}`} />}
               />    
             </ListItem>
               );
             })}
             <ListItem className={classes.listItem}>
               <FormControlLabel
-                control={<Switch checked={state.all} onChange={handleChange} name="all" />}
-                label="All"
+                  classes={{label: classes.label}}
+                  control={<Switch checked={state.all} onChange={handleChange} name="all" />}
+                  label="All"
               />    
             </ListItem>
           </ List>
         </FormGroup>
       </FormControl>
+        <div style={{margin: '2%'}}/>
       <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >
         DEPLOY PROJECT
       </Button>
-      <p> username: {user.uname}</p>
-      <p> active project: {user.act_proj.name}</p>
-      <p> Deploying.... {JSON.stringify(displayState)} </p>
+        {showAlert.status === 'success' ? (
+            <Alert open={showAlert.display} onClose={() => {
+                setAlert(prevState => ({
+                    ...prevState,
+                    display: false
+                }))
+            }} type={'success'} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project has been deployed!"} />
+        ) : (
+            <Alert open={showAlert.display} onClose={() => {
+                setAlert(prevState => ({
+                    ...prevState,
+                    display: false
+                }))
+            }} timeout={null} type={'error'} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project could not be deployed!"} />
+        )}
+
     </div>
   );
 }

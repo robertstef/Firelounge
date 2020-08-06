@@ -35,7 +35,7 @@ export default function GetPathButton(props) {
     /* Send IPC to retrieve the selected filepath */
     const getPathIPC = () =>{
         ipcRenderer.send("get-path", "new-path");
-        ipcRenderer.on("new_proj-get-path-reply", (event, arg) => {
+        ipcRenderer.once("new_proj-get-path-reply", (event, arg) => {
             if( (arg.split(' ', 1)[0]) === 'Error:'){
                 //display error message
                 setError({display: true, message: arg})

@@ -20,7 +20,7 @@ export default function GetPathButton(props) {
     const getPathIPC = () =>{
         ipcRenderer.send("get-path", 'init-path');
 
-        ipcRenderer.on("get-path-reply", (event, arg) => {
+        ipcRenderer.once("get-path-reply", (event, arg) => {
             if( (arg.split(' ', 1)[0]) === 'Error:'){
                 //display error message
                 setError({display: true, message: arg})

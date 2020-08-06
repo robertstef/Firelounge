@@ -8,19 +8,18 @@ import DbStepper from './DbStepper';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    height: '95%',
+    height: '100%'
   },
   card: {
-    height: '100%',
-    width: '95%',
-    margin: '10px',
-    borderRadius: '5px',
+    height: '92%',
+    width: '92%',
+    margin: '4%',
+    borderRadius: '25px',
     overflow: 'auto', 
     backgroundColor: '#EDF2F4'
   },
   heading: {
-    marginTop: '10px',
+    marginTop: '15px',
     width: '90%',
     marginLeft: 'auto', 
     marginRight: 'auto'

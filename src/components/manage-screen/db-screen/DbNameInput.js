@@ -40,7 +40,7 @@ export default function DbNameInput(props) {
     }
 
     return(
-        <div style={{marginTop:10}}>
+        <div style={{marginTop:10}}> 
             <p> Give a display name for your Database in Firelounge </p>
             <TextField  
                 style={{width:'80%'}}
@@ -63,7 +63,7 @@ export default function DbNameInput(props) {
                 value={dbURL}
                 onChange={handleInput}
             />
-             { (user.act_proj.db_all.length > 0) ?  null : db_chip }
+             { (Object.keys(user.act_proj.db_all).length === 0) ?  null : db_chip }
         </div>
     )
 }

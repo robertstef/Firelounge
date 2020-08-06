@@ -21,33 +21,33 @@ module.exports = {
 
         return new Promise((resolve, reject) => {
 
-                    const {exec} = window.require('child_process');
+                const {exec} = window.require('child_process');
 
-                    var response;
+                var response;
 
-                    const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
+                const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
 
-                    //const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
+                //const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
 
-                    create_proj.stdin.setEncoding('utf-8');
-                    create_proj.stdin.write('n\n');
-                    create_proj.stdin.end();
+                create_proj.stdin.setEncoding('utf-8');
+                create_proj.stdin.write('n\n');
+                create_proj.stdin.end();
 
-                    //store stdout data in object
-                    create_proj.stdout.on('data', (data) => {
-                        response = data
-                    });
-
-                    //when child is finished, resolve the promise
-                    create_proj.on('close', (code) => {
-                        if(code === 0) {
-                            console.log("PROJECT HAS BEEN CREATED!!!");
-                            resolve("SUCCESS");
-                        } else {
-                            reject("FAIL")
-                        }
-                    })
+                //store stdout data in object
+                create_proj.stdout.on('data', (data) => {
+                    response = data
                 });
+
+                //when child is finished, resolve the promise
+                create_proj.on('close', (code) => {
+                    if(code === 0) {
+                        console.log("PROJECT HAS BEEN CREATED!!!");
+                        resolve("SUCCESS");
+                    } else {
+                        reject("FAIL")
+                    }
+                })
+            });
 
 
     }

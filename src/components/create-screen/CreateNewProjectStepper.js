@@ -17,11 +17,13 @@ import InputBase from "@material-ui/core/InputBase";
 import Paper from "@material-ui/core/Paper";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Toolbar from "@material-ui/core/Toolbar";
+import CircularIndeterminate from "../main-screen/CircularProgress";
 
 
 let RED = '#ef223c';
 
 const useStyles = makeStyles((theme) => ({
+    //TODO make the placeholder text black, currently its a gray
     stepper: {
         width: '99%',
         backgroundColor: 'white',
@@ -72,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textfield: {
         height: 48,
+        color: '#000000',
         background: 'white',
         fontWeight:200,
         borderStyle:'none',
@@ -142,9 +145,9 @@ export default function HorizontalLabelPositionBelowStepper() {
     // single page app state value on hosting setup
     const [selectSinglePg, setSinglePg] = React.useState('');
 
-    const [public_dir, setPublicDir] = React.useState('');
+    const [public_dir, setPublicDir] = React.useState('public');
 
-    const [dbRules, setDbRules] = React.useState('');
+    const [dbRules, setDbRules] = React.useState('database.rules.json');
 
     // the configuration of features the user wishes to add on the project
     const [config, setConfig] = React.useState({
@@ -155,6 +158,8 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     // the current steps throughout the project initialization process
     const [currentSteps, setCurrentSteps] = React.useState(["Select Project Features: "]);
+
+    const [showProgress, setProgress] = React.useState(false);
 
     /**
      * Check the fields of the corresponding steps to ensure that the user has provide valid input, and prevent
@@ -332,7 +337,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     <InputBase
                                         fullWidth
                                         className={classes.textfield}
-                                        placeholder="(public)"
+                                        placeholder="public"
                                         color={'secondary'}
                                         onChange={(e) => {setPublicDir(e.target.value)}}
                                     />
@@ -380,7 +385,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 <InputBase
                                     fullWidth
                                     className={classes.textfield}
-                                    placeholder="(database.rules.json)"
+                                    placeholder="database.rules.json"
                                     color={'secondary'}
                                     onChange={(e) => {setDbRules(e.target.value)}}
                                 />
@@ -458,6 +463,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                         // if we are submitting ....
                         {/*TODO add a circular progress after the submit button is clicked and the project is being created*/}
                         if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
+                            setProgress(true);
                             const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
                             const cloudProjArg = [project_name, project_path, project_id];
                             createCloudProj.createCloudProject_function(cloudProjArg).then((value) => {
@@ -484,6 +490,8 @@ export default function HorizontalLabelPositionBelowStepper() {
                                             functions: config.functions,
                                         }
                                     };
+
+                                    setProgress(false);
 
                                     const initFirebase = require('../../scripts/createProject/initFirebasejson');
                                     initFirebase.initFireBasejson_function(fbJsonObj);
@@ -530,6 +538,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                             fill={'#fff'}/>
                     </svg>
                 </div>
+                {showProgress === true ? (<CircularIndeterminate/>) : null}
                 {activeStep === 0 ? (
                     <div className={classes.stepContent}>
                         <div>
@@ -550,6 +559,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 <InputBase
                                     fullWidth
                                     className={classes.textfield}
+                                    classes={{colorSecondary: classes.color}}
                                     placeholder="Enter your project name"
                                     color={'secondary'}
                                     onChange={(e) => { setProjectName(e.target.value) ; setProjID(e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex());}}
@@ -596,7 +606,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                         {activeStep === currentSteps.length ? (
                             <div className={classes.stepContent}>
                                 {/* Once the project has been created user will arrive at the submission confirmed screen*/}
-                                Submission confirm
+                                <Typography variant={"h6"} className={classes.text}>Your Firelounge project has been created!</Typography>
                                 <div style={{marginBottom: '2%'}}/>
                             </div>
                         ): (
