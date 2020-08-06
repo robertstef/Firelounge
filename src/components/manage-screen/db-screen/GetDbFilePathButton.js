@@ -26,7 +26,7 @@ export default function GetPathButton(props) {
     const getPathIPC = () =>{
         ipcRenderer.send("get-db-path", user.act_proj.id);
 
-        ipcRenderer.on("get-db-path-reply", (event, arg) => {
+        ipcRenderer.once("get-db-path-reply", (event, arg) => {
             if( (arg.split(' ', 1)[0]) === 'Error:'){
                 //display error message
                 setError({display: true, message: arg})

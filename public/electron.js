@@ -26,6 +26,7 @@ ipcMain.on('get-path', (event, arg) => {
                             if(LOGGING){log.info(err);}
                             event.reply('new_proj-get-path-reply', "Error: " + err);
                         });
+
                     } else if (arg === "init-path") {
                         /* Select a file path that doesnt contain firebase files*/
                         const validDir = require(isDev ? './validDir.js' : '../build/validDir.js');
@@ -35,6 +36,7 @@ ipcMain.on('get-path', (event, arg) => {
                             if(LOGGING){log.info(err);}
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Error: " + err);
+
                         });
                     } else {
                         console.log("INVALID ARGUMENT INTO IPC")

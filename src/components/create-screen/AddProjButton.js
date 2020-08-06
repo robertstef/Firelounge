@@ -25,7 +25,7 @@ export default function AddProjButton(props) {
     const getPathIPC = () =>{
         ipcRenderer.send("get-path", 'init-path');
 
-        ipcRenderer.on("get-path-reply", (event, response) => {
+        ipcRenderer.once("get-path-reply", (event, response) => {
             if( response === "Invalid" ){
                 // TODO render AddProjAlert when invalid path entered
                 return (<AddProjAlert/>);
