@@ -10,7 +10,7 @@ import Chip from '@material-ui/core/Chip';
    const db_chip = <Chip 
    variant="outlined" 
    icon={<InfoIcon/> }
-   label='There is a default database defined for this project.' 
+   label='Database already defined for this project.' 
    color='secondary'
    style={{marginTop: '10px'}}
  />

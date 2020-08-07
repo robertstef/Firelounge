@@ -67,7 +67,7 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
   const key_chip = <Chip 
                 variant="outlined" 
                 icon={<InfoIcon/> }
-                label='There already is an Admin Key defined for this project.' 
+                label='Key already defined for this project.' 
                 style={{ marginTop: '10px'}}
                 color='secondary'
               />
