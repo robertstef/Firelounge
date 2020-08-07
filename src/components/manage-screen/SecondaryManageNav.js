@@ -5,11 +5,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import GroupIcon from '@material-ui/icons/Group';
+import PanTool from '@material-ui/icons/PanTool';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import StorageIcon from '@material-ui/icons/Storage';
 import DeployScreen from './deploy-screen/DeployScreen.js'
-import DbScreen from './db-screen/DbScreen.js'
+import DbQueryScreen from './db-query-screen/DbQueryScreen.js'
+import DbObjectScreen from './db-object-screen/DbObjectScreen.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -121,7 +122,7 @@ export default function SecondaryManageNav(props) {
           >
             <LinkTab icon={<CloudQueueIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
             <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
-            <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} />
+            <LinkTab icon={<PanTool/>} {...a11yProps(2)} />
           </Tabs>
       </AppBar>
       <div className={classes.content}>
@@ -129,10 +130,10 @@ export default function SecondaryManageNav(props) {
           <DeployScreen />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <DbScreen />
+          <DbQueryScreen />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Users Page
+        <DbObjectScreen />
         </TabPanel>
       </div>
     </div>

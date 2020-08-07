@@ -1,7 +1,6 @@
 import React from 'react'
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
-import DbObjectDisplay from './DbObjectDisplay.js'
 import { makeStyles } from '@material-ui/core/styles'
 import {UserState} from "../../../context/userContext";
 import Typography from "@material-ui/core/Typography";
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 //adding padding to the textfield causes the whole div to overflow the card
 //need to put it in another div or pass down props to label etc. 
-export default function DbScreenCard() {
+export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
     
@@ -50,7 +49,7 @@ export default function DbScreenCard() {
                             defaultValue="Default Value"
                             className={classes.textField}
                         />
-                        <DbObjectDisplay/>
+                        
                     </div>
                 ): (
                     <div className={classes.noActiveMSG}>

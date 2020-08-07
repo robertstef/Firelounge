@@ -1,6 +1,6 @@
 import React from 'react';
 import SecondaryManageNav from './SecondaryManageNav'
-import TopManageNav from './TopManageNav'
+import TopManageNav from './TopManageNav/TopManageNav'
 
 
 function ManageScreen() {
