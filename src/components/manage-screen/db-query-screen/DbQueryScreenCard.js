@@ -4,20 +4,34 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from '@material-ui/core/styles'
 import {UserState} from "../../../context/userContext";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        left: '0px',
-        right: '0px',
         height: '100%',
     },
     card: {
         height: '100%',
+        borderRadius: '25px',
     },
-    textField: {
-        width: '95%',
+    heading: {
+        marginTop: '3%',
+        width: '90%',
         marginLeft: 'auto',
         marginRight: 'auto',
+        fontWeight:200,
+    },
+    divider: {
+        marginTop: '1%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    textField: {
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%',
+        marginTop: '3%'
     },
     noActiveMSG: {
         padding: '3%',
@@ -40,13 +54,16 @@ export default function DbQueryScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
+                <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
+                <Divider className={classes.divider}/>
                 {user._hasActiveDb ? (
                     <div>
                         <TextField
                             id="standard-textarea"
                             label="Query"
                             multiline
-                            defaultValue="Default Value"
+                            variant="outlined"
+                            
                             className={classes.textField}
                         />
                         

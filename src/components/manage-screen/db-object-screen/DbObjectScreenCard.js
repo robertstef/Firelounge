@@ -5,31 +5,44 @@ import DbObjectDisplay from './DbObjectDisplay.js'
 import { makeStyles } from '@material-ui/core/styles'
 import {UserState} from "../../../context/userContext";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        left: '0px',
-        right: '0px',
         height: '100%',
     },
     card: {
         height: '100%',
+        borderRadius: '25px',
     },
-    textField: {
-        width: '95%',
+    heading: {
+        marginTop: '3%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontWeight:200,
+    },
+    divider: {
+        marginTop: '1%',
+        width: '90%',
         marginLeft: 'auto',
         marginRight: 'auto',
     },
     noActiveMSG: {
         padding: '3%',
         spacing: theme.spacing(2)
-
     },
     dbText: {
         paddingLeft: '3%',
         paddingTop: '3%',
         fontWeight:200,
     },
+    ObjectContainer: {
+        width: '90%',
+        marginTop: '3%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    }
 }));
 
 //adding padding to the textfield causes the whole div to overflow the card
@@ -41,8 +54,10 @@ export default function DbObjectScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
+            <Typography className={classes.heading} variant={"h6"}> Edit Database </Typography>
+            <Divider className={classes.divider}/>
                 {user._hasActiveDb ? (
-                    <div>
+                    <div className={classes.ObjectContainer}>
                         <DbObjectDisplay/>
                     </div>
                 ): (
