@@ -24,8 +24,12 @@ let RED = '#ef223c';
 
 const useStyles = makeStyles((theme) => ({
     //TODO make the placeholder text black, currently its a gray
+    root: {
+        height: '100%',
+        borderRadius: 25,
+        backgroundColor: '#EF233C'
+    },  
     stepper: {
-        width: '99%',
         backgroundColor: 'white',
         paddingBottom: '2%'
     },
@@ -89,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: RED, //TODO swap in the primary color for theme here
     },
     pgTitle: {
+        borderRadius: '25px 25px 0px 0px',
         paddingLeft: '3%',
         paddingTop: '3%',
         backgroundColor: 'white',
@@ -449,7 +454,7 @@ export default function HorizontalLabelPositionBelowStepper() {
     }
 
     return (
-        <div>
+        <div className={classes.root}>
             <Typography variant={'h6'} className={classes.pgTitle}>Create a new FireLounge project</Typography>
             <MobileStepper
                 variant="progress"

@@ -92,10 +92,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    margin: '15px',
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    justifyContent: 'center'
+    margin: '2%',
   }
 }));
 
@@ -127,18 +124,12 @@ export default function SecondaryManageNav() {
       <div className={classes.content}>
         {/* Create page */}
         <TabPanel value={value} index={0} >
-          <div style={{marginTop: -10}}/>
-          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <CreateNewProjectStepper/>
-          </Card>
         </TabPanel>
 
         {/* Add existing project to firelounge page */}
         <TabPanel value={value} index={1}>
-          <div style={{marginTop:-10}}/>
-          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <AddProjContent/>
-          </Card>
         </TabPanel>
       </div>
     </div>

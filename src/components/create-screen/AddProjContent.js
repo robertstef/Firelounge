@@ -1,20 +1,24 @@
 /* Defines the content for the add project page */
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 import CustomizedTable from "./Table"
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: 'inherit'
+        height: '100%',
+        borderRadius: 25,
+        backgroundColor: '#EF233C'
     },
-    textcontainer: {
-        height: '5%',
+    titleContainer: {
+        height: '5%'
     },
     title: {
-        paddingLeft: '3vh',
-        paddingTop: '3vh',
+        paddingLeft: '3%',
+        paddingTop: '3%',
         backgroundColor: 'white',  //TODO swap in the primary color for theme here
+        borderRadius: '25px 25px 0px 0px',
         fontWeight:200,
     },
     spacer: {
@@ -25,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     wave: {
         position: 'relative',
         display: 'block',
-        width: 'calc(100% + 1.3px)',
         height: '20%',
     }
 }));
@@ -36,7 +39,7 @@ export default function AddProjContent() {
 
     return(
         <div className={classes.root}>
-            <div className={classes.textcontainer}>
+            <div className={classes.titleContainer}>
                 <Typography variant="h6" className={classes.title}> Already Have a Firebase Project? </Typography>
             </div>
             <div className={classes.spacer}></div>
