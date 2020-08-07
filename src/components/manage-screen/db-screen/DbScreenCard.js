@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
 //need to put it in another div or pass down props to label etc. 
 export default function DbScreenCard() {
     const classes = useStyles();
-    const user = UserState();
+    const { user } = UserState();
+    
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
