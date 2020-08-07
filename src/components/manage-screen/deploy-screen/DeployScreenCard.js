@@ -11,9 +11,11 @@ import {UserState} from "../../../context/userContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100%',
+        width: '100%'
     },
     card: {
         height: '100%',
+        width: '100%',
         borderRadius: '25px',
     },
     heading: {

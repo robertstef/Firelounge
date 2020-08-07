@@ -94,7 +94,6 @@ const useStyles = makeStyles((theme) => ({
   content: {
     width: '100%',
     margin: '2%',
-    marginTop: '0px',
   }
 }));
 
