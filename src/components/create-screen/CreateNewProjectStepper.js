@@ -90,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
     },
     stepContent: {
         padding: '3%',
-        backgroundColor: RED, //TODO swap in the primary color for theme here
     },
     pgTitle: {
         borderRadius: '25px 25px 0px 0px',
