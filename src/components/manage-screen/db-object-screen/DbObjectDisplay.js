@@ -152,7 +152,7 @@ export default function DbObjectDisplay() {
     var onDelete = true
 
     return(
-        <div style={{height: '100%', width: '100%', overflow: 'auto', padding: '10px'}}>
+        <div style={{height: '100%', width: '100%', padding: '10px'}}>
             <ReactJson 
                 name={false}
                 src={displaySrc}
