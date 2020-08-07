@@ -10,20 +10,17 @@ import {UserState} from "../../../context/userContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        left: '0px',
-        right: '0px',
         height: '100%',
     },
     card: {
         height: '100%',
-        borderRadius: 45,
+        borderRadius: '25px',
     },
     heading: {
-        paddingLeft: '3%',
-        paddingTop: '3%',
-        paddingBottom: '2%',
-        backgroundColor: '#8D99AE',
-        color: 'white',
+        marginTop: '3%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
         fontWeight:200,
     },
     noActiveMSG: {
@@ -32,31 +29,42 @@ const useStyles = makeStyles((theme) => ({
 
     },
     deployText: {
-        paddingLeft: '3%',
-        paddingTop: '3%',
         fontWeight:200,
+        marginRight: '5%'
     },
-    content: {
+    bodyNoActiveProject: {
         display: 'inlineBlock',
         height: '69%',
     },
-    footer: {
-        backgroundColor: '#8D99AE',
-        height: '100%',
+    body: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
     divider: {
+        marginTop: '1%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    dividerBody: {
         marginTop: '2%',
+        marginBottom: '3%',
     },
     deployBullet: {
-        paddingLeft: '4%',
-        paddingTop: '3%',
         fontWeight:200,
-        alignItems: 'center'
+        alignItems: 'center',
+        display: 'flex',
+        width: '30%'
     },
     bulletIcon: {
         marginRight: '1%',
         color: '#8D99AE',
         verticalAlign: 'middle',
+    },
+    activeProj: {
+        display:'flex',
+        marginTop: '3%'
     }
 }));
 
@@ -67,8 +75,9 @@ function DeployScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading} variant={"h6"}> Deploy your FireLounge project </Typography>
-                <div className={classes.content}>
+                <Typography className={classes.heading} variant={"h6"}> Deploy Project </Typography>
+                <Divider className={classes.divider}/>
+                <div className={classes.bodyNoActiveProject}>
                     {user.act_proj.name === '' ? (
                         <div className={classes.noActiveMSG}>
                             <div style={{margin:'5%'}}/>
@@ -81,8 +90,9 @@ function DeployScreenCard() {
                             </Typography>
                         </div>
                     ): (
-                        <div>
-                            <Typography className={classes.deployText}>Current Active Project Info</Typography>
+                        <div className={classes.body}>
+                            <div className={classes.activeProj}>
+                            <Typography className={classes.deployText}>Active Project:</Typography>
                             <Typography variant={'subtitle2'}  className={classes.deployBullet}>
                                 <AccountCircleIcon className={classes.bulletIcon}/>
                                 {user.uname}
@@ -91,14 +101,13 @@ function DeployScreenCard() {
                                 <FolderSpecialIcon className={classes.bulletIcon}/>
                                 {user.act_proj.name}
                             </Typography>
-                            <Divider className={classes.divider}/>
-                            <Typography className={classes.deployText}> Select Features to Deploy</Typography>
+                            </div>
+                            <Divider className={classes.dividerBody}/>
+                            <Typography className={classes.deployText}> Deploy Features:</Typography>
                             <SwitchesGroup className={classes.switchesGroup}/>
                         </div>
                     )}
                 </div>
-                <div style={{height:'1vh'}}/>
-                <div className={classes.footer}/>
             </Card>
         </div>
     )

@@ -12,9 +12,6 @@ import { Alert } from 'react-context-alerts';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      width: '95%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
     },
     formControl: {
     },
@@ -32,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 200,
         color: '#EF233C',
         width: '100%',
-        margin: 'auto',
+        margin: '5%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        borderRadius: 45,
+        borderRadius: 25,
     },
     alert: {
         borderRadius : 25,
