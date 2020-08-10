@@ -34,8 +34,34 @@ let removeWrappedParenthesis = (query) => {
     }
 }
 
+/**
+ * Removes leading and or trailing slashes from a query.
+ *
+ * users/ => users, /users => users, users => users, / => /
+ * @param query: String representing the query
+ * @returns {string|*}: new query with encasing slashes stripped
+ */
+// TODO: write unit tests for stripEncasingSlashes
+let stripEncasingSlashes = (query) => {
+    if (query === "/") {
+        return query;
+    }
+    else {
+        let start = 0;
+        let end = query.length;
+        if (query.indexOf("/") === 0) {
+            start++;
+        }
+        if (query.charAt(end - 1) === "/") {
+            end--;
+        }
+        return query.substring(start, end);
+    }
+}
+
 /* Export statements */
 module.exports = {
     replaceAll: replaceAll,
-    removeWrappedParenthesis: removeWrappedParenthesis
+    removeWrappedParenthesis: removeWrappedParenthesis,
+    stripEncasingSlashes: stripEncasingSlashes
 }
