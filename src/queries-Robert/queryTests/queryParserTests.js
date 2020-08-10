@@ -85,3 +85,39 @@ describe("determineStatementType", () => {
        assert.equal(result, "invalid");
    })
 })
+
+
+/* Tests for getCollection */
+describe("getCollection - select statement", () => {
+    it("select statement - non-nested collection", () => {
+        let result = qp.getCollection("select * from games", "select");
+        assert.equal(result, "games");
+    });
+
+    it("select statement - nested collection with slashes", () => {
+        let result = qp.getCollection("select * from games/this/object", "select");
+        assert.equal(result, "games/this/object");
+    });
+
+    it("select statement - nested collection with dot notation", () => {
+        let result = qp.getCollection("select * from games.this.object", "select");
+        assert.equal(result, "games/this/object");
+    });
+
+    it("select statement - nested collection with leading and trailing slashes", () => {
+        let result = qp.getCollection("select * from /games/this/object/", "select");
+        assert.equal(result, "games/this/object");
+    });
+
+    it("select statement - nested select statements", () => {
+        let result = qp.getCollection("select * from (select this from /games/delta) object",
+            "select");
+        assert.equal(result, "object");
+    });
+
+    it("select statement - multiple nested select statements", () => {
+        let result = qp.getCollection("select * from (select * from (select * from this)" +
+            "that) other", "select");
+        assert.equal(result, "other");
+    });
+})
