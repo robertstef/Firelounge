@@ -9,8 +9,9 @@ const qh = require('./queryHelper');
  * @returns {string|*}: the formatted query
  */
 let formatAndCleanQuery = (query) => {
+    let clean_query = query.toLowerCase();
     // remove all comments starting with "//" or "--" with ""
-    let clean_query = qh.replaceAll(query, /(\/\/|--).+/g, "");
+    clean_query = qh.replaceAll(query, /(\/\/|--).+/g, "");
     // replace carriage return chars with spaces
     clean_query = clean_query.replace(/\r?\n|\r/g, " ");
     // replace multiple spaces with single spaces
@@ -123,6 +124,7 @@ let getCollection = (query, statementType) => {
             ", or delete");
     }
 }
+
 
 /* Export statements */
 module.exports = {
