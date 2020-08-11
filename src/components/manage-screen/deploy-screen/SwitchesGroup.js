@@ -180,6 +180,7 @@ export default function SwitchesGroup() {
                     ...prevState,
                     display: false
                 }))
+                // eslint-disable-next-line no-control-regex
             }} type={'success'} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project has been deployed!"} />
         ) : (
             <Alert open={showAlert.display} onClose={() => {
@@ -187,6 +188,7 @@ export default function SwitchesGroup() {
                     ...prevState,
                     display: false
                 }))
+                // eslint-disable-next-line no-control-regex
             }} timeout={null} type={'error'} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project could not be deployed!"} />
         )}
 

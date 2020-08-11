@@ -1,7 +1,7 @@
 module.exports = {
     checkLoginStatus_function: function () {
         const { exec } = window.require('child_process');
-        const {remote} = window.require('electron')
+        // const {remote} = window.require('electron');
 
         return new Promise((resolve, reject) => {
             var response;
@@ -30,7 +30,7 @@ module.exports = {
             });
 
             child_process.stdout.on('error', function( err ) {
-                if (err.code == "EPIPE") {
+                if (err.code === "EPIPE") {
                     child_process.exit(0);
                 }
             });

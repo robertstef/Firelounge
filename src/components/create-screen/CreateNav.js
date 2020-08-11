@@ -8,7 +8,6 @@ import Box from '@material-ui/core/Box';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import AddProjContent from "./AddProjContent"
-import Card from "@material-ui/core/Card";
 import CreateNewProjectStepper from "./CreateNewProjectStepper";
 
 

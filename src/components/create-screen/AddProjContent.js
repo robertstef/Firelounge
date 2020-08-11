@@ -1,7 +1,6 @@
 /* Defines the content for the add project page */
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import CustomizedTable from "./Table"
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -42,7 +41,7 @@ export default function AddProjContent() {
             <div className={classes.titleContainer}>
                 <Typography variant="h6" className={classes.title}> Already Have a Firebase Project? </Typography>
             </div>
-            <div className={classes.spacer}></div>
+            <div className={classes.spacer}/>
             <div className={classes.wave}>
                     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
                          preserveAspectRatio="none">

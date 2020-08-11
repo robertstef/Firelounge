@@ -237,6 +237,9 @@ export default function HorizontalLabelPositionBelowStepper() {
                     return true;
                 }
                 break;
+
+            default:
+                console.log('Unexpected Case');
         }
 
         return false;
@@ -465,7 +468,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                 nextButton={
                     <Button size="small" onClick={()=>{
                         // if we are submitting ....
-                        {/*TODO add a circular progress after the submit button is clicked and the project is being created*/}
                         if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
                             setProgress(true);
                             const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
