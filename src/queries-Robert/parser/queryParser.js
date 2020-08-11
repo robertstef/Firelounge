@@ -138,6 +138,7 @@ let getCollection = (query, statementType) => {
  */
 let getOrderBys = (query) => {
     const ORDER_BY = "order by";
+    const ASC = 'asc';
     const DESC = "desc";
 
     // check if query contains order by statement
@@ -153,24 +154,53 @@ let getOrderBys = (query) => {
 
     return orderByList.map(orderBy => {
         let cur = orderBy.trim(); // current orderBy
-        let isAsc = true; // indicates sort  ascending or descending
+        cur = cur.split(" ");
 
-        // get column name if user used ASC or DESC in query
-        if (cur.indexOf(" ") >= 0) {
-           cur = cur.substring(0, cur.indexOf(" "));
+        // check individual order by is of the form colName ASC|DESC
+        // note: ASC|DESC can be left out, query defaults to ASC
+        if (cur.length === 0 || cur.length > 2) {
+            throw new Error("getOrderBys(): ORDER BY statement must be of the form: " +
+                "ORDER BY col1, col2, ... ASC|DESC");
         }
 
-        // check if sorting in descending order
-        if (orderBy.includes(DESC)) {
-            isAsc = false;
+        // if ASC|DESC included - check user typed ASC|DESC, else throw error
+        if (cur.length === 2) {
+            if ((cur[1] !== ASC) && (cur[1] !== DESC)) {
+                throw new Error("getOrderBys(): ORDER BY statement must be of the form: " +
+                    "ORDER BY col1, col2, ... ASC|DESC");
+            }
         }
-        return {
-            ascending: isAsc,
-            colName: cur
-        };
+
+        // no ASC|DESC specified - default to ASC
+        if (cur.length === 1) {
+            return {
+                ascending: true,
+                colName: cur[0]
+            }
+        }
+        else {
+            // user specified sorting DESC
+            if (cur[1] === DESC) {
+                return {
+                    ascending: false,
+                    colName: cur[0]
+                }
+            }
+            // user specified sorting ASC
+            else {
+                return {
+                    ascending: true,
+                    colName: cur[0]
+                }
+            }
+        }
     });
 }
 
+
+let getSelectFields = (query) => {
+
+}
 /* Export statements */
 module.exports = {
     formatAndCleanQuery: formatAndCleanQuery,

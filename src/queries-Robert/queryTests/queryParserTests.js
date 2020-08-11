@@ -152,4 +152,25 @@ describe("getOrderBys", () => {
         assert.deepStrictEqual(result, [{ascending: true, colName: "name"},
             {ascending: false, colName: "skill"}, {ascending: false, colName: "height"}])
     });
+
+    it("column with name separated by space - error condition", () => {
+        let query = "select * from games order by this column asc";
+        assert.throws(() => qp.getOrderBys(query),
+            Error,
+            "getOrderBys(): ORDER BY statement must be of the form: " +
+            "ORDER BY col1, col2, ... ASC|DESC")
+    });
+
+    it("second string is not asc or desc - error condition", () => {
+        let query = "select * from games order by this column cdb";
+        assert.throws(() => qp.getOrderBys(query),
+            Error,
+            "getOrderBys(): ORDER BY statement must be of the form: " +
+            "ORDER BY col1, col2, ... ASC|DESC")
+    });
+
+    it("no ORDER BY statement", () => {
+        let result = qp.getOrderBys("select * from games");
+        assert.equal(result, null);
+    })
 });
