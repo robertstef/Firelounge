@@ -14,7 +14,7 @@ ipcMain.on('get-path', (event, arg) => {
         dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
                 if (res.canceled === true ) {
                     dialogShown = false;
-                    event.reply('get-path-reply', "Invalid");
+                    event.reply('get-path-reply', "Error");
                 }  else if (res.filePaths.length > 0) {
                     dialogShown = false;
                     /* Select a file path that doesnt contain firebase files*/
