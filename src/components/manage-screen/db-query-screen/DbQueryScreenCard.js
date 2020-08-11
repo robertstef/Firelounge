@@ -56,7 +56,7 @@ export default function DbQueryScreenCard() {
             <Card className={classes.card}>
                 <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
                 <Divider className={classes.divider}/>
-                {user._hasActiveDb ? (
+                {user.active_db_name !== '' ? (
                     <div>
                         <TextField
                             id="standard-textarea"
