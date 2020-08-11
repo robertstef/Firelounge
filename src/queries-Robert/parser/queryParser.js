@@ -126,9 +126,55 @@ let getCollection = (query, statementType) => {
 }
 
 
+/**
+ * Parses the ORDER BY statement within a SELECT query.
+ * Returns an array of objects indicating with each object
+ * indicating the column name to order by and a boolean value
+ * indicating if the column is to be sorted in ascending or
+ * descending order.
+ *
+ * @param query: String - query to be parsed
+ * @returns {{colName: string, ascending: boolean}[]|null}
+ */
+let getOrderBys = (query) => {
+    const ORDER_BY = "order by";
+    const DESC = "desc";
+
+    // check if query contains order by statement
+    let idx = query.indexOf(ORDER_BY);
+
+    if (idx < 0) {
+        return null;
+    }
+
+    // extract order bys from query
+    let orderByStr = query.substring(idx + ORDER_BY.length);
+    let orderByList = orderByStr.split(",");
+
+    return orderByList.map(orderBy => {
+        let cur = orderBy.trim(); // current orderBy
+        let isAsc = true; // indicates sort  ascending or descending
+
+        // get column name if user used ASC or DESC in query
+        if (cur.indexOf(" ") >= 0) {
+           cur = cur.substring(0, cur.indexOf(" "));
+        }
+
+        // check if sorting in descending order
+        if (orderBy.includes(DESC)) {
+            isAsc = false;
+        }
+        return {
+            ascending: isAsc,
+            colName: cur
+        };
+    });
+}
+
 /* Export statements */
 module.exports = {
     formatAndCleanQuery: formatAndCleanQuery,
     determineStatementType: determineStatementType,
-    getCollection: getCollection
+    getCollection: getCollection,
+    getOrderBys: getOrderBys
 }
