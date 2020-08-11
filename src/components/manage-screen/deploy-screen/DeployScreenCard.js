@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     noActiveMSG: {
         padding: '3%',
         spacing: theme.spacing(2)
-
     },
     deployText: {
         fontWeight:200,
