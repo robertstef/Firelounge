@@ -121,3 +121,35 @@ describe("getCollection - select statement", () => {
         assert.equal(result, "other");
     });
 })
+
+
+/* Tests for getOrderBys */
+describe("getOrderBys", () => {
+    it("single column ascending", () => {
+        let result = qp.getOrderBys("select * from games order by name");
+        assert.deepStrictEqual(result, [{ascending: true, colName: "name"}]);
+    });
+
+    it("single column descending", () => {
+        let result = qp.getOrderBys("select * from games order by name desc");
+        assert.deepStrictEqual(result, [{ascending: false, colName: "name"}]);
+    });
+
+    it("multiple columns all ascending", () => {
+        let result = qp.getOrderBys("select * from games order by name, skill, height");
+        assert.deepStrictEqual(result, [{ascending: true, colName: "name"},
+            {ascending: true, colName: "skill"}, {ascending: true, colName: "height"}])
+    });
+
+    it("multiple columns all descending", () => {
+        let result = qp.getOrderBys("select * from games order by name desc, skill desc, height desc");
+        assert.deepStrictEqual(result, [{ascending: false, colName: "name"},
+            {ascending: false, colName: "skill"}, {ascending: false, colName: "height"}])
+    });
+
+    it("multiple column mixed ascending and descending", () => {
+        let result = qp.getOrderBys("select * from games order by name, skill desc, height desc");
+        assert.deepStrictEqual(result, [{ascending: true, colName: "name"},
+            {ascending: false, colName: "skill"}, {ascending: false, colName: "height"}])
+    });
+});
