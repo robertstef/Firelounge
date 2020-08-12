@@ -337,10 +337,8 @@ export default class User {
         var json = fs.readFileSync(ufile_path)
         json = JSON.parse(json)
 
-        //TODO: check to see if the projects actually supports databases
-
         //if admin is undefined or admin doesnt match current projects 
-        if(this.admin === '' || this.admin.options_.credential.projectId !== this.act_proj.id) {
+        if(this.admin !== undefined && ( this.admin === '' || this.admin.options_.credential.projectId !== this.act_proj.id)) {
             let admin = window.require("firebase-admin");
             // Fetch the service account key JSON file contents
             let serviceAccount = window.require(newDb.path);
