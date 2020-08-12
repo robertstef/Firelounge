@@ -1,4 +1,5 @@
 
+
 export default class User {
 
     /**
@@ -268,6 +269,7 @@ export default class User {
      */
     addProj(new_proj) {
         const fs = window.require('fs');
+
         // validate input
         if ((new_proj.id === undefined)  || (new_proj.name === undefined) || (new_proj.path === undefined)) {
             throw new Error("Input for addProj must be of the form {id: \"\", name:\"\", path:\"\"}")

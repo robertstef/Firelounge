@@ -11,13 +11,13 @@ import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import {UserDispatch} from "../../context/userContext";
+import {UserDispatch} from "../../../context/userContext";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import InputBase from "@material-ui/core/InputBase";
 import Paper from "@material-ui/core/Paper";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Toolbar from "@material-ui/core/Toolbar";
-import CircularIndeterminate from "../main-screen/CircularProgress";
+import CircularIndeterminate from "../../main-screen/CircularProgress";
 
 
 let RED = '#ef223c';
@@ -470,7 +470,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                         // if we are submitting ....
                         if ((activeStep === currentSteps.length - 1) && (activeStep !== 0)) {
                             setProgress(true);
-                            const createCloudProj = require('../../scripts/createProject/CreateCloudProject');
+                            const createCloudProj = require('../../../scripts/createProject/CreateCloudProject');
                             const cloudProjArg = [project_name, project_path, project_id];
                             createCloudProj.createCloudProject_function(cloudProjArg).then((value) => {
                                 if (value === 'SUCCESS') {
@@ -499,7 +499,7 @@ export default function HorizontalLabelPositionBelowStepper() {
 
                                     setProgress(false);
 
-                                    const initFirebase = require('../../scripts/createProject/initFirebasejson');
+                                    const initFirebase = require('../../../scripts/createProject/initFirebasejson');
                                     initFirebase.initFireBasejson_function(fbJsonObj);
 
                                     setTimeout(function(){dispatch({type: 'addProj',

@@ -39,7 +39,7 @@ export default function GetPathButton(props) {
             if( (arg.split(' ', 1)[0]) === 'Error:'){
                 //display error message
                 setError({display: true, message: arg})
-            } else if (arg !== 'Invalid') {
+            } else if (arg !== 'Cancelled') {
                 //updates the display of the file path
                 setFilePath(arg);
                 //updates the state of the stepper
