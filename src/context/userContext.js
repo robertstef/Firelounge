@@ -49,6 +49,9 @@ function UserReducer(state, action) {
         case 'addDb':
             state.user.addDb(action.args);
             return {user: state.user};
+        case 'saveDbSettings':
+                state.user.saveDbSettings(action.args);
+                return {user: state.user};
         default:
             throw new Error("Unspecified action");
     }
@@ -59,8 +62,6 @@ function UserReducer(state, action) {
  * All components nested within UserProvider will be able to
  * access the UserState and UserDispatch.
  */
-
-
 
 function UserProvider({children}) {
     const [state, dispatch] = React.useReducer(UserReducer, {user: {}});
