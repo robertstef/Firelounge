@@ -129,7 +129,7 @@ export default class User {
      *
      * @returns string: name
      */
-    get active_db_name(){
+    get act_db_name(){
         try {
             return this.projs[this.act_proj.id]['database']['active'];
         } catch (error){
@@ -144,7 +144,7 @@ export default class User {
      */
     get act_db_url(){
         try {
-            return this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['url'];
+            return this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['url'];
         } catch( error) {
             return ''
         }
@@ -157,8 +157,7 @@ export default class User {
      */
     get act_db_settings(){
         try {
-            // console.log(this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['settings'])
-            return this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['settings'];
+            return this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['settings'];
         } catch( error) {
             return undefined
         }
@@ -207,8 +206,7 @@ export default class User {
 
         this._initializeApp();
 
-        console.log(this.active_db_name)
-        this.setActiveDb(this.active_db_name)
+        this.setActiveDb(this.act_db_name)
 
         this._writeUfile();
     }
@@ -248,7 +246,7 @@ export default class User {
             throw new Error(`This project does not have an active database`);
         }
 
-        this.projs[this.act_proj.id]['database']['all'][this.active_db_name]['settings'] = settingsObject
+        this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['settings'] = settingsObject
 
         this._writeUfile();
     }
@@ -480,7 +478,6 @@ export default class User {
             let path = this.act_proj_admin_path;
             let serviceAccount = window.require(path);
 
-            console.log(this.admin_obj)
             //if there is already an initialzed app, delete it and initialize the new admin sdk
             if( admin.apps !== undefined && admin.apps.length > 0 ) {
                 admin.apps[0].delete()

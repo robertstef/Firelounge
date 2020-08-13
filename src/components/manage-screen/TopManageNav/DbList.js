@@ -24,7 +24,7 @@ export default function DbList() {
   const dispatch = UserDispatch();
   console.log(user.act_proj_db_list)
   let dbList = [];
-  let act_db_name = user.active_db_name;
+  let act_db_name = user.act_db_name;
   const dbs = user.act_proj_db_list; 
 
   for (let i of Object.keys(dbs)) {
