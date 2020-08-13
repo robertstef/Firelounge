@@ -46,7 +46,6 @@ export default function DbObjectDisplay() {
     
     useEffect(() => {
         if(user.admin_obj === '' || user.db_obj === undefined ){
-            // console.log('No admin file found')
             return
         }
         

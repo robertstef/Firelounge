@@ -57,7 +57,7 @@ export default function DbObjectScreenCard() {
             <Card className={classes.card}>
             <Typography className={classes.heading} variant={"h6"}> Edit Database </Typography>
             <Divider className={classes.divider}/>
-            {user.active_db_name !== '' ? (
+            {user.act_db_name !== '' ? (
                     <div className={classes.ObjectContainer}>
                         <DbObjectDisplay/>
                     </div>
