@@ -63,7 +63,7 @@ export default function DbNameInput(props) {
                 value={dbURL}
                 onChange={handleInput}
             />
-             { (Object.keys(user.act_proj.db_all).length === 0) ?  null : db_chip }
+             { (Object.keys(user.act_proj_db_list).length === 0) ?  null : db_chip }
         </div>
     )
 }

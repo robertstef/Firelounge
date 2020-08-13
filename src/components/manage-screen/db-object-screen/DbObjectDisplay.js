@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import ReactJson from 'react-json-view';
 import {UserState} from '../../../context/userContext'
 
+
 /*  
     Used to compare two different Json Objects 
     Returns the different keys between them
@@ -37,14 +38,14 @@ export default function DbObjectDisplay() {
     //update the context database reference
     //catch error where there is no database defined.  
     try {
-        var db = user.db
+        var db = user.db_obj
         var ref = db.ref();
     }catch(error) {
         // console.log(error)
     }
     
     useEffect(() => {
-        if(user.admin === '' || user.db === undefined ){
+        if(user.admin_obj === '' || user.db_obj === undefined ){
             // console.log('No admin file found')
             return
         }
@@ -53,8 +54,9 @@ export default function DbObjectDisplay() {
         ref.on("value", (snapshot) => {
             setDisplaySrc(snapshot.val())
         })   
-        
-    }, [db, setDisplaySrc])
+
+
+    }, [user])
  
 
     /* 
@@ -144,35 +146,35 @@ export default function DbObjectDisplay() {
         
     }
 
-
-
-
-    var onEdit = true
-    var onAdd = true
-    var onDelete = true
-
+    
+    console.log(user.act_db_settings);
+    
     return(
         <div style={{height: '100%', width: '100%', padding: '10px'}}>
             <ReactJson 
                 name={false}
                 src={displaySrc}
-                collapsed={1}
+                collapsed={user.act_db_settings.Collapsed !== undefined ? user.act_db_settings.Collapsed : true }
+                enableClipboard= {user.act_db_settings.Clipboard !== undefined ? user.act_db_settings.Clipboard : true }
+                sortKeys = {user.act_db_settings.SortKeys !== undefined ? user.act_db_settings.SortKeys : false }
+                displayDataTypes = {user.act_db_settings.DisplayDataType !== undefined ? user.act_db_settings.DisplayDataType : false }
+                displayObjectSize =  {user.act_db_settings.DisplayObjectSize !== undefined ? user.act_db_settings.DisplayObjectSize : false }
                 onEdit={   
-                    onEdit
+                    user.act_db_settings.Edit
                         ? result => {
                                 makeEdit(result)
                             }
                         : false
                     }
                 onAdd={
-                    onAdd
+                    user.act_db_settings.Add
                         ? result => {
                                 makeAdd(result)
                             }
                         : false
                 }
                 onDelete={
-                    onDelete
+                    user.act_db_settings.Delete
                         ? result => {
                                 makeDelete(result)
                             }

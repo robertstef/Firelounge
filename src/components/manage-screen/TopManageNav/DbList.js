@@ -22,10 +22,10 @@ export default function DbList() {
   // Context variables
   const {user} = UserState();
   const dispatch = UserDispatch();
-
+  console.log(user.act_proj_db_list)
   let dbList = [];
-  let act_db_name = user.act_proj.db_active;
-  const dbs = user.act_proj.db_all; 
+  let act_db_name = user.active_db_name;
+  const dbs = user.act_proj_db_list; 
 
   for (let i of Object.keys(dbs)) {
     // For handleChange events.target.value is set to the project ID
