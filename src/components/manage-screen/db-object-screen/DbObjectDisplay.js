@@ -146,9 +146,6 @@ export default function DbObjectDisplay() {
     }
 
     
-    console.log(user.act_db_settings);
-    console.log(user.act_db_name);
-    
     return(
         <div style={{height: '100%', width: '100%', padding: '10px'}}>
             <ReactJson 

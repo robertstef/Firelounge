@@ -22,7 +22,6 @@ export default function DbList() {
   // Context variables
   const {user} = UserState();
   const dispatch = UserDispatch();
-  console.log(user.act_proj_db_list)
   let dbList = [];
   let act_db_name = user.act_db_name;
   const dbs = user.act_proj_db_list; 
