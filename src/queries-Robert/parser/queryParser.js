@@ -96,9 +96,11 @@ let getCollection = (query, statementType) => {
         */
 
         // get start index of collection
-        let collectStart = clean_query.indexOf("from ") + collectStartOffset;
+        let collectStart = clean_query.indexOf("from ");
         if (collectStart < 0) {
             throw new Error("getCollection(): could not determine collection, missing from statement");
+        } else {
+            collectStart = collectStart + collectStartOffset;
         }
 
         let trimmedCol = clean_query.substring(collectStart).trim(); // extract collection from query string
@@ -199,12 +201,35 @@ let getOrderBys = (query) => {
 
 
 let getSelectFields = (query) => {
+    let regex = /(select\s+)(.*)(\s+from\s+.*)/;
+    let matches = query.match(regex, query);
 
+    if (matches === null) {
+        throw new Error("getSelectFields(): SELECT statement must be of the form " +
+            "SELECT fields, ... FROM collection, ...");
+    }
+
+    let froms = matches[2];
+
+    if (! froms.replace(/\s/g, '').length) {
+        throw new Error("getSelectFields(): SELECT statement must be of the form " +
+            "SELECT fields, ... FROM collection, ...");
+    }
+
+    let fields = froms.split(",");
+    let selectedFields = {};
+    for (let f of fields) {
+        selectedFields[f.trim()] = true;
+    }
+
+    return selectedFields;
 }
+
 /* Export statements */
 module.exports = {
     formatAndCleanQuery: formatAndCleanQuery,
     determineStatementType: determineStatementType,
     getCollection: getCollection,
-    getOrderBys: getOrderBys
+    getOrderBys: getOrderBys,
+    getSelectFields: getSelectFields
 }
