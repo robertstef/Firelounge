@@ -200,7 +200,19 @@ let getOrderBys = (query) => {
 }
 
 
+/**
+ * Parses out the select fields from the given
+ * SQL select statement. The select fields are
+ * defined as:
+ *
+ * SELECT fields, ... FROM collection
+ *
+ * @param query: String - query to be parsed
+ * @returns {{fieldName: boolean}}
+ */
 let getSelectFields = (query) => {
+
+    // check if select statement is of valid form
     let regex = /(select\s+)(.*)(\s+from\s+.*)/;
     let matches = query.match(regex, query);
 
@@ -209,13 +221,16 @@ let getSelectFields = (query) => {
             "SELECT fields, ... FROM collection, ...");
     }
 
+    // get the fields from the query
     let froms = matches[2];
 
+    // check user entered fields and it was not just whitespace
     if (! froms.replace(/\s/g, '').length) {
         throw new Error("getSelectFields(): SELECT statement must be of the form " +
             "SELECT fields, ... FROM collection, ...");
     }
 
+    // place fields into object
     let fields = froms.split(",");
     let selectedFields = {};
     for (let f of fields) {
