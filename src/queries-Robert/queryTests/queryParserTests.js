@@ -120,6 +120,21 @@ describe("getCollection - select statement", () => {
             "that) other", "select");
         assert.equal(result, "other");
     });
+
+    it("select statement - no collection given with whitespace", () => {
+        let query = "select * from ";
+        assert.throws(() => qp.getCollection(query, "select"),
+            Error,
+            "getCollection(): could not determine collection, missing from statement");
+    });
+
+    it("select statement - no collection given with no whitespace", () => {
+        let query = "select * from";
+        assert.throws(() => qp.getCollection(query, "select"),
+            Error,
+            "getCollection(): could not determine collection, missing from statement");
+    });
+
 })
 
 
@@ -172,5 +187,27 @@ describe("getOrderBys", () => {
     it("no ORDER BY statement", () => {
         let result = qp.getOrderBys("select * from games");
         assert.equal(result, null);
-    })
+    });
+});
+
+
+/* Tests for getSelectedFields */
+describe("getSelectedFields", () => {
+    it("select single field", () => {
+        let result = qp.getSelectFields("select * from games");
+        assert.deepStrictEqual(result, {"*": true});
+    });
+
+    it("select multiple fields", () => {
+        let result = qp.getSelectFields("select this, that, other from games");
+        assert.deepStrictEqual(result, {"this": true, "that": true, "other": true});
+    });
+
+    it("select - no fields", () => {
+        let query = "select     from games";
+        assert.throws(() => qp.getSelectFields(query),
+            Error,
+            "getSelectFields(): SELECT statement must be of the form " +
+            "SELECT fields, ... FROM collection, ...");
+    });
 });
