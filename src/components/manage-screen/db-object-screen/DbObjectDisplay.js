@@ -49,13 +49,16 @@ export default function DbObjectDisplay() {
             return
         }
         
+        
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
-            setDisplaySrc(snapshot.val())
+            if(snapshot.val() !== null) {
+                setDisplaySrc(snapshot.val())
+            }
         })   
 
 
-    }, [user.act_db_name])
+    }, [user.act_db_name, ref, user.admin_obj, user.db_obj])
  
 
     /* 
@@ -144,7 +147,6 @@ export default function DbObjectDisplay() {
         }
         
     }
-
     
     return(
         <div style={{height: '100%', width: '100%', padding: '10px'}}>
