@@ -172,7 +172,7 @@ export default class User {
         try {
             return this.projs[this.act_proj.id]['database']['all'];
         } catch( error) {
-            return undefined
+            return {}
         }
     }
 
@@ -471,7 +471,7 @@ export default class User {
      */
     _initializeApp(){
            //if there is an active project -- initialize firebase admin sdk 
-           if (this.act_proj !== "" && this.act_proj_admin_path !== ""){
+           if (this.act_proj !== "" &&  this.act_proj_admin_path !== undefined && this.act_proj_admin_path !== "") {
             let admin = window.require("firebase-admin");
 
             // Fetch the service account key JSON file contents
