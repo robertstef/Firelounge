@@ -82,7 +82,7 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
           <p> c) Store key in safe location </p> 
           <div style={{display: 'block'}} >
             <Button variant="contained" style={{background: '#EF233C'}} onClick={openBrowser}> Get New Key </Button> 
-            <div>{ (user.admin === undefined || user.admin === '' ) ?  null : key_chip } </div>
+            <div>{ (user.admin_obj === undefined || user.admin_obj === '' ) ?  null : key_chip } </div>
           </div>
         </div>
         )
@@ -90,7 +90,7 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
       return (
           <div>
             <GetFilePath path={pathCallback} />
-            { (user.admin === undefined || user.admin === '' ) ?  null : key_chip }
+            { (user.admin_obj === undefined || user.admin_obj === '' ) ?  null : key_chip }
           </div>
         )
     case 2:
@@ -169,7 +169,7 @@ export default function VerticalLinearStepper() {
                     </Button>
                     <Button
                       variant="contained"
-                      disabled={ (activeStep === 1 && dbPath === '' && user.admin === '' ) || ( activeStep === 2 && dbName === '' )  }
+                      disabled={ (activeStep === 1 && dbPath === '' && user.admin_obj === '' ) || ( activeStep === 2 && dbName === '' )  }
                       onClick={() => handleNext(dispatch)}
                       className={classes.button}
                     >

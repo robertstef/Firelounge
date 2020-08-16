@@ -49,13 +49,16 @@ export default function DbObjectDisplay() {
             return
         }
         
+        
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
-            setDisplaySrc(snapshot.val())
+            if(snapshot.val() !== null) {
+                setDisplaySrc(snapshot.val())
+            }
         })   
 
 
-    }, [user.act_db_name])
+    }, [user.act_db_name, ref, user.admin_obj, user.db_obj])
  
 
     /* 
@@ -95,20 +98,27 @@ export default function DbObjectDisplay() {
         name = parent key of item that is added
         new_value = new key being added
         */
+        
+       let query_string = '';
 
-        let query_string = '';
-        for(var i = 0; i < result.namespace.length; i++) {
-            query_string += result.namespace[i]
+       //handles case when addition is first in the database
+        if(Object.keys(result.existing_src).length === 0 && typeof(result.existing_src) === 'object' ) {
+            console.log('equals null')
+            query_string += '/'
+        } else {
+            for(var i = 0; i < result.namespace.length; i++) {
+                query_string += result.namespace[i]
+                query_string += '/'
+            }
+            query_string += result.name
             query_string += '/'
         }
-
-        query_string += result.name
-        query_string += '/'
 
         //get difference between old and new objects -- seemed like bad practice to update entire object
         var keys = diff(result.new_value, result.existing_value)
         var newKey = Object.keys(keys)[0]
 
+        console.log(query_string)
         //traverse and update
         db.ref(query_string).update({
             [newKey] : 'NULL'
