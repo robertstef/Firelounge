@@ -432,8 +432,9 @@ export default class User {
      * @returns {boolean} true if there is an active db defined, false otherwise
      */
     _hasActiveDb(){
-        if( this.projs[this.act_proj.id]['database']['active'] === '' || this.projs[this.act_proj.id]['database']['active'] === undefined ){
-            return false;
+        
+        if( this.projs[this.act_proj.id]['database'] === undefined || this.projs[this.act_proj.id]['database']['active'] === '' || this.projs[this.act_proj.id]['database']['active'] === undefined ){
+        return false;
         } else {
             return true;
         }
@@ -506,7 +507,7 @@ export default class User {
     _initializeDb() {
         //init active database 
         //check if theres a database url in User file -- if not use project name
-        if( this.act_proj !== "" && this.admin_obj !== undefined && this._hasActiveDb() ) {
+        if( this._act_proj !== "" && this.admin_obj !== undefined && this._hasActiveDb() ) {
             if (this._isDefaultDb) {
                 //no db url found... use default project name
                 this.db_obj = this.admin_obj.database("https://" + this.admin_obj.options_.credential.projectId + ".firebaseio.com");
