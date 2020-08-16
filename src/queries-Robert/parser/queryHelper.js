@@ -59,9 +59,43 @@ let stripEncasingSlashes = (query) => {
     }
 }
 
+/**
+ * Determines the type of comparison operator and the start
+ * index of the comparison operator for a given WHERE statement.
+ *
+ * BUG: if the user input an incorrect operator that contains the '='
+ *      character, such as ==!, the function will still parse it as
+ *      an '='.
+ *
+ * @param where: String - where statement to be parsed
+ * @returns {{comparator: string, index: *}}
+ */
+let determineComparatorAndIndex = (where) => {
+    let comparators = ['!=', '<>', '>=', '>', '<=', '<', '!like', 'like', '='];
+
+    for (let c of comparators) {
+        let idx = where.indexOf(c);
+
+        if (idx > 0) {
+            if (c === '!=' || c === '<>') {
+                return { comparator: '!=', index: idx};
+            }
+            else if (c === '=') {
+                return { comparator: '==', index: idx};
+            }
+            else {
+                return { comparator: c, index: idx};
+            }
+        }
+    }
+
+    throw new Error("determineComparatorAndIndex: invalid comparison operator");
+}
+
 /* Export statements */
 module.exports = {
     replaceAll: replaceAll,
     removeWrappedParenthesis: removeWrappedParenthesis,
-    stripEncasingSlashes: stripEncasingSlashes
+    stripEncasingSlashes: stripEncasingSlashes,
+    determineComparatorAndIndex: determineComparatorAndIndex
 }
