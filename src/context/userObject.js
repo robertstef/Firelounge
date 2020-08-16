@@ -219,8 +219,9 @@ export default class User {
      */
     setActiveDb(new_active_db) {
         
-        //check if there are any dbs defined
-        if(Object.keys(this.act_proj_db_list).length === 0) {
+        //check if there are any dbs defined or if there is not admin defined
+        if(Object.keys(this.act_proj_db_list).length === 0 || this.act_proj_admin_path === '') {
+            this.db_obj = '';
             return;
         }
         //confire that new_active actually exists
@@ -326,8 +327,13 @@ export default class User {
      */
 
     addDb(newDb){
+
+        if (newDb.path === '' && ( this.act_proj_admin_path === undefined || this.act_proj_admin_path === '') ){
+            throw new Error(`No Admin Key defined for this project`);
+        }
+
         //if admin is undefined or admin doesnt match current projects 
-        if(this.admin_obj !== undefined &&  this.admin_obj.options_.credential.projectId !== this.act_proj.id) {
+        if(this.admin_obj === undefined || this.admin_obj === ''  || this.admin_obj.options_.credential.projectId !== this.act_proj.id ) {
             this._initializeApp();
         }
         
@@ -487,6 +493,8 @@ export default class User {
             this.admin_obj = admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount)
             });
+        } else {
+            this.admin_obj = '';
         }
     }
 
