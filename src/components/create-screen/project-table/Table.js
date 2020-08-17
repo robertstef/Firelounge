@@ -74,7 +74,6 @@ export default function CustomizedTable() {
       setSuccess(event);   
     }
     
-    console.log(success)
     return (
         <div>
             <TableContainer className={classes.root}>
