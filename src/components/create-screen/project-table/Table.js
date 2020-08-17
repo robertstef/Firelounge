@@ -75,7 +75,6 @@ export default function CustomizedTable() {
     }
     
     return (
-        <div>
             <TableContainer className={classes.root}>
                 <Table stickyHeader className={classes.table} aria-label="customized table">
                     <TableHead className={classes.tableHead}>
@@ -97,8 +96,8 @@ export default function CustomizedTable() {
                         ))}
                     </TableBody>
                 </Table>
+                <Alert type={'success'} open={success.display} message={success.message} timeout={5000} onClose={()=>{ setSuccess({display:false, message:''})} }/>
             </TableContainer>
-            <Alert type={'success'} open={success.display} message={success.message} timeout={5000} onClose={()=>{ setSuccess({display:false, message:''})} }/>
-        </div>
+            
     )
 }
