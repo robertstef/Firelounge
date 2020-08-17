@@ -103,7 +103,12 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
   }
 }
 
-
+/**
+ * Stepper Component which is used to walk the user through initializing a database
+ * 
+ * @param props close: setState function which toggles the DbInitModal display true/false
+ * @postcondition: the new database is written to the users file and set as the active database
+ */
 export default function VerticalLinearStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);

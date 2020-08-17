@@ -34,10 +34,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-/*
-Card for holding the DB settings Switches Group
-Appears as a Tab in the Settings Modal
+/** 
+ * Card for holding the DB settings Switches Group
+ * Appears as a Tab in the Settings Modal
+ * 
+ * @props close: setState function which toggles the SettingsModal display true/false
+ * 
 */
+
+
 export default function DbSettingsCard(props) {
     const classes = useStyles();
     return(

@@ -35,9 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/* 
-Switches Group controlls the settings for the
-JSON Object viewer 
+/**
+* Switches Group controlls the settings for the
+* JSON Object viewer 
+*
+* @props close: setState function which toggles the SettingsModal display true/false
 */
 
 //TODO: Still needs a few text fields to get non boolean setting fields

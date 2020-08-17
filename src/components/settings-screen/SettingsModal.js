@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+/**
+ *  Popup Modal which holds the Settings for the various firelounge Pages 
+ *  Passes handleClose() down to Settings Nav  
+ */
+
 export default function SettingsModal() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);

@@ -58,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+/* 
+* Navigation Bar at the top of the Settings Modal
+* @props close: setState function which toggles the SettingsModal display true/false
+* Props passed to UserSettingsCard, DbSettingsCard
+*/
 export default function SettingsNav(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
