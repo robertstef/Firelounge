@@ -89,10 +89,41 @@ let determineComparatorAndIndex = (where) => {
     throw new Error("determineComparatorAndIndex: invalid comparison operator");
 }
 
+/**
+ * Parses the comparision value from an individual WHERE statement.
+ *
+ * E.g. WHERE name >= 2 => will return the number 2.
+ *
+ * The function handles inputs of numbers, boolean values, strings,
+ * and null.
+ *
+ * @param whereValue: String - WHERE comparison value
+ * @returns {null|boolean|number|String}
+ */
+let getParsedValue = (whereValue) => {
+    // input is a number
+    if (!isNaN(whereValue)) {
+        return parseFloat(whereValue);
+    }
+    // input is boolean
+    else if (whereValue === 'true' || whereValue === 'false') {
+        return whereValue === 'true';
+    }
+    // input is null
+    else if (whereValue === 'null') {
+        return null;
+    }
+    // input is a string value
+    else {
+       return whereValue.trim();
+    }
+}
+
 /* Export statements */
 module.exports = {
     replaceAll: replaceAll,
     removeWrappedParenthesis: removeWrappedParenthesis,
     stripEncasingSlashes: stripEncasingSlashes,
-    determineComparatorAndIndex: determineComparatorAndIndex
+    determineComparatorAndIndex: determineComparatorAndIndex,
+    getParsedValue: getParsedValue
 }

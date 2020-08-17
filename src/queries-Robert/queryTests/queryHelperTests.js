@@ -41,3 +41,22 @@ describe("determineComparatorAndIndex", () => {
             "determineComparatorAndIndex: invalid comparison operator");
     });
 })
+
+/* Tests for getParsedValue */
+describe("getParsedValue", () => {
+    it("numerical value", () => {
+        assert.equal(qh.getParsedValue("5"), 5);
+    });
+
+    it("boolean value", () => {
+        assert.equal(qh.getParsedValue('true'), true);
+    });
+
+    it("null value", () => {
+        assert.equal(qh.getParsedValue('null'), null);
+    })
+
+    it("string value", () => {
+        assert.equal(qh.getParsedValue('myString'), 'myString');
+    })
+})
