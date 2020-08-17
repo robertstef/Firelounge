@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {UserDispatch, UserState} from "../../context/userContext";
-
+import { Alert } from 'react-context-alerts';
 
 const useStyles = makeStyles((theme) => ({
     formGroup: {
@@ -42,10 +42,11 @@ JSON Object viewer
 
 //TODO: Still needs a few text fields to get non boolean setting fields
 //TODO: Change List to loop 
-export default function SettingsSwitchesGroup() {
+export default function SettingsSwitchesGroup(props) {
   const classes = useStyles();
   const dispatch = UserDispatch();
   const {user} = UserState();  
+  const [alert, setAlert]  = React.useState({display: false, message: '', type: 'info'});  
   const [state, setState] = React.useState({
     Add: false,
     Edit: false,
@@ -68,7 +69,17 @@ export default function SettingsSwitchesGroup() {
   };
 
   const handleClick = async () => {
-    dispatch({type:"saveDbSettings", args: state});
+    try {
+      const updateSettings = async () => {
+        dispatch({type:"saveDbSettings", args: state});  
+        await setAlert({display: true, message: 'Settings Succesfully Updated', type: 'success'})
+        props.close(false);
+      }
+      updateSettings();
+    } catch (error) {
+      setAlert({display: true, message: error, type: 'error'})
+    }
+    
   }
 
   return (
@@ -128,6 +139,7 @@ export default function SettingsSwitchesGroup() {
         </FormGroup>
       </FormControl>
       <Button className={classes.button} color={'default'} onClick={handleClick}> Save </Button>
+      <Alert type={alert.type} open={alert.display} message={alert.message} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'info'})} }/>
     </div>
   );
 }

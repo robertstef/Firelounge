@@ -38,14 +38,14 @@ const useStyles = makeStyles((theme) => ({
 Card for holding the DB settings Switches Group
 Appears as a Tab in the Settings Modal
 */
-export default function DbSettingsCard() {
+export default function DbSettingsCard(props) {
     const classes = useStyles();
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
                 <Typography className={classes.heading}> Database Settings </ Typography>
                 <Divider className={classes.divider}/>
-                <SettingsSwitchesGroup />
+                <SettingsSwitchesGroup close={props.close}/>
             </Card>
         </div>
     )
