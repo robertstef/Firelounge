@@ -80,9 +80,6 @@ let determineComparatorAndIndex = (where) => {
             if (c === '!=' || c === '<>') {
                 return { comparator: '!=', index: idx};
             }
-            else if (c === '=') {
-                return { comparator: '==', index: idx};
-            }
             else {
                 return { comparator: c, index: idx};
             }

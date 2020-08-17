@@ -23,7 +23,7 @@ describe("determineComparatorAndIndex", () => {
     it("Equals operator", () => {
         let where = "this=that";
         let {comparator, index} = qh.determineComparatorAndIndex(where);
-        assert.equal(comparator, "==");
+        assert.equal(comparator, "=");
         assert.equal(index, where.indexOf("="));
     });
 
