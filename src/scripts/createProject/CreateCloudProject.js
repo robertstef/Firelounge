@@ -23,9 +23,9 @@ module.exports = {
 
                 const {exec} = window.require('child_process');
 
-                //const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
+                const create_proj = exec("firebase projects:create -n '" + proj_name + "' '" + proj_id + "'", {cwd: proj_path});
 
-                const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
+                //const create_proj = exec("echo \"Creating Cloud Project...\""); // for testing
 
                 create_proj.stdin.setEncoding('utf-8');
                 create_proj.stdin.write('n\n');

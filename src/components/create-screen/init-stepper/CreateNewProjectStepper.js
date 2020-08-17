@@ -8,15 +8,12 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import {UserDispatch} from "../../../context/userContext";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CircularIndeterminate from "../../main-screen/CircularProgress";
 import StepperWave from "./StepperWave";
 import StepperProjNameInput from "./StepperProjNameInput";
 import GenericStepperInput from "./GenericStepperInput";
+import GenericBooleanSelect from "./GenericBooleanSelect";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,48 +25,12 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white',
         paddingBottom: '2%'
     },
-    select: {
-        minWidth: 200,
-        background: 'white',
-        fontWeight:200,
-        borderStyle:'none',
-        borderWidth: 2,
-        borderRadius: 12,
-        paddingLeft: 24,
-        paddingTop: 14,
-        paddingBottom: 15,
-        boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
-        "&:focus":{
-            borderRadius: 12,
-            background: 'white',
-        },
+    stepContent: {
+        padding: '3%',
     },
     text: {
         color: '#fff',
         fontWeight:200,
-    },
-    paper: {
-        borderRadius: 12,
-        marginTop: 8,
-    },
-    list: {
-        paddingTop:0,
-        paddingBottom:0,
-        background:'white',
-        "& li":{
-            fontWeight:200,
-            paddingTop:12,
-            paddingBottom:12,
-        },
-    },
-    Menu_icon:{
-        right: 12,
-        position: 'absolute',
-        userSelect: 'none',
-        pointerEvents: 'none'
-    },
-    stepContent: {
-        padding: '3%',
     },
     pgTitle: {
         borderRadius: '25px 25px 0px 0px',
@@ -254,31 +215,9 @@ export default function CreateNewProjectStepper() {
         setCurrentSteps((prevState => prevState.concat(featuresToBeAdded)))
     };
 
-    const menuProps = {
-        classes: {
-            paper: classes.paper,
-            list: classes.list
-        },
-        anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left"
-        },
-        transformOrigin: {
-            vertical: "top",
-            horizontal: "left"
-        },
-        getContentAnchorEl: null
-    };
-
     const linearProgressProps = {
         color: 'primary', // i can set the color to either primary or secondary here
     };
-
-
-    const iconProps = () => {
-        return (
-            <ExpandMoreIcon className={classes.Menu_icon}/>
-        )};
 
     /**
      * Get the appropriate content for each step
@@ -309,20 +248,9 @@ export default function CreateNewProjectStepper() {
                                 Configure as a single-page app (rewrite all urls to /index.html)? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl>
-                                <Select
-                                    disableUnderline
-                                    classes={{root: classes.select}}
-                                    value={selectSinglePg}
-                                    onChange={(e) => {setSinglePg(e.target.value)}}
-                                    MenuProps={menuProps}
-                                    IconComponent={iconProps}
-                                >
-                                    <MenuItem value={''}/>
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <GenericBooleanSelect
+                                getSelection={(value) => {setSinglePg(value)}}
+                            />
                         </div>
                     </div>
                 );
@@ -351,20 +279,9 @@ export default function CreateNewProjectStepper() {
                                 Do you want to setup ESlint? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl>
-                                <Select
-                                    value={selectLint}
-                                    onChange={(e) => {setLint(e.target.value);}}
-                                    disableUnderline
-                                    MenuProps={menuProps}
-                                    IconComponent={iconProps}
-                                    classes={{root: classes.select}}
-                                >
-                                    <MenuItem value={""}/>
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <GenericBooleanSelect
+                                getSelection={(value) => {setLint(value)}}
+                            />
                         </div>
                         <div style={{marginTop: '2%'}}/>
                         <div>
@@ -372,20 +289,9 @@ export default function CreateNewProjectStepper() {
                                 Do you want to run 'npm install'? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl>
-                                <Select
-                                    value={selectNpm}
-                                    disableUnderline
-                                    MenuProps={menuProps}
-                                    IconComponent={iconProps}
-                                    classes={{root: classes.select}}
-                                    onChange={(e) => {setNpm(e.target.value)}}
-                                >
-                                    <MenuItem value={''}/>
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <GenericBooleanSelect
+                                getSelection={(value) => {setNpm(value)}}
+                            />
                         </div>
                     </div>
                 );
@@ -441,10 +347,8 @@ export default function CreateNewProjectStepper() {
                                     };
                                     console.log(fbJsonObj);
                                     setProgress(false);
-
                                     const initFirebase = require('../../../scripts/createProject/initFirebasejson');
                                     initFirebase.initFireBasejson_function(fbJsonObj);
-
                                     setTimeout(function(){dispatch({type: 'addProj',
                                         args:{name:project_name, path: project_path, id:project_id}}) }, 3000);
 
