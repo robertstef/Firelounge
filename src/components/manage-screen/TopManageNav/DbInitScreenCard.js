@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function DbInitScreenCard() {
+export default function DbInitScreenCard(props) {
     const classes = useStyles();
 
     return(
@@ -40,7 +40,7 @@ export default function DbInitScreenCard() {
             <Card className={classes.card}>
                 <Typography className={classes.heading}> Initialize Database </ Typography>
                 <Divider className={classes.divider}/>
-                <DbStepper/>
+                <DbStepper setOpen={props.setOpen}/>
             </Card>
         </div>
     )

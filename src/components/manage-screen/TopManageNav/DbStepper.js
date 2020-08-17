@@ -104,7 +104,7 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
 }
 
 
-export default function VerticalLinearStepper() {
+export default function VerticalLinearStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -125,10 +125,14 @@ export default function VerticalLinearStepper() {
       };
 
       try {
-        dispatch({type:"addDb", args: dbObj});
-        setAlert({display: true, message: 'Database successfully added to Firelounge', type: 'success'})
+        const addDB = async () => {
+          dispatch({type:"addDb", args: dbObj});
+          await setAlert({display: true, message: 'Database successfully added to Firelounge', type: 'success'})
+          props.setOpen(false);
+        }
+        addDB();
       } catch (error) {
-        setAlert({display: true, message: 'There was an error adding the Database', type: 'error'})
+        setAlert({display: true, message: error, type: 'error'})
       }
       
       

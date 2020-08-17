@@ -38,7 +38,7 @@ export default function DbInitModal() {
 
   const body = (
     <div className={classes.paper}>
-        <DbInitScreenCard/>
+        <DbInitScreenCard setOpen={setOpen}/>
     </div>
   );
 
