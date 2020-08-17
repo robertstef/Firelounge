@@ -7,8 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import AddProjContent from "./AddProjContent"
-import CreateNewProjectStepper from "./CreateNewProjectStepper";
+import AddProjContent from "./project-table/AddProjContent"
+import CreateNewProjectStepper from "./init-stepper/CreateNewProjectStepper";
 
 
 function TabPanel(props) {

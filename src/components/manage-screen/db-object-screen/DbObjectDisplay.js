@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import ReactJson from 'react-json-view';
 import {UserState} from '../../../context/userContext'
 
+
 /*  
     Used to compare two different Json Objects 
     Returns the different keys between them
@@ -37,24 +38,27 @@ export default function DbObjectDisplay() {
     //update the context database reference
     //catch error where there is no database defined.  
     try {
-        var db = user.db
+        var db = user.db_obj
         var ref = db.ref();
     }catch(error) {
         // console.log(error)
     }
     
     useEffect(() => {
-        if(user.admin === '' || user.db === undefined ){
-            // console.log('No admin file found')
+        if(user.admin_obj === '' || user.db_obj === undefined ){
             return
         }
         
+        
         //handles display update of any changes made to database via firebase console or in app
         ref.on("value", (snapshot) => {
-            setDisplaySrc(snapshot.val())
+            if(snapshot.val() !== null) {
+                setDisplaySrc(snapshot.val())
+            }
         })   
-        
-    }, [db, setDisplaySrc])
+
+
+    }, [user.act_db_name, ref, user.admin_obj, user.db_obj])
  
 
     /* 
@@ -75,11 +79,12 @@ export default function DbObjectDisplay() {
         }
         
         //traverse and update
-        db.ref(query_string).update({
-            [result.name] : result.new_value
-        })
-
-    }
+        if (query_string !== '') {
+            db.ref(query_string).update({
+                [result.name] : result.new_value
+            })
+        }
+    };
 
     /* 
         When object is added...
@@ -94,20 +99,27 @@ export default function DbObjectDisplay() {
         name = parent key of item that is added
         new_value = new key being added
         */
+        
+       let query_string = '';
 
-        let query_string = '';
-        for(var i = 0; i < result.namespace.length; i++) {
-            query_string += result.namespace[i]
+       //handles case when addition is first in the database
+        if(Object.keys(result.existing_src).length === 0 && typeof(result.existing_src) === 'object' ) {
+            console.log('equals null')
+            query_string += '/'
+        } else {
+            for(var i = 0; i < result.namespace.length; i++) {
+                query_string += result.namespace[i]
+                query_string += '/'
+            }
+            query_string += result.name
             query_string += '/'
         }
-
-        query_string += result.name
-        query_string += '/'
 
         //get difference between old and new objects -- seemed like bad practice to update entire object
         var keys = diff(result.new_value, result.existing_value)
         var newKey = Object.keys(keys)[0]
 
+        console.log(query_string)
         //traverse and update
         db.ref(query_string).update({
             [newKey] : 'NULL'
@@ -144,35 +156,33 @@ export default function DbObjectDisplay() {
         
     }
 
-
-
-
-    var onEdit = true
-    var onAdd = true
-    var onDelete = true
-
+    
     return(
         <div style={{height: '100%', width: '100%', padding: '10px'}}>
             <ReactJson 
                 name={false}
                 src={displaySrc}
-                collapsed={1}
+                collapsed={user.act_db_settings.Collapsed !== undefined ? user.act_db_settings.Collapsed : true }
+                enableClipboard= {user.act_db_settings.Clipboard !== undefined ? user.act_db_settings.Clipboard : true }
+                sortKeys = {user.act_db_settings.SortKeys !== undefined ? user.act_db_settings.SortKeys : false }
+                displayDataTypes = {user.act_db_settings.DisplayDataType !== undefined ? user.act_db_settings.DisplayDataType : false }
+                displayObjectSize =  {user.act_db_settings.DisplayObjectSize !== undefined ? user.act_db_settings.DisplayObjectSize : false }
                 onEdit={   
-                    onEdit
+                    user.act_db_settings.Edit
                         ? result => {
                                 makeEdit(result)
                             }
                         : false
                     }
                 onAdd={
-                    onAdd
+                    user.act_db_settings.Add
                         ? result => {
                                 makeAdd(result)
                             }
                         : false
                 }
                 onDelete={
-                    onDelete
+                    user.act_db_settings.Delete
                         ? result => {
                                 makeDelete(result)
                             }

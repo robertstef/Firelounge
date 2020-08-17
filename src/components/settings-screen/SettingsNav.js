@@ -88,7 +88,7 @@ export default function SettingsNav(props) {
 
       {/* Tab for Database Settings*/}
       <TabPanel value={value} index={1} className={classes.tabPanel}>
-        <DbSettingsCard/>
+        <DbSettingsCard close={props.close}/>
       </TabPanel>
 
     </div>
