@@ -12,7 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
+import { Alert } from 'react-context-alerts';
 import AddProjButton from './AddProjButton'
 import {UserState} from '../../../context/userContext';
 
@@ -57,7 +57,6 @@ function createData(name, id, num) {
 }
 
 export default function CustomizedTable() {
-
     const classes = useStyles();
     const {user} = UserState();
     let projects = user.firebase_projs;
@@ -69,28 +68,36 @@ export default function CustomizedTable() {
         rows.push(r);
     }
 
+    /* Callback to trigger the successful import alert */
+    const [success, setSuccess]  = React.useState({display: false, message: ''});
+    const triggerAlert = (event) => {
+      setSuccess(event);   
+    }
+    
     return (
-        <TableContainer className={classes.root}>
-            <Table stickyHeader className={classes.table} aria-label="customized table">
-                <TableHead className={classes.tableHead}>
-                    <TableRow>
-                        <TableCell align='center' className={classes.tableHeadCell} style={{borderRadius: '16px 0px 0px 16px'}} >Project Name</TableCell>
-                        <TableCell align='center' className={classes.tableHeadCell}>Project ID</TableCell>
-                        <TableCell align='center' className={classes.tableHeadCell}>Project Number</TableCell>
-                        <TableCell align='center'className={classes.tableHeadCell} style={{borderRadius: '0px 16px 16px 0px'}}/>
-                    </TableRow>
-                </TableHead>
-                <TableBody className={classes.tableBody}>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
-                            <TableCell align='center' className={classes.tableBodyCell}>{row.name}</TableCell>
-                            <TableCell align='center' className={classes.tableBodyCell}>{row.id}</TableCell>
-                            <TableCell align='center' className={classes.tableBodyCell}>{row.num}</TableCell>
-                            <TableCell align='center' className={classes.tableBodyCell}><AddProjButton cur_proj={row} /></TableCell>
+            <TableContainer className={classes.root}>
+                <Table stickyHeader className={classes.table} aria-label="customized table">
+                    <TableHead className={classes.tableHead}>
+                        <TableRow>
+                            <TableCell align='center' className={classes.tableHeadCell} style={{borderRadius: '16px 0px 0px 16px'}} >Project Name</TableCell>
+                            <TableCell align='center' className={classes.tableHeadCell}>Project ID</TableCell>
+                            <TableCell align='center' className={classes.tableHeadCell}>Project Number</TableCell>
+                            <TableCell align='center'className={classes.tableHeadCell} style={{borderRadius: '0px 16px 16px 0px'}}/>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody className={classes.tableBody}>
+                        {rows.map((row) => (
+                            <TableRow key={row.name}>
+                                <TableCell align='center' className={classes.tableBodyCell}>{row.name}</TableCell>
+                                <TableCell align='center' className={classes.tableBodyCell}>{row.id}</TableCell>
+                                <TableCell align='center' className={classes.tableBodyCell}>{row.num}</TableCell>
+                                <TableCell align='center' className={classes.tableBodyCell}><AddProjButton cur_proj={row} alert={setSuccess} /></TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                <Alert type={'success'} open={success.display} message={success.message} timeout={5000} onClose={()=>{ setSuccess({display:false, message:''})} }/>
+            </TableContainer>
+            
     )
 }

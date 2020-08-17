@@ -25,6 +25,7 @@ export default function AddProjButton(props) {
                     let new_proj = JSON.parse(JSON.stringify(props.cur_proj));
                     new_proj.path = response;
                     dispatch({type:"addProj", args: new_proj});
+                    props.alert({display: true, message: 'Project Successfully Imported to Firelounge'})
                 } catch (error) {
                     setError({display: true, message: error})
                 }

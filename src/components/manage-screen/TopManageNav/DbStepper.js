@@ -10,6 +10,7 @@ import DbNameInput from './DbNameInput';
 import {UserDispatch, UserState} from '../../../context/userContext'
 import InfoIcon from '@material-ui/icons/Info';
 import Chip from '@material-ui/core/Chip';
+import { Alert } from 'react-context-alerts';
 
 const { shell } = window.require('electron')
 
@@ -103,13 +104,13 @@ function getStepContent(step, pathCallback, inputCallback, urlCallback) {
 }
 
 
-export default function VerticalLinearStepper() {
+export default function VerticalLinearStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
   const dispatch = UserDispatch();
   const {user} = UserState();
-  
+  const [alert, setAlert]  = React.useState({display: false, message: '', type: 'info'});  
 
   /* Handles the next button */
   const handleNext = (dispatch) => {
@@ -123,7 +124,18 @@ export default function VerticalLinearStepper() {
         'url': dbURL
       };
 
-      dispatch({type:"addDb", args: dbObj});
+      try {
+        const addDB = async () => {
+          dispatch({type:"addDb", args: dbObj});
+          await setAlert({display: true, message: 'Database successfully added to Firelounge', type: 'success'})
+          props.setOpen(false);
+        }
+        addDB();
+      } catch (error) {
+        setAlert({display: true, message: error, type: 'error'})
+      }
+      
+      
     }
   };
 
@@ -181,6 +193,7 @@ export default function VerticalLinearStepper() {
             </Step>
           ))}
       </Stepper>
+      <Alert type={alert.type} open={alert.display} message={alert.message} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'info'})} }/>
     </div>
   );
 }
