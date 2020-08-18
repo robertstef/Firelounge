@@ -240,11 +240,52 @@ let getSelectFields = (query) => {
     return selectedFields;
 }
 
+let getWheres = (query) => {
+   const whereStart = query.indexOf(" where ") + 1;
+
+   if (whereStart < 0) {
+       return null;
+   }
+
+   const orderByStart = query.indexOf("order by");
+   const whereEnd = orderByStart >= 0 ? orderByStart : query.length;
+
+   let wheresArr = query.substring(whereStart + 5, whereEnd).split(/\sand\s/);
+   wheresArr[wheresArr.length - 1] = wheresArr[wheresArr.length - 1].replace(";", "");
+
+   let wheres = [];
+   wheresArr.forEach(where => {
+        where = where.trim();
+        where = qh.replaceAll(where, "not like", "!like");
+        let {comparator, index} = qh.determineComparatorAndIndex(where);
+
+       let compVal = where.substring(index + comparator.length).trim();
+       if (comparator === 'like' || comparator === '!like') {
+           compVal = qh.getParsedValue(compVal, true);
+       }
+       else {
+           compVal = qh.getParsedValue(compVal, false);
+       }
+
+       let whereObj = {
+            field: where.substring(0, index).trim(),
+            comparator: comparator,
+            value: compVal
+        }
+
+        wheres.push(whereObj);
+   });
+
+   return qh.optimizeWheres(wheres);
+}
+
+
 /* Export statements */
 module.exports = {
     formatAndCleanQuery: formatAndCleanQuery,
     determineStatementType: determineStatementType,
     getCollection: getCollection,
     getOrderBys: getOrderBys,
-    getSelectFields: getSelectFields
+    getSelectFields: getSelectFields,
+    getWheres: getWheres
 }

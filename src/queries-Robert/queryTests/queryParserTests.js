@@ -211,3 +211,52 @@ describe("getSelectedFields", () => {
             "SELECT fields, ... FROM collection, ...");
     });
 });
+
+/* Tests for getWheres using SELECT statement */
+describe("getWheres - SELECT statement", () => {
+    it("basic SELECT statement", () => {
+        let result = qp.getWheres("select * from games where playerName=Robert")
+        assert.deepStrictEqual(result, [{field: "playerName", comparator: "=", value: "Robert"}]);
+    });
+
+    it("SELECT statement - multiple wheres", () => {
+        let query = "select * from games where player != Robert and experience>=12 and expert=true"
+        let ans = [{field: "expert", comparator: '=', value: true},
+                   {field: 'experience', comparator: '>=', value: 12},
+                   {field: 'player', comparator: '!=', value: 'Robert'}];
+        let result = qp.getWheres(query);
+        assert.deepStrictEqual(result, ans);
+    });
+
+    it("statement with WHERES and ORDER BY", () => {
+        let query = "select * from games where player != Robert and experience>12 order by experience";
+        let ans = [{field: 'player', comparator: '!=', value: 'Robert'},
+                   {field: 'experience', comparator: '>', value: 12}];
+        let result = qp.getWheres(query);
+        assert.deepStrictEqual(result, ans);
+    });
+
+    it('statement with LIKE operator', () => {
+        let query = "select * from games where player like '%R'";
+        let ans = [{field: 'player', comparator: 'like', value: '%R'}]
+        let result = qp.getWheres(query);
+        assert.deepStrictEqual(result, ans);
+    });
+
+    it('statement with NOT LIKE operator', () => {
+        let query = "select * from games where player not like '_R%'";
+        let ans = [{field: 'player', comparator: '!like', value: '_R%'}]
+        let result = qp.getWheres(query);
+        assert.deepStrictEqual(result, ans);
+    });
+
+    it('statement with multiple WHEREs and mixed operators', () => {
+        let query = "select * from games where player not like '_R%' and experience >= 5 and wins>20 and age=21";
+        let ans = [{field: 'age', comparator: '=', value: 21},
+                   {field: 'experience', comparator: '>=', value: 5},
+                   {field: 'wins', comparator: '>', value: 20},
+                   {field: 'player', comparator: '!like', value: '_R%'}];
+        let result = qp.getWheres(query);
+        assert.deepStrictEqual(result, ans);
+    });
+});
