@@ -45,20 +45,28 @@ describe("determineComparatorAndIndex", () => {
 /* Tests for getParsedValue */
 describe("getParsedValue", () => {
     it("numerical value", () => {
-        assert.equal(qh.getParsedValue("5"), 5);
+        assert.equal(qh.getParsedValue("5", false), 5);
     });
 
     it("boolean value", () => {
-        assert.equal(qh.getParsedValue('true'), true);
+        assert.equal(qh.getParsedValue('true', false), true);
     });
 
     it("null value", () => {
-        assert.equal(qh.getParsedValue('null'), null);
+        assert.equal(qh.getParsedValue('null', false), null);
     });
 
     it("string value", () => {
-        assert.equal(qh.getParsedValue('myString'), 'myString');
+        assert.equal(qh.getParsedValue('myString', false), 'myString');
     });
+
+    it("like wildcard - single quotes", () => {
+        assert.equal(qh.getParsedValue('\'%or%\'', true), '%or%');
+    });
+
+    it("like wildcard - double quotes", () => {
+        assert.equal(qh.getParsedValue('"a%"', true), 'a%');
+    })
 });
 
 

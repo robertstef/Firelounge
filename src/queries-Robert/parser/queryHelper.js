@@ -91,18 +91,25 @@ let determineComparatorAndIndex = (where) => {
 
 /**
  * Parses the comparision value from an individual WHERE statement.
+ * The comparison value is the value to the right of the comparision
+ * operator. In the below example the comparision value is 2.
  *
- * E.g. WHERE name >= 2 => will return the number 2.
+ * E.g. "WHERE name >= 2" => will return the number 2.
  *
  * The function handles inputs of numbers, boolean values, strings,
- * and null.
+ * LIKE wildcards, and null.
  *
- * @param whereValue: String - WHERE comparison value
+ * @param whereValue: {String} - WHERE comparison value
+ * @param isLike: {boolean}: indicates if the whereValue is a LIKE wildcard
  * @returns {null|boolean|number|String}
  */
-let getParsedValue = (whereValue) => {
+let getParsedValue = (whereValue, isLike) => {
+    // input is a like wildcard
+    if (isLike) {
+        return whereValue.replace(/["']/g, "");
+    }
     // input is a number
-    if (!isNaN(whereValue)) {
+    else if (!isNaN(whereValue)) {
         return parseFloat(whereValue);
     }
     // input is boolean
