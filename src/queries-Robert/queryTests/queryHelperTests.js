@@ -40,7 +40,7 @@ describe("determineComparatorAndIndex", () => {
             Error,
             "determineComparatorAndIndex: invalid comparison operator");
     });
-})
+});
 
 /* Tests for getParsedValue */
 describe("getParsedValue", () => {
@@ -54,9 +54,29 @@ describe("getParsedValue", () => {
 
     it("null value", () => {
         assert.equal(qh.getParsedValue('null'), null);
-    })
+    });
 
     it("string value", () => {
         assert.equal(qh.getParsedValue('myString'), 'myString');
+    });
+});
+
+
+/* Tests for optimizeWheres */
+describe("optimizeWheres", () => {
+    it("first term is equals", () => {
+        let wheres = [{comparator: '='}, {comparator: '<='}, {comparator: '>'}];
+        assert.deepStrictEqual(qh.optimizeWheres(wheres), wheres);
+    });
+
+    it("first term NOT equals", () => {
+        let wheres = [{comparator: '<='}, {comparator: '='}, {comparator: '>'}];
+        let result = [{comparator: '='}, {comparator: '<='}, {comparator: '>'}];
+        assert.deepStrictEqual(qh.optimizeWheres(wheres), result);
+    });
+
+    it("input does not contain equals", () => {
+        let wheres = [{comparator: '<='}, {comparator: '!='}, {comparator: '>'}];
+        assert.deepStrictEqual(qh.optimizeWheres(wheres), wheres);
     })
-})
+});

@@ -119,11 +119,46 @@ let getParsedValue = (whereValue) => {
     }
 }
 
+/**
+ * Rearranges and array of WHERE objects such that the first
+ * object contains the '=' comparator. If the array does not
+ * contain a '=' comparator the array will be returned unchanged.
+ *
+ * A WHERE object is an object of the following form:
+ *
+ * {
+ *     field: {String}
+ *     comparator: {String}
+ *     value: {number|boolean|String}
+ * }
+ *
+ * @param wheres: {Array}: An array of WHERE objects
+ * @returns {Array}: array of WHERE objects
+ */
+let optimizeWheres = (wheres) => {
+    // first term is '=', where done!
+    if (wheres[0].comparator === '=') {
+        return wheres;
+    }
+    else {
+        // find first '=' and swap with 0th element
+        for (let i = 1; i < wheres.length; i++) {
+            if (wheres[i].comparator === '=') {
+                [wheres[0], wheres[i]] = [wheres[i], wheres[0]];
+                break;
+            }
+        }
+        return wheres;
+    }
+}
+
+
 /* Export statements */
 module.exports = {
     replaceAll: replaceAll,
     removeWrappedParenthesis: removeWrappedParenthesis,
     stripEncasingSlashes: stripEncasingSlashes,
     determineComparatorAndIndex: determineComparatorAndIndex,
-    getParsedValue: getParsedValue
+    getParsedValue: getParsedValue,
+    optimizeWheres: optimizeWheres
 }
