@@ -208,7 +208,7 @@ let getOrderBys = (query) => {
  * SELECT fields, ... FROM collection
  *
  * @param query: String - query to be parsed
- * @returns {{fieldName: boolean}}
+ * @returns {{fieldName: boolean, ...}}
  */
 let getSelectFields = (query) => {
 
@@ -240,6 +240,17 @@ let getSelectFields = (query) => {
     return selectedFields;
 }
 
+/**
+ * Parses the WHERE statements out of a given SQL statement.
+ * Accepted equality operators are: =, !=, <>, >, >=, <, <=, like, not like.
+ *
+ * An example of a WHERE statement is as follows:
+ *
+ * SELECT * FROM games WHERE player=Robert
+ *
+ * @param query: {String} - query to be parsed
+ * @returns {null|{field: String, comparator: String, compVal: {String|number|boolean|null}[]}}
+ */
 let getWheres = (query) => {
    const whereStart = query.indexOf(" where ") + 1;
 
