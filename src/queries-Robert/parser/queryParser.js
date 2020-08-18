@@ -248,46 +248,55 @@ let getSelectFields = (query) => {
  *
  * SELECT * FROM games WHERE player=Robert
  *
+ * The expected return value of this query would be:
+ *
+ * [{field: "player", comparator: "=", compVal: "Robert"}]
+ *
  * @param query: {String} - query to be parsed
  * @returns {null|{field: String, comparator: String, compVal: {String|number|boolean|null}[]}}
  */
 let getWheres = (query) => {
-   const whereStart = query.indexOf(" where ") + 1;
 
-   if (whereStart < 0) {
-       return null;
-   }
+    // find start of where statement
+    const whereStart = query.indexOf(" where ") + 1;
+    if (whereStart < 0) {
+        return null;
+    }
 
-   const orderByStart = query.indexOf("order by");
-   const whereEnd = orderByStart >= 0 ? orderByStart : query.length;
+    // find where WHERE statement ends and ORDER BY starts if an
+    // ORDER BY was included in the query
+    const orderByStart = query.indexOf("order by");
+    const whereEnd = orderByStart >= 0 ? orderByStart : query.length;
 
-   let wheresArr = query.substring(whereStart + 5, whereEnd).split(/\sand\s/);
-   wheresArr[wheresArr.length - 1] = wheresArr[wheresArr.length - 1].replace(";", "");
+    // split up multiple WHERE conditions
+    let wheresArr = query.substring(whereStart + 5, whereEnd).split(/\sand\s/);
+    //wheresArr[wheresArr.length - 1] = wheresArr[wheresArr.length - 1].replace(";", "");
 
-   let wheres = [];
-   wheresArr.forEach(where => {
+    // process each individual where statement
+    let wheres = [];
+    wheresArr.forEach(where => {
         where = where.trim();
         where = qh.replaceAll(where, "not like", "!like");
         let {comparator, index} = qh.determineComparatorAndIndex(where);
 
-       let compVal = where.substring(index + comparator.length).trim();
-       if (comparator === 'like' || comparator === '!like') {
-           compVal = qh.getParsedValue(compVal, true);
-       }
-       else {
-           compVal = qh.getParsedValue(compVal, false);
-       }
+        let compVal = where.substring(index + comparator.length).trim();
+        if (comparator === 'like' || comparator === '!like') {
+            compVal = qh.getParsedValue(compVal, true);
+        }
+        else {
+            compVal = qh.getParsedValue(compVal, false);
+        }
 
-       let whereObj = {
+        let whereObj = {
             field: where.substring(0, index).trim(),
             comparator: comparator,
             value: compVal
         }
 
         wheres.push(whereObj);
-   });
+    });
 
-   return qh.optimizeWheres(wheres);
+    return qh.optimizeWheres(wheres);
 }
 
 
