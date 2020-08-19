@@ -1,4 +1,3 @@
-import QueryInfo from "./QueryInfo";
 const qh = require('./queryHelper');
 
 /**
@@ -117,7 +116,6 @@ let getCollection = (query, statementType) => {
     }
 }
 
-
 /**
  * Parses the ORDER BY statement within a SELECT query.
  * Returns an array of objects indicating with each object
@@ -188,7 +186,6 @@ let getOrderBys = (query) => {
         }
     });
 }
-
 
 /**
  * Parses out the select fields from the given
@@ -289,6 +286,32 @@ let getWheres = (query) => {
     return qh.optimizeWheres(wheres);
 }
 
+/**
+ *
+ * @param query
+ */
+let getInsertCount = (query) => {
+    // TODO - INSERT
+}
+
+/**
+ *
+ * @param query
+ */
+let getObjectsFromInsert = (query) => {
+    // TODO - INSERT
+    // NOTE: hold off on doing insert based on SELECT data -
+    //       function executeSelect is still being developed
+}
+
+/**
+ *
+ * @param query
+ */
+let getSets = (query) => {
+    // TODO - UPDATE
+}
+
 /* Export statements */
 module.exports = {
     formatAndCleanQuery: formatAndCleanQuery,
@@ -296,5 +319,8 @@ module.exports = {
     getCollection: getCollection,
     getOrderBys: getOrderBys,
     getSelectFields: getSelectFields,
-    getWheres: getWheres
+    getWheres: getWheres,
+    getInsertCount: getInsertCount,
+    getObjectsFromInsert: getObjectsFromInsert,
+    getSets: getSets
 }
