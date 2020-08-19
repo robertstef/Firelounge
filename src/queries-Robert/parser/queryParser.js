@@ -1,3 +1,4 @@
+import QueryInfo from "./QueryInfo";
 const qh = require('./queryHelper');
 
 /**
@@ -84,17 +85,6 @@ let getCollection = (query, statementType) => {
     }
 
     if (statementType === 'select') {
-        // TODO figure out error conditions from original code
-        // not sure what conditions these would apply in
-        /*
-        if (terms.length === 2 && terms[0] === "from") {
-            return strip(stringHelper.replaceAll(terms[1], ".", "/"));
-        } else if (terms.length === 1) {
-            let collection = terms[0].replace(";", "");
-            return strip(stringHelper.replaceAll(collection, /\./, "/"));
-        }
-        */
-
         // get start index of collection
         let collectStart = clean_query.indexOf("from ");
         if (collectStart < 0) {
@@ -113,13 +103,13 @@ let getCollection = (query, statementType) => {
         return collection;
     }
     else if (statementType === 'update') {
-       // do something
+        // TODO - UPDATE
     }
     else if (statementType === 'insert') {
-       // do something
+       // TODO - INSERT
     }
     else if (statementType === 'delete') {
-       // do something
+        // TODO - DELETE
     }
     else {
         throw new Error("getCollection(): invalid statement type. Must be one of select, update, insert" +
@@ -298,7 +288,6 @@ let getWheres = (query) => {
 
     return qh.optimizeWheres(wheres);
 }
-
 
 /* Export statements */
 module.exports = {
