@@ -1,3 +1,7 @@
+import executeSelect from "./queryRunners/select";
+import executeUpdate from "./queryRunners/update";
+import executeDelete from "./queryRunners/delete";
+import executeInsert from "./queryRunners/insert";
 const queryParser = require('./parser/queryParser');
 
 /**
@@ -14,13 +18,13 @@ export default function executeQuery(query, user) {
 
     switch (statementType) {
         case "select":
-            break;
+            return executeSelect(query, user);
         case "update":
-            break;
+            return executeUpdate(query, user);
         case "delete":
-            break;
+            return executeDelete(query, user);
         case "insert":
-            break;
+            return executeInsert(query, user);
         case "invalid":
             throw new Error("Invalid SQL query. Query must be of type SELECT, UPDATE, DELETE, or INSERT");
         default:
