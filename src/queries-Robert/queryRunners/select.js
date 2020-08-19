@@ -1,7 +1,12 @@
 import QueryInfo from "../parser/QueryInfo";
 const qp = require('../parser/queryParser');
 
-export default function executeSelect(query, user) {
+/**
+ *
+ * @param query
+ * @param user
+ */
+let executeSelect = (query, user) => {
     let queryInfo = new QueryInfo();
 
     try {
@@ -13,3 +18,5 @@ export default function executeSelect(query, user) {
         console.log(err);
     }
 }
+
+export default executeSelect;

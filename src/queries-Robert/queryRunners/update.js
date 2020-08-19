@@ -24,3 +24,5 @@ let generatePayload = (data, sets) => {
 let updateItemWithSets = (obj, sets) => {
     // TODO - UPDATE
 }
+
+export default executeUpdate;
