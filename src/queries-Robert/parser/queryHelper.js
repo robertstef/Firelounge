@@ -1,14 +1,3 @@
-let regexIndexOf = (string, regex, startpos) => {
-    let substr = string.substring(startpos || 0);
-    let indexOf = substr.search(regex);
-
-    if (indexOf >= 0) {
-        return indexOf + (startpos || 0);
-    } else {
-        return indexOf;
-    }
-}
-
 /**
  * Replaces the substring matching the given
  * given regex within string with replacement.
