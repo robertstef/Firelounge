@@ -1,5 +1,10 @@
+/**
+ *
+ * @param query
+ * @param user
+ */
 let executeDelete = (query, user) => {
    // TODO - DELETE
 }
 
-export {executeDelete}
+export default executeDelete;
