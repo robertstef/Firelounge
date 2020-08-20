@@ -457,7 +457,7 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     return (
         <div className={classes.root}>
-            <Typography variant={'h6'} className={classes.pgTitle}>Create a new FireLounge project</Typography>
+            <Typography variant={'h6'} id='create-header' className={classes.pgTitle}>Create a new FireLounge project</Typography>
             <MobileStepper
                 variant="progress"
                 steps={currentSteps.length}
@@ -563,6 +563,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                                     </Toolbar>
                                 ) : null}
                                 <InputBase
+                                    id={'create-proj-name'}
                                     fullWidth
                                     className={classes.textfield}
                                     classes={{colorSecondary: classes.color}}

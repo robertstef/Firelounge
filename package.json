@@ -23,6 +23,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "chromedriver": "^84.0.1",
     "cross-env": "^7.0.2",
     "cross-spawn": "^7.0.3",
     "deepmerge": "^4.2.2",
@@ -31,8 +32,11 @@
     "firebase": "^7.15.0",
     "firebase-admin": "^8.12.1",
     "firebase-tools": "^8.4.2",
+    "mocha": "^8.1.1",
     "path": "^0.12.7",
     "prop-types": "latest",
+    "puppeteer-core": "^5.2.1",
+    "puppeteer-in-electron": "^3.0.3",
     "react": "^16.13.1",
     "react-context-alerts": "^1.0.3",
     "react-dom": "^16.13.1",
@@ -40,7 +44,9 @@
     "react-modal": "^3.11.2",
     "react-router-dom": "latest",
     "react-scripts": "3.4.1",
-    "typescript": "^3.9.5"
+    "spectron": "^11.1.0",
+    "typescript": "^3.9.5",
+    "webdriver": "^6.4.0"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -49,7 +55,8 @@
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "build": "npm run react-build && npm run electron-build",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -69,7 +76,7 @@
   "devDependencies": {
     "@material-ui/icons": "^4.9.1",
     "concurrently": "^5.2.0",
-    "electron": "^8.3.0",
+    "electron": "^9.0.5",
     "electron-builder": "^22.6.0",
     "wait-on": "^5.0.0"
   }
