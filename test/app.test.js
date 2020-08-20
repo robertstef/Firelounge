@@ -2,6 +2,7 @@ const electron = require("electron");
 const kill = require("tree-kill");
 const puppeteer = require("puppeteer-core");
 const { spawn } = require("child_process");
+const { doesNotMatch } = require("assert");
 
 const port = 9200; // Debugging port
 const timeout = 20000; // Timeout in miliseconds
@@ -45,6 +46,7 @@ beforeAll(async () => {
 afterAll(async () => {
   try {
     await page.close();
+    done();
   } catch (error) {
     kill(pid);
   }
