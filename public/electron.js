@@ -86,7 +86,7 @@ function createWindow () {
             nodeIntegration: true    
         },
         //beleive this sets icon for winwos/linux 
-        icon: isDev ? app.getAppPath() + "./public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
+        icon: isDev ? app.getAppPath() + "/public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
     });
 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
