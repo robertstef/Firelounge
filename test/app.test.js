@@ -2,10 +2,9 @@ const electron = require("electron");
 const kill = require("tree-kill");
 const puppeteer = require("puppeteer-core");
 const { spawn } = require("child_process");
-const { doesNotMatch } = require("assert");
 
 const port = 9200; // Debugging port
-const timeout = 20000; // Timeout in miliseconds
+const timeout = 35000; // Timeout in miliseconds
 let page;
 let pid;
 
@@ -17,6 +16,8 @@ function delay(time) {
  }
 
 jest.setTimeout(timeout);
+
+console.log(process.env.username)
 
 beforeAll(async () => {
   const startTime = Date.now();
@@ -59,4 +60,14 @@ describe("App", () => {
     text = await page.$eval("#create-header", element => element.innerText);
     expect(text).toBe("Create a new FireLounge project");
   });
+});
+
+  describe("App", () => {
+    test("Text matches2", async () => {
+      let text;
+      await page.waitForSelector("#create-header");
+      text = await page.$eval("#create-header", element => element.innerText);
+      expect(text).toBe("Create a new FireLounge project");
+    });
+
 });

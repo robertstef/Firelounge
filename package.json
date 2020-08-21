@@ -12,6 +12,11 @@
       "icon": "build/icon.png"
     }
   },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/test/setEnvVars.js"
+    ]
+  },
   "homepage": "./",
   "main": "public/electron.js",
   "private": true,
