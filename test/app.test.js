@@ -8,17 +8,9 @@ const timeout = 35000; // Timeout in miliseconds
 let page;
 let pid;
 
-/*Function to deplay code execution */ 
-function delay(time) {
-    return new Promise(function(resolve) { 
-        setTimeout(resolve, time)
-    });
- }
-
 jest.setTimeout(timeout);
 
-console.log(process.env.username)
-
+/* function that runs before each test suite */
 beforeAll(async () => {
   const startTime = Date.now();
   let browser;
@@ -43,31 +35,66 @@ beforeAll(async () => {
     }
   }
 });
-
+/* function that runs after each test suite */
 afterAll(async () => {
   try {
     await page.close();
-    done();
   } catch (error) {
     kill(pid);
   }
 });
 
-describe("App", () => {
-  test("Text matches", async () => {
+describe("Initialization Tests", () => {
+
+  /* Checks that the initial page contains the correct header */
+  test("Content of Landing Page", async () => {
+    
+    await page.waitFor(20000);
+
     let text;
     await page.waitForSelector("#create-header");
     text = await page.$eval("#create-header", element => element.innerText);
     expect(text).toBe("Create a new FireLounge project");
+
+  });    
+  
+  //add more test to make sure all of the elements are there
+});
+
+describe("Adding Existing Project", () => {
+  /* Adds a existing project to firebase */
+  test("Content of Create Existing Project", async () => {
+    let text;
+    
+    //wait for dev server to start, init script to run
+    await page.waitFor(20000);
+    
+    //navigate to add existing project page
+    await page.waitForSelector("#create-existing-proj-icon");
+    await page.click("#create-existing-proj-icon");
+    
+    //confirm what page were on
+    await page.waitForSelector("#create-existing-proj-header" );
+    text = await page.$eval("#create-existing-proj-header", element => element.innerText);
+    expect(text).toBe("Already Have a Firebase Project?");
+    
   });
+
+  test("Create Existing Project Execution", async () => {
+    // click to add project 
+    await page.waitForSelector("#create-existing-proj-button");
+    await page.$eval( "#create-existing-proj-button", form => form.click() );
+
+    // click to add project 
+    await page.waitForSelector("#create-existing-proj-alert");
+    // await page.$eval( "#create-existing-proj-alert", form => console.log(form) );
+    text = await page.$eval("#create-existing-proj-alert", element => element.innerText);
+    expect(text).toBe("Project Successfully Imported to Firelounge");
+  });
+
+
+
 });
 
-  describe("App", () => {
-    test("Text matches2", async () => {
-      let text;
-      await page.waitForSelector("#create-header");
-      text = await page.$eval("#create-header", element => element.innerText);
-      expect(text).toBe("Create a new FireLounge project");
-    });
-
-});
+  
+ 

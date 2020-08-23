@@ -39,7 +39,7 @@ export default function AddProjContent() {
     return(
         <div className={classes.root}>
             <div className={classes.titleContainer}>
-                <Typography variant="h6" className={classes.title}> Already Have a Firebase Project? </Typography>
+                <Typography id='create-existing-proj-header' variant="h6" className={classes.title}> Already Have a Firebase Project? </Typography>
             </div>
             <div className={classes.spacer}/>
             <div className={classes.wave}>

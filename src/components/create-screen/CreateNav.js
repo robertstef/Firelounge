@@ -117,7 +117,7 @@ export default function SecondaryManageNav() {
           >
             {/* Icons for nav bar */}
             <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
+            <LinkTab icon={<OpenInBrowserIcon id={'create-existing-proj-icon'} />} {...a11yProps(1)} className={classes.linkTab}/>
           </Tabs>
       </AppBar>
       <div className={classes.content}>

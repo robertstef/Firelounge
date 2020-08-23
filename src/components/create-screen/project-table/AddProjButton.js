@@ -35,7 +35,7 @@ export default function AddProjButton(props) {
 
     return (
         <div>
-            <IconButton aria-label="Add" onClick={getPathIPC}>
+            <IconButton id='create-existing-proj-button' onClick={getPathIPC}>
                 <AddCircleIcon style={{color: 'white'}}/>
             </IconButton>
             <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>
