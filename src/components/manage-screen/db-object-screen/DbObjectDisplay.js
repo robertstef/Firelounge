@@ -79,11 +79,12 @@ export default function DbObjectDisplay() {
         }
         
         //traverse and update
-        db.ref(query_string).update({
-            [result.name] : result.new_value
-        })
-
-    }
+        if (query_string !== '') {
+            db.ref(query_string).update({
+                [result.name] : result.new_value
+            })
+        }
+    };
 
     /* 
         When object is added...

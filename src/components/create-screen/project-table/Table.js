@@ -96,7 +96,7 @@ export default function CustomizedTable() {
                         ))}
                     </TableBody>
                 </Table>
-                <Alert timeout={null} type={'success'} open={success.display} message={<p id={'create-existing-proj-alert'}> {success.message} </p>} onClose={()=>{ setSuccess({display:false, message:''})} }/>
+                <Alert timeout={5000} type={'success'} open={success.display} message={<p id={'create-existing-proj-alert'}> {success.message} </p>} onClose={()=>{ setSuccess({display:false, message:''})} }/>
             </TableContainer>
             
     )

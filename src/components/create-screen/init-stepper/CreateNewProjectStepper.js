@@ -8,22 +8,14 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import {UserDispatch} from "../../../context/userContext";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import InputBase from "@material-ui/core/InputBase";
-import Paper from "@material-ui/core/Paper";
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import Toolbar from "@material-ui/core/Toolbar";
 import CircularIndeterminate from "../../main-screen/CircularProgress";
-
-
-let RED = '#ef223c';
+import StepperWave from "./StepperWave";
+import StepperProjNameInput from "./StepperProjNameInput";
+import GenericStepperInput from "./GenericStepperInput";
+import GenericBooleanSelect from "./GenericBooleanSelect";
 
 const useStyles = makeStyles((theme) => ({
-    //TODO make the placeholder text black, currently its a gray
     root: {
         height: '100%',
         borderRadius: 25,
@@ -33,63 +25,12 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white',
         paddingBottom: '2%'
     },
-    select: {
-        minWidth: 200,
-        background: 'white',
-        fontWeight:200,
-        borderStyle:'none',
-        borderWidth: 2,
-        borderRadius: 12,
-        paddingLeft: 24,
-        paddingTop: 14,
-        paddingBottom: 15,
-        boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
-        "&:focus":{
-            borderRadius: 12,
-            background: 'white',
-        },
-    },
-    toolbar: {
-        minHeight: 40,
+    stepContent: {
+        padding: '3%',
     },
     text: {
         color: '#fff',
         fontWeight:200,
-    },
-    paper: {
-        borderRadius: 12,
-        marginTop: 8,
-    },
-    list: {
-        paddingTop:0,
-        paddingBottom:0,
-        background:'white',
-        "& li":{
-            fontWeight:200,
-            paddingTop:12,
-            paddingBottom:12,
-        },
-    },
-    Menu_icon:{
-        right: 12,
-        position: 'absolute',
-        userSelect: 'none',
-        pointerEvents: 'none'
-    },
-    textfield: {
-        height: 48,
-        color: '#000000',
-        background: 'white',
-        fontWeight:200,
-        borderStyle:'none',
-        borderRadius: 12,
-        paddingLeft: 24,
-        paddingTop: 14,
-        paddingBottom: 13,
-        boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
-    },
-    stepContent: {
-        padding: '3%',
     },
     pgTitle: {
         borderRadius: '25px 25px 0px 0px',
@@ -105,27 +46,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
-    wave: {
-        position: 'relative',
-        display: 'block',
-        width: 'calc(100% + 1.3px)',
-        height: '150px',
-        marginBottom: '-12vh',
-    },
 }));
 
-
-let id_hex = () => {
-    var letters = '0123456789abcdef';
-    var hex_val = '';
-    for (var i = 0; i < 5; i++) {
-        hex_val += letters[Math.floor(Math.random() * 16)];
-    }
-    return hex_val;
-};
-
-
-export default function HorizontalLabelPositionBelowStepper() {
+export default function CreateNewProjectStepper() {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -292,31 +215,9 @@ export default function HorizontalLabelPositionBelowStepper() {
         setCurrentSteps((prevState => prevState.concat(featuresToBeAdded)))
     };
 
-    const menuProps = {
-        classes: {
-            paper: classes.paper,
-            list: classes.list
-        },
-        anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "left"
-        },
-        transformOrigin: {
-            vertical: "top",
-            horizontal: "left"
-        },
-        getContentAnchorEl: null
-    };
-
     const linearProgressProps = {
         color: 'primary', // i can set the color to either primary or secondary here
     };
-
-
-    const iconProps = () => {
-        return (
-            <ExpandMoreIcon className={classes.Menu_icon}/>
-        )};
 
     /**
      * Get the appropriate content for each step
@@ -333,22 +234,12 @@ export default function HorizontalLabelPositionBelowStepper() {
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
                             <div style={{width: '65%', maxWidth: 248}}>
-                                {/* Will edit the public attribute within the "hosting"*/}
-                                <Paper component={'form'} className={classes.paper} elevation={0}>
-                                    {checkInput("hosting") ? (
-                                        <Toolbar disableGutters classes={{regular: classes.toolbar}}>
-                                            <FiberManualRecordIcon style={{color: RED, marginLeft: 5,}}/>
-                                            <Typography style={{fontWeight:200, marginLeft: 5, color: RED}} variant={'body2'}>Public directory must be between 1-15 characters.</Typography>
-                                        </Toolbar>
-                                    ) : null}
-                                    <InputBase
-                                        fullWidth
-                                        className={classes.textfield}
-                                        placeholder="public"
-                                        color={'secondary'}
-                                        onChange={(e) => {setPublicDir(e.target.value)}}
-                                    />
-                                </Paper>
+                                <GenericStepperInput
+                                    err={checkInput("hosting")}
+                                    errMsg={"Public directory must be between 1-15 characters."}
+                                    placeholder={"public"}
+                                    getValue={(value) => {setPublicDir(value)}}
+                                />
                             </div>
                             <div style={{marginTop: '2%'}}/>
                         </div>
@@ -357,20 +248,9 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 Configure as a single-page app (rewrite all urls to /index.html)? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl>
-                                <Select
-                                    disableUnderline
-                                    classes={{root: classes.select}}
-                                    value={selectSinglePg}
-                                    onChange={(e) => {setSinglePg(e.target.value)}}
-                                    MenuProps={menuProps}
-                                    IconComponent={iconProps}
-                                >
-                                    <MenuItem value={''}/>
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <GenericBooleanSelect
+                                getSelection={(value) => {setSinglePg(value)}}
+                            />
                         </div>
                     </div>
                 );
@@ -382,21 +262,12 @@ export default function HorizontalLabelPositionBelowStepper() {
                         </Typography>
                         <div style={{marginTop: '2%'}}/>
                         <div style={{width: '65%'}}>
-                            <Paper component={'form'} className={classes.paper} elevation={0}>
-                                {checkInput("database") ? (
-                                    <Toolbar disableGutters classes={{regular: classes.toolbar}}>
-                                        <FiberManualRecordIcon style={{color: RED, marginLeft: 5,}}/>
-                                        <Typography style={{fontWeight:200, marginLeft: 5, color: RED}} variant={'body2'}>Database rules file must have a valid .json extension and be between 1-25 characters</Typography>
-                                    </Toolbar>
-                                ) : null}
-                                <InputBase
-                                    fullWidth
-                                    className={classes.textfield}
-                                    placeholder="database.rules.json"
-                                    color={'secondary'}
-                                    onChange={(e) => {setDbRules(e.target.value)}}
-                                />
-                            </Paper>
+                            <GenericStepperInput
+                                err={checkInput("database")}
+                                errMsg={"Database rules file must have a valid .json extension and be between 1-25 characters"}
+                                placeholder={"database.rules.json"}
+                                getValue={(value) => {setDbRules(value)}}
+                            />
                         </div>
                     </div>
                 );
@@ -408,20 +279,9 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 Do you want to setup ESlint? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl>
-                                <Select
-                                    value={selectLint}
-                                    onChange={(e) => {setLint(e.target.value);}}
-                                    disableUnderline
-                                    MenuProps={menuProps}
-                                    IconComponent={iconProps}
-                                    classes={{root: classes.select}}
-                                >
-                                    <MenuItem value={""}/>
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <GenericBooleanSelect
+                                getSelection={(value) => {setLint(value)}}
+                            />
                         </div>
                         <div style={{marginTop: '2%'}}/>
                         <div>
@@ -429,20 +289,9 @@ export default function HorizontalLabelPositionBelowStepper() {
                                 Do you want to run 'npm install'? (y/N)
                             </Typography>
                             <div style={{marginTop: '2%'}}/>
-                            <FormControl>
-                                <Select
-                                    value={selectNpm}
-                                    disableUnderline
-                                    MenuProps={menuProps}
-                                    IconComponent={iconProps}
-                                    classes={{root: classes.select}}
-                                    onChange={(e) => {setNpm(e.target.value)}}
-                                >
-                                    <MenuItem value={''}/>
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <GenericBooleanSelect
+                                getSelection={(value) => {setNpm(value)}}
+                            />
                         </div>
                     </div>
                 );
@@ -496,12 +345,10 @@ export default function HorizontalLabelPositionBelowStepper() {
                                             functions: config.functions,
                                         }
                                     };
-
+                                    console.log(fbJsonObj);
                                     setProgress(false);
-
                                     const initFirebase = require('../../../scripts/createProject/initFirebasejson');
                                     initFirebase.initFireBasejson_function(fbJsonObj);
-
                                     setTimeout(function(){dispatch({type: 'addProj',
                                         args:{name:project_name, path: project_path, id:project_id}}) }, 3000);
 
@@ -530,55 +377,24 @@ export default function HorizontalLabelPositionBelowStepper() {
                 }
             />
             <div>
-                <div className={classes.wave}>
-                    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
-                         preserveAspectRatio="none">
-                        <path
-                            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-                            opacity=".25" fill={'#fff'}/>
-                        <path
-                            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-                            opacity=".5" fill={'#fff'}/>
-                        <path
-                            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-                            fill={'#fff'}/>
-                    </svg>
-                </div>
+                <StepperWave/>
                 {showProgress === true ? (<CircularIndeterminate/>) : null}
                 {activeStep === 0 ? (
                     <div className={classes.stepContent}>
                         <div>
                             <Typography className={classes.text}>{'Enter Project Details: '}</Typography>
                         </div>
-                        {/*
-                        Here we will prompt the user to add the features that they desire
-                        based on those features, we will add the necessary steps for project creation
-                        */}
                         <div style={{width: '65%'}}>
-                            <Paper component={'form'} className={classes.paper} elevation={0}>
-                                {checkInput("Select Project Features: ") ? (
-                                    <Toolbar disableGutters classes={{regular: classes.toolbar}}>
-                                        <FiberManualRecordIcon style={{color: RED, marginLeft: 5,}}/>
-                                        <Typography style={{fontWeight:200, marginLeft: 5, color: RED}} variant={'body2'}>Project name must be between 4-20 characters.</Typography>
-                                    </Toolbar>
-                                ) : null}
-                                <InputBase
-                                    id={'create-proj-name'}
-                                    fullWidth
-                                    className={classes.textfield}
-                                    classes={{colorSecondary: classes.color}}
-                                    placeholder="Enter your project name"
-                                    color={'secondary'}
-                                    onChange={(e) => { setProjectName(e.target.value) ; setProjID(e.target.value.replace(/\s+/g, '-').toLowerCase() + "-" + id_hex());}}
-                                />
-                            </Paper>
+                            <StepperProjNameInput
+                                err={checkInput("Select Project Features: ")}
+                                getProjectName={(proj_name) => {setProjectName(proj_name)}}
+                                getProjectID={(proj_id) => {setProjID(proj_id)}}
+                            />
                         </div>
                         <div style={{marginTop: '2%'}}/>
                         <GetPathButtonNewProject path={(path) => {setProjectPath(path)}}/>
                         <div style={{marginTop: '2%'}}/>
-                        <div>
-                            <Typography className={classes.text}>{currentSteps[activeStep]}</Typography>
-                        </div>
+                        <Typography className={classes.text}>{currentSteps[activeStep]}</Typography>
                         <div>
                             <FormControlLabel
                                 className={classes.text}
