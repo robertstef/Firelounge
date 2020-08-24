@@ -39,7 +39,7 @@ module.exports = {
         // confirm proj id matches recently added project
         await page.waitForSelector("#manage-deploy-proj-title");
         text = await page.$eval("#manage-deploy-proj-title", element => element.innerText);
-        expect(text).toBe("bensnewproject");
+        expect(text).toBe(process.env.project_name);
     },
     
     /* Create Existing Project Confirmation */ 
