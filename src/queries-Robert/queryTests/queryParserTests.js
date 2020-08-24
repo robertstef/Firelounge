@@ -135,7 +135,42 @@ describe("getCollection - select statement", () => {
             "getCollection(): could not determine collection, missing from statement");
     });
 
-})
+});
+
+/* Tests for getCollection delete statement*/
+describe("getCollection - delete statement", () => {
+   it("delete statement - non-nested collection", () => {
+       let result = qp.getCollection("delete from games;", "delete");
+       assert.equal(result, "games");
+   });
+
+    it("delete statement - where clause", () => {
+        let result = qp.getCollection("delete from games where playerName=Jackson;", "delete");
+        assert.equal(result, "games");
+    });
+
+    it("delete statement - nested collection with slashes", () => {
+        let result = qp.getCollection("delete from games/this/object;", "delete");
+        assert.equal(result, "games/this/object");
+    });
+
+    it("delete statement - nested collection with slashes with where clause", () => {
+        let result = qp.getCollection("delete from games/this/object where playerName=Jackson;", "delete");
+        assert.equal(result, "games/this/object");
+    });
+
+    it("delete statement - no collection given with whitespace", () => {
+        let query = "delete from ;";
+        assert.throws(() => qp.getCollection(query, "delete"), Error,
+            "getCollection(): could not determine collection, missing from statement")
+    });
+
+    it("delete statement - no collection given without whitespace", () => {
+        let query = "delete from;";
+        assert.throws(() => qp.getCollection(query, "delete"), Error,
+            "getCollection(): could not determine collection, missing from statement")
+    });
+});
 
 
 /* Tests for getOrderBys */
