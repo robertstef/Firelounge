@@ -116,7 +116,7 @@ export default function SecondaryManageNav() {
               indicatorColor={"primary"}
           >
             {/* Icons for nav bar */}
-            <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<CreateNewFolderIcon id={'create-new-proj-icon'}/>} {...a11yProps(0)} className={classes.linkTab}/>
             <LinkTab icon={<OpenInBrowserIcon id={'create-existing-proj-icon'} />} {...a11yProps(1)} className={classes.linkTab}/>
           </Tabs>
       </AppBar>

@@ -92,12 +92,24 @@ describe("Adding Existing Project", () => {
 
     // click to add project 
     await page.waitForSelector("#create-existing-proj-alert");
-    // await page.$eval( "#create-existing-proj-alert", form => console.log(form) );
     text = await page.$eval("#create-existing-proj-alert", element => element.innerText);
     expect(text).toBe("Project Successfully Imported to Firelounge");
   });
 
+  test("Create Existing Project Navigate to Manage Page", async () => {
+    // click to navigate to deploy page 
+    await page.waitForSelector("#manage-proj-icon");
+    await page.click("#manage-proj-icon");
 
+    // confirm proj id matches recently added project
+    await page.waitForSelector("#manage-deploy-proj-title");
+    text = await page.$eval("#manage-deploy-proj-title", element => element.innerText);
+    expect(text).toBe("bensnewproject");
+  });
+
+  // test("Create Existing Project Confirmation", async () => {
+
+  // });
 
 });
 

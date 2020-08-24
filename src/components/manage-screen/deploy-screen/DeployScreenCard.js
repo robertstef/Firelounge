@@ -94,11 +94,11 @@ function DeployScreenCard() {
                         <div className={classes.body}>
                             <div className={classes.activeProj}>
                             <Typography className={classes.deployText}>Active Project:</Typography>
-                            <Typography variant={'subtitle2'}  className={classes.deployBullet}>
+                            <Typography id={'manage-deploy-proj-uname'} variant={'subtitle2'}  className={classes.deployBullet}>
                                 <AccountCircleIcon className={classes.bulletIcon}/>
                                 {user.uname}
                             </Typography>
-                            <Typography variant={'subtitle2'} className={classes.deployBullet}>
+                            <Typography id={'manage-deploy-proj-title'} variant={'subtitle2'} className={classes.deployBullet}>
                                 <FolderSpecialIcon className={classes.bulletIcon}/>
                                 {user.act_proj.name}
                             </Typography>
