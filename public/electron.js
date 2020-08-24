@@ -91,7 +91,7 @@ function createWindow () {
 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
 
-    if(isDev){
+    if(isDev && !process.env.hide_webtools){
         win.webContents.openDevTools();
     }
 

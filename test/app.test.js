@@ -15,9 +15,14 @@ beforeAll(async () => {
   const startTime = Date.now();
   let browser;
 
+  //set env variable to hide webtools
+  var env = process.env; 
+  env.hide_webtools = true;
+
   // Start Electron with custom debugging port
   pid = spawn(electron, [".", `--remote-debugging-port=${port}`], {
-    shell: true
+    shell: true,
+    env: env
   }).pid;
 
   // Wait for Puppeteer to connect
