@@ -1,13 +1,6 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import Button from '@material-ui/core/Button';
+import {FormControl, FormGroup, FormControlLabel, Switch, Button, makeStyles, List, ListItem} from '@material-ui/core';
 import {UserState} from '../../../context/userContext';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import { Alert } from 'react-context-alerts';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +40,7 @@ export default function SwitchesGroup() {
   const classes = useStyles();
   const {user} = UserState();
 
+  /* State is for all Firebase options */ 
   const [state, setState] = React.useState({
     all: false,
     hosting: false,
@@ -55,13 +49,14 @@ export default function SwitchesGroup() {
     functions: false,
   });
 
+  /* Ables/Disbales the deploy button  */
   function btnDisabled() {
     const isDisabled = (currentValue) => currentValue === false;
     return Object.values(state).every(isDisabled);
   }
 
+  /* Handles changes to the buttons ie when the all button is selected*/ 
   const handleChange = (event) => {
-
     // only make changes if all isnt true or the change is to the all switch
     if ( event.target.name === 'all' || state.all !== true ) {
       setState({ ...state, [event.target.name]: event.target.checked });
@@ -88,18 +83,12 @@ export default function SwitchesGroup() {
     }
 
   };
+  
+  // React context alert for successful/failed deploy
+  const [showAlert, setAlert] = React.useState({display: false, status: '', data: '', type: '', header: ''});
 
-  //used for testing purposes - state can be removed when ready along with <p> below
-  //calling the deploy python script can occur here
-  const [displayState, setDisplayState] = React.useState({});
-
-  const [showAlert, setAlert] = React.useState({display: false, status: '', data: ''});
-
+  /* Calls the deploy script */ 
   const deployItems = (state) =>{
-    setDisplayState({
-      state
-    });
-
     let arg = {
         deployOptions: state.state,
         act_proj: user.act_proj,
@@ -112,7 +101,9 @@ export default function SwitchesGroup() {
         let results = {
             display: true,
             status: output.resp,
-            data: output.data
+            data: output.data,
+            type: 'success',
+            header: 'Project has been deployed!'
 
         };
         setAlert(prevState => results)
@@ -125,6 +116,8 @@ export default function SwitchesGroup() {
             display: true,
             status: err.resp,
             data: err.data,
+            type: 'error',
+            header: "Project could not be deployed!"
         };
         setAlert(prevState => results)
     })
@@ -171,27 +164,8 @@ export default function SwitchesGroup() {
         </FormGroup>
       </FormControl>
         <div style={{margin: '2%'}}/>
-      <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >
-        DEPLOY PROJECT
-      </Button>
-        {showAlert.status === 'success' ? (
-            <Alert open={showAlert.display} onClose={() => {
-                setAlert(prevState => ({
-                    ...prevState,
-                    display: false
-                }))
-                // eslint-disable-next-line no-control-regex
-            }} type={'success'} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project has been deployed!"} />
-        ) : (
-            <Alert open={showAlert.display} onClose={() => {
-                setAlert(prevState => ({
-                    ...prevState,
-                    display: false
-                }))
-                // eslint-disable-next-line no-control-regex
-            }} timeout={null} type={'error'} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={"Project could not be deployed!"} />
-        )}
-
+      <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >DEPLOY PROJECT</Button>
+      <Alert open={showAlert.display} onClose={() => {setAlert({display: false, status: '', data: '', type: '', header: ''})}} type={showAlert.type} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={showAlert.header} />
     </div>
   );
 }
