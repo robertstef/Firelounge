@@ -1,6 +1,5 @@
 import React from 'react'
 import {Typography, makeStyles} from "@material-ui/core";
-import {UserState} from "../../context/userContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 */ 
 export default function NoActiveProj() {
     const classes = useStyles();
-    const { user } = UserState();
 
     return(
         <div className={classes.root}>

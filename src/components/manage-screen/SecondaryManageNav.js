@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import PanTool from '@material-ui/icons/PanTool';
-import CloudQueueIcon from '@material-ui/icons/CloudQueue';
-import StorageIcon from '@material-ui/icons/Storage';
+import {makeStyles, AppBar, Tabs, Tab, Box} from '@material-ui/core';
+import {PanTool, CloudQueue, Storage} from '@material-ui/icons';
 import DeployScreen from './deploy-screen/DeployScreen.js'
 import DbQueryScreen from './db-query-screen/DbQueryScreen.js'
 import DbObjectScreen from './db-object-screen/DbObjectScreen.js'
@@ -119,8 +113,8 @@ export default function SecondaryManageNav(props) {
               className={classes.tabs}
               indicatorColor={"primary"}
           >
-            <LinkTab icon={<CloudQueueIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
+            <LinkTab icon={<CloudQueue/>} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<Storage/>} {...a11yProps(1)} />
             <LinkTab icon={<PanTool/>} {...a11yProps(2)} />
           </Tabs>
       </AppBar>
@@ -132,7 +126,7 @@ export default function SecondaryManageNav(props) {
           <DbQueryScreen />
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <DbObjectScreen />
+          <DbObjectScreen />
         </TabPanel>
       </div>
     </div>

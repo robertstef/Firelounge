@@ -3,15 +3,8 @@
    the users current firebase projects that have not been
    added to firelounge.
  */
-
-import React, { useEffect } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import React from 'react';
+import { makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { Alert } from 'react-context-alerts';
 import AddProjButton from './AddProjButton'
 import {UserState} from '../../../context/userContext';
@@ -70,9 +63,6 @@ export default function CustomizedTable() {
 
     /* Callback to trigger the successful import alert */
     const [success, setSuccess]  = React.useState({display: false, message: ''});
-    const triggerAlert = (event) => {
-      setSuccess(event);   
-    }
     
     return (
             <TableContainer className={classes.root}>

@@ -1,13 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from "@material-ui/core/Paper";
-import Toolbar from "@material-ui/core/Toolbar";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import InputBase from "@material-ui/core/InputBase";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import { makeStyles, FormControl, Select, MenuItem } from '@material-ui/core';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({

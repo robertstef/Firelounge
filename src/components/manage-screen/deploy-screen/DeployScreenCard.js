@@ -1,8 +1,7 @@
 import React from 'react'
 import {Card, Divider, Typography, makeStyles} from "@material-ui/core/";
 import SwitchesGroup from './SwitchesGroup.js';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import FolderSpecialIcon from '@material-ui/icons/FolderSpecial';
+import {AccountCircle, FolderSpecial} from '@material-ui/icons';
 import {UserState} from "../../../context/userContext";
 import NoActiveProj from "../../Utility/NoActiveProj"
 
@@ -20,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
         fontWeight:200,
     },
     subheading: {
-        marginRight: '3%'
+        marginRight: '3%',
+        fontWeight:200,
     },
     body: {
         height: '69%',
@@ -74,11 +74,11 @@ function DeployScreenCard() {
                         <div className={classes.projInfo}>
                             <Typography className={classes.subheading}>Active Project:</Typography>
                             <Typography id={'manage-deploy-proj-uname'} variant={'subtitle2'}  className={classes.infoHeading}>
-                                <AccountCircleIcon className={classes.infoIcon}/>
+                                <AccountCircle className={classes.infoIcon}/>
                                 {user.uname}
                             </Typography>
                             <Typography id={'manage-deploy-proj-title'} variant={'subtitle2'} className={classes.infoHeading}>
-                                <FolderSpecialIcon className={classes.infoIcon}/>
+                                <FolderSpecial className={classes.infoIcon}/>
                                 {user.act_proj.name}
                             </Typography>
                         </div>
