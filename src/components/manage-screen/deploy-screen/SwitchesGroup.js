@@ -148,7 +148,8 @@ export default function SwitchesGroup() {
                   control={
                       <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
                       onChange={handleChange}
-                      name={`${user.act_proj.features[`${value}`]}`} />}
+                      name={`${user.act_proj.features[`${value}`]}`} 
+                      id= {`manage-deploy-switch-${user.act_proj.features[`${value}`]}`} />}
               />    
             </ListItem>
               );
@@ -156,7 +157,7 @@ export default function SwitchesGroup() {
             <ListItem className={classes.listItem}>
               <FormControlLabel
                   classes={{label: classes.label}}
-                  control={<Switch checked={state.all} onChange={handleChange} name="all" />}
+                  control={<Switch checked={state.all} onChange={handleChange} name="all" id={'manage-deploy-switch-all'} />}
                   label="All"
               />    
             </ListItem>
