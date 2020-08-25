@@ -2,6 +2,7 @@ import React from 'react';
 import {FormControl, FormGroup, FormControlLabel, Switch, Button, makeStyles, List, ListItem} from '@material-ui/core';
 import {UserState} from '../../../context/userContext';
 import { Alert } from 'react-context-alerts';
+import CircularProgress from "../../Utility/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SwitchesGroup() {
   const classes = useStyles();
   const {user} = UserState();
+  const [loading, setLoading] = React.useState(false);
 
   /* State is for all Firebase options */ 
   const [state, setState] = React.useState({
@@ -89,13 +91,16 @@ export default function SwitchesGroup() {
 
   /* Calls the deploy script */ 
   const deployItems = (state) =>{
+    setLoading(true);
     let arg = {
         deployOptions: state.state,
         act_proj: user.act_proj,
     };
 
+
     const deployModule = require('../../../scripts/deploy');
     deployModule.deployProject_function(arg).then((output) => {
+        setLoading(false)
         console.log(output); // log the data for the sake of viewing the result
 
         let results = {
@@ -110,6 +115,7 @@ export default function SwitchesGroup() {
         // display a success alert
 
     }).catch(err => {
+        setLoading(false)
         console.log(err);
         // display an error alert
         let results = {
@@ -167,6 +173,7 @@ export default function SwitchesGroup() {
         <div style={{margin: '2%'}}/>
       <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >DEPLOY PROJECT</Button>
       <Alert open={showAlert.display} onClose={() => {setAlert({display: false, status: '', data: '', type: '', header: ''})}} type={showAlert.type} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={showAlert.header} />
-    </div>
+      {loading ?  <CircularProgress/> : null }
+   </div>
   );
 }

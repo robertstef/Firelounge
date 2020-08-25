@@ -9,7 +9,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import {UserDispatch} from "../../../context/userContext";
-import CircularIndeterminate from "../../main-screen/CircularProgress";
+import CircularIndeterminate from "../../Utility/CircularProgress";
 import StepperWave from "./StepperWave";
 import StepperProjNameInput from "./StepperProjNameInput";
 import GenericStepperInput from "./GenericStepperInput";

@@ -11,15 +11,16 @@ const useStyles = makeStyles((theme) => ({
     'opacity': 0.5,
     'position': 'absolute',
     'zIndex': 2000,
-    'top': 0,
-    'left': 0,
+    'height': 'calc(100% + 50px)',
+    'width': 'calc(100% + 50px)',
+    'top': '-50px',
     'bottom': 0,
     'right': 0,
   },
   circle: {
     'position': 'absolute',
     marginLeft: '50%',
-    marginTop: '35%'
+    marginTop: '30%'
   }
 }));
 

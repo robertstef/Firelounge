@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MainNav from "../MainNav";
 import LoginAlert from "./LoginAlert";
-import CircularProgress from "./CircularProgress"
+import CircularProgress from "../Utility/CircularProgress"
 import {UserDispatch} from "../../context/userContext";
 const checkLoginStatus = require('../../scripts/checkLoginStatus');
 const initModule = require('../../scripts/init');
