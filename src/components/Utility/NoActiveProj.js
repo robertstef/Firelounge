@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
  * Displays message when no active database defined
  * 
 */ 
-export default function NoActiveDb() {
+export default function NoActiveProj() {
     const classes = useStyles();
     const { user } = UserState();
 
@@ -27,11 +27,11 @@ export default function NoActiveDb() {
         <div className={classes.root}>
             <div style={{margin:'5%'}}/>
             <Typography className={classes.text}>
-                You dont have any active databases setup on FireLounge.
+                You dont have any active projects on FireLounge.
             </Typography>
             <div style={{margin:'10%'}}/>
             <Typography className={classes.text}>
-                Click the button in the top right corner to initialize a database through FireLounge.
+                Head over to the project creation tab to create a new project or initialize a current firebase project through FireLounge
             </Typography>
         </div>
     )
