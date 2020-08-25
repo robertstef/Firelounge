@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SettingsSwitchesGroup from './SettingsSwitchesGroup';
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import {UserState} from "../../context/userContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,17 +41,33 @@ const useStyles = makeStyles((theme) => ({
  * 
  * @props close: setState function which toggles the SettingsModal display true/false
  * 
-*/
+*/ 
 
 
 export default function DbSettingsCard(props) {
     const classes = useStyles();
+    const { user } = UserState();
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
                 <Typography className={classes.heading}> Database Settings </ Typography>
                 <Divider className={classes.divider}/>
-                <SettingsSwitchesGroup close={props.close}/>
+                {user.act_db_name !== '' ? (
+                    <SettingsSwitchesGroup close={props.close}/>
+                ): (
+                    <div className={classes.noActiveMSG}>
+                        <div style={{margin:'5%'}}/>
+                        <Typography className={classes.dbText}>
+                            You dont have any active databases setup on FireLounge.
+                        </Typography>
+                        <div style={{margin:'10%'}}/>
+                        <Typography className={classes.dbText}>
+                            Click the button in the top right corner to initialize a database through FireLounge.
+                        </Typography>
+                    </div>
+                )}
+                
             </Card>
         </div>
     )
