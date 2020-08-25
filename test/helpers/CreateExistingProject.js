@@ -6,7 +6,7 @@ module.exports = {
         let text;
     
         //wait for dev server to start, init script to run
-        await page.waitFor(20000);
+        await page.waitFor(5000);
         
         //navigate to add existing project page
         await page.waitForSelector("#create-existing-proj-icon");
@@ -36,15 +36,17 @@ module.exports = {
         await page.waitForSelector("#manage-proj-icon");
         await page.click("#manage-proj-icon");
 
+        // confirm deploy header is displayed
+        await page.waitForSelector("#manage-deploy-proj-header");
+        text = await page.$eval("#manage-deploy-proj-header", element => element.innerText);
+        expect(text).toBe('Deploy Project');
+    },
+    
+    /* Create Existing Project Confirmation */ 
+    test4: async function (page) {
         // confirm proj id matches recently added project
         await page.waitForSelector("#manage-deploy-proj-title");
         text = await page.$eval("#manage-deploy-proj-title", element => element.innerText);
         expect(text).toBe(process.env.project_name);
     },
-    
-    /* Create Existing Project Confirmation */ 
-    test4: async function (page) {
-        //TODO: Check active project title
-    },
-    
 }

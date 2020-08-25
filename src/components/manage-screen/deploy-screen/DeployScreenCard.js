@@ -65,7 +65,7 @@ function DeployScreenCard() {
 
     return(
         <Card className={classes.card}>
-            <Typography className={classes.heading} variant={"h6"}> Deploy Project </Typography>
+            <Typography id={'manage-deploy-proj-header'} className={classes.heading} variant={"h6"}> Deploy Project </Typography>
             <Divider className={classes.divider}/>
                 {user.act_proj.name === '' ? (
                     <NoActiveProj/>
