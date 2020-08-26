@@ -82,7 +82,7 @@ describe('Create Existing Project...', () => {
 });
 
 describe('Deploy Tests...', () => {
-  const {test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11} = require("./helpers/DeployTests.js");
+  const {test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13} = require("./helpers/DeployTests.js");
 
   test('Confirm Deploy Page Header', async () => {
     await test1(page);
@@ -137,4 +137,13 @@ describe('Deploy Tests...', () => {
   test('Confirm All Switch Toggles Other Switches To False', async () => {
     await test11(page);
   });
+
+  test('Confirm Deploy Hosting Functions Correctly', async () => {
+    await test12(page);
+  });
+
+  test('Confirm Deploy All Functions Correctly', async () => {
+    await test13(page);
+  });
+
 });
