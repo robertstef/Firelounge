@@ -2,7 +2,7 @@ const electron = require("electron");
 const kill = require("tree-kill");
 const puppeteer = require("puppeteer-core");
 const { spawn } = require("child_process");
-
+const { exec } = require("child_process");
 
 const port = 9200; // Debugging port
 const timeout = 35000; // Timeout in miliseconds
@@ -10,6 +10,18 @@ let page;
 let pid;
 
 jest.setTimeout(timeout);
+
+
+/* delete user file path */
+if(process.env.userfile_path != '') {
+  exec("rm " + process.env.userfile_path, {shell: true}, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    console.log("Deleted User File");
+  });  
+}
 
 /* function that runs before each test suite */
 beforeAll(async () => {
