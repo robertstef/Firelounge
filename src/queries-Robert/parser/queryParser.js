@@ -109,6 +109,26 @@ let getCollection = (query, statementType) => {
     }
     else if (statementType === 'delete') {
         // TODO - DELETE
+        let collectStart = clean_query.indexOf("from ");
+        if (collectStart < 0) {
+            throw new Error("getCollection(): could not determine collection, missing from statement");
+        } else {
+            collectStart = collectStart + collectStartOffset
+        }
+        let trimmedCol = clean_query.substring(collectStart).trim();
+        let collectEnd = trimmedCol.indexOf(" where"); // assume a where clause
+        if (collectEnd < 0) { // if no where clause
+            collectEnd = trimmedCol.match(/ |;|$/).index; // set it to the end of the query
+            if (collectEnd === 0) { // the collection was not specified (i.e. just the single ";" character)
+                throw new Error("getCollection(): could not determine collection, missing from statement");
+            }
+        }
+        let collection = trimmedCol.substring(0, collectEnd);
+
+        // replace "." with "/" if user used dot notation
+        collection = qh.replaceAll(collection, /\./, "/");
+        collection = qh.stripEncasingSlashes(collection);
+        return collection;
     }
     else {
         throw new Error("getCollection(): invalid statement type. Must be one of select, update, insert" +
