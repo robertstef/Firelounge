@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     height: '70%',
     backgroundColor: theme.palette.background.paper,
+    outline: 0,
   },
   button: {
     position: 'absolute',
@@ -20,10 +21,16 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    outline: 0,
   }
 
 }));
+
+/**
+ *  Popup Modal which holds the Settings for the various firelounge Pages 
+ *  Passes handleClose() down to Settings Nav  
+ */
 
 export default function SettingsModal() {
   const classes = useStyles();
@@ -39,7 +46,7 @@ export default function SettingsModal() {
 
   const body = (
     <div className={classes.paper}>
-      <SettingsNav/>
+      <SettingsNav close={setOpen}/>
     </div>
   );
 

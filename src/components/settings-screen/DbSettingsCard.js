@@ -1,9 +1,8 @@
 import React from 'react'
-import Card from "@material-ui/core/Card";
-import { makeStyles } from '@material-ui/core/styles';
+import {Card, Divider, Typography, makeStyles} from "@material-ui/core";
 import SettingsSwitchesGroup from './SettingsSwitchesGroup';
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import NoActiveDb from '../Utility/NoActiveDb';
+import {UserState} from "../../context/userContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -14,9 +13,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center'
     },
     card: {
-        height: '58vh',
+        height: 'calc(100% - 48px)',
         width: '95%',
-        margin: '10px',
         borderRadius: '5px',
         overflow: 'hidden',
         backgroundColor: '#EDF2F4',
@@ -35,18 +33,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-/*
-Card for holding the DB settings Switches Group
-Appears as a Tab in the Settings Modal
-*/
-export default function DbSettingsCard() {
+/** 
+ * Card for holding the DB settings Switches Group
+ * Appears as a Tab in the Settings Modal
+ * 
+ * @props close: setState function which toggles the SettingsModal display true/false
+ * 
+*/ 
+export default function DbSettingsCard(props) {
     const classes = useStyles();
+    const { user } = UserState();
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
                 <Typography className={classes.heading}> Database Settings </ Typography>
                 <Divider className={classes.divider}/>
-                <SettingsSwitchesGroup />
+                {user.act_db_name !== '' ? (
+                    <SettingsSwitchesGroup close={props.close}/>
+                ): (
+                    <NoActiveDb/>
+                )}
             </Card>
         </div>
     )

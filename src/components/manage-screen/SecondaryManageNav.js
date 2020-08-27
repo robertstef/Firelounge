@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import GroupIcon from '@material-ui/icons/Group';
-import CloudQueueIcon from '@material-ui/icons/CloudQueue';
-import StorageIcon from '@material-ui/icons/Storage';
+import {makeStyles, AppBar, Tabs, Tab, Box} from '@material-ui/core';
+import {PanTool, CloudQueue, Storage} from '@material-ui/icons';
 import DeployScreen from './deploy-screen/DeployScreen.js'
-import DbScreen from './db-screen/DbScreen.js'
+import DbQueryScreen from './db-query-screen/DbQueryScreen.js'
+import DbObjectScreen from './db-object-screen/DbObjectScreen.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,14 +53,6 @@ function LinkTab(props) {
   );
 }
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ef223c'
-    },
-  }
-});
-
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: '49px',
@@ -101,23 +87,23 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    margin: '15px',
-    marginTop: '0px',
+    margin: '2%',
   }
 }));
 
-export default function SecondaryManageNav() {
+export default function SecondaryManageNav(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    //callback to inform topNav what the active tab is
+    props.getActiveTab(newValue);
     setValue(newValue);
   };
 
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appbar}>
-        <ThemeProvider theme={theme}>
           <Tabs
               orientation='vertical'
               variant="fullWidth"
@@ -127,21 +113,20 @@ export default function SecondaryManageNav() {
               className={classes.tabs}
               indicatorColor={"primary"}
           >
-            <LinkTab icon={<CloudQueueIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<StorageIcon/>} {...a11yProps(1)} />
-            <LinkTab icon={<GroupIcon/>} {...a11yProps(2)} />
+            <LinkTab icon={<CloudQueue/>} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<Storage/>} {...a11yProps(1)} />
+            <LinkTab icon={<PanTool/>} {...a11yProps(2)} />
           </Tabs>
-        </ThemeProvider>
       </AppBar>
       <div className={classes.content}>
         <TabPanel value={value} index={0} >
           <DeployScreen />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <DbScreen />
+          <DbQueryScreen />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Users Page
+          <DbObjectScreen />
         </TabPanel>
       </div>
     </div>
