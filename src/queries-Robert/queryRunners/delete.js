@@ -5,8 +5,9 @@ const qp = require('../parser/queryParser');
  *
  * @param query
  * @param user
+ * @param commitResults
  */
-let executeDelete = (query, user) => {
+let executeDelete = (query, user, commitResults) => {
     // TODO - DELETE
     // we create the query obj
     let queryInfo = new QueryInfo();

@@ -2,8 +2,9 @@
  *
  * @param query
  * @param user
+ * @param commitResults
  */
-let executeInsert = (query, user) => {
+let executeInsert = (query, user, commitResults) => {
     // TODO - INSERT
 }
 

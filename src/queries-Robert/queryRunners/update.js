@@ -2,8 +2,9 @@
  *
  * @param query
  * @param user
+ * @param commitResults
  */
-let executeUpdate = (query, user) => {
+let executeUpdate = (query, user, commitResults) => {
     // TODO - UPDATE
 }
 
