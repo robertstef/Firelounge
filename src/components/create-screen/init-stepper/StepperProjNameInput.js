@@ -54,6 +54,7 @@ export default function StepperProjNameInput(props) {
                     </Toolbar>
                 ) : null}
                 <InputBase
+                    id={'create-proj-input-name'}
                     fullWidth
                     className={classes.textfield}
                     placeholder="Enter your project name"

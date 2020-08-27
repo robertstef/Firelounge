@@ -174,7 +174,7 @@ if(RUN_DEPLOY) {
 
 if(RUN_ADD_DATABASE) {
   describe('Add Database Tests...', () => {
-    const {test1, test2} = require("./helpers/AddDatabaseTests.js");
+    const {test1, test2, test3, test4} = require("./helpers/AddDatabaseTests.js");
 
     test('Confirm Deploy Page Header', async () => {
       await test1(page);
@@ -183,5 +183,14 @@ if(RUN_ADD_DATABASE) {
     test('Open Add Database Modal', async () => {
       await test2(page);
     });
+
+    test('Input Database Information in Stepper', async () => {
+      await test3(page);
+    });
+
+    test('Confirm Database was added', async () => {
+      await test4(page);
+    });
+    
   });
 };
