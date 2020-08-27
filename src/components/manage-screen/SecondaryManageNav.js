@@ -113,9 +113,9 @@ export default function SecondaryManageNav(props) {
               className={classes.tabs}
               indicatorColor={"primary"}
           >
-            <LinkTab icon={<CloudQueue/>} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<Storage/>} {...a11yProps(1)} />
-            <LinkTab icon={<PanTool/>} {...a11yProps(2)} />
+            <LinkTab icon={<CloudQueue id={'manage-deploy-icon'}/>} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<Storage id={'manage-query-icon'}/>} {...a11yProps(1)} />
+            <LinkTab icon={<PanTool id={'manage-object-icon'}/>} {...a11yProps(2)} />
           </Tabs>
       </AppBar>
       <div className={classes.content}>

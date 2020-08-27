@@ -44,7 +44,7 @@ export default function DbInitModal() {
 
   return (
     <div>
-      <IconButton type="button" onClick={handleOpen} className={classes.button}>
+      <IconButton id={'manage-add-db-icon'} type="button" onClick={handleOpen} className={classes.button}>
         <QueueIcon />
       </IconButton>
       <Modal

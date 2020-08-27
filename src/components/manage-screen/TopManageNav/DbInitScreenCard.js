@@ -38,7 +38,7 @@ export default function DbInitScreenCard(props) {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading}> Initialize Database </ Typography>
+                <Typography id={'manage-add-db-header'}className={classes.heading}> Initialize Database </ Typography>
                 <Divider className={classes.divider}/>
                 <DbStepper setOpen={props.setOpen}/>
             </Card>

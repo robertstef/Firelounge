@@ -156,7 +156,6 @@ export default function DbObjectDisplay() {
         
     }
 
-    
     return(
         <div style={{height: '100%', width: '100%', padding: '10px'}}>
             <ReactJson 
