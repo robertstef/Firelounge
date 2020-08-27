@@ -41,7 +41,7 @@ export default function GetPathButton(props) {
 
     return(
         <div style={{marginTop:10}}>
-            <Button size={'small'} variant={'outlined'} style={{height:'40px'}} onClick={getPathIPC} id={'manage-db-stepper-file-button'} >
+            <Button size={'small'} variant={'outlined'} style={{wordBreak: 'break-word'}} onClick={getPathIPC} id={'manage-db-stepper-file-button'} >
                 <DisplayFilePath />    
             </Button>
             <Alert type={'error'} open={error.display} message={error.message} onClose={()=>{ setError({display:false, message:''}) } }/>
