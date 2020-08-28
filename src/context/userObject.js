@@ -217,6 +217,19 @@ export default class User {
         }
     }
 
+    /**
+     * Return the database object.
+     *
+     * @returns {undefined}
+     */
+    get db_object() {
+        try {
+            return this.db_obj;
+        } catch (err) {
+            return undefined;
+        }
+    }
+
 
     /* SETTER METHODS */
 
