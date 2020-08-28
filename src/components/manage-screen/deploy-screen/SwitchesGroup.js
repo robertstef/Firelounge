@@ -171,8 +171,8 @@ export default function SwitchesGroup() {
         </FormGroup>
       </FormControl>
         <div style={{margin: '2%'}}/>
-      <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >DEPLOY PROJECT</Button>
-      <Alert open={showAlert.display} onClose={() => {setAlert({display: false, status: '', data: '', type: '', header: ''})}} type={showAlert.type} timeout={null} message={showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} header={showAlert.header} />
+      <Button className={classes.button} id={'manage-deploy-button'} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >DEPLOY PROJECT</Button>
+      <Alert  open={showAlert.display} onClose={() => {setAlert({display: false, status: '', data: '', type: '', header: ''})}} type={showAlert.type} timeout={null} message={<p id={'manage-deploy-alert-message'}> {showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} </p>} header={<p id={'manage-deploy-alert-header'}> {showAlert.header} </p> } />
       {loading ?  <CircularProgress/> : null }
    </div>
   );

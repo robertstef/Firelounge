@@ -201,5 +201,62 @@ module.exports = {
     },
 
 
+    /* Confirm Deploy Hosting Functions Correctly */
+    test12: async function (page) {
+        let text;
+
+        //Toggle hosting switch to true
+        await page.waitForSelector("#manage-deploy-switch-hosting");
+        await page.click("#manage-deploy-switch-hosting");
+
+        //confirm its true
+        await page.waitForSelector("#manage-deploy-switch-hosting");
+        text = await page.$eval("#manage-deploy-switch-hosting", element => element.checked);
+        expect(text).toBe(true);
+
+        //Click deploy button
+        await page.waitForSelector("#manage-deploy-button");
+        await page.click("#manage-deploy-button");
+
+        //check alert to confirm successful 
+        await page.waitForSelector("#manage-deploy-alert-header");
+        text = await page.$eval("#manage-deploy-alert-header", element => element.innerText);
+        expect(text).toBe('Project has been deployed!');
+
+        //check alert to confirm successful 
+        await page.waitForSelector("#manage-deploy-alert-message");
+        text = await page.$eval("#manage-deploy-alert-message", element => element.innerText);
+        expect(text).toBe('Hosting URL: ' + process.env.project_url);
+    },
+
+    /* Confirm Deploy All Functions Correctly */
+    test13: async function (page) {
+        let text;
+
+        await page.waitFor(5000);       
+
+        //Toggle all switch to true
+        await page.waitForSelector("#manage-deploy-switch-all");
+        await page.click("#manage-deploy-switch-all");
+
+        //confirm its true
+        await page.waitForSelector("#manage-deploy-switch-all");
+        text = await page.$eval("#manage-deploy-switch-all", element => element.checked);
+        expect(text).toBe(true);
+
+        //Click deploy button
+        await page.waitForSelector("#manage-deploy-button");
+        await page.click("#manage-deploy-button");
+
+        //check alert to confirm successful 
+        await page.waitForSelector("#manage-deploy-alert-header");
+        text = await page.$eval("#manage-deploy-alert-header", element => element.innerText);
+        expect(text).toBe('Project has been deployed!');
+
+        //check alert to confirm successful 
+        await page.waitForSelector("#manage-deploy-alert-message");
+        text = await page.$eval("#manage-deploy-alert-message", element => element.innerText);
+        expect(text).toBe('Hosting URL: ' + process.env.project_url);
+    },
 
 }
