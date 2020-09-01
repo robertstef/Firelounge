@@ -110,6 +110,7 @@ export default function UserSettingsCard(props) {
                         icon={<AccountCircleIcon />}
                         label={user.uname}
                         className={classes.chip}
+                        id='settings-modal-user-username'
                 />
                 </div>
                 

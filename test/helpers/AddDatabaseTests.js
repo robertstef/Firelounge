@@ -6,6 +6,7 @@ module.exports = {
         let text;
 
         await page.waitForSelector("#manage-object-icon");
+        await page.hover("#manage-object-icon");
         await page.click("#manage-object-icon");
 
         // confirm header is displayed

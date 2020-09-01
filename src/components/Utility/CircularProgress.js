@@ -29,7 +29,7 @@ export default function CircularIndeterminate() {
 
   return (
     <div className={classes.root}>
-      <CircularProgress className={classes.circle}/>
+      <CircularProgress className={classes.circle} id='circular-progress'/>
     </div>
   );
 }

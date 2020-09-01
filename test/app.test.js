@@ -10,10 +10,12 @@ let page;
 let pid;
 
 /* Define tests to run */
+const RUN_ALL = false;
+const RUN_LOGIN = false;
 const RUN_INITIALIZATION = true;
-const RUN_CREATE_EXISTING_PROJ = true;
+const RUN_CREATE_EXISTING_PROJ = false;
 const RUN_DEPLOY = false;
-const RUN_ADD_DATABASE = true;
+const RUN_ADD_DATABASE = false;
 
 
 jest.setTimeout(timeout);
@@ -70,7 +72,28 @@ afterAll(async () => {
   }
 });
 
-if(RUN_INITIALIZATION) {
+/* LOGIN TESTS */
+if(RUN_LOGIN || RUN_ALL) {
+  describe('Login Tests...', () => {
+    const {test1, test2, test3} = require("./helpers/LoginTests.js");
+    
+    test('Able to Logout of Account', async () => {
+      await test1(page);
+    });
+    
+    test('Login Modal Display Correctly', async () => {
+      await test2(page);
+    });
+
+    test('Click and Confirm Login ', async () => {
+      await test3(page);
+    });
+
+  });
+};
+
+/* INITIALIZATION TESTS */
+if(RUN_INITIALIZATION || RUN_ALL) {
   describe('Initialization Tests...', () => {
     const {test1} = require("./helpers/InitalizationTests.js");
 
@@ -80,7 +103,8 @@ if(RUN_INITIALIZATION) {
   });
 };
 
-if(RUN_CREATE_EXISTING_PROJ) {
+/* CREATE EXISTING PROJECT TESTS */
+if(RUN_CREATE_EXISTING_PROJ || RUN_ALL) {
   describe('Create Existing Project...', () => {
     const {test1, test2, test3, test4} = require("./helpers/CreateExistingProject.js");
 
@@ -102,8 +126,8 @@ if(RUN_CREATE_EXISTING_PROJ) {
   });
 };
 
-
-if(RUN_DEPLOY) {
+/* DEPLOY TESTS */
+if(RUN_DEPLOY || RUN_ALL) {
   describe('Deploy Tests...', () => {
     const {test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11, test12, test13} = require("./helpers/DeployTests.js");
 
@@ -172,11 +196,12 @@ if(RUN_DEPLOY) {
   });
 };
 
-if(RUN_ADD_DATABASE) {
+/* ADD DATABASE TESTS */
+if(RUN_ADD_DATABASE || RUN_ALL) {
   describe('Add Database Tests...', () => {
     const {test1, test2, test3, test4} = require("./helpers/AddDatabaseTests.js");
 
-    test('Confirm Deploy Page Header', async () => {
+    test('Confirms Navigation to Database Object Page ', async () => {
       await test1(page);
     });
 
