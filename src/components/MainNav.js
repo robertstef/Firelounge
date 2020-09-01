@@ -112,8 +112,8 @@ export default function MainNav() {
                   aria-label="nav tabs example"
                   indicatorColor={"primary"}
               >
-                <LinkTab icon={<CreateIcon />} {...a11yProps(0)} className={classes.linkTab}/>
-                <LinkTab icon={<BusinessCenterIcon />} {...a11yProps(1)} className={classes.linkTab}/>
+                <LinkTab icon={<CreateIcon id={'create-proj-icon'}/>} {...a11yProps(0)} className={classes.linkTab}/>
+                <LinkTab icon={<BusinessCenterIcon id={'manage-proj-icon'}/>} {...a11yProps(1)} className={classes.linkTab}/>
               </Tabs>
               
               {/* Opens Settings Modal */}

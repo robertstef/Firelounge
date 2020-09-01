@@ -7,11 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import CreateCurrentProjectContent from "./CreateCurrentProjectContent";
-import AddProjContent from "./AddProjContent"
-import Card from "@material-ui/core/Card";
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import CreateNewProjectStepper from "./CreateNewProjectStepper";
+import AddProjContent from "./project-table/AddProjContent"
+import CreateNewProjectStepper from "./init-stepper/CreateNewProjectStepper";
 
 
 function TabPanel(props) {
@@ -94,10 +91,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
-    margin: '15px',
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    justifyContent: 'center'
+    margin: '2%',
   }
 }));
 
@@ -122,25 +116,19 @@ export default function SecondaryManageNav() {
               indicatorColor={"primary"}
           >
             {/* Icons for nav bar */}
-            <LinkTab icon={<CreateNewFolderIcon/>} {...a11yProps(0)} className={classes.linkTab}/>
-            <LinkTab icon={<OpenInBrowserIcon/>} {...a11yProps(1)} />
+            <LinkTab icon={<CreateNewFolderIcon id={'create-new-proj-icon'}/>} {...a11yProps(0)} className={classes.linkTab}/>
+            <LinkTab icon={<OpenInBrowserIcon id={'create-existing-proj-icon'} />} {...a11yProps(1)} className={classes.linkTab}/>
           </Tabs>
       </AppBar>
       <div className={classes.content}>
         {/* Create page */}
         <TabPanel value={value} index={0} >
-          <div style={{marginTop: -10}}/>
-          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <CreateNewProjectStepper/>
-          </Card>
         </TabPanel>
 
         {/* Add existing project to firelounge page */}
         <TabPanel value={value} index={1}>
-          <div style={{marginTop:-10}}/>
-          <Card style={{height: '95vh', borderRadius: 25, backgroundColor: '#ef223c'}}>
             <AddProjContent/>
-          </Card>
         </TabPanel>
       </div>
     </div>

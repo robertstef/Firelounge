@@ -15,8 +15,6 @@ module.exports = {
 
         const proj_id = requestBody.proj_id;
 
-        const proj_name = requestBody.proj_name;
-
         let firebase = {}; // the firebase.json object we will be writing
 
         let firebaserc = {}; // the .firebaserc object we will be writing
@@ -85,6 +83,8 @@ module.exports = {
                     initfunctions.functionsInit(proj_path, arg);
 
                     break;
+                default:
+                    console.log("Unexpected Case");
             }
         });
 

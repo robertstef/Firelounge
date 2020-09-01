@@ -14,7 +14,7 @@ ipcMain.on('get-path', (event, arg) => {
         dialog.showOpenDialog(null,{ title: 'Fire Lounge', defaultPath: '/', properties:["openDirectory"] }).then( function(res) {
                 if (res.canceled === true ) {
                     dialogShown = false;
-                    event.reply('get-path-reply', "Invalid");
+                    event.reply('get-path-reply', "Cancelled");
                 }  else if (res.filePaths.length > 0) {
                     dialogShown = false;
                     /* Select a file path that doesnt contain firebase files*/
@@ -26,6 +26,7 @@ ipcMain.on('get-path', (event, arg) => {
                             if(LOGGING){log.info(err);}
                             event.reply('new_proj-get-path-reply', "Error: " + err);
                         });
+
                     } else if (arg === "init-path") {
                         /* Select a file path that doesnt contain firebase files*/
                         const validDir = require(isDev ? './validDir.js' : '../build/validDir.js');
@@ -35,6 +36,7 @@ ipcMain.on('get-path', (event, arg) => {
                             if(LOGGING){log.info(err);}
                             //else invalid - send back invalid
                             event.reply('get-path-reply', "Error: " + err);
+
                         });
                     } else {
                         console.log("INVALID ARGUMENT INTO IPC")
@@ -84,12 +86,12 @@ function createWindow () {
             nodeIntegration: true    
         },
         //beleive this sets icon for winwos/linux 
-        icon: isDev ? app.getAppPath() + "./public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
+        icon: isDev ? app.getAppPath() + "/public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
     });
 
     win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
 
-    if(isDev){
+    if(isDev && !process.env.hide_webtools){
         win.webContents.openDevTools();
     }
 

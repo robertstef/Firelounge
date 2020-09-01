@@ -1,38 +1,30 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import SettingsIcon from '@material-ui/icons/Settings';
+import QueueIcon from '@material-ui/icons/Queue';
 import IconButton from '@material-ui/core/IconButton';
-import SettingsNav from './SettingsNav.js';
+import DbInitScreenCard from './DbInitScreenCard';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: '70%',
-    height: '70%',
-    backgroundColor: theme.palette.background.paper,
+    width: '60%',
+    height: '80%',
+    backgroundColor: '#8D99AE',
     outline: 0,
+    borderRadius: '25px',
   },
   button: {
-    position: 'absolute',
-    bottom: '10px',
-    marginTop: 'auto',
   },
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    outline: 0,
+    minHeight: '600px',
   }
-
 }));
 
-/**
- *  Popup Modal which holds the Settings for the various firelounge Pages 
- *  Passes handleClose() down to Settings Nav  
- */
-
-export default function SettingsModal() {
+export default function DbInitModal() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -46,14 +38,14 @@ export default function SettingsModal() {
 
   const body = (
     <div className={classes.paper}>
-      <SettingsNav close={setOpen}/>
+        <DbInitScreenCard setOpen={setOpen}/>
     </div>
   );
 
   return (
     <div>
       <IconButton type="button" onClick={handleOpen} className={classes.button}>
-        <SettingsIcon/>
+        <QueueIcon />
       </IconButton>
       <Modal
         open={open}

@@ -12,6 +12,11 @@
       "icon": "build/icon.png"
     }
   },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/test/setEnvVars.js"
+    ]
+  },
   "homepage": "./",
   "main": "public/electron.js",
   "private": true,
@@ -23,7 +28,6 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "cross-env": "^7.0.2",
     "cross-spawn": "^7.0.3",
     "deepmerge": "^4.2.2",
     "electron-is-dev": "^1.2.0",
@@ -45,11 +49,12 @@
   "scripts": {
     "react-start": "react-scripts start",
     "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "build": "npm run react-build && npm run electron-build",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "start-server": "cross-env BROWSER=none npm run react-start",
+    "test": "concurrently \"npm run start-server\" \"jest\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -67,10 +72,12 @@
     ]
   },
   "devDependencies": {
-    "@material-ui/icons": "^4.9.1",
     "concurrently": "^5.2.0",
-    "electron": "^8.3.0",
+    "electron": "^9.0.5",
     "electron-builder": "^22.6.0",
-    "wait-on": "^5.0.0"
+    "wait-on": "^5.0.0",
+    "puppeteer-core": "^5.2.1",
+    "puppeteer-in-electron": "^3.0.3",
+    "cross-env": "^7.0.2"
   }
 }

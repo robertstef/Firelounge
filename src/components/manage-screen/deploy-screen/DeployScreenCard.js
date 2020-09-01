@@ -1,32 +1,62 @@
 import React from 'react'
-import Card from "@material-ui/core/Card";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
+import {Card, Divider, Typography, makeStyles} from "@material-ui/core/";
 import SwitchesGroup from './SwitchesGroup.js';
-import { makeStyles } from '@material-ui/core/styles'
+import {AccountCircle, FolderSpecial} from '@material-ui/icons';
 import {UserState} from "../../../context/userContext";
+import NoActiveProj from "../../Utility/NoActiveProj"
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        left: '0px',
-        right: '0px',
-        height: '100%'
-    },
     card: {
         height: '100%',
-        borderRadius: 45,
+        width: '100%',
+        borderRadius: '25px',
     },
     heading: {
-        paddingLeft: '3%',
-        paddingTop: '3%',
-        backgroundColor: 'white',
+        marginTop: '3%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
         fontWeight:200,
     },
-    noActiveMSG: {
-        padding: '3%',
-        spacing: theme.spacing(2)
-
+    subheading: {
+        marginRight: '3%',
+        fontWeight:200,
     },
+    body: {
+        height: '69%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    divider: {
+        marginTop: '1%',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    bodyDivider: {
+        marginTop: '1%',
+        marginBottom: '3%',
+        width: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    infoHeading: {
+        fontWeight:200,
+        alignItems: 'center',
+        display: 'flex',
+        width: '30%'
+    },
+    infoIcon: {
+        marginRight: '1%',
+        color: '#8D99AE',
+        verticalAlign: 'middle',
+    },
+    projInfo: {
+        display:'flex',
+        marginTop: '3%'
+    },
+
 }));
 
 function DeployScreenCard() {
@@ -34,29 +64,30 @@ function DeployScreenCard() {
     const {user} = UserState();
 
     return(
-        <div className={classes.root}>
-            <Card className={classes.card}>
-                <Typography className={classes.heading} variant={"h6"}> Deploy Project </Typography>
+        <Card className={classes.card}>
+            <Typography id={'manage-deploy-proj-header'} className={classes.heading} variant={"h6"}> Deploy Project </Typography>
+            <Divider className={classes.divider}/>
                 {user.act_proj.name === '' ? (
-                    <div className={classes.noActiveMSG}>
-                        <Divider/>
-                        <div style={{margin:'5%'}}/>
-                        <Typography>
-                            You dont have any active projects on FireLounge.
-                        </Typography>
-                        <div style={{margin:'10%'}}/>
-                        <Typography>
-                            Head over to the project creation tab to create a new project or initialize a current firebase project through FireLounge
-                        </Typography>
-                    </div>
+                    <NoActiveProj/>
                 ): (
-                    <div>
-                        <SwitchesGroup className={classes.switchesGroup}/>
+                    <div className={classes.body}>
+                        <div className={classes.projInfo}>
+                            <Typography className={classes.subheading}>Active Project:</Typography>
+                            <Typography id={'manage-deploy-proj-uname'} variant={'subtitle2'}  className={classes.infoHeading}>
+                                <AccountCircle className={classes.infoIcon}/>
+                                {user.uname}
+                            </Typography>
+                            <Typography id={'manage-deploy-proj-title'} variant={'subtitle2'} className={classes.infoHeading}>
+                                <FolderSpecial className={classes.infoIcon}/>
+                                {user.act_proj.name}
+                            </Typography>
+                        </div>
+                            <Divider className={classes.bodyDivider}/>
+                            <Typography className={classes.subheading}> Deploy Features:</Typography>
+                            <SwitchesGroup className={classes.switchesGroup}/>
                     </div>
                 )}
-
-            </Card>
-        </div>
+        </Card>
     )
 }
 

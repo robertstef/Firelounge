@@ -1,25 +1,11 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import Button from '@material-ui/core/Button';
+import {FormControl, FormGroup, FormControlLabel, Switch, Button, makeStyles, List, ListItem} from '@material-ui/core';
 import {UserState} from '../../../context/userContext';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import {Alert} from "@material-ui/lab";
-import {AlertTitle} from "@material-ui/lab";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Fade from "@material-ui/core/Fade";
-import Typography from "@material-ui/core/Typography"
+import { Alert } from 'react-context-alerts';
+import CircularProgress from "../../Utility/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      width: '95%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
     },
     formControl: {
     },
@@ -30,29 +16,33 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
     },
     label: {
-      fontSize: 12, 
+        fontWeight: 200,
     },
     button: {
-      backgroundColor: '#EDF2F4',
-      fontWeight: 200,
-      color: '#EF233C',
-      width: '100%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
+        backgroundColor: '#EDF2F4',
+        fontWeight: 200,
+        color: '#EF233C',
+        width: '100%',
+        margin: '5%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderRadius: 25,
     },
     alert: {
         borderRadius : 25,
         position: 'absolute',
         bottom: '2%',
         width: '80%',
-    }
+    },
 }));
 
 
 export default function SwitchesGroup() {
   const classes = useStyles();
   const {user} = UserState();
+  const [loading, setLoading] = React.useState(false);
 
+  /* State is for all Firebase options */ 
   const [state, setState] = React.useState({
     all: false,
     hosting: false,
@@ -61,13 +51,14 @@ export default function SwitchesGroup() {
     functions: false,
   });
 
+  /* Ables/Disbales the deploy button  */
   function btnDisabled() {
     const isDisabled = (currentValue) => currentValue === false;
     return Object.values(state).every(isDisabled);
   }
 
+  /* Handles changes to the buttons ie when the all button is selected*/ 
   const handleChange = (event) => {
-
     // only make changes if all isnt true or the change is to the all switch
     if ( event.target.name === 'all' || state.all !== true ) {
       setState({ ...state, [event.target.name]: event.target.checked });
@@ -94,43 +85,45 @@ export default function SwitchesGroup() {
     }
 
   };
+  
+  // React context alert for successful/failed deploy
+  const [showAlert, setAlert] = React.useState({display: false, status: '', data: '', type: '', header: ''});
 
-  //used for testing purposes - state can be removed when ready along with <p> below
-  //calling the deploy python script can occur here
-  const [displayState, setDisplayState] = React.useState({});
-
-  const [showAlert, setAlert] = React.useState({display: false, status: '', data: ''});
-
+  /* Calls the deploy script */ 
   const deployItems = (state) =>{
-    setDisplayState({
-      state
-    });
-
+    setLoading(true);
     let arg = {
         deployOptions: state.state,
         act_proj: user.act_proj,
     };
 
+
     const deployModule = require('../../../scripts/deploy');
     deployModule.deployProject_function(arg).then((output) => {
+        setLoading(false)
         console.log(output); // log the data for the sake of viewing the result
 
         let results = {
             display: true,
             status: output.resp,
-            data: output.data
+            data: output.data,
+            type: 'success',
+            header: 'Project has been deployed!'
 
         };
         setAlert(prevState => results)
         // display a success alert
 
     }).catch(err => {
+        setLoading(false)
         console.log(err);
         // display an error alert
         let results = {
             display: true,
             status: err.resp,
             data: err.data,
+            type: 'error',
+            header: "Project could not be deployed!"
         };
         setAlert(prevState => results)
     })
@@ -156,64 +149,31 @@ export default function SwitchesGroup() {
             return (
             <ListItem key={`${value}`} className={classes.listItem}>
               <FormControlLabel
-                label={user.act_proj.features[`${value}`].charAt(0).toUpperCase() + user.act_proj.features[`${value}`].slice(1)}
-                control={
-                  <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
-                  onChange={handleChange}
-                  name={`${user.act_proj.features[`${value}`]}`} />}
+                  classes={{label: classes.label}}
+                  label={user.act_proj.features[`${value}`].charAt(0).toUpperCase() + user.act_proj.features[`${value}`].slice(1)}
+                  control={
+                      <Switch checked={state[`${user.act_proj.features[`${value}`]}`]}
+                      onChange={handleChange}
+                      name={`${user.act_proj.features[`${value}`]}`} 
+                      id= {`manage-deploy-switch-${user.act_proj.features[`${value}`]}`} />}
               />    
             </ListItem>
               );
             })}
             <ListItem className={classes.listItem}>
               <FormControlLabel
-                control={<Switch checked={state.all} onChange={handleChange} name="all" />}
-                label="All"
+                  classes={{label: classes.label}}
+                  control={<Switch checked={state.all} onChange={handleChange} name="all" id={'manage-deploy-switch-all'} />}
+                  label="All"
               />    
             </ListItem>
           </ List>
         </FormGroup>
       </FormControl>
-      <Button className={classes.button} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >
-        DEPLOY PROJECT
-      </Button>
-      <Typography> Username: {user.uname}</Typography>
-      <Typography> Active Project: {user.act_proj.name}</Typography>
-        {/*TODO: show some project information prior to deploy? */}
-      {/*<Typography> Deploying.... {JSON.stringify(displayState)} </Typography> /!* Might want to show some other information*!/*/}
-        {showAlert.display === true ? (
-            <Fade in={showAlert.display}>
-                <Alert variant={'filled'} severity={`${showAlert.status}`}
-                       className={classes.alert}
-                       action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setAlert(prevState => ({
-                                    ...prevState,
-                                    display: false
-                                }))
-                            }}
-                    >
-                        <CloseIcon fontSize="inherit" />
-                    </IconButton>
-                }>
-                    {showAlert.status === 'success' ? (
-                        <div>
-                            <AlertTitle>Project has been deployed!</AlertTitle>
-                            <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
-                        </div>
-                        ) : (
-                        <div>
-                            <AlertTitle>Project could not be deployed!</AlertTitle>
-                            <div>{showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')}</div>
-                        </div>
-                        )}
-                </Alert>
-            </Fade>
-        ) : <div/>}
-    </div>
+        <div style={{margin: '2%'}}/>
+      <Button className={classes.button} id={'manage-deploy-button'} onClick={() => {deployItems({state})} } disabled={btnDisabled()} >DEPLOY PROJECT</Button>
+      <Alert  open={showAlert.display} onClose={() => {setAlert({display: false, status: '', data: '', type: '', header: ''})}} type={showAlert.type} timeout={null} message={<p id={'manage-deploy-alert-message'}> {showAlert.data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')} </p>} header={<p id={'manage-deploy-alert-header'}> {showAlert.header} </p> } />
+      {loading ?  <CircularProgress/> : null }
+   </div>
   );
 }
