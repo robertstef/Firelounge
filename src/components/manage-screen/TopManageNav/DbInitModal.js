@@ -1,9 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import { makeStyles, Modal, IconButton } from '@material-ui/core';
 import QueueIcon from '@material-ui/icons/Queue';
-import IconButton from '@material-ui/core/IconButton';
 import DbInitScreenCard from './DbInitScreenCard';
+import {UserState} from '../../../context/userContext'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DbInitModal() {
   const classes = useStyles();
+  const {user} = UserState();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -42,9 +42,10 @@ export default function DbInitModal() {
     </div>
   );
 
+  
   return (
     <div>
-      <IconButton id={'manage-add-db-icon'} type="button" onClick={handleOpen} className={classes.button}>
+      <IconButton id={'manage-add-db-icon'} type="button" onClick={handleOpen} className={classes.button} disabled={user.act_proj.id === '' ? true : false}>
         <QueueIcon />
       </IconButton>
       <Modal
