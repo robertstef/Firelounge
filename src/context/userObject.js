@@ -176,8 +176,6 @@ export default class User {
 
     get app_admin() { return this.admin; }
 
-    get data_baby() { return this.db }
-
     /**
      * Returns the name of the projects active database settings 
      *
