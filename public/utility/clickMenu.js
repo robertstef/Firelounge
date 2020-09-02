@@ -15,5 +15,4 @@ menu.append(menuItem)
 window.addEventListener('contextmenu', (e) => {
 e.preventDefault()
 rightClickPosition = {x: e.x, y: e.y}
-menu.popup(remote.getCurrentWindow())
-}, false)
+menu.popup(remote.getCurrentWindow())}, false)

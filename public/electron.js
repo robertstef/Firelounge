@@ -1,6 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog, nativeImage} = require('electron');
 const path = require('path');
-const url = require('url');
 const isDev = require("electron-is-dev");
 
 /* Set ICP channels for filepath selection */
