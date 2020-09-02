@@ -17,6 +17,18 @@ let getDataForSelect = (queryInfo, user) => {
 
 }
 
+
+/**
+ * Used to retrieve the entire collection from Firebase. If the query
+ * request specific fields (i.e. anything other than "*") the result
+ * is filtered to contain only the fields specified by the select
+ * statement.
+ *
+ * @param queryInfo: {QueryInfo}
+ * @param user: {User}
+ *
+ * @return {JSON}: filtered query as return by Firebase
+ */
 let queryEntireRealTimeCollection = (queryInfo, user) => {
     let collection = queryInfo.collection;
     let selectFields = queryInfo.selectFields;
@@ -36,6 +48,7 @@ let queryEntireRealTimeCollection = (queryInfo, user) => {
             // get language specific object rep with .val()
             let payload = snapshot.val();
             if (selectFields) {
+                // TODO remove non selected fields from results
                 // payload = removeNonSelectedFieldsFromResults(payload, queryInfo);
             }
             return payload;
