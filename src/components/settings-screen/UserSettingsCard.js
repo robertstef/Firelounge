@@ -149,7 +149,7 @@ export default function UserSettingsCard(props) {
                 </div>
 
 
-                <Button className={classes.button} color={'default'} onClick={handleClick}> Logout</Button>
+                <Button className={classes.button} color={'default'} onClick={handleClick} id='settings-modal-user-logout-button'> Logout</Button>
             </Card>
         </div>
     )

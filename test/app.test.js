@@ -16,6 +16,7 @@ const RUN_INITIALIZATION = true;
 const RUN_CREATE_EXISTING_PROJ = false;
 const RUN_DEPLOY = false;
 const RUN_ADD_DATABASE = false;
+const RUN_LOGOUT = false;
 
 
 jest.setTimeout(timeout);
@@ -217,5 +218,21 @@ if(RUN_ADD_DATABASE || RUN_ALL) {
       await test4(page);
     });
     
+  });
+};
+
+/* ADD DATABASE TESTS */
+if(RUN_LOGOUT || RUN_ALL) {
+  describe('Logout Tests...', () => {
+    const {test1, test2} = require("./helpers/LogoutTests.js");
+
+    test('Open Settings Modal', async () => {
+      await test1(page);
+    });
+    
+    test('Logout and Wait for Login Modal', async () => {
+      await test2(page);
+    });
+
   });
 };
