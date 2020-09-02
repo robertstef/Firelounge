@@ -22,8 +22,6 @@ module.exports = {
     functionsInit: function(proj_path, input) {
 
         const helpers = require('./functionsInitHelper');
-        const fs = require("fs");
-        const path = require("path");
 
         // verify input is correct
         helpers.check_input(input);
@@ -44,7 +42,7 @@ module.exports = {
             helpers.npmInstaller(fcns_path);
         }
     }
-}
+};
 
 // /* Just for testing */
 // try {

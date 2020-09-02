@@ -1,5 +1,6 @@
 import QueryInfo from "../parser/QueryInfo";
 const qp = require('../parser/queryParser');
+const db = require('../dataBase/selectDb');
 
 /**
  *
@@ -17,6 +18,8 @@ let executeSelect = (query, user) => {
     } catch (err) {
         console.log(err);
     }
+
+    return db.getDataForSelect(queryInfo, user);
 }
 
 export default executeSelect;

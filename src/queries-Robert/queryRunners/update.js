@@ -5,8 +5,9 @@ const qp = require('../parser/queryParser');
  *
  * @param query
  * @param user
+ * @param commitResults
  */
-let executeUpdate = (query, user) => {
+let executeUpdate = (query, user, commitResults) => {
     // TODO - UPDATE
 
     // should commit results is present here again
