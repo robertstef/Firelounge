@@ -137,6 +137,75 @@ describe("getCollection - select statement", () => {
 
 });
 
+/* Tests for getCollection update statements*/
+describe("getCollection - update statement", () => {
+    it("update statement - non-nested collection", () => {
+        let result = qp.getCollection("update employees;", "update");
+        assert.equal(result, "employees");
+    });
+    it("update statement  - nested collection with slashes", () => {
+        let result = qp.getCollection("update employees/sections/id;", "update");
+        assert.equal(result, "employees/sections/id");
+    });
+    it("update statement - non-nested collection with set and where clause", () => {
+        let result = qp.getCollection("update games set playerName=Jack where playerName=Jackson;", "update");
+        assert.equal(result, "games");
+    });
+    it("update statement - nested collection with slashes and set and where clause", () => {
+        let result = qp.getCollection("update games/this/object set playerName=Jack where playerName=Jackson;", "update");
+        assert.equal(result, "games/this/object");
+    });
+    it("update statement - no collection given without whitespace nor set and where clause", () => {
+        let query = "update;";
+        assert.throws(() => qp.getCollection(query, "update"), Error,
+            "getCollection(): could not determine collection, missing from statement")
+    });
+    it("update statement - no collection given with whitespace nor set and where clause", () => {
+        let query = "update ;";
+        assert.throws(() => qp.getCollection(query, "update"), Error,
+            "getCollection(): could not determine collection, missing from statement")
+    });
+
+    it("update statement - no collection given without whitespace and set and where clause", () => {
+        let query = "update set playerName=Jack where playerName=Jackson;";
+        assert.throws(() => qp.getCollection(query, "update"), Error,
+            "getCollection(): could not determine collection, missing from statement")
+    });
+    it("update statement - no collection given with whitespace and set and where clause", () => {
+        let query = "update  set playerName=Jack where playerName=Jackson;";
+        assert.throws(() => qp.getCollection(query, "update"), Error,
+            "getCollection(): could not determine collection, missing from statement")
+    });
+});
+
+/* Tests for getSets used in Update statements */
+describe("getSets - Update statements", () => {
+    it("getSets - basic example with single change", () => {
+        let result = qp.getSets('update users set height=99, where age<16');
+        assert.deepStrictEqual(result, { height: 99});
+    });
+
+    it("getSets - basic example with multiple changes", () => {
+        let result = qp.getSets('update users set height=10, name=timmy where age<5');
+        assert.deepStrictEqual(result, { height: 10, name: "timmy" });
+    });
+
+    it("getSets - basic example with nested change", () => {
+        let result = qp.getSets('update users set name/height=10, where age<5');
+        assert.deepStrictEqual(result, { 'name/height': 10});
+    });
+
+    it("getSets - basic example no set", () => {
+        let result = qp.getSets('update players where score<20');
+        assert.equal(result, null)
+    });
+
+    it("getSets - basic example with empty set", () => {
+        let result = qp.getSets('update players set where score<20');
+        assert.deepStrictEqual(result, {})
+    });
+});
+
 /* Tests for getCollection delete statement*/
 describe("getCollection - delete statement", () => {
    it("delete statement - non-nested collection", () => {

@@ -5,6 +5,6 @@
  */
 let executeInsert = (query, user) => {
     // TODO - INSERT
-}
+};
 
 export default executeInsert;

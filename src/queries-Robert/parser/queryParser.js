@@ -103,6 +103,26 @@ let getCollection = (query, statementType) => {
     }
     else if (statementType === 'update') {
         // TODO - UPDATE
+        const updateStartOffset = 6;
+        let collectStart = clean_query.indexOf('update ');
+        if (collectStart < 0) {
+            throw new Error("getCollection(): could not determine collection, missing from statement");
+        } else {
+            collectStart = collectStart + updateStartOffset;
+        }
+        let trimmedCol = clean_query.substring(collectStart).trim();
+        let collectEnd = trimmedCol.match(/ |;|$/).index;
+        let collection = trimmedCol.substring(0, collectEnd);
+
+        // replace "." with "/" if user used dot notation
+        collection = qh.replaceAll(collection, /\./, "/");
+        collection = qh.stripEncasingSlashes(collection);
+
+        //TODO - there might be a more graceful way to check for situation where there is no collection specified, but SET option is specified
+        if (collection.trim().length === 0 || collection === 'set') {
+            throw new Error("getCollection(): could not determine collection, missing from statement");
+        }
+        return collection;
     }
     else if (statementType === 'insert') {
        // TODO - INSERT
@@ -123,6 +143,7 @@ let getCollection = (query, statementType) => {
                 throw new Error("getCollection(): could not determine collection, missing from statement");
             }
         }
+
         let collection = trimmedCol.substring(0, collectEnd);
 
         // replace "." with "/" if user used dot notation
@@ -325,12 +346,48 @@ let getObjectsFromInsert = (query) => {
 }
 
 /**
+ * Parses the SET statement from a given UPDATE mySQL statement
  *
- * @param query
+ * an example of a query:
+ *
+ * UPDATE games SET name=Richard WHERE score>20
+ *
+ * Expected return value
+ *
+ * {name :  "Richard"}
+ *
+ * @param query: {String} - query to be parsed
+ * @return null|{variable1: String, variable2: String: , ... , variableN: String}
  */
 let getSets = (query) => {
     // TODO - UPDATE
-}
+    const setIndexStart = query.indexOf(" set ") + 1;
+    if (setIndexStart < 1) {
+        //if there arent any sets in the query return null
+        return null;
+    }
+    const whereIndexStart = query.indexOf(" where ") + 1;
+    let setsArr;
+    if (whereIndexStart > 0) {
+        setsArr = query.substring(setIndexStart + 3, whereIndexStart).split(", ");
+    } else {
+        setsArr = query.substring(setIndexStart + 3).split(", ");
+        setsArr[setsArr.length - 1] = setsArr[setsArr.length - 1].replace(";", "");
+    }
+    let sets = {};
+    setsArr.forEach(item => {
+       let [key, val] = item.split("=");
+       if (key && val) {
+           if (/^\s*\(?(select).+from.+\)?/i.test(val)) { // UPDATE table_name SET=(SELECT id FROM history)...
+               // val = the result of that select query
+               // val = executeQuery(val, 'select')
+           }
+           key = key.replace(".", "/").trim();
+           sets[key] = qh.getParsedValue(val.trim(), false);
+       }
+    });
+    return sets;
+};
 
 /* Export statements */
 module.exports = {
