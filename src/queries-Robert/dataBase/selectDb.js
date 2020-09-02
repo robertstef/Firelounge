@@ -1,22 +1,22 @@
 /**
+ * Executes a Firebase query for a SELECT statement.
  *
- * @param queryInfo
+ * @param queryInfo: {QueryInfo}
  * @param user: {User}
+ *
+ * @return {Object}: result of Firebase query
  */
 let getDataForSelect = (queryInfo, user) => {
     let wheres = queryInfo.wheres;
-    let selectFields = queryInfo.selectFields;
 
     if (wheres === null || wheres[0] !== '=') {
         return queryEntireRealTimeCollection(queryInfo, user);
-        // queryEntireRealTimeCollection
     }
     else {
-        // executeFilteredRealTimeQuery
+        return executeFilteredRealtimeQuery(queryInfo, user);
     }
 
 }
-
 
 /**
  * Used to retrieve the entire collection from Firebase. If the query
@@ -53,6 +53,33 @@ let queryEntireRealTimeCollection = (queryInfo, user) => {
             }
             return payload;
     });
+}
+
+/**
+ * Executes a Firebase query where the user has specified
+ * specific parameters using a WHERE statement.
+ *
+ * @param queryInfo: {QueryInfo}
+ * @param user: {User}
+ *
+ * @returns {Object}: result of Firebase query
+ */
+let executeFilteredRealtimeQuery = (queryInfo, user) => {
+    const wheres = queryInfo.wheres;
+    const collection = queryInfo.collection;
+    const selectFields = queryInfo.selectFields;
+
+    const db = user.db_object;
+    const ref = db.ref(collection)
+                  .orderByChild(wheres[0].field)
+                  .equalTo(wheres[0].value);
+
+    ref.once("value")
+        .then((snapshot) => {
+            let payload = snapshot.val();
+            // TODO filter out where statements and non selected fields
+            // return filterWheresAndNonSelectedFields
+        });
 }
 
 module.exports = {
