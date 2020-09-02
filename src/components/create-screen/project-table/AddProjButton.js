@@ -14,9 +14,9 @@ export default function AddProjButton(props) {
 
     /* Send IPC to retrieve the selected filepath */
     const getPathIPC = () =>{
-        ipcRenderer.send("get-path", 'init-path');
+        ipcRenderer.send("existing-proj-filepath");
 
-        ipcRenderer.once("get-path-reply", (event, response) => {
+        ipcRenderer.once("existing-proj-filepath-reply", (event, response) => {
             if( (response.split(' ', 1)[0]) === 'Error:'){
                 //display error message if incorrect file selected
                 setError({display: true, message: response})
