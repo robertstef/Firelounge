@@ -4,10 +4,10 @@ const qp = require('../parser/queryParser');
 /**
  *
  * @param query
- * @param user
+ * @param dataBase
  * @param commitResults
  */
-let executeDelete = (query, user, commitResults) => {
+let executeDelete = (query, dataBase, commitResults) => {
     // TODO - DELETE
     // we create the query obj
     let queryInfo = new QueryInfo();

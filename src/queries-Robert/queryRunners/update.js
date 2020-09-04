@@ -1,10 +1,10 @@
 /**
  *
  * @param query
- * @param user
+ * @param dataBase
  * @param commitResults
  */
-let executeUpdate = (query, user, commitResults) => {
+let executeUpdate = (query, dataBase, commitResults) => {
     // TODO - UPDATE
 }
 

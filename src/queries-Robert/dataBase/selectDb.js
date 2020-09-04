@@ -2,18 +2,18 @@
  * Executes a Firebase query for a SELECT statement.
  *
  * @param queryInfo: {QueryInfo}
- * @param user: {User}
+ * @param dataBase: {Object}
  *
  * @return {Object}: result of Firebase query
  */
-let getDataForSelect = (queryInfo, user) => {
+let getDataForSelect = (queryInfo, dataBase) => {
     let wheres = queryInfo.wheres;
 
     if (wheres === null || wheres[0] !== '=') {
-        return queryEntireRealTimeCollection(queryInfo, user);
+        return queryEntireRealTimeCollection(queryInfo, dataBase);
     }
     else {
-        return executeFilteredRealtimeQuery(queryInfo, user);
+        return executeFilteredRealtimeQuery(queryInfo, dataBase);
     }
 
 }
@@ -25,16 +25,16 @@ let getDataForSelect = (queryInfo, user) => {
  * statement.
  *
  * @param queryInfo: {QueryInfo}
- * @param user: {User}
+ * @param dataBase: {Object}
  *
  * @return {JSON}: filtered query as return by Firebase
  */
-let queryEntireRealTimeCollection = (queryInfo, user) => {
+let queryEntireRealTimeCollection = (queryInfo, dataBase) => {
     let collection = queryInfo.collection;
     let selectFields = queryInfo.selectFields;
 
     // get db from user object
-    let db = user.db_object;
+    let db = dataBase.db_object;
 
     if (db === undefined) {
         throw new Error("queryEntireRealTimeCollection(): database is undefined");
@@ -60,16 +60,15 @@ let queryEntireRealTimeCollection = (queryInfo, user) => {
  * specific parameters using a WHERE statement.
  *
  * @param queryInfo: {QueryInfo}
- * @param user: {User}
+ * @param dataBase: {User}
  *
  * @returns {Object}: result of Firebase query
  */
-let executeFilteredRealtimeQuery = (queryInfo, user) => {
+let executeFilteredRealtimeQuery = (queryInfo, dataBase) => {
     const wheres = queryInfo.wheres;
     const collection = queryInfo.collection;
-    const selectFields = queryInfo.selectFields;
 
-    const db = user.db_object;
+    const db = dataBase.db_object;
     const ref = db.ref(collection)
                   .orderByChild(wheres[0].field)
                   .equalTo(wheres[0].value);
@@ -81,6 +80,7 @@ let executeFilteredRealtimeQuery = (queryInfo, user) => {
             // return filterWheresAndNonSelectedFields
         });
 }
+
 
 module.exports = {
     getDataForSelect: getDataForSelect
