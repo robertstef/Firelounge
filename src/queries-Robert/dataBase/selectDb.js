@@ -33,14 +33,11 @@ let queryEntireRealTimeCollection = (queryInfo, dataBase) => {
     let collection = queryInfo.collection;
     let selectFields = queryInfo.selectFields;
 
-    // get db from user object
-    let db = dataBase.db_object;
-
-    if (db === undefined) {
+    if (dataBase === undefined || dataBase === null) {
         throw new Error("queryEntireRealTimeCollection(): database is undefined");
     }
 
-    const ref = db.ref(collection);
+    const ref = dataBase.ref(collection);
 
     // get data using once so listener automatically detaches
     ref.once("value")
@@ -68,8 +65,7 @@ let executeFilteredRealtimeQuery = (queryInfo, dataBase) => {
     const wheres = queryInfo.wheres;
     const collection = queryInfo.collection;
 
-    const db = dataBase.db_object;
-    const ref = db.ref(collection)
+    const ref = dataBase.ref(collection)
                   .orderByChild(wheres[0].field)
                   .equalTo(wheres[0].value);
 
