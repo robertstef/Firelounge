@@ -16,6 +16,7 @@ const RUN_INITIALIZATION = true;
 const RUN_CREATE_EXISTING_PROJ = false;
 const RUN_DEPLOY = false;
 const RUN_ADD_DATABASE = false;
+const RUN_DATABASE_SETTINGS = true;
 const RUN_LOGOUT = false;
 
 
@@ -221,15 +222,28 @@ if(RUN_ADD_DATABASE || RUN_ALL) {
   });
 };
 
-/* ADD DATABASE TESTS */
+/* DATABASE SETTINGS TESTS */
+if(RUN_DATABASE_SETTINGS || RUN_ALL) {
+  describe('Database Settings...', () => {
+    const {test1} = require("./helpers/DatabaseSettingsTests.js");
+
+    test('Open Settings Modal', async () => {
+      await test1(page);
+    });
+    
+
+  });
+};
+
+/* LOGOUT TESTS */
 if(RUN_LOGOUT || RUN_ALL) {
   describe('Logout Tests...', () => {
     const {test1, test2} = require("./helpers/LogoutTests.js");
 
     test('Open Settings Modal', async () => {
       await test1(page);
+      
     });
-    
     test('Logout and Wait for Login Modal', async () => {
       await test2(page);
     });
