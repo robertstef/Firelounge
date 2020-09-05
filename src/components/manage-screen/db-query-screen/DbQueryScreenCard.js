@@ -1,10 +1,6 @@
 import React from 'react'
-import Card from "@material-ui/core/Card";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Typography, Divider,TextField,Card } from '@material-ui/core'
 import {UserState} from "../../../context/userContext";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,8 +41,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-//adding padding to the textfield causes the whole div to overflow the card
-//need to put it in another div or pass down props to label etc. 
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
@@ -85,42 +79,3 @@ export default function DbQueryScreenCard() {
         </div>
     )
 }
-
-/*Sampe usge of ReactJson View */
-// <ReactJson
-//                     name={false}
-//                     collapsed={collapsed}
-//                     style={style}
-//                     theme={theme}
-//                     src={src}
-//                     collapseStringsAfterLength={collapseStringsAfter}
-//                     onEdit={
-//                         onEdit
-//                             ? e => {
-//                                   console.log(e)
-//                                   this.setState({ src: e.updated_src })
-//                               }
-//                             : false
-//                     }
-//                     onDelete={
-//                         onDelete
-//                             ? e => {
-//                                   console.log(e)
-//                                   this.setState({ src: e.updated_src })
-//                               }
-//                             : false
-//                     }
-//                     onAdd={
-//                         onAdd
-//                             ? e => {
-//                                   console.log(e)
-//                                   this.setState({ src: e.updated_src })
-//                               }
-//                             : false
-//                     }
-//                     displayObjectSize={displayObjectSize}
-//                     enableClipboard={enableClipboard}
-//                     indentWidth={indentWidth}
-//                     displayDataTypes={displayDataTypes}
-//                     iconStyle={iconStyle}
-//                 />
