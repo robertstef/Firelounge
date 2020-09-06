@@ -29,7 +29,7 @@ let getDataForSelect = (queryInfo, dataBase) => {
  *
  * @return {JSON}: filtered query as return by Firebase
  */
-let queryEntireRealTimeCollection = (queryInfo, dataBase) => {
+let queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
     let collection = queryInfo.collection;
     let selectFields = queryInfo.selectFields;
 
@@ -40,18 +40,17 @@ let queryEntireRealTimeCollection = (queryInfo, dataBase) => {
     const ref = dataBase.ref(collection);
 
     // get data using once so listener automatically detaches
-    ref.once("value")
-        .then((snapshot) => {
-            console.log("In the once call");
-            // get language specific object rep with .val()
-            let payload = snapshot.val();
-            if (selectFields) {
-                // TODO remove non selected fields from results
-                // payload = removeNonSelectedFieldsFromResults(payload, queryInfo);
-            }
-            console.log(payload);
-            return payload;
-    });
+    let snapshot = await ref.once("value");
+
+    // get language specific object representation with val()
+    let payload = await snapshot.val();
+
+    if (selectFields) {
+        // TODO remove non selected fields from results
+        // payload = removeNonSelectedFieldsFromResults(payload, queryInfo);
+    }
+
+    return payload;
 }
 
 /**
