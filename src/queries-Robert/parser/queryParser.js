@@ -265,9 +265,12 @@ let getSelectFields = (query) => {
 let getWheres = (query) => {
 
     // find start of where statement
-    const whereStart = query.indexOf(" where ") + 1;
+    let whereStart = query.indexOf(" where ");
     if (whereStart < 0) {
         return null;
+    }
+    else {
+        whereStart++;
     }
 
     // find where WHERE statement ends and ORDER BY starts if an
