@@ -37,7 +37,7 @@ let queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
         throw new Error("queryEntireRealTimeCollection(): database is undefined");
     }
 
-    const ref = dataBase.ref(collection);
+    const ref = await dataBase.ref(collection);
 
     // get data using once so listener automatically detaches
     let snapshot = await ref.once("value");
@@ -62,20 +62,19 @@ let queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
  *
  * @returns {Object}: result of Firebase query
  */
-let executeFilteredRealtimeQuery = (queryInfo, dataBase) => {
+let executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
     const wheres = queryInfo.wheres;
     const collection = queryInfo.collection;
 
-    const ref = dataBase.ref(collection)
+    const ref = await dataBase.ref(collection)
                   .orderByChild(wheres[0].field)
                   .equalTo(wheres[0].value);
 
-    ref.once("value")
-        .then((snapshot) => {
-            let payload = snapshot.val();
-            // TODO filter out where statements and non selected fields
-            // return filterWheresAndNonSelectedFields
-        });
+    const snapshot = await ref.once("value");
+    let payload = await snapshot.val();
+
+    // TODO filter out where statements and non selected fields
+    // return filterWheresAndNonSelectedFields
 }
 
 
