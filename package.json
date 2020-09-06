@@ -21,6 +21,7 @@
   "main": "public/electron.js",
   "private": true,
   "dependencies": {
+    "@babel/polyfill": "^7.11.5",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -31,8 +32,8 @@
     "cross-spawn": "^7.0.3",
     "deepmerge": "^4.2.2",
     "electron-is-dev": "^1.2.0",
-    "fbsql": "^1.0.12",
     "electron-log": "^4.2.2",
+    "fbsql": "^1.0.12",
     "firebase": "^7.15.0",
     "firebase-admin": "^8.12.1",
     "firebase-tools": "^8.4.2",
