@@ -26,4 +26,7 @@ let updateItemWithSets = (obj, sets) => {
     // TODO - UPDATE
 }
 
-export default executeUpdate;
+module.exports = {
+    executeUpdate: executeUpdate
+}
+

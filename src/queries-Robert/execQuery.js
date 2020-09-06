@@ -1,7 +1,7 @@
-import executeSelect from "./queryRunners/select";
-import executeUpdate from "./queryRunners/update";
-import executeDelete from "./queryRunners/delete";
-import executeInsert from "./queryRunners/insert";
+const execSelect = require("./queryRunners/select").executeSelect;
+const execUpdate = require("./queryRunners/update").executeUpdate;
+const execDelete = require("./queryRunners/delete").executeDelete;
+const execInsert = require("./queryRunners/insert").executeInsert;
 const queryParser = require('./parser/queryParser');
 
 /**
@@ -16,22 +16,26 @@ const queryParser = require('./parser/queryParser');
  *
  * @return a JSON object representing the result of the query
  */
-export default function executeQuery(query, dataBase, commitResults) {
+let executeQuery = (query, dataBase, commitResults) => {
     let clean_query = queryParser.formatAndCleanQuery(query);
     const statementType = queryParser.determineStatementType(clean_query);
 
     switch (statementType) {
         case "select":
-            return executeSelect(query, dataBase);
+            return execSelect(query, dataBase);
         case "update":
-            return executeUpdate(query, dataBase, commitResults);
+            return execUpdate(query, dataBase, commitResults);
         case "delete":
-            return executeDelete(query, dataBase, commitResults);
+            return execDelete(query, dataBase, commitResults);
         case "insert":
-            return executeInsert(query, dataBase, commitResults);
+            return execInsert(query, dataBase, commitResults);
         case "invalid":
             throw new Error("Invalid SQL query. Query must be of type SELECT, UPDATE, DELETE, or INSERT");
         default:
             throw new Error("executeQuery(): executing default statement, something is very wrong");
     }
+}
+
+module.exports = {
+   executeQuery: executeQuery
 }

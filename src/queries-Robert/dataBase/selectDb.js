@@ -42,12 +42,14 @@ let queryEntireRealTimeCollection = (queryInfo, dataBase) => {
     // get data using once so listener automatically detaches
     ref.once("value")
         .then((snapshot) => {
+            console.log("In the once call");
             // get language specific object rep with .val()
             let payload = snapshot.val();
             if (selectFields) {
                 // TODO remove non selected fields from results
                 // payload = removeNonSelectedFieldsFromResults(payload, queryInfo);
             }
+            console.log(payload);
             return payload;
     });
 }

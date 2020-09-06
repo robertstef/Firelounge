@@ -1,4 +1,4 @@
-export default class QueryInfo {
+class QueryInfo {
 
     /**
      * Constructs a queryInfo object.
@@ -48,4 +48,8 @@ export default class QueryInfo {
     set selectFields(value) {
         this._selectFields = value;
     }
+}
+
+module.exports = {
+    QueryInfo: QueryInfo
 }

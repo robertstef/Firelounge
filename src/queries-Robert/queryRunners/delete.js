@@ -1,4 +1,4 @@
-import QueryInfo from "../parser/QueryInfo";
+const QueryInfo = require("../parser/QueryInfo").QueryInfo ;
 const qp = require('../parser/queryParser');
 
 /**
@@ -23,4 +23,6 @@ let executeDelete = (query, dataBase, commitResults) => {
     }
 }
 
-export default executeDelete;
+module.exports = {
+    executeDelete: executeDelete
+}

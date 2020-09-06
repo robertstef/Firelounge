@@ -8,4 +8,6 @@ let executeInsert = (query, dataBase, commitResults) => {
     // TODO - INSERT
 }
 
-export default executeInsert;
+module.exports = {
+    executeInsert: executeInsert
+}

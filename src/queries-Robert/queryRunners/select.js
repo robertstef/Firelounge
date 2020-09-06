@@ -1,4 +1,4 @@
-import QueryInfo from "../parser/QueryInfo";
+const QueryInfo = require("../parser/QueryInfo").QueryInfo;
 const qp = require('../parser/queryParser');
 const db = require('../dataBase/selectDb');
 
@@ -22,4 +22,7 @@ let executeSelect = (query, dataBase) => {
     return db.getDataForSelect(queryInfo, dataBase);
 }
 
-export default executeSelect;
+module.exports = {
+    executeSelect: executeSelect
+}
+
