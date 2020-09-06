@@ -1,7 +1,15 @@
-let mocha = require('mocha');
-let setup = require('../../scripts/init');
-let describe = mocha.describe;
-let it = mocha.it;
+const admin = require('firebase-admin');
+const fbsql = require('../execQuery');
 
-let user = setup.init_function();
-console.log(user);
+let serviceAccount =  "/Users/robertstefanyshin/FL_testdir/cmpt350-project/" +
+    "cmpt350-project-ed891-firebase-adminsdk-q24yr-a278e93a9d.json";
+
+let app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
+});
+
+let db = app.database();
+
+let results = fbsql.executeQuery("select * from games", db, false);
+console.log(results);
