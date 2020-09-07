@@ -241,7 +241,6 @@ let getSelectFields = (query) => {
     let fields = froms.split(",");
     let selectedFields = [];
     for (let f of fields) {
-        //selectedFields[f.trim()] = true;
         selectedFields.push(f.trim());
     }
 
