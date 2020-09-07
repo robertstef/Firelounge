@@ -230,12 +230,12 @@ describe("getOrderBys", () => {
 describe("getSelectedFields", () => {
     it("select single field", () => {
         let result = qp.getSelectFields("select * from games");
-        assert.deepStrictEqual(result, {"*": true});
+        assert.deepStrictEqual(result, ["*"]);
     });
 
     it("select multiple fields", () => {
         let result = qp.getSelectFields("select this, that, other from games");
-        assert.deepStrictEqual(result, {"this": true, "that": true, "other": true});
+        assert.deepStrictEqual(result, ["this", "that", "other"]);
     });
 
     it("select - no fields", () => {
