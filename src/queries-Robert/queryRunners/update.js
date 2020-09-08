@@ -1,5 +1,7 @@
 import QueryInfo from "../parser/QueryInfo";
 const qp = require('../parser/queryParser');
+const selectDb = require('../dataBase/selectDb');
+const updateDb = require('../dataBase/updateDb');
 
 /**
  *
@@ -10,8 +12,6 @@ const qp = require('../parser/queryParser');
 let executeUpdate = (query, user, commitResults) => {
     // TODO - UPDATE
 
-    // should commit results is present here again
-
     let queryInfo = new QueryInfo();
     try {
         queryInfo.collection = qp.getCollection(query, "update");
@@ -20,10 +20,18 @@ let executeUpdate = (query, user, commitResults) => {
         if (!sets) {
             return null;
         }
+        let data = selectDb.getDataForSelect(queryInfo, user);
+        const payload = generatePayload(data, sets);
+        if (data && commitResults) {
+            Object.keys(data).forEach(objKey => {
+                const updateObj = payload[objKey];
+                const path = queryInfo.collection + "/" + objKey;
+                updateDb.updateFields(path, updateObj, Object.keys(sets), user)
+            })
+        }
     } catch (err) {
         console.log(err);
     }
-
 };
 
 /**
