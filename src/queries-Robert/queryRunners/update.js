@@ -6,10 +6,10 @@ const updateDb = require('../dataBase/updateDb');
 /**
  *
  * @param query
- * @param user
+ * @param dataBase
  * @param commitResults
  */
-let executeUpdate = (query, user, commitResults) => {
+let executeUpdate = (query, dataBase, commitResults) => {
     // TODO - UPDATE
 
     let queryInfo = new QueryInfo();
@@ -20,13 +20,13 @@ let executeUpdate = (query, user, commitResults) => {
         if (!sets) {
             return null;
         }
-        let data = selectDb.getDataForSelect(queryInfo, user);
+        let data = selectDb.getDataForSelect(queryInfo, dataBase);
         const payload = generatePayload(data, sets);
         if (data && commitResults) {
             Object.keys(data).forEach(objKey => {
                 const updateObj = payload[objKey];
                 const path = queryInfo.collection + "/" + objKey;
-                updateDb.updateFields(path, updateObj, Object.keys(sets), user)
+                updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase)
             })
         }
     } catch (err) {
@@ -85,8 +85,7 @@ let updateItemWithSets = (obj, sets) => {
     return updateObject;
 };
 
-export default executeUpdate;
+module.exports = {
+    executeUpdate: executeUpdate
+};
 
-// module.exports = {
-//     updateItemWithSets:updateItemWithSets
-// };

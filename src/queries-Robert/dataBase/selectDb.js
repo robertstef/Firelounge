@@ -2,18 +2,18 @@
  * Executes a Firebase query for a SELECT statement.
  *
  * @param queryInfo: {QueryInfo}
- * @param user: {User}
+ * @param dataBase: {Object}
  *
  * @return {Object}: result of Firebase query
  */
-let getDataForSelect = (queryInfo, user) => {
+let getDataForSelect = (queryInfo, dataBase) => {
     let wheres = queryInfo.wheres;
 
     if (wheres === null || wheres[0] !== '=') {
-        return queryEntireRealTimeCollection(queryInfo, user);
+        return queryEntireRealTimeCollection(queryInfo, dataBase);
     }
     else {
-        return executeFilteredRealtimeQuery(queryInfo, user);
+        return executeFilteredRealtimeQuery(queryInfo, dataBase);
     }
 
 }
@@ -25,34 +25,33 @@ let getDataForSelect = (queryInfo, user) => {
  * statement.
  *
  * @param queryInfo: {QueryInfo}
- * @param user: {User}
+ * @param dataBase: {Object}
  *
  * @return {JSON}: filtered query as return by Firebase
  */
-let queryEntireRealTimeCollection = (queryInfo, user) => {
+const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
     let collection = queryInfo.collection;
-    let selectFields = queryInfo.selectFields;
 
-    // get db from user object
-    let db = user.db_object;
-
-    if (db === undefined) {
+    if (dataBase === undefined || dataBase === null) {
         throw new Error("queryEntireRealTimeCollection(): database is undefined");
     }
 
-    const ref = db.ref(collection);
+    const ref = await dataBase.ref(collection);
 
     // get data using once so listener automatically detaches
-    ref.once("value")
-        .then((snapshot) => {
-            // get language specific object rep with .val()
-            let payload = snapshot.val();
-            if (selectFields) {
-                // TODO remove non selected fields from results
-                // payload = removeNonSelectedFieldsFromResults(payload, queryInfo);
-            }
-            return payload;
-    });
+    let snapshot = await ref.once("value");
+
+    // get language specific object representation with val()
+    let payload = await snapshot.val();
+
+    if (payload === null) {
+        // TODO - just return NULL or have error thrown???
+        throw new Error(`queryEntireRealTimeCollection(): the requested object was unable to be" +
+            " retrieved from the database or the collection ${collection} does not exist in the
+             database`)
+    }
+
+    return getSelectedFieldsFromResults(payload, queryInfo);
 }
 
 /**
@@ -60,26 +59,43 @@ let queryEntireRealTimeCollection = (queryInfo, user) => {
  * specific parameters using a WHERE statement.
  *
  * @param queryInfo: {QueryInfo}
- * @param user: {User}
+ * @param dataBase: {User}
  *
  * @returns {Object}: result of Firebase query
  */
-let executeFilteredRealtimeQuery = (queryInfo, user) => {
+const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
     const wheres = queryInfo.wheres;
     const collection = queryInfo.collection;
-    const selectFields = queryInfo.selectFields;
 
-    const db = user.db_object;
-    const ref = db.ref(collection)
+    const ref = await dataBase.ref(collection)
                   .orderByChild(wheres[0].field)
                   .equalTo(wheres[0].value);
 
-    ref.once("value")
-        .then((snapshot) => {
-            let payload = snapshot.val();
-            // TODO filter out where statements and non selected fields
-            // return filterWheresAndNonSelectedFields
-        });
+    const snapshot = await ref.once("value");
+    let payload = await snapshot.val();
+
+    // TODO filter out where statements and non selected fields
+    // return filterWheresAndNonSelectedFields
+}
+
+const getSelectedFieldsFromResults = (payload, queryInfo) => {
+    let selectFields = queryInfo.selectFields;
+
+    // we are selecting for all fields
+    if (selectFields.length === 1 && selectFields[0] === "*") {
+        return payload;
+    }
+
+    let result = {};
+    for (let field of selectFields) {
+        let val = payload[field];
+        if (val === undefined) {
+            throw new Error(`getSelectedFieldsFromResults(): the field ${field} was not found` +
+                ` in the database`);
+        }
+        result[field] = val;
+    }
+    return result;
 }
 
 module.exports = {

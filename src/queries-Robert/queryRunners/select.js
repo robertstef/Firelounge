@@ -1,13 +1,13 @@
-import QueryInfo from "../parser/QueryInfo";
+const QueryInfo = require("../parser/QueryInfo").QueryInfo;
 const qp = require('../parser/queryParser');
 const db = require('../dataBase/selectDb');
 
 /**
  *
  * @param query
- * @param user
+ * @param dataBase
  */
-let executeSelect = (query, user) => {
+let executeSelect = (query, dataBase) => {
     let queryInfo = new QueryInfo();
 
     try {
@@ -19,7 +19,10 @@ let executeSelect = (query, user) => {
         console.log(err);
     }
 
-    return db.getDataForSelect(queryInfo, user);
+    return db.getDataForSelect(queryInfo, dataBase);
 }
 
-export default executeSelect;
+module.exports = {
+    executeSelect: executeSelect
+}
+

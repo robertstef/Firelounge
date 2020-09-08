@@ -1,14 +1,13 @@
 /**
- * @param user
+ * @param dataBase
  * @param path
  */
-let deleteObject = (path, user) => {
+let deleteObject = (path, dataBase) => {
     // TODO - DELETE
-    const db = user.db_object;
-    if (db === undefined) {
+    if (dataBase === undefined) {
         throw new Error("deleteObject(): database is undefined");
     }
-    db.ref(path).remove();
+    dataBase.ref(path).remove();
 };
 
 

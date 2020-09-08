@@ -1,12 +1,12 @@
-export default class QueryInfo {
+class QueryInfo {
 
     /**
      * Constructs a queryInfo object.
      *
      * @param collection: {String|null}
      * @param orderBys: {{colName: string, ascending: boolean}[]|null}
-     * @param selectFields: {{fieldName: boolean, ...}}
-     * @param wheres:{null|{field: String, comparator: String, compVal: {String|number|boolean|null}
+     * @param selectFields: {{fieldName: boolean, ...}|null}
+     * @param wheres:[{null|{field: String, comparator: String, compVal: {String|number|boolean|null}}, ...]
      */
     constructor(collection=null, orderBys=null, selectFields=null, wheres=null) {
         this._collection = collection;
@@ -48,4 +48,8 @@ export default class QueryInfo {
     set selectFields(value) {
         this._selectFields = value;
     }
+}
+
+module.exports = {
+    QueryInfo: QueryInfo
 }

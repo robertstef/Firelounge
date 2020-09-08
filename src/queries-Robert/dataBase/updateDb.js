@@ -3,18 +3,17 @@
  * @param path
  * @param object
  * @param fields
- * @param user
+ * @param database
  */
-let updateFields = (path, object, fields, user) => {
+let updateFields = (path, object, fields, database) => {
     // TODO - UPDATE
     if (!fields || !object) {
         return;
     }
-    let db = user.db_object;
-    if (db === undefined) {
+    if (database === undefined) {
         throw new Error("updateFields(): database is undefined");
     }
-    return updateRealTimeFields(db, path, object, fields);
+    return updateRealTimeFields(database, path, object, fields);
 };
 
 const updateRealTimeFields = function(db, path, newData, fields) {

@@ -260,9 +260,9 @@ let getSelectFields = (query) => {
 
     // place fields into object
     let fields = froms.split(",");
-    let selectedFields = {};
+    let selectedFields = [];
     for (let f of fields) {
-        selectedFields[f.trim()] = true;
+        selectedFields.push(f.trim());
     }
 
     return selectedFields;
@@ -286,9 +286,12 @@ let getSelectFields = (query) => {
 let getWheres = (query) => {
 
     // find start of where statement
-    const whereStart = query.indexOf(" where ") + 1;
+    let whereStart = query.indexOf(" where ");
     if (whereStart < 0) {
         return null;
+    }
+    else {
+        whereStart++;
     }
 
     // find where WHERE statement ends and ORDER BY starts if an
