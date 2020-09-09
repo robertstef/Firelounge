@@ -10,7 +10,7 @@ let page;
 let pid;
 
 /* Define tests to run */
-const RUN_ALL = false;
+const RUN_ALL = true;
 const RUN_LOGIN = false;
 const RUN_INITIALIZATION = true;
 const RUN_CREATE_EXISTING_PROJ = false;
@@ -225,12 +225,27 @@ if(RUN_ADD_DATABASE || RUN_ALL) {
 /* DATABASE SETTINGS TESTS */
 if(RUN_DATABASE_SETTINGS || RUN_ALL) {
   describe('Database Settings...', () => {
-    const {test1} = require("./helpers/DatabaseSettingsTests.js");
+    const {test1, test2, test3, test4, test5} = require("./helpers/DatabaseSettingsTests.js");
 
     test('Open Settings Modal', async () => {
       await test1(page);
     });
     
+    test('Confirm Default Database Settings', async () => {
+      await test2(page);
+    });
+
+    test('Confirm Database Object Params', async () => {
+      await test3(page);
+    });
+
+    test('Update Database Settings', async () => {
+      await test4(page);
+    });
+
+    test('Confirm Database Settings Being Updated Correctly ', async () => {
+      await test5(page);
+    });
 
   });
 };
@@ -244,6 +259,7 @@ if(RUN_LOGOUT || RUN_ALL) {
       await test1(page);
       
     });
+
     test('Logout and Wait for Login Modal', async () => {
       await test2(page);
     });

@@ -36,7 +36,6 @@ export default function DbObjectDisplay() {
     return(
         <div style={{height: '100%', width: '100%', padding: '10px'}}>
             <ReactJson 
-                id='react-json-object'
                 name={false}
                 src={displaySrc}
                 collapsed={user.act_db_settings.Collapsed !== undefined ? user.act_db_settings.Collapsed : true }

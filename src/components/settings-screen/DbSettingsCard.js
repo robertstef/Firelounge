@@ -47,7 +47,7 @@ export default function DbSettingsCard(props) {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading}> Database Settings </ Typography>
+                <Typography className={classes.heading} id={'settings-database-header'}> Database Settings </ Typography>
                 <Divider className={classes.divider}/>
                 {user.act_db_name !== '' ? (
                     <SettingsSwitchesGroup close={props.close}/>
