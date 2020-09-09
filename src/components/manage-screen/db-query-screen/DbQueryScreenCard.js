@@ -1,6 +1,8 @@
 import React from 'react'
 import { makeStyles, Typography, Divider,TextField,Card } from '@material-ui/core'
 import {UserState} from "../../../context/userContext";
+import NoActiveDb from '../../Utility/NoActiveDb'
+import QueryResultContainer from './QueryResultContainer'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -9,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     card: {
         height: '100%',
         borderRadius: '25px',
+        overflowY: 'auto'
     },
     heading: {
         marginTop: '3%',
@@ -23,28 +26,38 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
+    objectContainer: {
+        width: '90%',
+        marginTop: '1%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
     textField: {
         width: '90%',
         marginLeft: '5%',
         marginRight: '5%',
         marginTop: '3%'
     },
-    noActiveMSG: {
-        padding: '3%',
-        spacing: theme.spacing(2)
-
-    },
-    dbText: {
-        paddingLeft: '3%',
-        paddingTop: '3%',
-        fontWeight:200,
-    },
 }));
+
 
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
+    const [query, setQuery] = React.useState('');
     
+    const handleInput = (event) => {
+        let input = event.target.value
+        let last_char = (input).substr(input.length - 1);
+    
+        if(last_char === ';') {
+            setQuery(input)
+            event.target.value = ''
+        };
+      };
+
+
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -56,23 +69,16 @@ export default function DbQueryScreenCard() {
                             id="standard-textarea"
                             label="Query"
                             multiline
-                            variant="outlined"
-                            
+                            variant="outlined"    
                             className={classes.textField}
+                            onChange={handleInput}
                         />
-                        
+                        <div className={classes.objectContainer}>
+                            <QueryResultContainer queryString={query}/>
+                        </div>
                     </div>
                 ): (
-                    <div className={classes.noActiveMSG}>
-                        <div style={{margin:'5%'}}/>
-                        <Typography className={classes.dbText}>
-                            You dont have any active databases setup on FireLounge.
-                        </Typography>
-                        <div style={{margin:'10%'}}/>
-                        <Typography className={classes.dbText}>
-                            Click the button in the top right corner to initialize a database through FireLounge.
-                        </Typography>
-                    </div>
+                    <NoActiveDb/>
                 )}
 
             </Card>
