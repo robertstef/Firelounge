@@ -32,6 +32,10 @@ const data = {games : {
 
 const execUpdateTests = async () => {
 
+    /**
+     *  Tests are performed under the assumption that the database has the exact same data as the dummy data object
+     * */
+
     // Testing without where statements
 
     let query0 = 'update games/Scores/skiing set Jackson=200, Robert=150'; //update Jackson to 200, and Robert to 150

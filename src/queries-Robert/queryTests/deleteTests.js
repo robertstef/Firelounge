@@ -13,27 +13,69 @@ const app = admin.initializeApp({
 const db = app.database();
 
 // Dummy data loaded into database
-const data = {
-    Events: ['cards', 'coding', 'skiing'],
-    Players: ['Robert', 'Ben', 'Jackson'],
-    Scores: {
-        cards: { Ben: 3, Jackson: 4, Robert: 3 },
-        coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
-        skiing: { Ben: 100, Jackson: 20, Robert: 15 }
-    },
-    Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
+const data = {games : {
+        Employees: [
+            {Name: 'Jackson', Number: 15},
+            {Name: 'Robert', Number: 20},
+            {Name: 'Ben', Number: 15},
+        ],
+        Events: ['cards', 'coding', 'skiing'],
+        Players: ['Robert', 'Ben', 'Jackson'],
+        Scores: {
+            cards: { Ben: 3, Jackson: 4, Robert: 3 },
+            coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
+            skiing: { Ben: 100, Jackson: 20, Robert: 15 }
+        },
+        Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
+    }
 };
+
 
 const execDeleteTests = async () => {
 
-    // we can delete entire things from the db
-    let query = 'delete from games/Events';
-    let result = await fbsql.executeQuery(query, db, true);
+    /**
+     *  Tests are performed under the assumption that the database has the exact same data as the dummy data object
+     * */
 
-    console.log(result);
+    let query0 = 'delete from games/Events';
+    let expected0 = {games : {
+            Employees: [
+                {Name: 'Jackson', Number: 15},
+                {Name: 'Robert', Number: 20},
+                {Name: 'Ben', Number: 15},
+            ],
+            Players: ['Robert', 'Ben', 'Jackson'],
+            Scores: {
+                cards: { Ben: 3, Jackson: 4, Robert: 3 },
+                coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
+                skiing: { Ben: 100, Jackson: 20, Robert: 15 }
+            },
+            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
+        }
+    };
+    let result0 = await fbsql.executeQuery(query0, db, true);
+    assert.deepStrictEqual(result0, expected0);
 
-    // let query = 'delete from games/Employees where num=13';
-    // await fbsql.executeQuery(query, db, true);
+    let query1 = 'delete from games/Scores/cards';
+    let expected1 = {games : {
+            Employees: [
+                {Name: 'Jackson', Number: 15},
+                {Name: 'Robert', Number: 20},
+                {Name: 'Ben', Number: 15},
+            ],
+            Players: ['Robert', 'Ben', 'Jackson'],
+            Scores: {
+                coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
+                skiing: { Ben: 100, Jackson: 20, Robert: 15 }
+            },
+            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
+        }
+    };
+    let result1 = await fbsql.executeQuery(query1, db, true);
+    assert.deepStrictEqual(result1, expected1);
+
+    console.log("*****DELETE TESTS COMPLETE*****")
+
 };
 
 execDeleteTests();
