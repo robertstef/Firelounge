@@ -13,15 +13,11 @@ let updateFields = (path, object, fields, database) => {
     if (database === undefined) {
         throw new Error("updateFields(): database is undefined");
     }
-    return updateRealTimeFields(database, path, object, fields);
+    return updateRealTimeFields(database, path, object);
 };
 
-const updateRealTimeFields = function(db, path, newData, fields) {
-    let updateObject = {};
-    fields.forEach(field => {
-        updateObject[field] = newData[field];
-    });
-    return db.ref(path).update(updateObject);
+const updateRealTimeFields = async function(database, path, newData) {
+    return database.ref(path).update(newData);
 };
 
 

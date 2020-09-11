@@ -241,7 +241,7 @@ let getOrderBys = (query) => {
 let getSelectFields = (query) => {
 
     // check if select statement is of valid form
-    let regex = /(select\s+)(.*)(\s+from\s+.*)/;
+    let regex = /(select\s+)(.*)(\s+from\s+.*)/; //add or delete, and then change the function to something more descriptive.
     let matches = query.match(regex, query);
 
     if (matches === null) {
@@ -381,6 +381,7 @@ let getSets = (query) => {
     setsArr.forEach(item => {
        let [key, val] = item.split("=");
        if (key && val) {
+           //TODO - EXECUTE A SELECT QUERY AND GET THE RESULTING VALUES
            if (/^\s*\(?(select).+from.+\)?/i.test(val)) { // UPDATE table_name SET=(SELECT id FROM history)...
                // val = the result of that select query
                // val = executeQuery(val, 'select')

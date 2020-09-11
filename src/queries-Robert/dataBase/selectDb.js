@@ -7,9 +7,10 @@
  * @return {Object}: result of Firebase query
  */
 let getDataForSelect = (queryInfo, dataBase) => {
+
     let wheres = queryInfo.wheres;
 
-    if (wheres === null || wheres[0] !== '=') {
+    if (wheres === null || wheres[0].comparator !== '=') {
         return queryEntireRealTimeCollection(queryInfo, dataBase);
     }
     else {
@@ -64,6 +65,7 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
  * @returns {Object}: result of Firebase query
  */
 const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
+    console.log("I should be here");
     const wheres = queryInfo.wheres;
     const collection = queryInfo.collection;
 

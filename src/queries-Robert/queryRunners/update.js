@@ -1,7 +1,10 @@
-import QueryInfo from "../parser/QueryInfo";
+const QueryInfo = require("../parser/QueryInfo").QueryInfo;
 const qp = require('../parser/queryParser');
 const selectDb = require('../dataBase/selectDb');
 const updateDb = require('../dataBase/updateDb');
+
+// UPDATE table_name SET field1 = new-value1, field2 = new-value2
+// [WHERE Clause]
 
 /**
  *
@@ -9,9 +12,22 @@ const updateDb = require('../dataBase/updateDb');
  * @param dataBase
  * @param commitResults
  */
-let executeUpdate = (query, dataBase, commitResults) => {
+let executeUpdate = async (query, dataBase, commitResults) => {
     // TODO - UPDATE
+    let updated_DB = {};
 
+    await execUpdate(query, dataBase, commitResults);
+
+    await dataBase.ref('/').once('value', function(snapshot) {
+        updated_DB = snapshot.val()
+    }, function(err) {
+        throw new Error("ExecuteUpdate(): failed to get the updated database.")
+    });
+
+    return updated_DB;
+};
+
+let execUpdate = async (query, dataBase, commitResults) => {
     let queryInfo = new QueryInfo();
     try {
         queryInfo.collection = qp.getCollection(query, "update");
@@ -20,32 +36,45 @@ let executeUpdate = (query, dataBase, commitResults) => {
         if (!sets) {
             return null;
         }
-        let data = selectDb.getDataForSelect(queryInfo, dataBase);
-        const payload = generatePayload(data, sets);
-        if (data && commitResults) {
-            Object.keys(data).forEach(objKey => {
-                const updateObj = payload[objKey];
-                const path = queryInfo.collection + "/" + objKey;
-                updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase)
-            })
-        }
+        queryInfo.selectFields = Object.keys(sets);
+        let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
+        await select_data.then((data) => {
+            const payload = generatePayload(data, sets);
+            if (payload && commitResults) {
+                Object.keys(payload).forEach(objKey => {
+                    const updateObj = payload[objKey];
+                    const path = queryInfo.collection;
+                    updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation
+                });
+            }
+        })
     } catch (err) {
         console.log(err);
     }
 };
 
 /**
- *
  * @param data
  * @param sets
+ *
+ *  Example:
+ *      Payload data =  { Jackson: 20, Robert: 15 }
+ *      Payload sets =  { Jackson: 6666, Robert: 333 }
+ *
+ *  Should result in:
+ *      Payload = {Jackson: {Jackson : 6666},
+ *                 Robert: {Robert: 333}}
+ *
+ *
  */
 let generatePayload = (data, sets) => {
    // TODO - UPDATE
     const payload = {};
-    data &&
     Object.keys(data).forEach(objKey => {
-        const updateObj = updateItemWithSets(data[objKey], sets);
-        payload[objKey] = updateObj;
+        let item = {};
+        const updateObj = updateItemWithSets(data, sets);
+        item[objKey] = updateObj[objKey];
+        payload[objKey] = item;
     });
     return payload;
 };
@@ -88,4 +117,3 @@ let updateItemWithSets = (obj, sets) => {
 module.exports = {
     executeUpdate: executeUpdate
 };
-
