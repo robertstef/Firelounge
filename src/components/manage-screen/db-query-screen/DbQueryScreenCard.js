@@ -1,8 +1,11 @@
 import React from 'react'
-import { makeStyles, Typography, Divider,TextField,Card } from '@material-ui/core'
+import { makeStyles, Typography, Divider,TextField,Card,Button, Toolbar, IconButton } from '@material-ui/core'
 import {UserState} from "../../../context/userContext";
 import NoActiveDb from '../../Utility/NoActiveDb'
 import QueryResultContainer from './QueryResultContainer'
+import SaveIcon from '@material-ui/icons/Save';
+import CachedIcon from '@material-ui/icons/Cached';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,30 +41,64 @@ const useStyles = makeStyles((theme) => ({
         marginRight: '5%',
         marginTop: '3%'
     },
+    button: {
+        borderColor: '#ef223c',
+    }
 }));
 
 
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
+    const [input, setInput] = React.useState('');
     const [query, setQuery] = React.useState('');
+
     
     const handleInput = (event) => {
-        let input = event.target.value
-        let last_char = (input).substr(input.length - 1);
-    
+        setInput(event.target.value)
+
+        let last_char = (event.target.value).substr(event.target.value.length - 1);
+
         if(last_char === ';') {
-            setQuery(input)
-            event.target.value = ''
+            setQuery(event.target.value)
+            setInput('')
         };
       };
 
+    const handleSave = () => {
+        console.log('handing save')
+    }
 
+    const handleRun = () => {
+        setQuery(input)
+        setInput('')
+    }
+
+    const handleLoad = () => {
+        console.log('handing load')
+    }
+
+    const handleClear = () => {
+        console.log('handing clear')
+        setInput('')
+    }
 
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
+                <Toolbar>
+                    <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
+                    <IconButton aria-label="delete" className={classes.iconButton} size="medium" onClick={handleSave}>
+                        <SaveIcon fontSize="inherit" />
+                    </IconButton>
+                    <Button variant="outlined" onClick={handleRun} className={classes.button}> Run </Button>
+                    <IconButton aria-label="delete" className={classes.iconButton} size="medium" onClick={handleLoad}>
+                        <CachedIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton className={classes.iconButton} size="medium" onClick={handleClear}>
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                </Toolbar>
                 <Divider className={classes.divider}/>
                 {user.act_db_name !== '' ? (
                     <div>
@@ -72,6 +109,7 @@ export default function DbQueryScreenCard() {
                             variant="outlined"    
                             className={classes.textField}
                             onChange={handleInput}
+                            value={input}
                         />
                         <div className={classes.objectContainer}>
                             <QueryResultContainer queryString={query}/>
