@@ -1,9 +1,17 @@
 import React from 'react';
 import {Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from '@material-ui/core/';
 import SaveIcon from '@material-ui/icons/Save';
+import {UserDispatch} from "../../../context/userContext";
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
+  const [input, setInput] = React.useState('');
+
+  const dispatch = UserDispatch();
+
+  const handleInput = (event) => {
+    setInput(event.target.value)
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -13,8 +21,17 @@ export default function FormDialog(props) {
     setOpen(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     //dispatch save call here
+    try{
+      let obj = {
+        name: input,
+        queryString: props.query
+      }
+      await dispatch({type: 'saveDbQuery', args: obj});
+    } catch (error) {
+      console.log(error)
+    }
 
     setOpen(false);
   };
@@ -36,13 +53,15 @@ export default function FormDialog(props) {
             id="name"
             label="Query Name"
             fullWidth
+            value={input}
+            onChange={handleInput}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>

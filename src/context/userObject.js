@@ -264,6 +264,25 @@ export default class User {
         this._writeUfile();
     }
 
+    /**
+     * Saves a database queries  
+     *
+     * @param query: key value pair, key: name of query, value: string query
+     * @postcondition pushes a query onto the act db list of queries
+     */
+    saveDbQuery(query) {
+        if (!this._hasActiveDb()) {
+            throw new Error(`This project does not have an active database`);
+        }
+
+        if (this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'] === undefined){
+            this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'] = {};
+        }
+
+        this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'][query.name] = query.queryString
+
+        this._writeUfile();
+    }
 
     /* ADDITIONAL METHODS */
 
@@ -355,7 +374,7 @@ export default class User {
         if( newDb.path !== '' ) {
             this.projs[this.act_proj.id]['admin'] = newDb.path    
         }
-        this.projs[this.act_proj.id]['database']['all'][newDb.dbName] = {'url': "", 'settings': {Add: false, Edit: true, Delete: false, Collapsed: true, DisplayObjectSize: false, SortKeys: false, DisplayDataType: false, Clipboard: true} }  
+        this.projs[this.act_proj.id]['database']['all'][newDb.dbName] = {'url': "", 'settings': {Add: false, Edit: true, Delete: false, Collapsed: true, DisplayObjectSize: false, SortKeys: false, DisplayDataType: false, Clipboard: true}, "queries":{}}  
 
         if(newDb.url !== '') {
             this.projs[this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url

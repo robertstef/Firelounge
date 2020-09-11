@@ -46,14 +46,21 @@ export default function LoadQueryModal(props) {
       props.getInput(user.act_db_queries[value])
     }
   };
-
+  
+  let queryList;
+  try{
+    queryList = Object.keys(user.act_db_queries)
+  }catch (error) {}
 
   return (
     <div>
-        <IconButton size="medium" onClick={handleClickOpen}>
+        <IconButton size="medium" disabled={queryList === undefined || queryList.length === 0} onClick={handleClickOpen}>
             <GetAppIcon fontSize="inherit" />
         </IconButton>
-        <SimpleDialog queries={Object.keys(user.act_db_queries)} open={open} onClose={handleClose} />
+        { queryList === undefined ? 
+          null :
+          <SimpleDialog queries={queryList} open={open} onClose={handleClose} />          
+          }
     </div>
   );
 }

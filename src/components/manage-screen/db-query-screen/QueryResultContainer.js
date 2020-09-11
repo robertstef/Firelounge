@@ -34,6 +34,7 @@ function QueryResultContainer(props) {
 			<Typography>{props.queryString}</Typography> 
             <ReactJson 
                 name={false}
+                collapsed={true}
                 src={sampleJson}
             />
         </>
