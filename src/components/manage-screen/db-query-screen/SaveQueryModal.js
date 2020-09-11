@@ -19,6 +19,7 @@ export default function FormDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setInput('')
   };
 
   const handleSave = async () => {
@@ -29,11 +30,12 @@ export default function FormDialog(props) {
         queryString: props.query
       }
       await dispatch({type: 'saveDbQuery', args: obj});
+
     } catch (error) {
       console.log(error)
     }
-
     setOpen(false);
+    setInput('')
   };
 
   return (
