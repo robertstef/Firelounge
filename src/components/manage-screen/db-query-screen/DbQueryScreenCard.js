@@ -6,7 +6,7 @@ import QueryResultContainer from './QueryResultContainer'
 import SaveIcon from '@material-ui/icons/Save';
 import CachedIcon from '@material-ui/icons/Cached';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import SaveQueryInput from './SaveQueryInput'
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100%',
@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         borderColor: '#ef223c',
+    },
+    successfulQuery: {
+        borderColor: '#4BB543',
     }
 }));
 
@@ -52,26 +55,17 @@ export default function DbQueryScreenCard() {
     const { user } = UserState();
     const [input, setInput] = React.useState('');
     const [query, setQuery] = React.useState('');
+    const [successfulQuery, setSuccessfulQuery] = React.useState(false);
 
     
     const handleInput = (event) => {
         setInput(event.target.value)
-
-        let last_char = (event.target.value).substr(event.target.value.length - 1);
-
-        if(last_char === ';') {
-            setQuery(event.target.value)
-            setInput('')
-        };
+        setSuccessfulQuery(false)
       };
-
-    const handleSave = () => {
-        console.log('handing save')
-    }
 
     const handleRun = () => {
         setQuery(input)
-        setInput('')
+        setSuccessfulQuery(true)
     }
 
     const handleLoad = () => {
@@ -79,8 +73,8 @@ export default function DbQueryScreenCard() {
     }
 
     const handleClear = () => {
-        console.log('handing clear')
         setInput('')
+        setSuccessfulQuery(false)
     }
 
     return(
@@ -88,9 +82,7 @@ export default function DbQueryScreenCard() {
             <Card className={classes.card}>
                 <Toolbar>
                     <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
-                    <IconButton aria-label="delete" className={classes.iconButton} size="medium" onClick={handleSave}>
-                        <SaveIcon fontSize="inherit" />
-                    </IconButton>
+                    <SaveQueryInput query={input}/>
                     <Button variant="outlined" onClick={handleRun} className={classes.button}> Run </Button>
                     <IconButton aria-label="delete" className={classes.iconButton} size="medium" onClick={handleLoad}>
                         <CachedIcon fontSize="inherit" />
@@ -103,13 +95,18 @@ export default function DbQueryScreenCard() {
                 {user.act_db_name !== '' ? (
                     <div>
                         <TextField
+                        InputProps={{
+                            classes: {
+                              notchedOutline: successfulQuery ? classes.successfulQuery : null
+                            }
+                          }}
                             id="standard-textarea"
                             label="Query"
                             multiline
                             variant="outlined"    
-                            className={classes.textField}
                             onChange={handleInput}
                             value={input}
+                            className={classes.textField}
                         />
                         <div className={classes.objectContainer}>
                             <QueryResultContainer queryString={query}/>
