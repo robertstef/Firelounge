@@ -81,7 +81,7 @@ export default function DbQueryScreenCard() {
                     <SaveQueryModal query={input} />
                     <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
                     <LoadQueryModal getInput={setInput} />
-                    <IconButton className={classes.iconButton} size="medium" onClick={handleClear}>
+                    <IconButton className={classes.iconButton} size="medium" onClick={handleClear} disabled={input === ''}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
                 </Toolbar>
