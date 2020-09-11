@@ -2,11 +2,10 @@ import React from 'react';
 import {List, ListItem, ListItemText, DialogTitle, Dialog, IconButton} from '@material-ui/core/';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
-
-const sampleQueries = ['Query 1', 'Query 2'];
+import {UserState} from "../../../context/userContext";
 
 function SimpleDialog(props) {
-  const { onClose, open } = props;
+  const { onClose, open, queries } = props;
 
   const handleClose = () => {
     onClose(undefined);
@@ -20,7 +19,7 @@ function SimpleDialog(props) {
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle >Select Query</DialogTitle>
       <List>
-        {sampleQueries.map((query) => (
+        {queries.map((query) => (
           <ListItem button onClick={() => handleListItemClick(query)} key={query}>
             <LabelOutlinedIcon/>
             <ListItemText primary={query} />
@@ -33,6 +32,7 @@ function SimpleDialog(props) {
 
 export default function LoadQueryModal(props) {
   const [open, setOpen] = React.useState(false);
+  const {user} = UserState(); 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -43,16 +43,17 @@ export default function LoadQueryModal(props) {
     
     if(value !== undefined){
       //pass back value to textfield
-      props.getInput(value)
+      props.getInput(user.act_db_queries[value])
     }
   };
+
 
   return (
     <div>
         <IconButton size="medium" onClick={handleClickOpen}>
             <GetAppIcon fontSize="inherit" />
         </IconButton>
-        <SimpleDialog  open={open} onClose={handleClose} />
+        <SimpleDialog queries={Object.keys(user.act_db_queries)} open={open} onClose={handleClose} />
     </div>
   );
 }

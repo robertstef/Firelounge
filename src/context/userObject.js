@@ -177,9 +177,9 @@ export default class User {
     }
 
     /**
-     * Returns array of all databases objects defined for the active project
+     * Returns string absolute path to the admin key file
      *
-     * @returns array : 
+     * @returns string: absolute file path
      */
     get act_proj_admin_path(){
         try {
@@ -189,6 +189,18 @@ export default class User {
         }
     }
 
+    /**
+     * Returns array of queries saved for the active project
+     *
+     * @returns array : 
+     */
+    get act_db_queries(){
+        try {
+            return this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'];
+        } catch( error) {
+            return undefined
+        }
+    }
 
 
     /* SETTER METHODS */
