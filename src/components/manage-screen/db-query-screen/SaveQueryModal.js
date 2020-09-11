@@ -1,12 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import {IconButton} from '@material-ui/core';
+import {Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from '@material-ui/core/';
 import SaveIcon from '@material-ui/icons/Save';
 
 export default function FormDialog(props) {
@@ -22,14 +15,13 @@ export default function FormDialog(props) {
 
   const handleSave = () => {
     //dispatch save call here
-    
+
     setOpen(false);
   };
 
-
   return (
     <div>
-        <IconButton aria-label="delete" size="medium" onClick={handleClickOpen}>
+        <IconButton aria-label="delete" size="medium" onClick={handleClickOpen} disabled={props.query === ''}>
             <SaveIcon fontSize="inherit" />
         </IconButton>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

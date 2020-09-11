@@ -3,10 +3,10 @@ import { makeStyles, Typography, Divider,TextField,Card,Button, Toolbar, IconBut
 import {UserState} from "../../../context/userContext";
 import NoActiveDb from '../../Utility/NoActiveDb'
 import QueryResultContainer from './QueryResultContainer'
-import SaveIcon from '@material-ui/icons/Save';
-import CachedIcon from '@material-ui/icons/Cached';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveQueryInput from './SaveQueryInput'
+import SaveQueryModal from './SaveQueryModal'
+import LoadQueryModal from './LoadQueryModal'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100%',
@@ -68,13 +68,13 @@ export default function DbQueryScreenCard() {
         setSuccessfulQuery(true)
     }
 
-    const handleLoad = () => {
-        console.log('handing load')
-    }
-
     const handleClear = () => {
         setInput('')
         setSuccessfulQuery(false)
+    }
+
+    const handleLoad = () => {
+        
     }
 
     return(
@@ -82,11 +82,9 @@ export default function DbQueryScreenCard() {
             <Card className={classes.card}>
                 <Toolbar>
                     <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
-                    <SaveQueryInput query={input}/>
+                    <SaveQueryModal query={input}/>
                     <Button variant="outlined" onClick={handleRun} className={classes.button}> Run </Button>
-                    <IconButton aria-label="delete" className={classes.iconButton} size="medium" onClick={handleLoad}>
-                        <CachedIcon fontSize="inherit" />
-                    </IconButton>
+                    <LoadQueryModal/>
                     <IconButton className={classes.iconButton} size="medium" onClick={handleClear}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
