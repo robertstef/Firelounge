@@ -73,18 +73,14 @@ export default function DbQueryScreenCard() {
         setSuccessfulQuery(false)
     }
 
-    const handleLoad = () => {
-        
-    }
-
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
                 <Toolbar>
                     <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
-                    <SaveQueryModal query={input}/>
-                    <Button variant="outlined" onClick={handleRun} className={classes.button}> Run </Button>
-                    <LoadQueryModal/>
+                    <SaveQueryModal query={input} />
+                    <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
+                    <LoadQueryModal getInput={setInput} />
                     <IconButton className={classes.iconButton} size="medium" onClick={handleClear}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>

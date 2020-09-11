@@ -6,10 +6,10 @@ import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
 const sampleQueries = ['Query 1', 'Query 2'];
 
 function SimpleDialog(props) {
-  const { onClose, selectedValue, open } = props;
+  const { onClose, open } = props;
 
   const handleClose = () => {
-    onClose(selectedValue);
+    onClose(undefined);
   };
 
   const handleListItemClick = (value) => {
@@ -31,9 +31,8 @@ function SimpleDialog(props) {
   );
 }
 
-export default function LoadQueryModal() {
+export default function LoadQueryModal(props) {
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(sampleQueries[1]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,7 +40,11 @@ export default function LoadQueryModal() {
 
   const handleClose = (value) => {
     setOpen(false);
-    setSelectedValue(value);
+    
+    if(value !== undefined){
+      //pass back value to textfield
+      props.getInput(value)
+    }
   };
 
   return (
@@ -49,7 +52,7 @@ export default function LoadQueryModal() {
         <IconButton size="medium" onClick={handleClickOpen}>
             <GetAppIcon fontSize="inherit" />
         </IconButton>
-        <SimpleDialog selectedValue={selectedValue} open={open} onClose={handleClose} />
+        <SimpleDialog  open={open} onClose={handleClose} />
     </div>
   );
 }
