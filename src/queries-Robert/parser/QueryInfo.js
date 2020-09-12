@@ -6,7 +6,7 @@ class QueryInfo {
      * @param collection: {String|null}
      * @param orderBys: {{colName: string, ascending: boolean}[]|null}
      * @param selectFields: {{fieldName: boolean, ...}|null}
-     * @param wheres:[{null|{field: String, comparator: String, compVal: {String|number|boolean|null}}, ...]
+     * @param wheres:[{null|{field: String, comparator: String, value: {String|number|boolean|null}}, ...]
      */
     constructor(collection=null, orderBys=null, selectFields=null, wheres=null) {
         this._collection = collection;

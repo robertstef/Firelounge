@@ -215,7 +215,7 @@ let getOrderBys = (query) => {
  * SELECT fields, ... FROM collection
  *
  * @param query: String - query to be parsed
- * @returns {{fieldName: boolean, ...}}
+ * @returns {String[]}: array of selected fields
  */
 let getSelectFields = (query) => {
 
@@ -257,7 +257,7 @@ let getSelectFields = (query) => {
  *
  * The expected return value of this query would be:
  *
- * [{field: "player", comparator: "=", compVal: "Robert"}]
+ * [{field: "player", comparator: "=", value: "Robert"}]
  *
  * @param query: {String} - query to be parsed
  * @returns {null|{field: String, comparator: String, compVal: {String|number|boolean|null}[]}}
