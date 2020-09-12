@@ -11,7 +11,8 @@ const _ = require("lodash");
 let getDataForSelect = (queryInfo, dataBase) => {
     let wheres = queryInfo.wheres;
 
-    if (wheres === null || wheres[0].comparator !== '=') {
+    //if (wheres === null || wheres[0].comparator !== '=') {
+    if (wheres === null) {
         return queryEntireRealTimeCollection(queryInfo, dataBase);
     }
     else {
@@ -70,12 +71,15 @@ const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
     let result = {};
 
     for (let where of wheres) {
+        let payload;
         switch(where.comparator) {
             case '=':
-                let payload = await equals(queryInfo, dataBase, where);
+                payload = await equals(queryInfo, dataBase, where);
                 await _.merge(result, payload);
                 break;
             case '!=':
+                payload = await notEquals(queryInfo, dataBase, where);
+                await _.merge(result, payload);
                 break;
             case '<>':
                 break;
@@ -128,7 +132,7 @@ const getSelectedFieldsFromResults = (payload, queryInfo) => {
         }
         result[field] = val;
     }
-    
+
     return result;
 }
 
@@ -151,8 +155,33 @@ let equals = async (queryInfo, dataBase, where) => {
     return await snapshot.val();
 }
 
+/**
+ *
+ * @param queryInfo
+ * @param dataBase
+ * @param where
+ * @returns {Promise<*>}
+ */
 let notEquals = async (queryInfo, dataBase, where) => {
+    // get entire collection
+    let fullPayload = await queryEntireRealTimeCollection(queryInfo, dataBase);
+    
+    // get equal collection
+    let equalPayload = await equals(queryInfo, dataBase, where);
 
+    // remove equal values from the full object
+    Object.keys(equalPayload).forEach((key) => {
+        delete fullPayload[key];
+    });
+
+    // remove nested objects that do not contain the key specified by WHERE
+    Object.keys(fullPayload).forEach((key) => {
+        if (fullPayload[key][where.field] === undefined) {
+            delete fullPayload[key];
+        }
+    });
+
+    return fullPayload;
 }
 
 module.exports = {
