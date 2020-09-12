@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 /**
  * Executes a Firebase query for a SELECT statement.
  *
@@ -9,13 +11,12 @@
 let getDataForSelect = (queryInfo, dataBase) => {
     let wheres = queryInfo.wheres;
 
-    if (wheres === null || wheres[0] !== '=') {
+    if (wheres === null || wheres[0].comparator !== '=') {
         return queryEntireRealTimeCollection(queryInfo, dataBase);
     }
     else {
         return executeFilteredRealtimeQuery(queryInfo, dataBase);
     }
-
 }
 
 /**
@@ -52,6 +53,7 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
     }
 
     return getSelectedFieldsFromResults(payload, queryInfo);
+    // TODO filter based on WHERES if a WHERE statement was included
 }
 
 /**
@@ -65,19 +67,50 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
  */
 const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
     const wheres = queryInfo.wheres;
-    const collection = queryInfo.collection;
+    let result = {};
 
-    const ref = await dataBase.ref(collection)
-                  .orderByChild(wheres[0].field)
-                  .equalTo(wheres[0].value);
+    for (let where of wheres) {
+        switch(where.comparator) {
+            case '=':
+                let payload = await equals(queryInfo, dataBase, where);
+                await _.merge(result, payload);
+                break;
+            case '!=':
+                break;
+            case '<>':
+                break;
+            case '>':
+                break;
+            case '<':
+                break;
+            case '>=':
+                break;
+            case '<=':
+                break;
+            case 'like':
+                break;
+            case '!like':
+                break;
+            default:
+                throw new Error("executeFilteredRealTimeQuery(): unrecognized comparator. The following equality" +
+                    " operators are supported: =, !=, <>, >, >=, <, <=, like, not like")
+        }
+    }
 
-    const snapshot = await ref.once("value");
-    let payload = await snapshot.val();
-
-    // TODO filter out where statements and non selected fields
-    // return filterWheresAndNonSelectedFields
+    return result;
 }
 
+/**
+ * Obtains the requested SELECT fields, as specified by
+ * queryInfo.selectFields, from the JSON object returned
+ * by Firebase and returns a new object containing only the
+ * specified fields.
+ *
+ * @param payload: {JSON} - the data returned by the Firebase query
+ * @param queryInfo: {QueryInfo}
+ * @throws Error - if field
+ * @returns {{}|*}
+ */
 const getSelectedFieldsFromResults = (payload, queryInfo) => {
     let selectFields = queryInfo.selectFields;
 
@@ -95,7 +128,31 @@ const getSelectedFieldsFromResults = (payload, queryInfo) => {
         }
         result[field] = val;
     }
+    
     return result;
+}
+
+/**
+ *
+ * @param queryInfo
+ * @param dataBase
+ * @param where
+ * @returns {Promise<*>}
+ */
+let equals = async (queryInfo, dataBase, where) => {
+    const ref = await dataBase.ref(queryInfo.collection)
+        .orderByChild(where.field)
+        .equalTo(where.value);
+
+    // get snapshot of data at this reference location (including children)
+    const snapshot = await ref.once("value");
+
+    // get JS specific representation of snapshot
+    return await snapshot.val();
+}
+
+let notEquals = async (queryInfo, dataBase, where) => {
+
 }
 
 module.exports = {
