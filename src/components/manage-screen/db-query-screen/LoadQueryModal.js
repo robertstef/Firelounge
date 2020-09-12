@@ -1,8 +1,10 @@
 import React from 'react';
-import {List, ListItem, ListItemText, DialogTitle, Dialog, IconButton} from '@material-ui/core/';
+import {List, ListItem, ListItemText, DialogTitle, Dialog, IconButton, ListItemSecondaryAction, Divider} from '@material-ui/core/';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {UserState} from "../../../context/userContext";
+
 
 function SimpleDialog(props) {
   const { onClose, open, queries } = props;
@@ -15,14 +17,25 @@ function SimpleDialog(props) {
     onClose(value);
   };
 
+  const handleDelete = (value) => {
+    console.log('deleting')
+    console.log(value)
+  };
+
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle >Select Query</DialogTitle>
+    <Dialog onClose={handleClose} open={open} maxWidth={'xs'} fullWidth={true}>
+      <DialogTitle >Select Query</DialogTitle >
+      <Divider style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}/>
       <List>
         {queries.map((query) => (
           <ListItem button onClick={() => handleListItemClick(query)} key={query}>
-            <LabelOutlinedIcon/>
-            <ListItemText primary={query} />
+            <LabelOutlinedIcon />
+            <ListItemText primary={query} style={{marginLeft: '5%'}}/>
+            <ListItemSecondaryAction>
+              <IconButton edge="end" onClick={() => handleDelete(query)} style={{marginRight: '5%'}}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
