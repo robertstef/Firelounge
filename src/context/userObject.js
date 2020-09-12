@@ -284,6 +284,27 @@ export default class User {
         this._writeUfile();
     }
 
+    /**
+     * Deletes a database queries  
+     *
+     * @param queryName: string which is the name of the query and the key in the user file
+     * @postcondition removes the query key-value pair from the user file
+     */
+    deleteDbQuery(queryName) {
+        if (!this._hasActiveDb()) {
+            throw new Error(`This project does not have an active database`);
+        }
+
+        try {
+            delete this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'][queryName]
+        } catch (error) {
+            console.log(error)
+        }
+
+        this._writeUfile();
+    }
+
+
     /* ADDITIONAL METHODS */
 
     /**

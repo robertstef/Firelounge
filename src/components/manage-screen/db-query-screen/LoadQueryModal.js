@@ -3,11 +3,12 @@ import {List, ListItem, ListItemText, DialogTitle, Dialog, IconButton, ListItemS
 import GetAppIcon from '@material-ui/icons/GetApp';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {UserState} from "../../../context/userContext";
+import {UserState, UserDispatch} from "../../../context/userContext";
 
 
 function SimpleDialog(props) {
   const { onClose, open, queries } = props;
+  const dispatch = UserDispatch();
 
   const handleClose = () => {
     onClose(undefined);
@@ -17,9 +18,13 @@ function SimpleDialog(props) {
     onClose(value);
   };
 
-  const handleDelete = (value) => {
-    console.log('deleting')
-    console.log(value)
+  const handleDelete = async (value) => {
+    try {
+      await dispatch({type: 'deleteDbQuery', args: value});
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   return (
