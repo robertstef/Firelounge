@@ -80,7 +80,7 @@ export default function DbQueryScreenCard() {
                     <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
                     <SaveQueryModal query={input} />
                     <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
-                    <LoadQueryModal getInput={setInput} />
+                    <LoadQueryModal getInput={setInput} setSuccessfulQuery={setSuccessfulQuery}/>
                     <IconButton className={classes.iconButton} size="medium" onClick={handleClear} disabled={input === ''}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>

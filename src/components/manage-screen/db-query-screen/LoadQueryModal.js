@@ -48,6 +48,13 @@ function SimpleDialog(props) {
   );
 }
 
+/**
+ * 
+ * Dialog List which displays the list of saved queries 
+ * @param {*} props :
+ * props.getInput - callback function which places the querystring value into the query textbox
+ * props.setSuccessfulQuery - callback function which changes the border color of the query textbox
+ */
 export default function LoadQueryModal(props) {
   const [open, setOpen] = React.useState(false);
   const {user} = UserState(); 
@@ -62,6 +69,7 @@ export default function LoadQueryModal(props) {
     if(value !== undefined){
       //pass back value to textfield
       props.getInput(user.act_db_queries[value])
+      props.setSuccessfulQuery(false);
     }
   };
   
