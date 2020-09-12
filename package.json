@@ -37,6 +37,7 @@
     "firebase": "^7.15.0",
     "firebase-admin": "^8.12.1",
     "firebase-tools": "^8.4.2",
+    "lodash": "^4.17.20",
     "path": "^0.12.7",
     "prop-types": "latest",
     "react": "^16.13.1",
