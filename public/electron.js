@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, nativeImage} = require('electron');
 const path = require('path');
 const isDev = require("electron-is-dev");
+const log = require('electron-log');
 
 /* Set ICP channels for filepath selection */
 require('./ipc/NewProjFilePath.js')
@@ -9,6 +10,14 @@ require('./ipc/ExistingProjFilePath.js')
 
 // Set error logging
 process.env.LOGGING = false;
+const LOGGING = process.env.LOGGING
+
+// set $PATH for macOS as it's inherited when opening from finder
+const fixPath = require('fix-path');
+if(!isDev){
+    fixPath();
+    if(LOGGING){log.info(process.env);}
+}
 
 let win;
 function createWindow () {

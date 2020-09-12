@@ -35,6 +35,7 @@
     "firebase": "^7.15.0",
     "firebase-admin": "^8.12.1",
     "firebase-tools": "^8.4.2",
+    "fix-path": "^3.0.0",
     "path": "^0.12.7",
     "prop-types": "latest",
     "react": "^16.13.1",
@@ -43,7 +44,7 @@
     "react-json-view": "^1.19.1",
     "react-modal": "^3.11.2",
     "react-router-dom": "latest",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "typescript": "^3.9.5"
   },
   "scripts": {
