@@ -93,8 +93,12 @@ const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
                 await _.merge(result, payload);
                 break;
             case '<=':
+                payload = await lessThanEq(queryInfo, dataBase, where);
+                await _.merge(result, payload);
                 break;
             case '<':
+                payload = await lessThan(queryInfo, dataBase, where);
+                await _.merge(result, payload);
                 break;
             case 'like':
                 break;
@@ -272,6 +276,68 @@ const greaterThan = async (queryInfo, dataBase, where) => {
     }
     else if (gEqPayload !== null && eqPayload === null) {
         return gEqPayload;
+    }
+    else {
+        return {};
+    }
+}
+
+/**
+ * Executes a Firebase query to obtain the database objects
+ * that are less than or equal to the value specified by
+ * the WHERE statement.
+ *
+ * @param queryInfo: {QueryInfo}
+ * @param dataBase: {Object} - Firebase database object
+ * @param where: {Object} - specified the current WHERE statement
+ * @returns {Promise<*>}
+ */
+const lessThanEq = async (queryInfo, dataBase, where) => {
+
+    const ref = await dataBase.ref(queryInfo.collection)
+        .orderByChild(where.field)
+        .endAt(where.value);
+
+    // get snapshot of data at this reference location (including children)
+    const snapshot = await ref.once("value");
+
+    // get JS specific representation of snapshot
+    return await snapshot.val();
+}
+
+/**
+ * Executes a Firebase query to obtain the database objects
+ * that are less than the value specified by the WHERE statement.
+ *
+ * @param queryInfo: {QueryInfo}
+ * @param dataBase: {Object} - Firebase database object
+ * @param where: {Object} - specified the current WHERE statement
+ * @returns {Promise<*>}
+ */
+const lessThan = async (queryInfo, dataBase, where) => {
+    
+    // get values greater than or equal to and equal to the value
+    // specified by the where statement
+    let lEqPayload = await lessThanEq(queryInfo, dataBase, where);
+    let eqPayload = await equals(queryInfo, dataBase, where);
+
+    // removes the values that are equal to the value
+    // specified by the where statement
+    const parseLessEq = () => {
+        Object.keys(eqPayload).forEach((key) => {
+            delete lEqPayload[key];
+        });
+    }
+
+    if (lEqPayload !== null && eqPayload !== null) {
+        parseLessEq();
+        return lEqPayload;
+    }
+    else if (lEqPayload === null && eqPayload !== null) {
+        return {};
+    }
+    else if (lEqPayload !== null && eqPayload === null) {
+        return lEqPayload;
     }
     else {
         return {};

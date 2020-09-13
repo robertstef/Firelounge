@@ -39,7 +39,6 @@ const execSelectTests = async (data) => {
     let result;
     let expected;
 
-    /*
     // 1. Retrieve whole database
     result = await fbsql.executeQuery("select * from games", db, false)
     expected = data;
@@ -102,7 +101,6 @@ const execSelectTests = async (data) => {
     expected = {coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
         skiing: { Ben: 100, Jackson: 20, Robert: 15 }};
     assert.deepStrictEqual(result, expected);
-     */
 
     // 12. TODO - WHERE greater than or equal using string value (need to update dummy data)
 
@@ -116,7 +114,18 @@ const execSelectTests = async (data) => {
     result = await fbsql.executeQuery("select * from games/Scores where Robert > 1500", db, false);
     expected = {};
     assert.deepStrictEqual(result, expected);
-    
+
+    // 15. WHERE less than or equal
+    result = await fbsql.executeQuery("select * from games/Scores where Robert <=15", db, false);
+    expected = {cards: { Ben: 3, Jackson: 4, Robert: 3 },
+        skiing: { Ben: 100, Jackson: 20, Robert: 15 }};
+    assert.deepStrictEqual(result, expected);
+
+    // 16. WHERE less than
+    result = await fbsql.executeQuery("select * from games/Scores where Robert < 15", db, false);
+    expected = {cards: { Ben: 3, Jackson: 4, Robert: 3 }}
+    assert.deepStrictEqual(result, expected);
+
     console.log("*** SELECT TESTS PASSED ***")
 }
 
