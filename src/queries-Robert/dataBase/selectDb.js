@@ -84,15 +84,17 @@ const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
                 payload = await notEquals(queryInfo, dataBase, where);
                 await _.merge(result, payload);
                 break;
-            case '>':
-                break;
-            case '<':
-                break;
             case '>=':
                 payload = await greaterThanEq(queryInfo, dataBase, where);
                 await _.merge(result, payload);
                 break;
+            case '>':
+                payload = await greaterThan(queryInfo, dataBase, where);
+                await _.merge(result, payload);
+                break;
             case '<=':
+                break;
+            case '<':
                 break;
             case 'like':
                 break;
@@ -162,13 +164,13 @@ const equals = async (queryInfo, dataBase, where) => {
 }
 
 /**
- * Execute and Firebase query to obtains the database
+ * Executes a Firebase query to obtain the database
  * objects that are not equal to the key value pair
  * specified by the inputted WHERE.
  *
  * @param queryInfo: {QueryInfo}
  * @param dataBase: {Object} - Firebase database object
- * @param where: {Object} - specified the current where
+ * @param where: {Object} - specifies the current WHERE statement
  * @returns {Promise<*>}
  */
 const notEquals = async (queryInfo, dataBase, where) => {
@@ -213,6 +215,16 @@ const notEquals = async (queryInfo, dataBase, where) => {
     }
 }
 
+/**
+ * Executes a Firebase query to obtain the database objects
+ * that are greater than or equal to the value specified
+ * by the WHERE statement.
+ *
+ * @param queryInfo: {QueryInfo}
+ * @param dataBase: {Object} - Firebase database object
+ * @param where: {Object} - specified the current WHERE statement
+ * @returns {Promise<*>}
+ */
 const greaterThanEq = async (queryInfo, dataBase, where) => {
 
     const ref = await dataBase.ref(queryInfo.collection)
@@ -224,6 +236,46 @@ const greaterThanEq = async (queryInfo, dataBase, where) => {
 
     // get JS specific representation of snapshot
     return await snapshot.val();
+}
+
+/**
+ * Executes a Firebase query to obtain the database objects
+ * that are greater than the value specified by
+ * the WHERE statement.
+ *
+ * @param queryInfo: {QueryInfo}
+ * @param dataBase: {Object} - Firebase database object
+ * @param where: {Object} - specified the current WHERE statement
+ * @returns {Promise<*>}
+ */
+const greaterThan = async (queryInfo, dataBase, where) => {
+
+    // get values greater than or equal to and equal to the value
+    // specified by the where statement
+    let gEqPayload = await greaterThanEq(queryInfo, dataBase, where);
+    let eqPayload = await equals(queryInfo, dataBase, where);
+
+    // removes the values that are equal to the value
+    // specified by the where statement
+    const parseGreaterEq = () => {
+        Object.keys(eqPayload).forEach((key) => {
+            delete gEqPayload[key];
+        });
+    }
+
+    if (gEqPayload !== null && eqPayload !== null) {
+        parseGreaterEq();
+        return gEqPayload;
+    }
+    else if (gEqPayload === null && eqPayload !== null) {
+        return {};
+    }
+    else if (gEqPayload !== null && eqPayload === null) {
+        return gEqPayload;
+    }
+    else {
+        return {};
+    }
 }
 
 module.exports = {

@@ -75,7 +75,6 @@ const execSelectTests = async (data) => {
             " in the database";
         assert.equal(errmsg, err.message);
     }
-     */
 
     // 7. SELECT with basic WHERE statement
     result = await fbsql.executeQuery("select * from games/Scores where Robert = 15", db, false);
@@ -98,6 +97,25 @@ const execSelectTests = async (data) => {
     expected = {};
     assert.deepStrictEqual(result, expected);
 
+    // 11. WHERE greater than or equal using numerical value
+    result = await fbsql.executeQuery("select * from games/Scores where Ben >= 50", db, false);
+    expected = {coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
+        skiing: { Ben: 100, Jackson: 20, Robert: 15 }};
+    assert.deepStrictEqual(result, expected);
+     */
+
+    // 12. TODO - WHERE greater than or equal using string value (need to update dummy data)
+
+    // 13. WHERE greater than with numerical value
+    result = await fbsql.executeQuery("select * from games/Scores where Robert > 3", db, false);
+    expected = {coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
+        skiing: { Ben: 100, Jackson: 20, Robert: 15 }};
+    assert.deepStrictEqual(result, expected);
+
+    // 14. WHERE greater than no match
+    result = await fbsql.executeQuery("select * from games/Scores where Robert > 1500", db, false);
+    expected = {};
+    assert.deepStrictEqual(result, expected);
     
     console.log("*** SELECT TESTS PASSED ***")
 }
