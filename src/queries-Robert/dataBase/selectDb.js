@@ -137,10 +137,13 @@ const getSelectedFieldsFromResults = (payload, queryInfo) => {
 }
 
 /**
+ * Executes a Firebase query to obtain the database objects
+ * that are equal to the key value pair specified by the
+ * inputted WHERE.
  *
- * @param queryInfo
- * @param dataBase
- * @param where
+ * @param queryInfo: {QueryInfo}
+ * @param dataBase: {Object} - Firebase database object
+ * @param where: {Object} - specifies the current WHERE statement
  * @returns {Promise<*>}
  */
 let equals = async (queryInfo, dataBase, where) => {
@@ -156,32 +159,55 @@ let equals = async (queryInfo, dataBase, where) => {
 }
 
 /**
+ * Execute and Firebase query to obtains the database
+ * objects that are not equal to the key value pair
+ * specified by the inputted WHERE.
  *
- * @param queryInfo
- * @param dataBase
- * @param where
+ * @param queryInfo: {QueryInfo}
+ * @param dataBase: {Object} - Firebase database object
+ * @param where: {Object} - specified the current where
  * @returns {Promise<*>}
  */
-let notEquals = async (queryInfo, dataBase, where) => {
+const notEquals = async (queryInfo, dataBase, where) => {
     // get entire collection
     let fullPayload = await queryEntireRealTimeCollection(queryInfo, dataBase);
     
     // get equal collection
     let equalPayload = await equals(queryInfo, dataBase, where);
 
-    // remove equal values from the full object
-    Object.keys(equalPayload).forEach((key) => {
-        delete fullPayload[key];
-    });
-
-    // remove nested objects that do not contain the key specified by WHERE
-    Object.keys(fullPayload).forEach((key) => {
-        if (fullPayload[key][where.field] === undefined) {
+    // removes equal values from the entire snapshot of the
+    // entire database
+    const removeEqual = () => {
+        Object.keys(equalPayload).forEach((key) => {
             delete fullPayload[key];
-        }
-    });
+        });
+    }
 
-    return fullPayload;
+    // removes the entries from the entire database that do
+    // not contain the field specified by the WHERE statement
+    const filterFull = () => {
+        Object.keys(fullPayload).forEach((key) => {
+            if (fullPayload[key][where.field] === undefined) {
+                delete fullPayload[key];
+            }
+        });
+    }
+
+    if (equalPayload !== null && fullPayload !== null) {
+        removeEqual();
+        filterFull();
+        return fullPayload;
+    }
+    else if (equalPayload === null && fullPayload !== null) {
+        filterFull();
+        return fullPayload;
+    }
+    else if (equalPayload !== null && fullPayload === null) {
+        return {};
+    }
+    else {
+        return {};
+    }
 }
 
 module.exports = {
