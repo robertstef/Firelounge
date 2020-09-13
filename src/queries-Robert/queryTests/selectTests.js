@@ -3,12 +3,18 @@ const fbsql = require('../execQuery');
 const assert = require('assert');
 
 // Setup Database ref
+
 const serviceAccount =  "/Users/robertstefanyshin/FL_testdir/testfireloungeproj/" +
     "testfireloungproj-91d8b-firebase-adminsdk-bb6rk-49e89393ea.json";
+/*
+const serviceAccount = "/Users/robertstefanyshin/FL_testdir/cmpt350-project/" +
+    "cmpt350-project-ed891-firebase-adminsdk-q24yr-a278e93a9d.json"
+ */
 
 const app = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://testfireloungproj-91d8b.firebaseio.com/"
+    //databaseURL: "https://cmpt350-project-ed891.firebaseio.com/"
 });
 
 const db = app.database();
@@ -33,6 +39,7 @@ const execSelectTests = async (data) => {
     let result;
     let expected;
 
+    /*
     // 1. Retrieve whole database
     result = await fbsql.executeQuery("select * from games", db, false)
     expected = data;
@@ -68,6 +75,30 @@ const execSelectTests = async (data) => {
             " in the database";
         assert.equal(errmsg, err.message);
     }
+     */
+
+    // 7. SELECT with basic WHERE statement
+    result = await fbsql.executeQuery("select * from games/Scores where Robert = 15", db, false);
+    expected = {skiing: {Ben: 100, Jackson: 20, Robert: 15 }};
+    assert.deepStrictEqual(result, expected);
+
+    // 8. SELECT when WHERE key does not exist
+    result = await fbsql.executeQuery("select * from games where Robert = 15", db, false);
+    expected = {};
+    assert.deepStrictEqual(result, expected);
+
+    // 9. WHERE not equals
+    result = await fbsql.executeQuery("select * from games/Scores where Robert != 15", db, false);
+    expected = {cards: { Ben: 3, Jackson: 4, Robert: 3 },
+        coding: { Ben: 900, Jackson: 1200, Robert: 1500 }};
+    assert.deepStrictEqual(result, expected);
+
+    // 10. WHERE not equals - key not found
+    result = await fbsql.executeQuery("select * from games where Players != \"Robert\"", db, false);
+    expected = {};
+    assert.deepStrictEqual(result, expected);
+
+    
     console.log("*** SELECT TESTS PASSED ***")
 }
 
