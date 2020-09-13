@@ -6,7 +6,7 @@
  */
 let executeInsert = (query, dataBase, commitResults) => {
     // TODO - INSERT
-}
+};
 
 module.exports = {
     executeInsert: executeInsert

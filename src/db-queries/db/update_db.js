@@ -17,7 +17,6 @@ const updateRealtimeFields = function(db, path, newData, fields) {
   fields.forEach(field => {
     updateObject[field] = newData[field];
   });
-
   return db.ref(path).update(updateObject);
 };
 

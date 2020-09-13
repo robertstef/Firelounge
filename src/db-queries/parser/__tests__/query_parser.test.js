@@ -99,6 +99,11 @@ test("get sets", async () => {
         where age<5`;
   const sets = await queryParser.getSets(query);
   expect(sets).toEqual({ height: 10, name: "timmy" });
+
+  const q2 = `update users set name/height=20 where age<5`;
+  const s2 = await queryParser.getSets(q2);
+  expect(s2).toEqual({'name/height': 20})
+
 });
 
 test("get order bys", () => {
