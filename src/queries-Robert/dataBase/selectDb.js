@@ -8,10 +8,9 @@ const _ = require("lodash");
  *
  * @return {Object}: result of Firebase query
  */
-let getDataForSelect = (queryInfo, dataBase) => {
+const getDataForSelect = (queryInfo, dataBase) => {
     let wheres = queryInfo.wheres;
 
-    //if (wheres === null || wheres[0].comparator !== '=') {
     if (wheres === null) {
         return queryEntireRealTimeCollection(queryInfo, dataBase);
     }
@@ -82,12 +81,16 @@ const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
                 await _.merge(result, payload);
                 break;
             case '<>':
+                payload = await notEquals(queryInfo, dataBase, where);
+                await _.merge(result, payload);
                 break;
             case '>':
                 break;
             case '<':
                 break;
             case '>=':
+                payload = await greaterThanEq(queryInfo, dataBase, where);
+                await _.merge(result, payload);
                 break;
             case '<=':
                 break;
@@ -146,7 +149,7 @@ const getSelectedFieldsFromResults = (payload, queryInfo) => {
  * @param where: {Object} - specifies the current WHERE statement
  * @returns {Promise<*>}
  */
-let equals = async (queryInfo, dataBase, where) => {
+const equals = async (queryInfo, dataBase, where) => {
     const ref = await dataBase.ref(queryInfo.collection)
         .orderByChild(where.field)
         .equalTo(where.value);
@@ -208,6 +211,19 @@ const notEquals = async (queryInfo, dataBase, where) => {
     else {
         return {};
     }
+}
+
+const greaterThanEq = async (queryInfo, dataBase, where) => {
+
+    const ref = await dataBase.ref(queryInfo.collection)
+        .orderByChild(where.field)
+        .startAt(where.value);
+
+    // get snapshot of data at this reference location (including children)
+    const snapshot = await ref.once("value");
+
+    // get JS specific representation of snapshot
+    return await snapshot.val();
 }
 
 module.exports = {
