@@ -44,11 +44,13 @@ function createWindow () {
 
 app.whenReady().then(createWindow);
 
-// this sets icon for MacOS
-const image = nativeImage.createFromPath(
-    isDev ? app.getAppPath() + "/public/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
-  );
-app.dock.setIcon(image);
+if (process.platform === 'darwin') {
+    // this sets icon for MacOS
+    const image = nativeImage.createFromPath(
+        isDev ? app.getAppPath() + "/build/icon.png" : `${path.join(__dirname, "../build/icon.png")}`
+    );
+    app.dock.setIcon(image);
+}
 
 
 // Quit when all windows are closed.
