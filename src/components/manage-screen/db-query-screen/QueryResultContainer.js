@@ -4,7 +4,7 @@ import ReactJson from 'react-json-view';
 import {UserState} from "../../../context/userContext";
 import { Alert } from 'react-context-alerts';
 
-export default function QueryResultContainer({queryString}) {
+export default function QueryResultContainer({queryString, setSuccessfulQuery}) {
     const {user} = UserState(); 
     const sql = require('../../../queries-Robert/execQuery'); 
     const [result, setResult] = useState({})    
@@ -16,9 +16,8 @@ export default function QueryResultContainer({queryString}) {
                 try {
                     let response = await sql.executeQuery(queryString, user.db_obj, false)
                     setResult(response)
+                    setSuccessfulQuery(true)
                 } catch (error){
-                    console.log(error.message)
-                    console.log(typeof(error))
                     setAlert({display: true, message: error.message, type: 'error'})
                 }
               }

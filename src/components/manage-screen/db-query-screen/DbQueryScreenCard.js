@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     successfulQuery: {
         borderColor: '#4BB543',
+        borderWidth: '3px'
     }
 }));
 
@@ -65,7 +66,6 @@ export default function DbQueryScreenCard() {
 
     const handleRun = () => {
         setQuery(input)
-        setSuccessfulQuery(true)
     }
 
     const handleClear = () => {
@@ -103,7 +103,7 @@ export default function DbQueryScreenCard() {
                             className={classes.textField}
                         />
                         <div className={classes.objectContainer}>
-                            <QueryResultContainer queryString={query}/>
+                            <QueryResultContainer queryString={query} setSuccessfulQuery={setSuccessfulQuery} />
                         </div>
                     </div>
                 ): (
