@@ -22,13 +22,20 @@ function QueryResultContainer({queryString}) {
       runQuery();
     }, [queryString])
 
-    console.log(result)
+    
+    
     return (
         <>
-            Display objects here
-            
+            { Object.keys(result).length === 0 ? 
+            null
+            :
+            <ReactJson 
+                name={false}
+                collapsed={2}
+                src={result}
+            />}
         </>
-    );
+    );  
 }
 
 export default QueryResultContainer;
