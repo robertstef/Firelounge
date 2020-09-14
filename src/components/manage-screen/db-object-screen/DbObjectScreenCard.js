@@ -41,7 +41,7 @@ export default function DbObjectScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-            <Typography className={classes.heading} variant={"h6"}> Edit Database </Typography>
+            <Typography className={classes.heading} id={'manage-object-header'} variant={"h6"}> Edit Database </Typography>
             <Divider className={classes.divider}/>
             {user.act_db_name !== '' ? (
                     <div className={classes.ObjectContainer}>

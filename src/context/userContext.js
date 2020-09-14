@@ -52,6 +52,12 @@ function UserReducer(state, action) {
         case 'saveDbSettings':
                 state.user.saveDbSettings(action.args);
                 return {user: state.user};
+        case 'saveDbQuery':
+                state.user.saveDbQuery(action.args);
+                return {user: state.user};
+        case 'deleteDbQuery':
+                state.user.deleteDbQuery(action.args);
+                return {user: state.user};
         default:
             throw new Error("Unspecified action");
     }

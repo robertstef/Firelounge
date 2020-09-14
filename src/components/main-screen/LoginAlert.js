@@ -51,14 +51,14 @@ export default function LoginAlert(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Welcome to Firelounge"}</DialogTitle>
+        <DialogTitle id="login-header"> Welcome to Firelounge</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="login-text">
             Please login with your Google account
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary" id='login-button'>
             Login
           </Button> 
         </DialogActions>

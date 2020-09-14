@@ -1,15 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import Button from '@material-ui/core/Button';
+import { makeStyles, Stepper, Step, StepContent, StepLabel, Button, Chip } from '@material-ui/core';
 import GetFilePath from './GetDbFilePathButton';
 import DbNameInput from './DbNameInput';
 import {UserDispatch, UserState} from '../../../context/userContext'
 import InfoIcon from '@material-ui/icons/Info';
-import Chip from '@material-ui/core/Chip';
 import { Alert } from 'react-context-alerts';
 
 const { shell } = window.require('electron')
@@ -181,6 +175,7 @@ export default function VerticalLinearStepper(props) {
                       disabled={activeStep === 0}
                       onClick={handleBack}
                       className={classes.button}
+                      id={'manage-db-stepper-back-button'}
                     >
                       Back
                     </Button>
@@ -189,6 +184,7 @@ export default function VerticalLinearStepper(props) {
                       disabled={ (activeStep === 1 && dbPath === '' && user.admin_obj === '' ) || ( activeStep === 2 && dbName === '' )  }
                       onClick={() => handleNext(dispatch)}
                       className={classes.button}
+                      id={'manage-db-stepper-next-button'}
                     >
                       {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                     </Button>
@@ -198,7 +194,7 @@ export default function VerticalLinearStepper(props) {
             </Step>
           ))}
       </Stepper>
-      <Alert type={alert.type} open={alert.display} message={alert.message} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'info'})} }/>
+      <Alert type={alert.type} open={alert.display} message={<p id={'manage-add-db-alert'}> {alert.message} </p>} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'info'})} }/>
     </div>
   );
 }

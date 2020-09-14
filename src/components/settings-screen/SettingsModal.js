@@ -52,7 +52,7 @@ export default function SettingsModal() {
 
   return (
     <div>
-      <IconButton type="button" onClick={handleOpen} className={classes.button}>
+      <IconButton type="button" onClick={handleOpen} className={classes.button} id='settings-modal-button'>
         <SettingsIcon/>
       </IconButton>
       <Modal

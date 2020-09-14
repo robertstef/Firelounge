@@ -1,9 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Toolbar } from '@material-ui/core';
 import ProjectList from './ProjectList.js'
 import DbList from './DbList';
 import DbInitModal from './DbInitModal';
-import { Toolbar } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +29,7 @@ export default function TopManageNav(props) {
       </div>
       <div className={classes.rightItems}>
         { props.activeTab === 1 || props.activeTab === 2  ?  <DbList/> : null }
-        { props.activeTab === 2 ?  <DbInitModal/> : null }
+        { props.activeTab === 1 || props.activeTab === 2  ?   <DbInitModal/> : null }
       </div>
     </Toolbar>
   );

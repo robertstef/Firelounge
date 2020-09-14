@@ -1,10 +1,11 @@
 import React from 'react'
-import Card from "@material-ui/core/Card";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Typography, Divider,TextField,Card,Button, Toolbar, IconButton } from '@material-ui/core'
 import {UserState} from "../../../context/userContext";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import NoActiveDb from '../../Utility/NoActiveDb'
+import QueryResultContainer from './QueryResultContainer'
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveQueryModal from './SaveQueryModal'
+import LoadQueryModal from './LoadQueryModal'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     card: {
         height: '100%',
         borderRadius: '25px',
+        overflowY: 'auto'
     },
     heading: {
         marginTop: '3%',
@@ -27,100 +29,88 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
+    objectContainer: {
+        width: '90%',
+        marginTop: '1%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
     textField: {
         width: '90%',
         marginLeft: '5%',
         marginRight: '5%',
         marginTop: '3%'
     },
-    noActiveMSG: {
-        padding: '3%',
-        spacing: theme.spacing(2)
-
+    button: {
+        borderColor: '#ef223c',
     },
-    dbText: {
-        paddingLeft: '3%',
-        paddingTop: '3%',
-        fontWeight:200,
-    },
+    successfulQuery: {
+        borderColor: '#4BB543',
+    }
 }));
 
-//adding padding to the textfield causes the whole div to overflow the card
-//need to put it in another div or pass down props to label etc. 
+
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
+    const [input, setInput] = React.useState('');
+    const [query, setQuery] = React.useState('');
+    const [successfulQuery, setSuccessfulQuery] = React.useState(false);
+
     
+    const handleInput = (event) => {
+        setInput(event.target.value)
+        setSuccessfulQuery(false)
+      };
+
+    const handleRun = () => {
+        setQuery(input)
+        setSuccessfulQuery(true)
+    }
+
+    const handleClear = () => {
+        setInput('')
+        setSuccessfulQuery(false)
+    }
+
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
+                <Toolbar>
+                    <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
+                    <SaveQueryModal query={input} />
+                    <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
+                    <LoadQueryModal getInput={setInput} setSuccessfulQuery={setSuccessfulQuery}/>
+                    <IconButton className={classes.iconButton} size="medium" onClick={handleClear} disabled={input === ''}>
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                </Toolbar>
                 <Divider className={classes.divider}/>
                 {user.act_db_name !== '' ? (
                     <div>
                         <TextField
+                        InputProps={{
+                            classes: {
+                              notchedOutline: successfulQuery ? classes.successfulQuery : null
+                            }
+                          }}
                             id="standard-textarea"
                             label="Query"
                             multiline
-                            variant="outlined"
-                            
+                            variant="outlined"    
+                            onChange={handleInput}
+                            value={input}
                             className={classes.textField}
                         />
-                        
+                        <div className={classes.objectContainer}>
+                            <QueryResultContainer queryString={query}/>
+                        </div>
                     </div>
                 ): (
-                    <div className={classes.noActiveMSG}>
-                        <div style={{margin:'5%'}}/>
-                        <Typography className={classes.dbText}>
-                            You dont have any active databases setup on FireLounge.
-                        </Typography>
-                        <div style={{margin:'10%'}}/>
-                        <Typography className={classes.dbText}>
-                            Click the button in the top right corner to initialize a database through FireLounge.
-                        </Typography>
-                    </div>
+                    <NoActiveDb/>
                 )}
 
             </Card>
         </div>
     )
 }
-
-/*Sampe usge of ReactJson View */
-// <ReactJson
-//                     name={false}
-//                     collapsed={collapsed}
-//                     style={style}
-//                     theme={theme}
-//                     src={src}
-//                     collapseStringsAfterLength={collapseStringsAfter}
-//                     onEdit={
-//                         onEdit
-//                             ? e => {
-//                                   console.log(e)
-//                                   this.setState({ src: e.updated_src })
-//                               }
-//                             : false
-//                     }
-//                     onDelete={
-//                         onDelete
-//                             ? e => {
-//                                   console.log(e)
-//                                   this.setState({ src: e.updated_src })
-//                               }
-//                             : false
-//                     }
-//                     onAdd={
-//                         onAdd
-//                             ? e => {
-//                                   console.log(e)
-//                                   this.setState({ src: e.updated_src })
-//                               }
-//                             : false
-//                     }
-//                     displayObjectSize={displayObjectSize}
-//                     enableClipboard={enableClipboard}
-//                     indentWidth={indentWidth}
-//                     displayDataTypes={displayDataTypes}
-//                     iconStyle={iconStyle}
-//                 />

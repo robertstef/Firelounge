@@ -28,7 +28,7 @@ export default function DbNameInput(props) {
     
     const handleInput = (event) => {
       //update the text display
-      if(event.target.id === 'db-url') {
+      if(event.target.id === 'manage-db-stepper-input-url') {
         setdbURL(event.target.value);
         //update the value stored in the stepper state
         props.url(event.target.value)
@@ -45,6 +45,7 @@ export default function DbNameInput(props) {
             <TextField  
                 style={{width:'80%'}}
                 id="db-name"
+                id={'manage-db-stepper-input-name'}
                 size={'small'}
                 placeholder="..."
                 variant={"outlined"}
@@ -55,7 +56,7 @@ export default function DbNameInput(props) {
             <p> Give the URL for your database if it's not the default</p>
             <TextField  
                 style={{width:'80%'}}
-                id="db-url"
+                id={'manage-db-stepper-input-url'}
                 size={'small'}
                 placeholder="..."
                 variant={"outlined"}

@@ -177,9 +177,9 @@ export default class User {
     }
 
     /**
-     * Returns array of all databases objects defined for the active project
+     * Returns string absolute path to the admin key file
      *
-     * @returns array : 
+     * @returns string: absolute file path
      */
     get act_proj_admin_path(){
         try {
@@ -189,6 +189,18 @@ export default class User {
         }
     }
 
+    /**
+     * Returns array of queries saved for the active project
+     *
+     * @returns array : 
+     */
+    get act_db_queries(){
+        try {
+            return this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'];
+        } catch( error) {
+            return undefined
+        }
+    }
 
 
     /* SETTER METHODS */
@@ -248,6 +260,46 @@ export default class User {
         }
 
         this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['settings'] = settingsObject
+
+        this._writeUfile();
+    }
+
+    /**
+     * Saves a database queries  
+     *
+     * @param query: key value pair, key: name of query, value: string query
+     * @postcondition pushes a query onto the act db list of queries
+     */
+    saveDbQuery(query) {
+        if (!this._hasActiveDb()) {
+            throw new Error(`This project does not have an active database`);
+        }
+
+        if (this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'] === undefined){
+            this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'] = {};
+        }
+
+        this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'][query.name] = query.queryString
+
+        this._writeUfile();
+    }
+
+    /**
+     * Deletes a database queries  
+     *
+     * @param queryName: string which is the name of the query and the key in the user file
+     * @postcondition removes the query key-value pair from the user file
+     */
+    deleteDbQuery(queryName) {
+        if (!this._hasActiveDb()) {
+            throw new Error(`This project does not have an active database`);
+        }
+
+        try {
+            delete this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'][queryName]
+        } catch (error) {
+            console.log(error)
+        }
 
         this._writeUfile();
     }
@@ -343,7 +395,7 @@ export default class User {
         if( newDb.path !== '' ) {
             this.projs[this.act_proj.id]['admin'] = newDb.path    
         }
-        this.projs[this.act_proj.id]['database']['all'][newDb.dbName] = {'url': "", 'settings': {Add: false, Edit: true, Delete: false, Collapsed: true, DisplayObjectSize: false, SortKeys: false, DisplayDataType: false, Clipboard: true} }  
+        this.projs[this.act_proj.id]['database']['all'][newDb.dbName] = {'url': "", 'settings': {Add: false, Edit: true, Delete: false, Collapsed: true, DisplayObjectSize: false, SortKeys: false, DisplayDataType: false, Clipboard: true}, "queries":{}}  
 
         if(newDb.url !== '') {
             this.projs[this.act_proj.id]['database']['all'][newDb.dbName]['url'] = newDb.url

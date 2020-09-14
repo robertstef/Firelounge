@@ -81,8 +81,8 @@ export default function SettingsNav(props) {
             scrollButtons="off"
             aria-label="scrollable prevent tabs example"
           >
-            <Tab icon={<AccountCircleIcon />} aria-label="phone" {...a11yProps(0)} />
-            <Tab icon={<StorageIcon />} aria-label="favorite" {...a11yProps(1)} />
+            <Tab icon={<AccountCircleIcon  id={'settings-user-icon'} />} aria-label="phone" {...a11yProps(0)} />
+            <Tab icon={<StorageIcon id={'settings-database-icon'}/>} aria-label="favorite" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
 

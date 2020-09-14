@@ -91,56 +91,56 @@ export default function SettingsSwitchesGroup(props) {
           <List dense={true} className={classes.list}>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.Edit} onChange={handleChange} name="Edit" />}
+                control={<Switch id={'settings-database-switch-edit'} checked={state.Edit} onChange={handleChange} name="Edit" />}
                 label={<Typography className={classes.label} >Edit</Typography>}
               /> 
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.Add} onChange={handleChange} name="Add" />}
+                control={<Switch id={'settings-database-switch-add'} checked={state.Add} onChange={handleChange} name="Add" />}
                 label={<Typography className={classes.label} >Add</Typography>}
               />
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.Delete} onChange={handleChange} name="Delete" />}
+                control={<Switch id={'settings-database-switch-delete'} checked={state.Delete} onChange={handleChange} name="Delete" />}
                 label={<Typography className={classes.label} >Delete</Typography>}
               />
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.Collapsed} onChange={handleChange} name="Collapsed" />}
+                control={<Switch id={'settings-database-switch-collapsed'} checked={state.Collapsed} onChange={handleChange} name="Collapsed" />}
                 label={<Typography className={classes.label} >Collapsed</Typography>}
               />
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.Clipboard} onChange={handleChange} name="Clipboard" />}
+                control={<Switch id={'settings-database-switch-clipboard'} checked={state.Clipboard} onChange={handleChange} name="Clipboard" />}
                 label={<Typography className={classes.label} >Clipboard</Typography>}
               />
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.DisplayObjectSize} onChange={handleChange} name="DisplayObjectSize" />}
+                control={<Switch id={'settings-database-switch-displayObjectSize'} checked={state.DisplayObjectSize} onChange={handleChange} name="DisplayObjectSize" />}
                 label={<Typography className={classes.label} >DisplayObjectSize</Typography>}
               />
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.SortKeys} onChange={handleChange} name="SortKeys" />}
+                control={<Switch id={'settings-database-switch-sortKeys'} checked={state.SortKeys} onChange={handleChange} name="SortKeys" />}
                 label={<Typography className={classes.label} >SortKeys</Typography>}
               />
             </ListItem>
             <ListItem className={classes.listItem} >
               <FormControlLabel
-                control={<Switch checked={state.DisplayDataType} onChange={handleChange} name="DisplayDataType" />}
+                control={<Switch id={'settings-database-switch-displayDataType'} checked={state.DisplayDataType} onChange={handleChange} name="DisplayDataType" />}
                 label={<Typography className={classes.label} >DisplayDataType</Typography>}
               />
             </ListItem>
           </ List>
         </FormGroup>
       </FormControl>
-      <Button className={classes.button} color={'default'} onClick={handleClick}> Save </Button>
+      <Button id={'settings-database-save-button'} className={classes.button} color={'default'} onClick={handleClick}> Save </Button>
       <Alert type={alert.type} open={alert.display} message={alert.message} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'info'})} }/>
     </div>
   );

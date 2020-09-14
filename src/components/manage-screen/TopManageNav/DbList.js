@@ -1,9 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
+import { makeStyles, FormControl, NativeSelect } from '@material-ui/core';
 import {UserDispatch, UserState} from '../../../context/userContext'
-import NativeSelect from '@material-ui/core/NativeSelect'
-
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -48,6 +45,7 @@ export default function DbList() {
       <div className={classes.component}>
         <FormControl className={classes.formControl}>
             <NativeSelect
+              id={'manage-db-list'}
               value={act_db_name}
               onChange={handleChange}
               name="name"

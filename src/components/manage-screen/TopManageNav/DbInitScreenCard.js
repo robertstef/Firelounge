@@ -1,8 +1,5 @@
 import React from 'react'
-import Card from "@material-ui/core/Card";
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import { makeStyles, Card, Typography, Divider } from '@material-ui/core'
 import DbStepper from './DbStepper';
 
 
@@ -38,7 +35,7 @@ export default function DbInitScreenCard(props) {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Typography className={classes.heading}> Initialize Database </ Typography>
+                <Typography id={'manage-add-db-header'} className={classes.heading}> Initialize Database </ Typography>
                 <Divider className={classes.divider}/>
                 <DbStepper setOpen={props.setOpen}/>
             </Card>
