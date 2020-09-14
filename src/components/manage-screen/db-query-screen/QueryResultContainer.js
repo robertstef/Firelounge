@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import { makeStyles, Typography } from '@material-ui/core'
 import ReactJson from 'react-json-view';
 import {UserState} from "../../../context/userContext";
 import { Alert } from 'react-context-alerts';
@@ -20,12 +19,13 @@ export default function QueryResultContainer({queryString, setSuccessfulQuery}) 
                 } catch (error){
                     setAlert({display: true, message: error.message, type: 'error'})
                 }
+              } else {
+                  setResult({})
               }
         }
       runQuery();
     }, [queryString])
 
-    
     
     return (
         <>
@@ -34,6 +34,7 @@ export default function QueryResultContainer({queryString, setSuccessfulQuery}) 
             :
             <ReactJson 
                 name={false}
+                enableClipboard={false}
                 collapsed={2}
                 src={result}
             />}

@@ -70,6 +70,7 @@ export default function DbQueryScreenCard() {
 
     const handleClear = () => {
         setInput('')
+        setQuery('')
         setSuccessfulQuery(false)
     }
 
