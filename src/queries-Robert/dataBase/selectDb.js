@@ -47,8 +47,8 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
 
     if (payload === null) {
         // TODO - just return NULL or have error thrown???
-        throw new Error(`queryEntireRealTimeCollection(): the requested object was unable to be" +
-            " retrieved from the database or the collection ${collection} does not exist in the
+        throw new Error(`queryEntireRealTimeCollection(): the requested object was unable to be
+            retrieved from the database or the collection ${collection} does not exist in the
              database`)
     }
 
