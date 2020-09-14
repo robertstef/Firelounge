@@ -1,5 +1,3 @@
-
-
 export default class User {
 
     /**
@@ -20,10 +18,34 @@ export default class User {
         this._fb_projs = fb_projs;   // firebase projects
         this._act_proj = act_proj;   // active project
 
+        //if there is an active project -- initialize firebase admin sdk
+        if (act_proj !== "" && typeof(projs[act_proj].admin) === 'string' && projs[act_proj].admin !== ""){
+            let admin = window.require("firebase-admin");
+            
+            // Fetch the service account key JSON file contents
+            let path = projs[act_proj].admin
+            let serviceAccount = window.require(path);
+
+            // Initialize the app with a service account, granting admin privileges
+            this.admin = admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            });
+
+            //init active database
+            //check if theres a database url in User file -- if not use project name
+            if( this._hasActiveDb() ) {
+                if (this._isDefaultDb) {
+                    //no db url found... use default project name
+                    this.db = this.admin.database("https://" + this.admin.options_.credential.projectId + ".firebaseio.com");
+                } else {
+                    //database url exists
+                    this.db = this.admin.database("https://" + this.active_db_url + ".firebaseio.com");
+                }
+            }
+        }
+        this._writeUfile()
         //attempt to init App with Firebase Admin
         this._initializeApp();
-        //attempt to create Database ref with Firebase Admin
-        this._initializeDb();
 
         // if not logged in -- dont write blank userfile
         if(uname !== undefined && uname !== ''){
@@ -31,7 +53,6 @@ export default class User {
         }
         
     }
-
 
     /************** PUBLIC METHODS **************/
 
@@ -150,6 +171,8 @@ export default class User {
         }
     }
 
+    get app_admin() { return this.admin; }
+
     /**
      * Returns the name of the projects active database settings 
      *
@@ -194,11 +217,24 @@ export default class User {
      *
      * @returns array : 
      */
-    get act_db_queries(){
+    get act_db_queries() {
         try {
             return this.projs[this.act_proj.id]['database']['all'][this.act_db_name]['queries'];
-        } catch( error) {
+        } catch (error) {
             return undefined
+        }
+    }
+
+    /**
+     * Return the database object.
+     *
+     * @returns {undefined}
+     */
+    get db_object() {
+        try {
+            return this.db_obj;
+        } catch (err) {
+            return undefined;
         }
     }
 
