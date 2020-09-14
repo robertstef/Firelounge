@@ -1,42 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles, Typography } from '@material-ui/core'
 import ReactJson from 'react-json-view';
+import {UserState} from "../../../context/userContext";
 
-var sampleJson = {
-    "glossary": {
-        "title": "example glossary",
-		"GlossDiv": {
-            "title": "S",
-			"GlossList": {
-                "GlossEntry": {
-                    "ID": "SGML",
-					"SortAs": "SGML",
-					"GlossTerm": "Standard Generalized Markup Language",
-					"Acronym": "SGML",
-					"Abbrev": "ISO 8879:1986",
-					"GlossDef": {
-                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
-						"GlossSeeAlso": ["GML", "XML"]
-                    },
-					"GlossSee": "markup"
+function QueryResultContainer({queryString}) {
+    const {user} = UserState(); 
+    const sql = require('../../../queries-Robert/execQuery'); 
+    const [result, setResult] = useState({})    
+
+    useEffect(() => {
+        async function runQuery() {
+            if(queryString !== ''){
+                try {
+                    let response = await sql.executeQuery(queryString, user.db_obj, false)
+                    setResult(response)
+                } catch (error){
+                    console.log(error)
                 }
-            }
+              }
         }
-    }
-}
+      runQuery();
+    }, [queryString])
 
-
-
-function QueryResultContainer(props) {
-
+    console.log(result)
     return (
         <>
-			<Typography>{props.queryString}</Typography> 
-            <ReactJson 
-                name={false}
-                collapsed={true}
-                src={sampleJson}
-            />
+            Display objects here
+            
         </>
     );
 }
