@@ -4,22 +4,6 @@ import {UserState} from '../../../context/userContext'
 import {makeEdit, makeDelete, makeAdd} from './DbOperations'
 
 
-/* ***** INITIALIZE FIREBASE ADMIN APP WILL BE MOVED WHEN DYNAMIC DB SELECTION IS POSSIBLE ****** */
-
-var admin = window.require("firebase-admin");
-
-// Fetch the service account key JSON file contents
-let serviceAccount = require('../../../cmpt350-project-ed891-firebase-adminsdk-q24yr-26a62e5c53.json');
-
-// Initialize the app with a service account, granting admin privileges
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cmpt350-project-ed891.firebaseio.com"
-});
-
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = admin.database();
-var ref = db.ref();
 export default function DbObjectDisplay() {
     const {user} = UserState();
     const [displaySrc, setDisplaySrc] = useState({})    
