@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import { makeStyles, Typography } from '@material-ui/core'
 import ReactJson from 'react-json-view';
 import {UserState} from "../../../context/userContext";
+import { Alert } from 'react-context-alerts';
 
-function QueryResultContainer({queryString}) {
+export default function QueryResultContainer({queryString}) {
     const {user} = UserState(); 
     const sql = require('../../../queries-Robert/execQuery'); 
     const [result, setResult] = useState({})    
+    const [alert, setAlert]  = React.useState({display: false, message: '', type: 'error'});  
 
     useEffect(() => {
         async function runQuery() {
@@ -15,7 +17,9 @@ function QueryResultContainer({queryString}) {
                     let response = await sql.executeQuery(queryString, user.db_obj, false)
                     setResult(response)
                 } catch (error){
-                    console.log(error)
+                    console.log(error.message)
+                    console.log(typeof(error))
+                    setAlert({display: true, message: error.message, type: 'error'})
                 }
               }
         }
@@ -34,8 +38,7 @@ function QueryResultContainer({queryString}) {
                 collapsed={2}
                 src={result}
             />}
+        <Alert type={alert.type} open={alert.display} message={<p id={'manage-query-db-alert'}> {alert.message} </p>} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'error'})}} />
         </>
     );  
 }
-
-export default QueryResultContainer;
