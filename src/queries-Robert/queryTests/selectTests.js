@@ -4,8 +4,10 @@ const assert = require('assert');
 
 // Setup Database ref
 
-const serviceAccount =  "/Users/robertstefanyshin/FL_testdir/testfireloungeproj/" +
-    "testfireloungproj-91d8b-firebase-adminsdk-bb6rk-49e89393ea.json";
+const serviceAccount =  "/Users/jacksonschuler/testfireloungproj-91d8b-firebase-adminsdk-bb6rk-ce0b25a65e.json";
+
+// const serviceAccount =  "/Users/robertstefanyshin/FL_testdir/testfireloungeproj/" +
+//     "testfireloungproj-91d8b-firebase-adminsdk-bb6rk-49e89393ea.json";
 /*
 const serviceAccount = "/Users/robertstefanyshin/FL_testdir/cmpt350-project/" +
     "cmpt350-project-ed891-firebase-adminsdk-q24yr-a278e93a9d.json"

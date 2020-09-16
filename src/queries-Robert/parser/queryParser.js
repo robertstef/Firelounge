@@ -348,6 +348,7 @@ let getObjectsFromInsert = (query) => {
     //       function executeSelect is still being developed
 }
 
+
 /**
  * Parses the SET statement from a given UPDATE mySQL statement
  *
@@ -360,6 +361,7 @@ let getObjectsFromInsert = (query) => {
  * {name :  "Richard"}
  *
  * @param query: {String} - query to be parsed
+ * @param database
  * @return null|{variable1: String, variable2: String: , ... , variableN: String}
  */
 let getSets = (query) => {
@@ -379,19 +381,20 @@ let getSets = (query) => {
     }
     let sets = {};
     setsArr.forEach(item => {
-       let [key, val] = item.split("=");
-       if (key && val) {
-           //TODO - EXECUTE A SELECT QUERY AND GET THE RESULTING VALUES
-           if (/^\s*\(?(select).+from.+\)?/i.test(val)) { // UPDATE table_name SET=(SELECT id FROM history)...
-               // val = the result of that select query
-               // val = executeQuery(val, 'select')
-           }
-           key = key.replace(".", "/").trim();
-           sets[key] = qh.getParsedValue(val.trim(), false);
-       }
+        let [key, val] = item.split("=");
+        if (key && val) {
+            //TODO - EXECUTE A SELECT QUERY AND GET THE RESULTING VALUES
+            if (/^\s*\(?(select).+from.+\)?/i.test(val)) { // UPDATE table_name SET=(SELECT id FROM history)...
+                // val = the result of that select query
+                // val = executeQuery(val, 'select')
+            }
+            key = key.replace(".", "/").trim();
+            sets[key] = qh.getParsedValue(val.trim(), false);
+        }
     });
     return sets;
 };
+
 
 /* Export statements */
 module.exports = {

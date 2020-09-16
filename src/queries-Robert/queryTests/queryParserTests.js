@@ -186,7 +186,7 @@ describe("getSets - Update statements", () => {
     });
 
     it("getSets - basic example with multiple changes", () => {
-        let result = qp.getSets('update users set height=10, name=timmy where age<5');
+        let result = qp.getSets('update users set height=10, name=timmy, where age<5');
         assert.deepStrictEqual(result, { height: 10, name: "timmy" });
     });
 

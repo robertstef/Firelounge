@@ -39,11 +39,14 @@ let execUpdate = async (query, dataBase, commitResults) => {
         queryInfo.selectFields = Object.keys(sets);
         let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
         await select_data.then((data) => {
+            console.log(data);
             const payload = generatePayload(data, sets);
+            console.log(generatePayload(data, sets));
             if (payload && commitResults) {
                 Object.keys(payload).forEach(objKey => {
                     const updateObj = payload[objKey];
-                    const path = queryInfo.collection;
+                    const path = queryInfo.collection + '/' + objKey;
+                    console.log('updating ', path);
                     updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation
                 });
             }
@@ -71,10 +74,8 @@ let generatePayload = (data, sets) => {
    // TODO - UPDATE
     const payload = {};
     Object.keys(data).forEach(objKey => {
-        let item = {};
-        const updateObj = updateItemWithSets(data, sets);
-        item[objKey] = updateObj[objKey];
-        payload[objKey] = item;
+        const updateObj = updateItemWithSets(data[objKey], sets);
+        payload[objKey] = updateObj;
     });
     return payload;
 };
