@@ -386,7 +386,7 @@ let getSets = async (query, database) => {
             //TODO - EXECUTE A SELECT QUERY AND GET THE RESULTING VALUES
             if (/^\s*\(?(select).+from.+\)?/i.test(val)) { // UPDATE table_name SET=(SELECT id FROM history)...
                 let fbsql = require('../execQuery');
-                let query = val.substring(1, val.length - 2);
+                let query = val.substring(1, val.length - 1);
                 val = await fbsql.executeQuery(query, database, false);
                 val = `${Object.values(val)[0]}`; // get the returned from the select query
             }
