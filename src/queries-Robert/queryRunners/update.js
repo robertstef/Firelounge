@@ -32,18 +32,19 @@ let execUpdate = async (query, dataBase, commitResults) => {
     try {
         queryInfo.collection = qp.getCollection(query, "update");
         queryInfo.wheres = qp.getWheres(query);
-        const sets = qp.getSets(query);
+        const sets = await qp.getSets(query, dataBase);
         if (!sets) {
             return null;
         }
         queryInfo.selectFields = Object.keys(sets);
         let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
         await select_data.then((data) => {
+            Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {});
             const payload = generatePayload(data, sets);
             if (payload && commitResults) {
                 Object.keys(payload).forEach(objKey => {
                     const updateObj = payload[objKey];
-                    const path = queryInfo.collection;
+                    const path = queryInfo.collection + '/' + objKey;
                     updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation
                 });
             }
@@ -57,24 +58,13 @@ let execUpdate = async (query, dataBase, commitResults) => {
  * @param data
  * @param sets
  *
- *  Example:
- *      Payload data =  { Jackson: 20, Robert: 15 }
- *      Payload sets =  { Jackson: 6666, Robert: 333 }
- *
- *  Should result in:
- *      Payload = {Jackson: {Jackson : 6666},
- *                 Robert: {Robert: 333}}
- *
- *
  */
 let generatePayload = (data, sets) => {
    // TODO - UPDATE
     const payload = {};
     Object.keys(data).forEach(objKey => {
-        let item = {};
-        const updateObj = updateItemWithSets(data, sets);
-        item[objKey] = updateObj[objKey];
-        payload[objKey] = item;
+        const updateObj = updateItemWithSets(data[objKey], sets);
+        payload[objKey] = updateObj;
     });
     return payload;
 };

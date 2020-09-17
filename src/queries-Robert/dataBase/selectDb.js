@@ -66,7 +66,6 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
  * @returns {Object}: result of Firebase query
  */
 const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
-    console.log("I should be here");
     const wheres = queryInfo.wheres;
     let result = {};
 
