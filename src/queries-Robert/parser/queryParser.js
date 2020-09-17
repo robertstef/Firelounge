@@ -364,7 +364,7 @@ let getObjectsFromInsert = (query) => {
  * @param database
  * @return null|{variable1: String, variable2: String: , ... , variableN: String}
  */
-let getSets = (query) => {
+let getSets = async (query, database) => {
     // TODO - UPDATE
     const setIndexStart = query.indexOf(" set ") + 1;
     if (setIndexStart < 1) {
@@ -380,19 +380,21 @@ let getSets = (query) => {
         setsArr[setsArr.length - 1] = setsArr[setsArr.length - 1].replace(";", "");
     }
     let sets = {};
-    setsArr.forEach(item => {
+    setsArr.forEach(async item => {
         let [key, val] = item.split("=");
         if (key && val) {
             //TODO - EXECUTE A SELECT QUERY AND GET THE RESULTING VALUES
             if (/^\s*\(?(select).+from.+\)?/i.test(val)) { // UPDATE table_name SET=(SELECT id FROM history)...
-                // val = the result of that select query
-                // val = executeQuery(val, 'select')
+                let fbsql = require('../execQuery');
+                let query = val.substring(1, val.length - 2);
+                val = await fbsql.executeQuery(query, database, false);
+                val = `${Object.values(val)[0]}`; // get the returned from the select query
             }
             key = key.replace(".", "/").trim();
             sets[key] = qh.getParsedValue(val.trim(), false);
         }
     });
-    return sets;
+    return sets
 };
 
 
