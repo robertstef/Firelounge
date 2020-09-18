@@ -128,6 +128,21 @@ const execSelectTests = async (data) => {
     expected = {cards: { Ben: 3, Jackson: 4, Robert: 3 }}
     assert.deepStrictEqual(result, expected);
 
+
+    // TESTING MULTIPLE WHERES
+    result = await fbsql.executeQuery("select * from games/Scores where Robert=1500 and Jackson=1000", db, false);
+    // Robert=1500 is true, Jackson=1000 is false, however since Robert=1500 is true, it will return the Object even though Jackson=1000 is false
+    expected = {coding: { Ben: 900, Jackson: 1200, Robert: 1500 }}; //success
+    assert.deepStrictEqual(result, expected);
+
+    result = await fbsql.executeQuery("select * from games/Scores where Jackson=4 and Ben<0", db, false);
+    expected = {}; // our expected result should be an empty object because no Object in scores exists where Jackson=4 and Ben<0
+    assert.deepStrictEqual(result, expected);
+
+    result = await fbsql.executeQuery("select * from games/Scores where Jackson=9000 and Ben=900", db, false);
+    expected = {}; //same situation here, just made the first WHERE be the false condition and second WHERE being the true condition
+    assert.deepStrictEqual(result, expected);
+
     console.log("*** SELECT TESTS PASSED ***")
 }
 
