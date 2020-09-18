@@ -178,6 +178,33 @@ describe("getCollection - update statement", () => {
     });
 });
 
+/* Tests for getCollection INSERT statement */
+describe("getCollection - INSERT statement", () => {
+    it("basic statement", () => {
+        let result = qp.getCollection("insert into games/collection values (a, b, c)", 'insert');
+        assert.equal(result, "games/collection");
+    });
+
+    it("statement with dot notation", () => {
+        let result = qp.getCollection("insert into games.collection values (a, b, c)", 'insert');
+        assert.equal(result, "games/collection");
+    });
+
+    it("statement without INTO keyword", () => {
+        let query = "insert games/collection values (a, b)";
+        assert.throws(() => qp.getCollection(query, 'insert'), Error,
+            "getCollection(): INSERT invalid, missing INTO keyword. INSERT must be of" +
+            " the form: INSERT INTO collection (key1, key2, ...) VALUES (value1, value2)");
+    });
+
+    it("statement with too few terms", () => {
+        let query = 'insert games/collection';
+        assert.throws(() => qp.getCollection(query, 'insert'), Error,
+            "getCollection(): could not determine collection, missing from statement");
+    });
+});
+
+
 /* Tests for getSets used in Update statements */
 describe("getSets - Update statements", () => {
     it("getSets - basic example with single change", () => {

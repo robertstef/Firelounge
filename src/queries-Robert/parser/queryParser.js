@@ -126,6 +126,20 @@ let getCollection = (query, statementType) => {
     }
     else if (statementType === 'insert') {
        // TODO - INSERT
+        if (terms.length < 3) {
+            throw new Error("getCollection(): could not determine collection, missing from statement");
+        }
+
+        if (terms[1] !== 'into') {
+            throw new Error("getCollection(): INSERT invalid, missing INTO keyword. INSERT must be of" +
+                " the form: INSERT INTO collection (key1, key2, ...) VALUES (value1, value2)")
+        }
+
+        let collection = terms[2];
+        collection = qh.replaceAll(collection, /\./, "/");
+        collection = qh.stripEncasingSlashes(collection);
+
+        return collection;
     }
     else if (statementType === 'delete') {
         // TODO - DELETE
