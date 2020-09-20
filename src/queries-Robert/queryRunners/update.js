@@ -15,19 +15,24 @@ const updateDb = require('../dataBase/updateDb');
 let executeUpdate = async (query, dataBase, commitResults) => {
     // TODO - UPDATE
     let updated_DB = {};
-
-    await execUpdate(query, dataBase, commitResults);
-
-    await dataBase.ref('/').once('value', function(snapshot) {
-        updated_DB = snapshot.val()
-    }, function(err) {
-        throw new Error("ExecuteUpdate(): failed to get the updated database.")
-    });
-
-    return updated_DB;
+    let db_ref;
+    db_ref = await execUpdate(query, dataBase, commitResults);
+    if (commitResults) {
+        // if the user wishes to commit the results to the firebase database
+        await dataBase.ref('/').once('value', function(snapshot) {
+            updated_DB = snapshot.val()
+        }, function(err) {
+            throw new Error("ExecuteUpdate(): failed to get the updated database.")
+        });
+        return updated_DB;
+    } else {
+        // the user only wishes to see the changes without actually changing the firebase db
+        return db_ref
+    }
 };
 
 let execUpdate = async (query, dataBase, commitResults) => {
+    let dbRef = {};
     let queryInfo = new QueryInfo();
     try {
         queryInfo.collection = qp.getCollection(query, "update");
@@ -38,7 +43,7 @@ let execUpdate = async (query, dataBase, commitResults) => {
         }
         queryInfo.selectFields = Object.keys(sets);
         let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
-        await select_data.then((data) => {
+        await select_data.then(async (data) => {
             Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {});
             const payload = generatePayload(data, sets);
             if (payload && commitResults) {
@@ -47,12 +52,46 @@ let execUpdate = async (query, dataBase, commitResults) => {
                     const path = queryInfo.collection + '/' + objKey;
                     updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation
                 });
+            } else if (payload && !commitResults) {
+                await dataBase.ref('/').once('value', function(snapshot) {
+                    dbRef = snapshot.val();
+                    Object.keys(payload).forEach(objKey => {
+                        const updateObj = payload[objKey];
+                        const path = queryInfo.collection + '/' + objKey;
+                        setAttributeFromPath(path, dbRef,updateObj);
+                    });
+                }, function(err) {
+                    throw new Error("ExecuteUpdate(): failed to get the updated database.")
+                });
             }
+            return dbRef;
         })
     } catch (err) {
         console.log(err);
     }
+    return dbRef;
 };
+
+/**
+ * Helper function for updating an object at a given path
+ * @param path
+ * @param entity
+ * @param value
+ */
+let setAttributeFromPath = (path, entity, value) => {
+    const pathParts = path.split('/');
+    let obj = entity;
+    pathParts.forEach((part, index) => {
+        if (obj[part]) {
+            if (index < pathParts.length - 1) {
+                obj = obj[part];
+            } else {
+                obj[part] = value;
+            }
+        }
+    });
+};
+
 
 /**
  * @param data
