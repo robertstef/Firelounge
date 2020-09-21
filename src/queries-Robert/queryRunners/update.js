@@ -50,40 +50,59 @@ let execUpdate = async (query, dataBase, commitResults) => {
             return null;
         }
         queryInfo.selectFields = Object.keys(sets);
-
-        // Perform the changes
         let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
         await select_data.then(async (data) => {
             Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {}); // delete any data from the resulting object where the key is undefined
             const payload = generatePayload(data, sets);
             if (payload && commitResults) {
-                // the user wishes to update fields in the Firebase database
-                Object.keys(payload).forEach(objKey => {
-                    // for each key that is being changed update that key with the corresponding value
-                    const updateObj = payload[objKey];
-                    const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
-                    updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation in the Firebase database
-                });
+                await performUpdate(payload, dataBase, queryInfo.collection, sets) // the user wishes to update fields in the Firebase database
             } else if (payload && !commitResults) {
-                // the user wishes to see the changes without making changes to the Firebase database
-                await dataBase.ref('/').once('value', function(snapshot) {
-                    dbRef = snapshot.val(); // get the current database object
-                    Object.keys(payload).forEach(objKey => {
-                        // for each key that is being changed update that key with the corresponding value
-                        const updateObj = payload[objKey]; //
-                        const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
-                        setAttributeFromPath(path, dbRef,updateObj);    // here is where the value is changed
-                    });
-                }, function(err) {
-                    throw new Error("execUpdate(): failed to get the updated database.")
-                });
+                dbRef = await getUpdatedObject_commitFalse(payload, dataBase, queryInfo.collection) // the user wishes to see the changes without making changes to the Firebase database
             }
-            return dbRef;
         })
     } catch (err) {
         console.log(err);
     }
     return dbRef;
+};
+
+/**
+ * Performs to corresponding update query and updates fields on Firebase
+ * @param payload - update payload returned from generatePayload()
+ * @param dataBase - the database the query is being performed on
+ * @param collection - the collection where we are performing the update
+ * @param sets - the query sets showing which keys are changing, and what the new values of the keys will be
+ * @return {Promise<void>}
+ */
+let performUpdate = (payload, dataBase, collection, sets) => {
+    Object.keys(payload).forEach(objKey => {
+        // for each key that is being changed update that key with the corresponding value
+        const updateObj = payload[objKey];
+        const path = collection + '/' + objKey; // the path to the value we are changing
+        updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation in the Firebase database
+    });
+};
+/**
+ * Performs the corresponding update query without changing the data on Firebase
+ * @param payload - update payload returned from generatePayload()
+ * @param dataBase - the database the query is being performed on
+ * @param collection - the collection where we are performing the update
+ * @return {Promise<{}>} database object with the corresponding query change applied. Change is NOT reflected on Firebase
+ */
+let getUpdatedObject_commitFalse = async (payload, dataBase, collection) => {
+    let dataRef = {};
+    await dataBase.ref('/').once('value', function(snapshot) {
+        dataRef = snapshot.val(); // get the current database object
+        Object.keys(payload).forEach(objKey => {
+            // for each key that is being changed update that key with the corresponding value
+            const updateObj = payload[objKey]; //
+            const path = collection + '/' + objKey; // the path to the value we are changing
+            setAttributeFromPath(path, dataRef,updateObj);    // here is where the value is changed
+        });
+    }, function(err) {
+        throw new Error("execUpdate(): failed to get the updated database.")
+    });
+    return dataRef;
 };
 
 /**

@@ -38,6 +38,7 @@ const execUpdateTests = async () => {
     let query;
     let expected;
     let result;
+
     // 1: Basic update query with a single WHERE using equals
     query = 'update games/Scores set Jackson=1000, where Robert=15';
     expected = {games : {
