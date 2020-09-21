@@ -31,10 +31,18 @@ let executeUpdate = async (query, dataBase, commitResults) => {
     }
 };
 
+/**
+ *
+ * @param query - the update query the user wishes to perform
+ * @param dataBase - the database the query is being performed on
+ * @param commitResults - whether the user wants the changes to be performed on the database or to only receive the resulting Object
+ * @return {Promise<{}|null>} - an empty object, or the database object with the corresponding query change applied.
+ */
 let execUpdate = async (query, dataBase, commitResults) => {
     let dbRef = {};
     let queryInfo = new QueryInfo();
     try {
+        // Configure the QueryInfo Object
         queryInfo.collection = qp.getCollection(query, "update");
         queryInfo.wheres = qp.getWheres(query);
         const sets = await qp.getSets(query, dataBase);
@@ -42,26 +50,32 @@ let execUpdate = async (query, dataBase, commitResults) => {
             return null;
         }
         queryInfo.selectFields = Object.keys(sets);
+
+        // Perform the changes
         let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
         await select_data.then(async (data) => {
-            Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {});
+            Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {}); // delete any data from the resulting object where the key is undefined
             const payload = generatePayload(data, sets);
             if (payload && commitResults) {
+                // the user wishes to update fields in the Firebase database
                 Object.keys(payload).forEach(objKey => {
+                    // for each key that is being changed update that key with the corresponding value
                     const updateObj = payload[objKey];
-                    const path = queryInfo.collection + '/' + objKey;
-                    updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation
+                    const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
+                    updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation in the Firebase database
                 });
             } else if (payload && !commitResults) {
+                // the user wishes to see the changes without making changes to the Firebase database
                 await dataBase.ref('/').once('value', function(snapshot) {
-                    dbRef = snapshot.val();
+                    dbRef = snapshot.val(); // get the current database object
                     Object.keys(payload).forEach(objKey => {
-                        const updateObj = payload[objKey];
-                        const path = queryInfo.collection + '/' + objKey;
-                        setAttributeFromPath(path, dbRef,updateObj);
+                        // for each key that is being changed update that key with the corresponding value
+                        const updateObj = payload[objKey]; //
+                        const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
+                        setAttributeFromPath(path, dbRef,updateObj);    // here is where the value is changed
                     });
                 }, function(err) {
-                    throw new Error("ExecuteUpdate(): failed to get the updated database.")
+                    throw new Error("execUpdate(): failed to get the updated database.")
                 });
             }
             return dbRef;
@@ -94,9 +108,10 @@ let setAttributeFromPath = (path, entity, value) => {
 
 
 /**
- * @param data
- * @param sets
- *
+ * generates the payload for the updated entries in the db
+ * @param data - the data object this will be performed on
+ * @param sets - the query sets showing which keys are changing, and what the new values of the keys will be
+ * @returns: an object where the keys represent the keys to update in the database, and the values are the updated values
  */
 let generatePayload = (data, sets) => {
    // TODO - UPDATE
