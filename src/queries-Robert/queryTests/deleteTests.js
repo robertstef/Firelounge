@@ -37,8 +37,12 @@ const execDeleteTests = async () => {
      *  Tests are performed under the assumption that the database has the exact same data as the dummy data object
      * */
 
-    let query0 = 'delete from games/Events';
-    let expected0 = {games : {
+    let query;
+    let result;
+    let expected;
+
+    query = 'delete from games/Events';
+    expected = {games : {
             Employees: [
                 {Name: 'Jackson', Number: 15},
                 {Name: 'Robert', Number: 20},
@@ -53,11 +57,11 @@ const execDeleteTests = async () => {
             Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
         }
     };
-    let result0 = await fbsql.executeQuery(query0, db, true);
-    assert.deepStrictEqual(result0, expected0);
+    result = await fbsql.executeQuery(query, db, true);
+    assert.deepStrictEqual(result, expected);
 
-    let query1 = 'delete from games/Scores/cards';
-    let expected1 = {games : {
+    query = 'delete from games/Scores/cards';
+    expected = {games : {
             Employees: [
                 {Name: 'Jackson', Number: 15},
                 {Name: 'Robert', Number: 20},
@@ -71,11 +75,11 @@ const execDeleteTests = async () => {
             Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
         }
     };
-    let result1 = await fbsql.executeQuery(query1, db, true);
-    assert.deepStrictEqual(result1, expected1);
+    result = await fbsql.executeQuery(query, db, true);
+    assert.deepStrictEqual(result, expected);
 
-    let query2 = 'delete from games/Scores where Ben=900,';
-    let expected2 = {games : {
+    query = 'delete from games/Scores where Ben=900,';
+    expected = {games : {
             Employees: [
                 {Name: 'Jackson', Number: 15},
                 {Name: 'Robert', Number: 20},
@@ -89,15 +93,35 @@ const execDeleteTests = async () => {
             Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
         }
     };
-    let result2 = await fbsql.executeQuery(query2, db, true);
-    assert.deepStrictEqual(result2, expected2);
+    result = await fbsql.executeQuery(query, db, true);
+    assert.deepStrictEqual(result, expected);
 
-    let query3 = 'delete from games/Employees where Number=15';
-    let expected3 = {games : {
+    // query = 'delete from games/Employees where Number=15';
+    // expected = {games : {
+    //         Employees: [
+    //             {Name: 'Robert', Number: 20},
+    //         ],
+    //         Players: ['Robert', 'Ben', 'Jackson'],
+    //         Scores: {
+    //             coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
+    //             skiing: { Ben: 100, Jackson: 20, Robert: 15 }
+    //         },
+    //         Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
+    //     }
+    // };
+    // result = await fbsql.executeQuery(query, db, true);
+    // assert.deepStrictEqual(result, expected);
+
+
+    // // TESTING WHEN COMMITRESULTS=FALSE
+    //
+    query = 'delete from games/Players';
+    expected = {games : {
             Employees: [
+                {Name: 'Jackson', Number: 15},
                 {Name: 'Robert', Number: 20},
+                {Name: 'Ben', Number: 15},
             ],
-            Players: ['Robert', 'Ben', 'Jackson'],
             Scores: {
                 coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
                 skiing: { Ben: 100, Jackson: 20, Robert: 15 }
@@ -105,9 +129,11 @@ const execDeleteTests = async () => {
             Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
         }
     };
-    let result3 = await fbsql.executeQuery(query3, db, true);
-    assert.deepStrictEqual(result3, expected3);
-    console.log(result3);
+    result = await fbsql.executeQuery(query, db, false);
+    assert.deepStrictEqual(result, expected);
+
+
+
 
     console.log("*****DELETE TESTS COMPLETE*****")
 

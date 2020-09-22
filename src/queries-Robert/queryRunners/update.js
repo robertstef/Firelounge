@@ -13,7 +13,6 @@ const updateDb = require('../dataBase/updateDb');
  * @param commitResults
  */
 let executeUpdate = async (query, dataBase, commitResults) => {
-    // TODO - UPDATE
     let updated_DB = {};
     let db_ref;
     db_ref = await execUpdate(query, dataBase, commitResults);
@@ -133,7 +132,6 @@ let setAttributeFromPath = (path, entity, value) => {
  * @returns: an object where the keys represent the keys to update in the database, and the values are the updated values
  */
 let generatePayload = (data, sets) => {
-   // TODO - UPDATE
     const payload = {};
     Object.keys(data).forEach(objKey => {
         const updateObj = updateItemWithSets(data[objKey], sets);
@@ -148,13 +146,11 @@ let generatePayload = (data, sets) => {
  * @param sets
  */
 let updateItemWithSets = (obj, sets) => {
-    // TODO - UPDATE
     let _ = require('lodash');
     let updateObject = _.clone(obj);
     Object.keys(sets).forEach(objKey => {
         const thisSet = sets[objKey];
         if (objKey.includes("/")) {
-            // "users/userId/name" -> users: { userId: { name: ""}}, etc
             if (typeof updateObject !== "object") {
                 updateObject = {};
             }
