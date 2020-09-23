@@ -181,12 +181,12 @@ describe("getCollection - update statement", () => {
 /* Tests for getCollection INSERT statement */
 describe("getCollection - INSERT statement", () => {
     it("basic statement", () => {
-        let result = qp.getCollection("insert into games/collection values (a, b, c)", 'insert');
+        let result = qp.getCollection("insert into games/collection (R, B, J) values (a, b, c)", 'insert');
         assert.equal(result, "games/collection");
     });
 
     it("statement with dot notation", () => {
-        let result = qp.getCollection("insert into games.collection values (a, b, c)", 'insert');
+        let result = qp.getCollection("insert into games.collection (R, B, J) values (a, b, c)", 'insert');
         assert.equal(result, "games/collection");
     });
 
@@ -200,7 +200,8 @@ describe("getCollection - INSERT statement", () => {
     it("statement with too few terms", () => {
         let query = 'insert games/collection';
         assert.throws(() => qp.getCollection(query, 'insert'), Error,
-            "getCollection(): could not determine collection, missing from statement");
+            "getCollection(): invalid format. INSERT must be of format: INSERT INTO collection" +
+            " (key1, key2, ...) VALUES (val1, val2, ...)");
     });
 });
 

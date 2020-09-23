@@ -126,16 +126,15 @@ let getCollection = (query, statementType) => {
     }
     else if (statementType === 'insert') {
        // TODO - INSERT
-        if (terms.length < 3) {
-            throw new Error("getCollection(): could not determine collection, missing from statement");
+        let regex = /(insert into) (.*) (\(.*\)) (values) (\(.*\))/;
+        let found = query.match(regex);
+
+        if (!found) {
+            throw new Error("getCollection(): invalid format. INSERT must be of format: INSERT INTO collection" +
+                " (key1, key2, ...) VALUES (val1, val2, ...)");
         }
 
-        if (terms[1] !== 'into') {
-            throw new Error("getCollection(): INSERT invalid, missing INTO keyword. INSERT must be of" +
-                " the form: INSERT INTO collection (key1, key2, ...) VALUES (value1, value2)")
-        }
-
-        let collection = terms[2];
+        let collection = found[2];
         collection = qh.replaceAll(collection, /\./, "/");
         collection = qh.stripEncasingSlashes(collection);
 
@@ -358,8 +357,11 @@ let getInsertCount = (query) => {
  */
 let getObjectsFromInsert = (query) => {
     // TODO - INSERT
-    // NOTE: hold off on doing insert based on SELECT data -
-    //       function executeSelect is still being developed
+    let keyStr = query.substring(query.indexOf("(") + 1, query.indexOf(")"));
+    let keys = keyStr.split(",");
+
+    let valueStr = query.match(/(values).+\)/)[1];
+    let values = valueStr.split(/[(](?!\))/);
 }
 
 /**
