@@ -36,32 +36,9 @@ let execDelete = async (query, dataBase, commitResults) => {
         let payload = selectDb.getDataForSelect(queryInfo, dataBase); // use getDataForSelect to determine what we need to delete
         await payload.then(async (data) => {
             if (data && commitResults){
-                if (!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0) {
-                    deleteDb.deleteObject(queryInfo.collection, dataBase);
-                } else {
-                    Object.keys(data).forEach(objKey => {
-                        if (data[objKey]) {
-                            const path = queryInfo.collection + "/" + objKey;
-                            deleteDb.deleteObject(path, dataBase);
-                        }
-                    })
-                }
+                await performDelete(data, dataBase, queryInfo)
             } else if (data && !commitResults) {
-                await dataBase.ref('/').once('value', function(snapshot) {
-                    dataRef = snapshot.val(); // get the current database object
-                    if ((!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0)) {
-                        deleteValueFromPath(queryInfo.collection, dataRef);
-                    } else {
-                        Object.keys(data).forEach(objKey => {
-                            if (data[objKey]) {
-                                const path = queryInfo.collection + "/" + objKey;
-                                deleteValueFromPath(path, dataRef)
-                            }
-                        })
-                    }
-                }, function(err) {
-                    throw new Error("execUpdate(): failed to get the updated database.")
-                });
+                dataRef = await getUpdatedObj_commitFalse(data, dataBase, queryInfo)
             }
         });
     } catch (err) {
@@ -70,6 +47,38 @@ let execDelete = async (query, dataBase, commitResults) => {
     return dataRef;
 };
 
+let performDelete = (data, dataBase, queryInfo) => {
+    if (!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0) {
+        deleteDb.deleteObject(queryInfo.collection, dataBase);
+    } else {
+        Object.keys(data).forEach(objKey => {
+            if (data[objKey]) {
+                const path = queryInfo.collection + "/" + objKey;
+                deleteDb.deleteObject(path, dataBase);
+            }
+        })
+    }
+};
+
+let getUpdatedObj_commitFalse = async (data, dataBase, queryInfo) => {
+    let dataRef = {};
+    await dataBase.ref('/').once('value', function(snapshot) {
+        dataRef = snapshot.val(); // get the current database object
+        if ((!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0)) {
+            deleteValueFromPath(queryInfo.collection, dataRef);
+        } else {
+            Object.keys(data).forEach(objKey => {
+                if (data[objKey]) {
+                    const path = queryInfo.collection + "/" + objKey;
+                    deleteValueFromPath(path, dataRef)
+                }
+            })
+        }
+    }, function(err) {
+        throw new Error("execUpdate(): failed to get the updated database.")
+    });
+    return dataRef;
+};
 
 /**
  * Helper function for updating an object at a given path
