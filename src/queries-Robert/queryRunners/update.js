@@ -52,11 +52,11 @@ let execUpdate = async (query, dataBase, commitResults) => {
         let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
         await select_data.then(async (data) => {
             Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {}); // delete any data from the resulting object where the key is undefined
-            const payload = generatePayload(data, sets);
+            const payload = generatePayload(data, sets, queryInfo);
             if (payload && commitResults) {
-                await performUpdate(payload, dataBase, queryInfo.collection, sets) // the user wishes to update fields in the Firebase database
+                await performUpdate(payload, dataBase, queryInfo, sets) // the user wishes to update fields in the Firebase database
             } else if (payload && !commitResults) {
-                dbRef = await getUpdatedObject_commitFalse(payload, dataBase, queryInfo.collection) // the user wishes to see the changes without making changes to the Firebase database
+                dbRef = await getUpdatedObject_commitFalse(payload, dataBase, queryInfo) // the user wishes to see the changes without making changes to the Firebase database
             }
         })
     } catch (err) {
@@ -73,11 +73,11 @@ let execUpdate = async (query, dataBase, commitResults) => {
  * @param sets - the query sets showing which keys are changing, and what the new values of the keys will be
  * @return {Promise<void>}
  */
-let performUpdate = (payload, dataBase, collection, sets) => {
+let performUpdate = (payload, dataBase, queryInfo, sets) => {
     Object.keys(payload).forEach(objKey => {
         // for each key that is being changed update that key with the corresponding value
         const updateObj = payload[objKey];
-        const path = collection + '/' + objKey; // the path to the value we are changing
+        const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
         updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation in the Firebase database
     });
 };
@@ -85,18 +85,19 @@ let performUpdate = (payload, dataBase, collection, sets) => {
  * Performs the corresponding update query without changing the data on Firebase
  * @param payload - update payload returned from generatePayload()
  * @param dataBase - the database the query is being performed on
- * @param collection - the collection where we are performing the update
+ * @param queryInfo - the collection where we are performing the update
  * @return {Promise<{}>} database object with the corresponding query change applied. Change is NOT reflected on Firebase
  */
-let getUpdatedObject_commitFalse = async (payload, dataBase, collection) => {
+let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
     let dataRef = {};
     await dataBase.ref('/').once('value', function(snapshot) {
         dataRef = snapshot.val(); // get the current database object
+        console.log(payload);
         Object.keys(payload).forEach(objKey => {
             // for each key that is being changed update that key with the corresponding value
             const updateObj = payload[objKey]; //
-            const path = collection + '/' + objKey; // the path to the value we are changing
-            setAttributeFromPath(path, dataRef,updateObj);    // here is where the value is changed
+            const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
+            setAttributeFromPath(path, dataRef ,updateObj);    // here is where the value is changed
         });
     }, function(err) {
         throw new Error("execUpdate(): failed to get the updated database.")
@@ -129,9 +130,13 @@ let setAttributeFromPath = (path, entity, value) => {
  * generates the payload for the updated entries in the db
  * @param data - the data object this will be performed on
  * @param sets - the query sets showing which keys are changing, and what the new values of the keys will be
+ * @param queryInfo
  * @returns: an object where the keys represent the keys to update in the database, and the values are the updated values
  */
-let generatePayload = (data, sets) => {
+let generatePayload = (data, sets, queryInfo) => {
+    if (!queryInfo.wheres) {
+        return sets;
+    }
     const payload = {};
     Object.keys(data).forEach(objKey => {
         const updateObj = updateItemWithSets(data[objKey], sets);
