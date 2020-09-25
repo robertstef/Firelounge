@@ -50,44 +50,52 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
+/**
+ * Card Displaying the query input, commands and results of a query
+ */
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
     const parser = require('../../../queries-Robert/parser/queryParser'); 
+    // state used for getting input from text field 
     const [input, setInput] = React.useState('');
+    //state used for managing the query and its status
     const [query, setQuery] = React.useState({
         queryString: undefined,
         shouldCommit: false,
         querySuccess: false
     });
     
+    /* Function used to update the display of the text field */
     const handleInput = (event) => {
         setInput(event.target.value)
         setQuery({
             queryString: undefined,
             querySuccess: false,
-            shouldCommit: false
         });
       };
 
+    /* Function used to trigger the running of a query  */
     const handleRun = () => {
         setQuery(query => ({
             ...query,
             queryString: input,
+            shouldCommit: false
         }))
     }
 
+    /* Function used to clear the textfield and empty the query state  */
     const handleClear = () => {
         setInput('')
-        setQuery(query => ({
-            ...query,
+        setQuery({
             queryString: undefined,
-            querySuccess: false
-        }))
+            querySuccess: false,
+            shouldCommit: false
+        })
         
     }
 
+    /* Function used to trigger a query with commit changes = true  */
     const handleCommitChanges = () => {
         setQuery(query => ({
             ...query,
@@ -96,7 +104,7 @@ export default function DbQueryScreenCard() {
         }))
     }
 
-    
+    //TODO: refactor toolbar, textinput into their own components
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -119,12 +127,12 @@ export default function DbQueryScreenCard() {
                             },
                             endAdornment: ( 
                                 <Button 
-                                variant="outlined" 
-                                color='primary'
-                                style={{display: query.querySuccess && !query.shouldCommit && parser.determineStatementType(query.queryString) !== 'select' ? 'block' : 'none'}} 
-                                onClick={handleCommitChanges}
-                                > 
-                                Commit
+                                    variant="outlined" 
+                                    color='primary'
+                                    style={{display: query.querySuccess && !query.shouldCommit && parser.determineStatementType(query.queryString) !== 'select' ? 'block' : 'none'}} 
+                                    onClick={handleCommitChanges}
+                                    > 
+                                    Commit
                                 </Button>
                             ),
                           }}
