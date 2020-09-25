@@ -213,7 +213,6 @@ const execUpdateTests = async () => {
     assert.deepStrictEqual(result, expected);
 
 
-
     console.log("*****UPDATE TESTS COMPLETE*****")
 };
 

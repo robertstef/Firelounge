@@ -76,8 +76,11 @@ let execUpdate = async (query, dataBase, commitResults) => {
 let performUpdate = async (payload, dataBase, queryInfo, sets) => {
     Object.keys(payload).forEach(objKey => {
         // for each key that is being changed update that key with the corresponding value
-        const updateObj = payload[objKey];
-        const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
+        let updateObj = payload[objKey];
+        let path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
+        if (!queryInfo.wheres) {
+            path = queryInfo.collection;
+        }
         updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation in the Firebase database
     });
 };
@@ -95,10 +98,10 @@ let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
         Object.keys(payload).forEach(objKey => {
             // for each key that is being changed update that key with the corresponding value
             let updateObj = payload[objKey]; //
+            let path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
             if (objKey === Object.keys(updateObj)[0] && Object.keys(updateObj).length === 1 ) {
                 updateObj = updateObj[objKey]
             }
-            const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
             setAttributeFromPath(path, dataRef ,updateObj);    // here is where the value is changed
         });
     }, function(err) {
