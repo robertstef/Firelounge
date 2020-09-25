@@ -57,6 +57,7 @@ export default function DbQueryScreenCard() {
     const parser = require('../../../queries-Robert/parser/queryParser'); 
     const [input, setInput] = React.useState('');
     const [query, setQuery] = React.useState('');
+    const [commitQuery, setCommitQuery] = React.useState(false);
     const [successfulQuery, setSuccessfulQuery] = React.useState(false);
 
     
@@ -76,10 +77,10 @@ export default function DbQueryScreenCard() {
     }
 
     const handleCommitChanges = () => {
-        console.log('commit changes')
+        setCommitQuery(true)
     }
 
-    
+    //&& parser.determineStatementType(query) !== 'select'
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -104,7 +105,7 @@ export default function DbQueryScreenCard() {
                                 <Button 
                                 variant="outlined" 
                                 color='primary'
-                                style={{display: successfulQuery && parser.determineStatementType(query) !== 'select' ? 'block' : 'none'}} 
+                                style={{display: successfulQuery ? 'block' : 'none'}} 
                                 onClick={handleCommitChanges}
                                 > 
                                 Commit
@@ -120,7 +121,7 @@ export default function DbQueryScreenCard() {
                             className={classes.textField}
                         />
                         <div className={classes.objectContainer}>
-                            <QueryResultContainer queryString={query} setSuccessfulQuery={setSuccessfulQuery} />
+                            <QueryResultContainer queryString={query} setSuccessfulQuery={setSuccessfulQuery} commitQuery={commitQuery} />
                         </div>
                     </div>
                 ): (
