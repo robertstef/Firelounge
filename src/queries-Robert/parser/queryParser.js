@@ -125,8 +125,7 @@ let getCollection = (query, statementType) => {
         return collection;
     }
     else if (statementType === 'insert') {
-       // TODO - INSERT
-        let regex = /(insert into) (.*) (\(.*\)) (values) (\(.*\))/;
+        let regex = /insert ([0-9]+)?\s*into\s*(.*)\s*(\(.*\))\s*(values)\s*(\(.*\))/;
         let found = query.match(regex);
 
         if (!found) {
@@ -134,7 +133,8 @@ let getCollection = (query, statementType) => {
                 " (key1, key2, ...) VALUES (val1, val2, ...)");
         }
 
-        let collection = found[2];
+        // collection is located in second group of regex
+        let collection = found[2].trim();
         collection = qh.replaceAll(collection, /\./, "/");
         collection = qh.stripEncasingSlashes(collection);
 

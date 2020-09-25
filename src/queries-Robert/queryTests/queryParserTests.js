@@ -190,6 +190,11 @@ describe("getCollection - INSERT statement", () => {
         assert.equal(result, "games/collection");
     });
 
+    it("statement inserting values multiple times", () => {
+        let result = qp.getCollection("insert 100 into games/collection (k1, k2) values (v1, v2)", 'insert');
+        assert.equal(result, "games/collection");
+    });
+
     it("statement without INTO keyword", () => {
         let query = "insert games/collection values (a, b)";
         assert.throws(() => qp.getCollection(query, 'insert'), Error,
