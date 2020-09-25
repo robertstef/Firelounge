@@ -55,7 +55,7 @@ function SimpleDialog(props) {
  * props.getInput - callback function which places the querystring value into the query textbox
  * props.setSuccessfulQuery - callback function which changes the border color of the query textbox
  */
-export default function LoadQueryModal(props) {
+export default function LoadQueryModal({setQuery, getInput}) {
   const [open, setOpen] = React.useState(false);
   const {user} = UserState(); 
 
@@ -68,8 +68,11 @@ export default function LoadQueryModal(props) {
     
     if(value !== undefined){
       //pass back value to textfield
-      props.getInput(user.act_db_queries[value])
-      props.setSuccessfulQuery(false);
+      getInput(user.act_db_queries[value])
+      setQuery(query => ({
+        ...query,
+        querySuccess: false
+    }))
     }
   };
   

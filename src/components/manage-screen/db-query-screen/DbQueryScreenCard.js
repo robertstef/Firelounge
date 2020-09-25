@@ -56,31 +56,47 @@ export default function DbQueryScreenCard() {
     const { user } = UserState();
     const parser = require('../../../queries-Robert/parser/queryParser'); 
     const [input, setInput] = React.useState('');
-    const [query, setQuery] = React.useState('');
-    const [commitQuery, setCommitQuery] = React.useState(false);
-    const [successfulQuery, setSuccessfulQuery] = React.useState(false);
-
+    const [query, setQuery] = React.useState({
+        queryString: undefined,
+        shouldCommit: false,
+        querySuccess: false
+    });
     
     const handleInput = (event) => {
         setInput(event.target.value)
-        setSuccessfulQuery(false)
+        setQuery({
+            queryString: undefined,
+            querySuccess: false,
+            shouldCommit: false
+        });
       };
 
     const handleRun = () => {
-        setQuery(input)
+        setQuery(query => ({
+            ...query,
+            queryString: input,
+        }))
     }
 
     const handleClear = () => {
         setInput('')
-        setQuery('')
-        setSuccessfulQuery(false)
+        setQuery(query => ({
+            ...query,
+            queryString: undefined,
+            querySuccess: false
+        }))
+        
     }
 
     const handleCommitChanges = () => {
-        setCommitQuery(true)
+        setQuery(query => ({
+            ...query,
+            shouldCommit: true,
+            querySuccess: false
+        }))
     }
 
-    //&& parser.determineStatementType(query) !== 'select'
+    
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -88,7 +104,7 @@ export default function DbQueryScreenCard() {
                     <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
                     <SaveQueryModal query={input} />
                     <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
-                    <LoadQueryModal getInput={setInput} setSuccessfulQuery={setSuccessfulQuery}/>
+                    <LoadQueryModal getInput={setInput} setQuery={setQuery}/>
                     <IconButton className={classes.iconButton} size="medium" onClick={handleClear} disabled={input === ''}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
@@ -99,13 +115,13 @@ export default function DbQueryScreenCard() {
                         <TextField
                         InputProps={{ 
                             classes: {
-                              notchedOutline: successfulQuery ? classes.successfulQuery : null
+                              notchedOutline: query.querySuccess ? classes.successfulQuery : null
                             },
                             endAdornment: ( 
                                 <Button 
                                 variant="outlined" 
                                 color='primary'
-                                style={{display: successfulQuery ? 'block' : 'none'}} 
+                                style={{display: query.querySuccess && !query.shouldCommit && parser.determineStatementType(query.queryString) !== 'select' ? 'block' : 'none'}} 
                                 onClick={handleCommitChanges}
                                 > 
                                 Commit
@@ -121,7 +137,7 @@ export default function DbQueryScreenCard() {
                             className={classes.textField}
                         />
                         <div className={classes.objectContainer}>
-                            <QueryResultContainer queryString={query} setSuccessfulQuery={setSuccessfulQuery} commitQuery={commitQuery} />
+                            <QueryResultContainer query={query} setQuery={setQuery} />
                         </div>
                     </div>
                 ): (
