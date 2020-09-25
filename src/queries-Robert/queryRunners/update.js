@@ -69,11 +69,11 @@ let execUpdate = async (query, dataBase, commitResults) => {
  * Performs to corresponding update query and updates fields on Firebase
  * @param payload - update payload returned from generatePayload()
  * @param dataBase - the database the query is being performed on
- * @param collection - the collection where we are performing the update
+ * @param queryInfo
  * @param sets - the query sets showing which keys are changing, and what the new values of the keys will be
  * @return {Promise<void>}
  */
-let performUpdate = (payload, dataBase, queryInfo, sets) => {
+let performUpdate = async (payload, dataBase, queryInfo, sets) => {
     Object.keys(payload).forEach(objKey => {
         // for each key that is being changed update that key with the corresponding value
         const updateObj = payload[objKey];
@@ -92,10 +92,12 @@ let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
     let dataRef = {};
     await dataBase.ref('/').once('value', function(snapshot) {
         dataRef = snapshot.val(); // get the current database object
-        console.log(payload);
         Object.keys(payload).forEach(objKey => {
             // for each key that is being changed update that key with the corresponding value
-            const updateObj = payload[objKey]; //
+            let updateObj = payload[objKey]; //
+            if (objKey === Object.keys(updateObj)[0] && Object.keys(updateObj).length === 1 ) {
+                updateObj = updateObj[objKey]
+            }
             const path = queryInfo.collection + '/' + objKey; // the path to the value we are changing
             setAttributeFromPath(path, dataRef ,updateObj);    // here is where the value is changed
         });
@@ -135,7 +137,13 @@ let setAttributeFromPath = (path, entity, value) => {
  */
 let generatePayload = (data, sets, queryInfo) => {
     if (!queryInfo.wheres) {
-        return sets;
+        const payload = {};
+        for (const [key, value] of Object.entries(sets)) {
+            const val = {};
+            val[key] = value;
+            payload[key] = val;
+        }
+        return payload;
     }
     const payload = {};
     Object.keys(data).forEach(objKey => {
