@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
+    const parser = require('../../../queries-Robert/parser/queryParser'); 
     const [input, setInput] = React.useState('');
     const [query, setQuery] = React.useState('');
     const [successfulQuery, setSuccessfulQuery] = React.useState(false);
@@ -74,6 +75,11 @@ export default function DbQueryScreenCard() {
         setSuccessfulQuery(false)
     }
 
+    const handleCommitChanges = () => {
+        console.log('commit changes')
+    }
+
+    
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -90,10 +96,20 @@ export default function DbQueryScreenCard() {
                 {user.act_db_name !== '' ? (
                     <div>
                         <TextField
-                        InputProps={{
+                        InputProps={{ 
                             classes: {
                               notchedOutline: successfulQuery ? classes.successfulQuery : null
-                            }
+                            },
+                            endAdornment: ( 
+                                <Button 
+                                variant="outlined" 
+                                color='primary'
+                                style={{display: successfulQuery && parser.determineStatementType(query) !== 'select' ? 'block' : 'none'}} 
+                                onClick={handleCommitChanges}
+                                > 
+                                Commit
+                                </Button>
+                            ),
                           }}
                             id="standard-textarea"
                             label="Query"
