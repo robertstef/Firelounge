@@ -93,6 +93,7 @@ let performUpdate = async (payload, dataBase, queryInfo, sets) => {
  */
 let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
     let dataRef = {};
+    let returnObj = {};
     await dataBase.ref('/').once('value', function(snapshot) {
         dataRef = snapshot.val(); // get the current database object
         Object.keys(payload).forEach(objKey => {
@@ -103,11 +104,21 @@ let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
                 updateObj = updateObj[objKey]
             }
             setAttributeFromPath(path, dataRef ,updateObj);    // here is where the value is changed
+            const pathParts = path.split('/');
+            pathParts.forEach((part, index) => {
+                if (dataRef[part]) {
+                    if (index < pathParts.length - 1) {
+                        dataRef = dataRef[part];
+                    } else {
+                        returnObj[pathParts[pathParts.length - 2]] = dataRef;
+                    }
+                }
+            });
         });
     }, function(err) {
         throw new Error("execUpdate(): failed to get the updated database.")
     });
-    return dataRef;
+    return returnObj;
 };
 
 /**
