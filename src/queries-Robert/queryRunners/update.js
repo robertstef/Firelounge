@@ -153,7 +153,6 @@ let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
     }, function(err) {
         throw new Error("execUpdate(): failed to get the updated database.")
     });
-
     return await getReturnObj(paths, dataBase, false, dataRef);
 };
 
