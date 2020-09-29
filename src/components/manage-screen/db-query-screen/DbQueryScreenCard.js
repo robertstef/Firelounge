@@ -1,11 +1,12 @@
 import React from 'react'
-import { makeStyles, Typography, Divider,TextField,Card,Button, Toolbar, IconButton } from '@material-ui/core'
+import { makeStyles, Typography, Divider,TextField,Card,Button, Toolbar, IconButton, List, ListItem, ListItemText, Paper } from '@material-ui/core'
 import {UserState} from "../../../context/userContext";
 import NoActiveDb from '../../Utility/NoActiveDb'
 import QueryResultContainer from './QueryResultContainer'
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveQueryModal from './SaveQueryModal'
 import LoadQueryModal from './LoadQueryModal'
+import Autocomplete from './AutoComplete';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,9 +66,16 @@ export default function DbQueryScreenCard() {
         shouldCommit: false,
         querySuccess: false
     });
+    const [displayList, setDisplayList] = React.useState(false);
+    const [selectedAuto, setSelectedAuto] = React.useState(1);
     
     /* Function used to update the display of the text field */
     const handleInput = (event) => {
+        if(event.target.value[event.target.value.length - 1] === '@'){
+            setDisplayList(true)
+        } else if (event.target.value[event.target.value.length - 1] === ' '){
+            setDisplayList(false)
+        }
         setInput(event.target.value)
         setQuery({
             queryString: undefined,
@@ -103,6 +111,30 @@ export default function DbQueryScreenCard() {
             querySuccess: false
         }))
     }
+
+    const handleAutoComplete = (item) => {
+        console.log(item)
+        setInput(input.substring(0, input.length - 1) + item);
+        setDisplayList(false)
+        setSelectedAuto(0)
+    }
+
+    const handleKeyPressed = (event) => {
+        if(!displayList){return}
+        if(event.key === 'ArrowDown') {
+            setSelectedAuto(selectedAuto + 1)
+        }else if(event.key === 'ArrowUp') {
+            setSelectedAuto(selectedAuto - 1)
+        }else if(event.key === 'Enter') {
+            handleAutoComplete(items[selectedAuto].title)
+        }
+    }
+
+    var items = [
+        {id: 1, title: 'Item1'},
+        {id: 2, title: 'Item2'},
+        {id: 3, title: 'Item3'}
+      ]
 
     //TODO: refactor toolbar, textinput into their own components
     return(
@@ -141,9 +173,21 @@ export default function DbQueryScreenCard() {
                             multiline
                             variant="outlined"    
                             onChange={handleInput}
+                            onKeyDown={(event) => handleKeyPressed(event)}
                             value={input}
                             className={classes.textField}
                         />
+                        <Paper className={classes.textField} style={{display: displayList ? 'block' : 'none'}} >
+                        <List component="nav" >
+                            {items.map(function(item){
+                                return (
+                                <ListItem selected={selectedAuto === item.id ? true: false} button key={item.id} onClick={() => handleAutoComplete(item.title)}>
+                                    <ListItemText primary={item.title} />
+                                </ListItem>
+                                )
+                            })}
+                        </List>
+                        </Paper>
                         <div className={classes.objectContainer}>
                             <QueryResultContainer query={query} setQuery={setQuery} />
                         </div>
