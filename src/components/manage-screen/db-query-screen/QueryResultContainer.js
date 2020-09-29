@@ -3,19 +3,28 @@ import ReactJson from 'react-json-view';
 import {UserState} from "../../../context/userContext";
 import { Alert } from 'react-context-alerts';
 
-export default function QueryResultContainer({queryString, setSuccessfulQuery}) {
+/**
+ * Container which calls and holds the result of the query
+ * @param {query} - the current state of the query object
+ * @param {setQuery} - setState function which updates the query object
+ */
+
+export default function QueryResultContainer({query, setQuery}) {
     const {user} = UserState(); 
     const sql = require('../../../queries-Robert/execQuery'); 
     const [result, setResult] = useState({})    
     const [alert, setAlert]  = React.useState({display: false, message: '', type: 'error'});  
 
     useEffect(() => {
-        async function runQuery() {
-            if(queryString !== ''){
+        async function runQuery() {        
+            if(query.queryString !== undefined && !query.querySuccess){
                 try {
-                    let response = await sql.executeQuery(queryString, user.db_obj, false)
+                    let response = await sql.executeQuery(query.queryString, user.db_obj, query.shouldCommit)
                     setResult(response)
-                    setSuccessfulQuery(true)
+                    setQuery(query => ({
+                        ...query,
+                        querySuccess: true,
+                    }))
                 } catch (error){
                     setAlert({display: true, message: error.message, type: 'error'})
                 }
@@ -24,12 +33,11 @@ export default function QueryResultContainer({queryString, setSuccessfulQuery}) 
               }
         }
       runQuery();
-    }, [queryString])
+    }, [query.queryString, query.shouldCommit])
 
-    
     return (
         <>
-            { Object.keys(result).length === 0 ? 
+            { result === undefined || result === null || Object.keys(result).length === 0 ? 
             null
             :
             <ReactJson 

@@ -50,30 +50,61 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
+/**
+ * Card Displaying the query input, commands and results of a query
+ */
 export default function DbQueryScreenCard() {
     const classes = useStyles();
     const { user } = UserState();
+    const parser = require('../../../queries-Robert/parser/queryParser'); 
+    // state used for getting input from text field 
     const [input, setInput] = React.useState('');
-    const [query, setQuery] = React.useState('');
-    const [successfulQuery, setSuccessfulQuery] = React.useState(false);
-
+    //state used for managing the query and its status
+    const [query, setQuery] = React.useState({
+        queryString: undefined,
+        shouldCommit: false,
+        querySuccess: false
+    });
     
+    /* Function used to update the display of the text field */
     const handleInput = (event) => {
         setInput(event.target.value)
-        setSuccessfulQuery(false)
+        setQuery({
+            queryString: undefined,
+            querySuccess: false,
+        });
       };
 
+    /* Function used to trigger the running of a query  */
     const handleRun = () => {
-        setQuery(input)
+        setQuery(query => ({
+            ...query,
+            queryString: input,
+            shouldCommit: false
+        }))
     }
 
+    /* Function used to clear the textfield and empty the query state  */
     const handleClear = () => {
         setInput('')
-        setQuery('')
-        setSuccessfulQuery(false)
+        setQuery({
+            queryString: undefined,
+            querySuccess: false,
+            shouldCommit: false
+        })
+        
     }
 
+    /* Function used to trigger a query with commit changes = true  */
+    const handleCommitChanges = () => {
+        setQuery(query => ({
+            ...query,
+            shouldCommit: true,
+            querySuccess: false
+        }))
+    }
+
+    //TODO: refactor toolbar, textinput into their own components
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
@@ -81,7 +112,7 @@ export default function DbQueryScreenCard() {
                     <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
                     <SaveQueryModal query={input} />
                     <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
-                    <LoadQueryModal getInput={setInput} setSuccessfulQuery={setSuccessfulQuery}/>
+                    <LoadQueryModal getInput={setInput} setQuery={setQuery}/>
                     <IconButton className={classes.iconButton} size="medium" onClick={handleClear} disabled={input === ''}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
@@ -90,10 +121,20 @@ export default function DbQueryScreenCard() {
                 {user.act_db_name !== '' ? (
                     <div>
                         <TextField
-                        InputProps={{
+                        InputProps={{ 
                             classes: {
-                              notchedOutline: successfulQuery ? classes.successfulQuery : null
-                            }
+                              notchedOutline: query.querySuccess ? classes.successfulQuery : null
+                            },
+                            endAdornment: ( 
+                                <Button 
+                                    variant="outlined" 
+                                    color='primary'
+                                    style={{display: query.querySuccess && !query.shouldCommit && parser.determineStatementType(query.queryString) !== 'select' ? 'block' : 'none'}} 
+                                    onClick={handleCommitChanges}
+                                    > 
+                                    Commit
+                                </Button>
+                            ),
                           }}
                             id="standard-textarea"
                             label="Query"
@@ -104,7 +145,7 @@ export default function DbQueryScreenCard() {
                             className={classes.textField}
                         />
                         <div className={classes.objectContainer}>
-                            <QueryResultContainer queryString={query} setSuccessfulQuery={setSuccessfulQuery} />
+                            <QueryResultContainer query={query} setQuery={setQuery} />
                         </div>
                     </div>
                 ): (
