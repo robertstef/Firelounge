@@ -13,17 +13,18 @@ const updateDb = require('../dataBase/updateDb');
  * @param commitResults
  */
 let executeUpdate = async (query, dataBase, commitResults) => {
-    let updated_DB = {};
     let db_ref;
     db_ref = await execUpdate(query, dataBase, commitResults);
     if (commitResults) {
-        // if the user wishes to commit the results to the firebase database
-        await dataBase.ref('/').once('value', function(snapshot) {
-            updated_DB = snapshot.val()
-        }, function(err) {
-            throw new Error("ExecuteUpdate(): failed to get the updated database.")
-        });
-        return updated_DB;
+        // // if the user wishes to commit the results to the firebase database
+        // await dataBase.ref('/').once('value', function(snapshot) {
+        //     updated_DB = snapshot.val()
+        //
+        // }, function(err) {
+        //     throw new Error("ExecuteUpdate(): failed to get the updated database.")
+        // });
+        // return updated_DB;
+        return db_ref
     } else {
         // the user only wishes to see the changes without actually changing the firebase db
         return db_ref
@@ -54,7 +55,7 @@ let execUpdate = async (query, dataBase, commitResults) => {
             Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {}); // delete any data from the resulting object where the key is undefined
             const payload = generatePayload(data, sets, queryInfo);
             if (payload && commitResults) {
-                await performUpdate(payload, dataBase, queryInfo, sets) // the user wishes to update fields in the Firebase database
+                dbRef = await performUpdate(payload, dataBase, queryInfo, sets) // the user wishes to update fields in the Firebase database
             } else if (payload && !commitResults) {
                 dbRef = await getUpdatedObject_commitFalse(payload, dataBase, queryInfo) // the user wishes to see the changes without making changes to the Firebase database
             }
@@ -74,6 +75,7 @@ let execUpdate = async (query, dataBase, commitResults) => {
  * @return {Promise<void>}
  */
 let performUpdate = async (payload, dataBase, queryInfo, sets) => {
+    let paths = [];
     Object.keys(payload).forEach(objKey => {
         // for each key that is being changed update that key with the corresponding value
         let updateObj = payload[objKey];
@@ -81,9 +83,51 @@ let performUpdate = async (payload, dataBase, queryInfo, sets) => {
         if (!queryInfo.wheres) {
             path = queryInfo.collection;
         }
-        updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase) // perform the update operation in the Firebase database
+        paths.push(path);
+        updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase); // perform the update operation in the Firebase database
+
     });
+    return await getReturnObj(paths, dataBase, true, {});
 };
+
+
+let getReturnObj = async (paths, dataBase, commitResults, db_data_ref) => {
+    let returnObj = {};
+    if (commitResults) {
+        await dataBase.ref('/').once('value', function(snapshot) {
+            paths.forEach(path => {
+                let dataRef = snapshot.val(); // get the current database object
+                const pathParts = path.split('/');
+                pathParts.forEach((part, index) => {
+                    if (dataRef[part]) {
+                        if (index < pathParts.length - 1) {
+                            dataRef = dataRef[part];
+                        } else {
+                            returnObj[pathParts[pathParts.length - 2]] = dataRef;
+                        }
+                    }
+                });
+            });
+        });
+    } else {
+        paths.forEach(path => {
+            let dataRef = db_data_ref; // get the current database object
+            const pathParts = path.split('/');
+            pathParts.forEach((part, index) => {
+                if (dataRef[part]) {
+                    if (index < pathParts.length - 1) {
+                        dataRef = dataRef[part];
+                    } else {
+                        returnObj[pathParts[pathParts.length - 2]] = dataRef;
+                    }
+                }
+            });
+        });
+    }
+    return returnObj;
+};
+
+
 /**
  * Performs the corresponding update query without changing the data on Firebase
  * @param payload - update payload returned from generatePayload()
@@ -93,6 +137,7 @@ let performUpdate = async (payload, dataBase, queryInfo, sets) => {
  */
 let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
     let dataRef = {};
+    let paths = [];
     await dataBase.ref('/').once('value', function(snapshot) {
         dataRef = snapshot.val(); // get the current database object
         Object.keys(payload).forEach(objKey => {
@@ -103,11 +148,12 @@ let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
                 updateObj = updateObj[objKey]
             }
             setAttributeFromPath(path, dataRef ,updateObj);    // here is where the value is changed
+            paths.push(path);
         });
     }, function(err) {
         throw new Error("execUpdate(): failed to get the updated database.")
     });
-    return dataRef;
+    return await getReturnObj(paths, dataBase, false, dataRef);
 };
 
 /**

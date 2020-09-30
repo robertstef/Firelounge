@@ -10,14 +10,10 @@ const db = require('../dataBase/selectDb');
 let executeSelect = (query, dataBase) => {
     let queryInfo = new QueryInfo();
 
-    try {
-        queryInfo.collection = qp.getCollection(query, 'select');
-        queryInfo.orderBys = qp.getOrderBys(query);
-        queryInfo.selectFields = qp.getSelectFields(query);
-        queryInfo.wheres = qp.getWheres(query);
-    } catch (err) {
-        console.log(err);
-    }
+    queryInfo.collection = qp.getCollection(query, 'select');
+    queryInfo.orderBys = qp.getOrderBys(query);
+    queryInfo.selectFields = qp.getSelectFields(query);
+    queryInfo.wheres = qp.getWheres(query);
 
     return db.getDataForSelect(queryInfo, dataBase);
 }

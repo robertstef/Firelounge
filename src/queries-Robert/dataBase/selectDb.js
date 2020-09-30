@@ -53,7 +53,6 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
     }
 
     return getSelectedFieldsFromResults(payload, queryInfo);
-    // TODO filter based on WHERES if a WHERE statement was included
 }
 
 /**
@@ -110,7 +109,12 @@ const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
         }
     }
 
-    return result;
+    // if we have multiple wheres, enforce all conditions in the return object
+    if (wheres.length > 1)
+        return enforceMultipleWheres(queryInfo, result);
+    // only single where -- we are done!
+    else
+        return result;
 }
 
 /**
@@ -344,7 +348,84 @@ const lessThan = async (queryInfo, dataBase, where) => {
     }
 }
 
+/**
+ * Check the result object returned from executeFilteredRealTimeQuery()
+ * and removes any child objects where all WHERE conditions do not hold.
+ * @param queryInfo {QueryInfo}
+ * @param result {Object} - object returned from executeFilteredRealTimeQuery()
+ * @returns {Object} - the modified object
+ */
+const enforceMultipleWheres = (queryInfo, result) => {
+
+    // look at each child object, make sure wheres hold for each
+    Object.keys(result).forEach((key) => {
+        // if ALL where statements are not true for the given child
+        // object -- remove it
+        if (! checkWheresForObject(queryInfo, result[key]))
+            delete result[key];
+    });
+
+    return result;
+}
+
+/**
+ * Checks the all WHERE conditions hold for the given object.
+ * @param queryInfo: {QueryInfo}
+ * @param obj: {Object}
+ * @returns {boolean} true if all wheres hold, else false
+ */
+const checkWheresForObject = (queryInfo, obj) => {
+
+    const wheres = queryInfo.wheres;
+
+    // check each pair - if one pair does not hold return false
+    for (let cur = 0; cur < wheres.length; cur++) {
+        for (let nxt = cur + 1; nxt < wheres.length; nxt++) {
+            let res_cur = evaluateWhere(wheres[cur], obj);
+            let res_nxt = evaluateWhere(wheres[nxt], obj);
+            if (!res_cur || !res_nxt)
+                return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Evaluates an individual WHERE statement is true
+ * or false for the given object.
+ * @param where {Object}: WHERE object defined in QueryInfo
+ * @param compObject: {Object} object we are checking
+ * @returns {boolean}: true if statement holds, else false
+ */
+const evaluateWhere = (where, compObject) => {
+
+    const field = where.field;
+    const value = where.value
+
+    switch(where.comparator) {
+        case '=':
+            return compObject[field] === value;
+        case '!=':
+            return compObject[field] !== value;
+        case '<>':
+            return compObject[field] !== value;
+        case '>=':
+            return compObject[field] >= value;
+        case '>':
+            return compObject[field] > value;
+        case '<=':
+            return compObject[field] <= value;
+        case '<':
+            return compObject[field] < value;
+        case 'like':
+            break;
+        case '!like':
+            break;
+        default:
+            throw new Error("evaluateWhere(): something is terribly wrong - executing default case");
+    }
+}
+
 module.exports = {
     getDataForSelect: getDataForSelect
 }
-

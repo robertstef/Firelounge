@@ -102,7 +102,6 @@ let getCollection = (query, statementType) => {
         return collection;
     }
     else if (statementType === 'update') {
-        // TODO - UPDATE
         const updateStartOffset = 6;
         let collectStart = clean_query.indexOf('update ');
         if (collectStart < 0) {
@@ -125,7 +124,20 @@ let getCollection = (query, statementType) => {
         return collection;
     }
     else if (statementType === 'insert') {
-       // TODO - INSERT
+        let regex = /insert\s?([0-9]+)?\s*into\s*(.*)\s*(\(.*\))\s*(values)\s*(\(.*\))/;
+        let found = query.match(regex);
+
+        if (!found) {
+            throw new Error("getCollection(): invalid format. INSERT must be of format: INSERT INTO collection" +
+                " (key1, key2, ...) VALUES (val1, val2, ...)");
+        }
+
+        // collection is located in second group of regex
+        let collection = found[2].trim();
+        collection = qh.replaceAll(collection, /\./, "/");
+        collection = qh.stripEncasingSlashes(collection);
+
+        return collection;
     }
     else if (statementType === 'delete') {
         // TODO - DELETE
@@ -344,8 +356,11 @@ let getInsertCount = (query) => {
  */
 let getObjectsFromInsert = (query) => {
     // TODO - INSERT
-    // NOTE: hold off on doing insert based on SELECT data -
-    //       function executeSelect is still being developed
+    let keyStr = query.substring(query.indexOf("(") + 1, query.indexOf(")"));
+    let keys = keyStr.split(",");
+
+    let valueStr = query.match(/(values).+\)/)[1];
+    let values = valueStr.split(/[(](?!\))/);
 }
 
 
