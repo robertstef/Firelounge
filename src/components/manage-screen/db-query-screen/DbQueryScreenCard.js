@@ -3,10 +3,8 @@ import { makeStyles, Typography, Divider,TextField,Card,Button, Toolbar, IconBut
 import {UserState} from "../../../context/userContext";
 import NoActiveDb from '../../Utility/NoActiveDb'
 import QueryResultContainer from './QueryResultContainer'
-import DeleteIcon from '@material-ui/icons/Delete';
-import SaveQueryModal from './SaveQueryModal'
-import LoadQueryModal from './LoadQueryModal'
-import Autocomplete from './AutoComplete';
+
+import QueryToolbar from './QueryToolbar'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,7 +71,7 @@ export default function DbQueryScreenCard() {
     const handleInput = (event) => {
         if(event.target.value[event.target.value.length - 1] === '@'){
             setDisplayList(true)
-        } else if (event.target.value[event.target.value.length - 1] === ' '){
+        } else {
             setDisplayList(false)
         }
         setInput(event.target.value)
@@ -82,26 +80,6 @@ export default function DbQueryScreenCard() {
             querySuccess: false,
         });
       };
-
-    /* Function used to trigger the running of a query  */
-    const handleRun = () => {
-        setQuery(query => ({
-            ...query,
-            queryString: input,
-            shouldCommit: false
-        }))
-    }
-
-    /* Function used to clear the textfield and empty the query state  */
-    const handleClear = () => {
-        setInput('')
-        setQuery({
-            queryString: undefined,
-            querySuccess: false,
-            shouldCommit: false
-        })
-        
-    }
 
     /* Function used to trigger a query with commit changes = true  */
     const handleCommitChanges = () => {
@@ -140,15 +118,7 @@ export default function DbQueryScreenCard() {
     return(
         <div className={classes.root}>
             <Card className={classes.card}>
-                <Toolbar>
-                    <Typography className={classes.heading} variant={"h6"}> Query Database </Typography>
-                    <SaveQueryModal query={input} />
-                    <Button variant="outlined" disabled={input === ''} onClick={handleRun} className={classes.button}> Run </Button>
-                    <LoadQueryModal getInput={setInput} setQuery={setQuery}/>
-                    <IconButton className={classes.iconButton} size="medium" onClick={handleClear} disabled={input === ''}>
-                        <DeleteIcon fontSize="inherit" />
-                    </IconButton>
-                </Toolbar>
+                <QueryToolbar input={input} setInput={setInput} setQuery={setQuery}/>
                 <Divider className={classes.divider}/>
                 {user.act_db_name !== '' ? (
                     <div>
