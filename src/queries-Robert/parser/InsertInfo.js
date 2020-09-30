@@ -1,4 +1,4 @@
-const QueryInfo = require("QueryInfo").QueryInfo;
+const QueryInfo = require("./QueryInfo").QueryInfo;
 
 class InsertInfo extends QueryInfo {
 
