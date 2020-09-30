@@ -1,29 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, makeStyles, TextField, Paper, List, ListItem, ListItemText} from '@material-ui/core/';
-
-const json_data = {
-  "glossary": {
-    "title": "example glossary",
-    "GlossDiv": {
-          "title": "S",
-          "GlossList": {
-              "GlossEntry": {
-                  "ID": "SGML",
-                  "SortAs": "SGML",
-                  "GlossTerm": "Standard Generalized Markup Language",
-                  "Acronym": "SGML",
-                  "Abbrev": "ISO 8879:1986",
-                  "GlossDef": {
-                      "para": "A meta-markup language, used to create markup languages such as DocBook.",
-                      "GlossSeeAlso": ["GML", "XML"]
-                    },
-                  "GlossSee": "markup"
-              }
-          }
-      }
-  }
-}
-
+import {UserState} from '../../../context/userContext'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +34,23 @@ export default function QueryInput({input, setInput, setQuery, query}) {
   const [autocompleteIndex, setAutocompleteIndex] = React.useState(0);
   /* Handles the children for the autocomplete object */
   const [children, setChildren] = React.useState([]);
+  /* Handles the database object from firebase */
+  const [database, setDatabase] = React.useState({});
+  const {user} = UserState();
+    
+  useEffect(() => {
+    var db = user.db_obj
+    var ref = db.ref();
+
+    //handles display update of any changes made to database via firebase console or in app
+    ref.on("value", (snapshot) => {
+        console.log(snapshot.val())
+        if(snapshot.val() !== null) {
+          setDatabase(snapshot.val());
+        }
+    })   
+  }, [user.act_db_name, user.admin_obj, user.db_obj])
+
 
   /* Function used to update the display of the text field */
   const handleInput = (event) => {
@@ -110,12 +104,12 @@ export default function QueryInput({input, setInput, setQuery, query}) {
     let string = input.split(' ')
     string = string[string.length-1]
     
-    if(string === ''){setChildren(Object.keys(json_data))}
+    if(string === ''){setChildren(Object.keys(database))}
     else {
       string = string.split('.') //split string of object indexes
       string.pop() //remove the @ sign
-      let new_data = json_data // start from full data
-      
+      let new_data = database // start from full data
+
       for (let key in string){
         var flag = false
         if(new_data.hasOwnProperty(string[key]) && typeof(new_data[[string[key]]]) === 'object' ) {
