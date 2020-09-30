@@ -103,7 +103,7 @@ let getReturnObj = async (paths, dataBase, commitResults, db_data_ref) => {
                         if (index < pathParts.length - 1) {
                             dataRef = dataRef[part];
                         } else {
-                            returnObj[pathParts[pathParts.length - 2]] = dataRef;
+                            returnObj[pathParts[pathParts.length - 1]] = dataRef[pathParts[pathParts.length - 1]];
                         }
                     }
                 });
@@ -118,7 +118,7 @@ let getReturnObj = async (paths, dataBase, commitResults, db_data_ref) => {
                     if (index < pathParts.length - 1) {
                         dataRef = dataRef[part];
                     } else {
-                        returnObj[pathParts[pathParts.length - 2]] = dataRef;
+                        returnObj[pathParts[pathParts.length - 1]] = dataRef[pathParts[pathParts.length - 1]];
                     }
                 }
             });
