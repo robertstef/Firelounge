@@ -53,7 +53,6 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
     }
 
     return getSelectedFieldsFromResults(payload, queryInfo);
-    // TODO filter based on WHERES if a WHERE statement was included
 }
 
 /**
@@ -66,7 +65,6 @@ const queryEntireRealTimeCollection = async (queryInfo, dataBase) => {
  * @returns {Object}: result of Firebase query
  */
 const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
-    console.log("I should be here");
     const wheres = queryInfo.wheres;
     let result = {};
 
@@ -111,7 +109,12 @@ const executeFilteredRealtimeQuery = async (queryInfo, dataBase) => {
         }
     }
 
-    return result;
+    // if we have multiple wheres, enforce all conditions in the return object
+    if (wheres.length > 1)
+        return enforceMultipleWheres(queryInfo, result);
+    // only single where -- we are done!
+    else
+        return result;
 }
 
 /**
@@ -345,7 +348,58 @@ const lessThan = async (queryInfo, dataBase, where) => {
     }
 }
 
+const enforceMultipleWheres = (queryInfo, result) => {
+
+    Object.keys(result).forEach((key) => {
+        if (! checkWheresForObject(queryInfo, result[key]))
+            delete result[key];
+    });
+
+    return result;
+}
+
+const checkWheresForObject = (queryInfo, obj) => {
+
+    const wheres = queryInfo.wheres;
+
+    for (let cur = 0; cur < wheres.length; cur++) {
+        for (let nxt = cur + 1; nxt < wheres.length; nxt++) {
+            if (! evaluateWhere(wheres[cur], obj) || ! evaluateWhere(wheres[nxt], obj))
+                return false;
+        }
+    }
+    return true;
+}
+
+const evaluateWhere = (where, compObject) => {
+
+    const field = where.field;
+    const value = where.value
+
+    switch(where.comparator) {
+        case '=':
+            return compObject[field] === value;
+        case '!=':
+            return compObject[field] !== value;
+        case '<>':
+            return compObject[field] !== value;
+        case '>=':
+            return compObject[field] >= value;
+        case '>':
+            return compObject[field] > value;
+        case '<=':
+            return compObject[field] <= value;
+        case '<':
+            return compObject[field] < value;
+        case 'like':
+            break;
+        case '!like':
+            break;
+        default:
+            throw new Error("evaluateWhere(): something is terribly wrong - executing default case");
+    }
+}
+
 module.exports = {
     getDataForSelect: getDataForSelect
 }
-
