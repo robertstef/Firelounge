@@ -11,49 +11,95 @@ const deleteDb = require('../dataBase/deleteDb');
 let executeDelete = async (query, dataBase, commitResults) => {
     // TODO - DELETE
     let updated_DB = {};
-
-    await execDelete(query, dataBase, commitResults);
-
-    await dataBase.ref('/').once('value', function(snapshot) {
-        updated_DB = snapshot.val()
-    }, function(err) {
-        throw new Error("ExecuteUpdate(): failed to get the updated database.")
-    });
-
-    return updated_DB;
+    let db_ref;
+    db_ref = await execDelete(query, dataBase, commitResults);
+    if (commitResults) {
+        await dataBase.ref('/').once('value', function(snapshot) {
+            updated_DB = snapshot.val()
+        }, function(err) {
+            throw new Error("ExecuteUpdate(): failed to get the updated database.")
+        });
+        return updated_DB;
+    } else {
+        return db_ref;
+    }
 
 };
 
 let execDelete = async (query, dataBase, commitResults) => {
+    let dataRef = {};
     let queryInfo = new QueryInfo();
     try {
         queryInfo.collection = qp.getCollection(query, 'delete');
         queryInfo.wheres = qp.getWheres(query);
         queryInfo.selectFields = ['*'];
-        const payload = selectDb.getDataForSelect(queryInfo, dataBase); // use getDataForSelect to determine what we need to delete
-        await payload.then((data) => {
+        let payload = selectDb.getDataForSelect(queryInfo, dataBase); // use getDataForSelect to determine what we need to delete
+        await payload.then(async (data) => {
             if (data && commitResults){
-                if (!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0) {
-                    // unfiltered: delete from users.userId
-                    deleteDb.deleteObject(queryInfo.collection, dataBase)
-                    // console.log('Deleting... ', queryInfo.collection)
-                } else {
-                    // Use select payload to determine deletes:
-                    // entire col: delete from users;
-                    // OR filtered: delete from users where age > x;
-                    Object.keys(data).forEach(objKey => {
-                        const path = queryInfo.collection + "/" + objKey;
-                        // console.log('Deleting... ', path);
-                        deleteDb.deleteObject(path, dataBase);
-                    })
-                }
+                await performDelete(data, dataBase, queryInfo)
+            } else if (data && !commitResults) {
+                dataRef = await getUpdatedObj_commitFalse(data, dataBase, queryInfo)
             }
         });
     } catch (err) {
         console.log(err)
     }
+    return dataRef;
+};
+
+let performDelete = (data, dataBase, queryInfo) => {
+    if (!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0) {
+        deleteDb.deleteObject(queryInfo.collection, dataBase);
+    } else {
+        Object.keys(data).forEach(objKey => {
+            if (data[objKey]) {
+                const path = queryInfo.collection + "/" + objKey;
+                deleteDb.deleteObject(path, dataBase);
+            }
+        })
+    }
+};
+
+let getUpdatedObj_commitFalse = async (data, dataBase, queryInfo) => {
+    let dataRef = {};
+    await dataBase.ref('/').once('value', function(snapshot) {
+        dataRef = snapshot.val(); // get the current database object
+        if ((!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0)) {
+            deleteValueFromPath(queryInfo.collection, dataRef);
+        } else {
+            Object.keys(data).forEach(objKey => {
+                if (data[objKey]) {
+                    const path = queryInfo.collection + "/" + objKey;
+                    deleteValueFromPath(path, dataRef)
+                }
+            })
+        }
+    }, function(err) {
+        throw new Error("execUpdate(): failed to get the updated database.")
+    });
+    return dataRef;
+};
+
+/**
+ * Helper function for updating an object at a given path
+ * @param path
+ * @param entity
+ * @param value
+ */
+let deleteValueFromPath = (path, entity) => {
+    const pathParts = path.split('/');
+    let obj = entity;
+    pathParts.forEach((part, index) => {
+        if (obj[part]) {
+            if (index < pathParts.length - 1) {
+                obj = obj[part];
+            } else {
+                delete obj[part];
+            }
+        }
+    });
 };
 
 module.exports = {
-    executeDelete: executeDelete
+    executeDelete: executeDelete,
 };

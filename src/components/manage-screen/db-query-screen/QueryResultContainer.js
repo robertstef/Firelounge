@@ -1,44 +1,52 @@
-import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core'
+import React, {useEffect, useState} from 'react';
 import ReactJson from 'react-json-view';
+import {UserState} from "../../../context/userContext";
+import { Alert } from 'react-context-alerts';
 
-var sampleJson = {
-    "glossary": {
-        "title": "example glossary",
-		"GlossDiv": {
-            "title": "S",
-			"GlossList": {
-                "GlossEntry": {
-                    "ID": "SGML",
-					"SortAs": "SGML",
-					"GlossTerm": "Standard Generalized Markup Language",
-					"Acronym": "SGML",
-					"Abbrev": "ISO 8879:1986",
-					"GlossDef": {
-                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
-						"GlossSeeAlso": ["GML", "XML"]
-                    },
-					"GlossSee": "markup"
+/**
+ * Container which calls and holds the result of the query
+ * @param {query} - the current state of the query object
+ * @param {setQuery} - setState function which updates the query object
+ */
+
+export default function QueryResultContainer({query, setQuery}) {
+    const {user} = UserState(); 
+    const sql = require('../../../queries-Robert/execQuery'); 
+    const [result, setResult] = useState({})    
+    const [alert, setAlert]  = React.useState({display: false, message: '', type: 'error'});  
+
+    useEffect(() => {
+        async function runQuery() {        
+            if(query.queryString !== undefined && !query.querySuccess){
+                try {
+                    let response = await sql.executeQuery(query.queryString, user.db_obj, query.shouldCommit)
+                    setResult(response)
+                    setQuery(query => ({
+                        ...query,
+                        querySuccess: true,
+                    }))
+                } catch (error){
+                    setAlert({display: true, message: error.message, type: 'error'})
                 }
-            }
+              } else {
+                  setResult({})
+              }
         }
-    }
-}
-
-
-
-function QueryResultContainer(props) {
+      runQuery();
+    }, [query.queryString, query.shouldCommit])
 
     return (
         <>
-			<Typography>{props.queryString}</Typography> 
+            { result === undefined || result === null || Object.keys(result).length === 0 ? 
+            null
+            :
             <ReactJson 
                 name={false}
-                collapsed={true}
-                src={sampleJson}
-            />
+                enableClipboard={false}
+                collapsed={2}
+                src={result}
+            />}
+        <Alert type={alert.type} open={alert.display} message={<p id={'manage-query-db-alert'}> {alert.message} </p>} timeout={5000} onClose={()=>{ setAlert({display:false, message:'', type: 'error'})}} />
         </>
-    );
+    );  
 }
-
-export default QueryResultContainer;
