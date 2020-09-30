@@ -1,6 +1,31 @@
 import React from 'react';
 import {Button, makeStyles, TextField, Paper, List, ListItem, ListItemText} from '@material-ui/core/';
 
+const json_data = {
+  "glossary": {
+    "title": "example glossary",
+    "GlossDiv": {
+          "title": "S",
+          "GlossList": {
+              "GlossEntry": {
+                  "ID": "SGML",
+                  "SortAs": "SGML",
+                  "GlossTerm": "Standard Generalized Markup Language",
+                  "Acronym": "SGML",
+                  "Abbrev": "ISO 8879:1986",
+                  "GlossDef": {
+                      "para": "A meta-markup language, used to create markup languages such as DocBook.",
+                      "GlossSeeAlso": ["GML", "XML"]
+                    },
+                  "GlossSee": "markup"
+              }
+          }
+      }
+  }
+}
+
+
+
 const useStyles = makeStyles((theme) => ({
   textField: {
     width: '90%',
@@ -30,19 +55,21 @@ export default function QueryInput({input, setInput, setQuery, query}) {
   const [displayAutocomplete, setDisplayAutocomplete] = React.useState(false);
   /* Handles the index of the items selected in the autocomplete list */
   const [autocompleteIndex, setAutocompleteIndex] = React.useState(0);
+  /* Handles the children for the autocomplete object */
+  const [children, setChildren] = React.useState([]);
 
   /* Function used to update the display of the text field */
   const handleInput = (event) => {
     if(event.target.value[event.target.value.length - 1] === '@'){
-      setDisplayAutocomplete(true)
+      loadAutocomplete();
     } else {
       setDisplayAutocomplete(false)
-    }
-    setInput(event.target.value)
-    setQuery({
+      setQuery({
         queryString: undefined,
         querySuccess: false,
-    });
+      });
+    }
+    setInput(event.target.value)
   };
 
   /* Function used to trigger a query with commit changes = true  */
@@ -59,22 +86,49 @@ export default function QueryInput({input, setInput, setQuery, query}) {
     if(!displayAutocomplete){return}
     event.preventDefault();
     if(event.key === 'ArrowDown') {
-        setAutocompleteIndex((autocompleteIndex + 1) % items.length)
+        setAutocompleteIndex((autocompleteIndex + 1) % children.length)
     }else if(event.key === 'ArrowUp') {
-      setAutocompleteIndex((autocompleteIndex - 1) % items.length)
+      setAutocompleteIndex((autocompleteIndex - 1) % children.length)
     }else if(event.key === 'Enter') {
-      handleAutoComplete(items[autocompleteIndex])
+      handleAutoComplete(children[autocompleteIndex])
+    }else if(event.key === 'Escape') {
+      setDisplayAutocomplete(false)
+      setAutocompleteIndex(0)
     }
   }
 
+  
   /* Function used to bring in the selected autocomplete item into the textfield*/
-  const handleAutoComplete = (item) => {
-    setInput(input.substring(0, input.length - 1) + item);
+  const handleAutoComplete = (child) => {
+    setInput(input.substring(0, input.length - 1) + child);
     setDisplayAutocomplete(false)
     setAutocompleteIndex(0)
   }
 
-  var items = ['Item1', 'Item2', 'Item3']
+  /* Function parses the query input and sets the children of the current json object*/
+  const loadAutocomplete = () => {
+    let string = input.split(' ')
+    string = string[string.length-1]
+    
+    if(string === ''){setChildren(Object.keys(json_data))}
+    else {
+      string = string.split('.') //split string of object indexes
+      string.pop() //remove the @ sign
+      let new_data = json_data // start from full data
+      
+      for (let key in string){
+        var flag = false
+        if(new_data.hasOwnProperty(string[key]) && typeof(new_data[[string[key]]]) === 'object' ) {
+          flag = true
+          new_data = new_data[[string[key]]]
+          setChildren(Object.keys(new_data))
+        }
+      }
+      if(!flag){setChildren([])}
+    }
+    setDisplayAutocomplete(true);
+  }
+
   return (
     <>
       <TextField
@@ -104,10 +158,10 @@ export default function QueryInput({input, setInput, setQuery, query}) {
       />
       <Paper className={classes.autocompleteList} style={{display: displayAutocomplete ? 'block' : 'none'}} >
         <List >
-          {items.map(function(item){
+          {children.map(function(child){
             return (
-              <ListItem selected={items[autocompleteIndex] === item ? true: false} button key={item} onClick={() => handleAutoComplete(item.title)} >
-              <ListItemText primary={item} />
+              <ListItem selected={children[autocompleteIndex] === child ? true: false} button key={child} onClick={() => handleAutoComplete(child)} >
+              <ListItemText primary={child} />
               </ListItem>
             )
           })}
