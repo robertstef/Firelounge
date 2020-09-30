@@ -102,7 +102,6 @@ let getCollection = (query, statementType) => {
         return collection;
     }
     else if (statementType === 'update') {
-        // TODO - UPDATE
         const updateStartOffset = 6;
         let collectStart = clean_query.indexOf('update ');
         if (collectStart < 0) {
@@ -125,7 +124,7 @@ let getCollection = (query, statementType) => {
         return collection;
     }
     else if (statementType === 'insert') {
-        let regex = /insert ([0-9]+)?\s*into\s*(.*)\s*(\(.*\))\s*(values)\s*(\(.*\))/;
+        let regex = /insert\s?([0-9]+)?\s*into\s*(.*)\s*(\(.*\))\s*(values)\s*(\(.*\))/;
         let found = query.match(regex);
 
         if (!found) {
