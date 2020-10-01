@@ -44,7 +44,6 @@ export default function QueryInput({input, setInput, setQuery, query}) {
 
     //handles display update of any changes made to database via firebase console or in app
     ref.on("value", (snapshot) => {
-        console.log(snapshot.val())
         if(snapshot.val() !== null) {
           setDatabase(snapshot.val());
         }
@@ -85,7 +84,7 @@ export default function QueryInput({input, setInput, setQuery, query}) {
       setAutocompleteIndex((autocompleteIndex - 1) % children.length)
     }else if(event.key === 'Enter') {
       handleAutoComplete(children[autocompleteIndex])
-    }else if(event.key === 'Escape') {
+    }else if(event.key === 'Escape' || event.key === 'Backspace') {
       setDisplayAutocomplete(false)
       setAutocompleteIndex(0)
     }
