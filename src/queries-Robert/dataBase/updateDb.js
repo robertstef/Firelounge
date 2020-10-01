@@ -5,7 +5,7 @@
  * @param fields
  * @param database
  */
-let updateFields = (path, object, fields, database) => {
+export const updateFields = (path, object, fields, database) => {
     // TODO - UPDATE
     if (!fields || !object) {
         return;
@@ -18,9 +18,4 @@ let updateFields = (path, object, fields, database) => {
 
 const updateRealTimeFields = async function(database, path, newData) {
     return database.ref(path).update(newData);
-};
-
-
-module.exports = {
-    updateFields: updateFields,
 };

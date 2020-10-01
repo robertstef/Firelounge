@@ -8,7 +8,7 @@ const _ = require("lodash");
  *
  * @return {Object}: result of Firebase query
  */
-const getDataForSelect = (queryInfo, dataBase) => {
+export const getDataForSelect = (queryInfo, dataBase) => {
     let wheres = queryInfo.wheres;
 
     if (wheres === null) {
@@ -424,8 +424,4 @@ const evaluateWhere = (where, compObject) => {
         default:
             throw new Error("evaluateWhere(): something is terribly wrong - executing default case");
     }
-}
-
-module.exports = {
-    getDataForSelect: getDataForSelect
 }

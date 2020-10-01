@@ -1,4 +1,4 @@
-const qh = require('./queryHelper');
+import {replaceAll, removeWrappedParenthesis, stripEncasingSlashes, determineComparatorAndIndex, getParsedValue, optimizeWheres} from './queryHelper'
 
 /**
  * Formats the query by removing instances of "//" and "--",
@@ -8,10 +8,10 @@ const qh = require('./queryHelper');
  * @param query: String
  * @returns {string|*}: the formatted query
  */
-let formatAndCleanQuery = (query) => {
+export const formatAndCleanQuery = (query) => {
     let clean_query = query.toLowerCase();
     // remove all comments starting with "//" or "--" with ""
-    clean_query = qh.replaceAll(query, /(\/\/|--).+/g, "");
+    clean_query = replaceAll(query, /(\/\/|--).+/g, "");
     // replace carriage return chars with spaces
     clean_query = clean_query.replace(/\r?\n|\r/g, " ");
     // replace multiple spaces with single spaces
@@ -19,7 +19,7 @@ let formatAndCleanQuery = (query) => {
     // remove whitespace
     clean_query = clean_query.trim();
     // remove parenthesis
-    clean_query = qh.removeWrappedParenthesis(clean_query);
+    clean_query = removeWrappedParenthesis(clean_query);
     return clean_query;
 }
 
@@ -30,7 +30,7 @@ let formatAndCleanQuery = (query) => {
  * @returns {string}: String indicating the statement type
  *                    Is one of: select, update, insert, delete.
  */
-let determineStatementType = (query) => {
+export const determineStatementType = (query) => {
     let firstTerm = query
         .split(" ")[0]
         .trim()
@@ -64,7 +64,7 @@ let determineStatementType = (query) => {
  * @param statementType: String indicating statement type
  * @returns {string|*}
  */
-let getCollection = (query, statementType) => {
+export const getCollection = (query, statementType) => {
 
     const collectStartOffset = 4;
     const collectStartBeforeSelect = 5;
@@ -97,8 +97,8 @@ let getCollection = (query, statementType) => {
         let collection = trimmedCol.substring(0, collectEnd);
 
         // replace "." with "/" if user used dot notation
-        collection = qh.replaceAll(collection, /\./, "/");
-        collection = qh.stripEncasingSlashes(collection);
+        collection = replaceAll(collection, /\./, "/");
+        collection = stripEncasingSlashes(collection);
         return collection;
     }
     else if (statementType === 'update') {
@@ -114,8 +114,8 @@ let getCollection = (query, statementType) => {
         let collection = trimmedCol.substring(0, collectEnd);
 
         // replace "." with "/" if user used dot notation
-        collection = qh.replaceAll(collection, /\./, "/");
-        collection = qh.stripEncasingSlashes(collection);
+        collection = replaceAll(collection, /\./, "/");
+        collection = stripEncasingSlashes(collection);
 
         //TODO - there might be a more graceful way to check for situation where there is no collection specified, but SET option is specified
         if (collection.trim().length === 0 || collection === 'set') {
@@ -134,8 +134,8 @@ let getCollection = (query, statementType) => {
 
         // collection is located in second group of regex
         let collection = found[2].trim();
-        collection = qh.replaceAll(collection, /\./, "/");
-        collection = qh.stripEncasingSlashes(collection);
+        collection = replaceAll(collection, /\./, "/");
+        collection = stripEncasingSlashes(collection);
 
         return collection;
     }
@@ -159,8 +159,8 @@ let getCollection = (query, statementType) => {
         let collection = trimmedCol.substring(0, collectEnd);
 
         // replace "." with "/" if user used dot notation
-        collection = qh.replaceAll(collection, /\./, "/");
-        collection = qh.stripEncasingSlashes(collection);
+        collection = replaceAll(collection, /\./, "/");
+        collection = stripEncasingSlashes(collection);
         return collection;
     }
     else {
@@ -179,7 +179,7 @@ let getCollection = (query, statementType) => {
  * @param query: String - query to be parsed
  * @returns {{colName: string, ascending: boolean}[]|null}
  */
-let getOrderBys = (query) => {
+export const getOrderBys = (query) => {
     const ORDER_BY = "order by";
     const ASC = 'asc';
     const DESC = "desc";
@@ -250,7 +250,7 @@ let getOrderBys = (query) => {
  * @param query: String - query to be parsed
  * @returns {String[]}: array of selected fields
  */
-let getSelectFields = (query) => {
+export const getSelectFields = (query) => {
 
     // check if select statement is of valid form
     let regex = /(select\s+)(.*)(\s+from\s+.*)/; //add or delete, and then change the function to something more descriptive.
@@ -295,7 +295,7 @@ let getSelectFields = (query) => {
  * @param query: {String} - query to be parsed
  * @returns {null|{field: String, comparator: String, compVal: {String|number|boolean|null}[]}}
  */
-let getWheres = (query) => {
+export const getWheres = (query) => {
 
     // find start of where statement
     let whereStart = query.indexOf(" where ");
@@ -319,15 +319,15 @@ let getWheres = (query) => {
     let wheres = [];
     wheresArr.forEach(where => {
         where = where.trim();
-        where = qh.replaceAll(where, "not like", "!like");
-        let {comparator, index} = qh.determineComparatorAndIndex(where);
+        where = replaceAll(where, "not like", "!like");
+        let {comparator, index} = determineComparatorAndIndex(where);
 
         let compVal = where.substring(index + comparator.length).trim();
         if (comparator === 'like' || comparator === '!like') {
-            compVal = qh.getParsedValue(compVal, true);
+            compVal = getParsedValue(compVal, true);
         }
         else {
-            compVal = qh.getParsedValue(compVal, false);
+            compVal = getParsedValue(compVal, false);
         }
 
         let whereObj = {
@@ -339,14 +339,14 @@ let getWheres = (query) => {
         wheres.push(whereObj);
     });
 
-    return qh.optimizeWheres(wheres);
+    return optimizeWheres(wheres);
 }
 
 /**
  *
  * @param query
  */
-let getInsertCount = (query) => {
+export const getInsertCount = (query) => {
     // TODO - INSERT
 }
 
@@ -354,7 +354,7 @@ let getInsertCount = (query) => {
  *
  * @param query
  */
-let getObjectsFromInsert = (query) => {
+export const getObjectsFromInsert = (query) => {
     // TODO - INSERT
     let keyStr = query.substring(query.indexOf("(") + 1, query.indexOf(")"));
     let keys = keyStr.split(",");
@@ -379,7 +379,7 @@ let getObjectsFromInsert = (query) => {
  * @param database
  * @return null|{variable1: String, variable2: String: , ... , variableN: String}
  */
-let getSets = async (query, database) => {
+export const getSets = async (query, database) => {
     // TODO - UPDATE
     const setIndexStart = query.indexOf(" set ") + 1;
     if (setIndexStart < 1) {
@@ -406,22 +406,8 @@ let getSets = async (query, database) => {
                 val = `${Object.values(val)[0]}`; // get the returned from the select query
             }
             key = key.replace(".", "/").trim();
-            sets[key] = qh.getParsedValue(val.trim(), false);
+            sets[key] = getParsedValue(val.trim(), false);
         }
     });
     return sets
 };
-
-
-/* Export statements */
-module.exports = {
-    formatAndCleanQuery: formatAndCleanQuery,
-    determineStatementType: determineStatementType,
-    getCollection: getCollection,
-    getOrderBys: getOrderBys,
-    getSelectFields: getSelectFields,
-    getWheres: getWheres,
-    getInsertCount: getInsertCount,
-    getObjectsFromInsert: getObjectsFromInsert,
-    getSets: getSets
-}

@@ -1,7 +1,7 @@
-const QueryInfo = require("../parser/QueryInfo").QueryInfo;
-const qp = require('../parser/queryParser');
-const selectDb = require('../dataBase/selectDb');
-const updateDb = require('../dataBase/updateDb');
+import QueryInfo from "../parser/QueryInfo";
+import {getCollection, getWheres, getSets} from '../parser/queryParser';
+import {getDataForSelect} from '../dataBase/selectDb';
+import {updateFields} from '../dataBase/updateDb';
 
 // UPDATE table_name SET field1 = new-value1, field2 = new-value2
 // [WHERE Clause]
@@ -12,7 +12,7 @@ const updateDb = require('../dataBase/updateDb');
  * @param dataBase
  * @param commitResults
  */
-let executeUpdate = async (query, dataBase, commitResults) => {
+export const executeUpdate = async (query, dataBase, commitResults) => {
     let db_ref;
     db_ref = await execUpdate(query, dataBase, commitResults);
     if (commitResults) {
@@ -43,14 +43,14 @@ let execUpdate = async (query, dataBase, commitResults) => {
     let queryInfo = new QueryInfo();
     try {
         // Configure the QueryInfo Object
-        queryInfo.collection = qp.getCollection(query, "update");
-        queryInfo.wheres = qp.getWheres(query);
-        const sets = await qp.getSets(query, dataBase);
+        queryInfo.collection = getCollection(query, "update");
+        queryInfo.wheres = getWheres(query);
+        const sets = await getSets(query, dataBase);
         if (!sets) {
             return null;
         }
         queryInfo.selectFields = Object.keys(sets);
-        let select_data = selectDb.getDataForSelect(queryInfo, dataBase);
+        let select_data = getDataForSelect(queryInfo, dataBase);
         await select_data.then(async (data) => {
             Object.keys(data).forEach(key => data[key] === undefined ? delete data[key] : {}); // delete any data from the resulting object where the key is undefined
             const payload = generatePayload(data, sets, queryInfo);
@@ -84,7 +84,7 @@ let performUpdate = async (payload, dataBase, queryInfo, sets) => {
             path = queryInfo.collection;
         }
         paths.push(path);
-        updateDb.updateFields(path, updateObj, Object.keys(sets), dataBase); // perform the update operation in the Firebase database
+        updateFields(path, updateObj, Object.keys(sets), dataBase); // perform the update operation in the Firebase database
 
     });
     return await getReturnObj(paths, dataBase, true, {});
@@ -233,8 +233,4 @@ let updateItemWithSets = (obj, sets) => {
         }
     });
     return updateObject;
-};
-
-module.exports = {
-    executeUpdate: executeUpdate
 };

@@ -1,8 +1,8 @@
-const execSelect = require("./queryRunners/select").executeSelect;
-const execUpdate = require("./queryRunners/update").executeUpdate;
-const execDelete = require("./queryRunners/delete").executeDelete;
-const execInsert = require("./queryRunners/insert").executeInsert;
-const queryParser = require('./parser/queryParser');
+import {executeSelect as execSelect} from "./queryRunners/select"
+import {executeUpdate as execUpdate} from "./queryRunners/update"
+import {executeDelete as execDelete} from "./queryRunners/delete"
+import {executeInsert as execInsert} from "./queryRunners/insert"
+import {formatAndCleanQuery, determineStatementType} from './parser/queryParser';
 
 /**
  * Executes the given query against the current active
@@ -16,9 +16,9 @@ const queryParser = require('./parser/queryParser');
  *
  * @return a JSON object representing the result of the query
  */
-let executeQuery = (query, dataBase, commitResults) => {
-    let clean_query = queryParser.formatAndCleanQuery(query);
-    const statementType = queryParser.determineStatementType(clean_query);
+export const executeQuery = (query, dataBase, commitResults) => {
+    let clean_query = formatAndCleanQuery(query);
+    const statementType = determineStatementType(clean_query);
 
     switch (statementType) {
         case "select":
@@ -34,8 +34,4 @@ let executeQuery = (query, dataBase, commitResults) => {
         default:
             throw new Error("executeQuery(): executing default statement, something is very wrong");
     }
-}
-
-module.exports = {
-   executeQuery: executeQuery
 }

@@ -1,24 +1,22 @@
-const QueryInfo = require("../parser/QueryInfo").QueryInfo;
-const qp = require('../parser/queryParser');
-const db = require('../dataBase/selectDb');
+import QueryInfo from "../parser/QueryInfo";
+import {getCollection, getOrderBys, getSelectFields, getWheres} from "../parser/queryParser";
+import {getDataForSelect} from '../dataBase/selectDb';
 
 /**
  *
  * @param query
  * @param dataBase
  */
-let executeSelect = (query, dataBase) => {
+export const executeSelect = (query, dataBase) => {
     let queryInfo = new QueryInfo();
 
-    queryInfo.collection = qp.getCollection(query, 'select');
-    queryInfo.orderBys = qp.getOrderBys(query);
-    queryInfo.selectFields = qp.getSelectFields(query);
-    queryInfo.wheres = qp.getWheres(query);
+    queryInfo.collection = getCollection(query, 'select');
+    queryInfo.orderBys = getOrderBys(query);
+    queryInfo.selectFields = getSelectFields(query);
+    queryInfo.wheres = getWheres(query);
 
-    return db.getDataForSelect(queryInfo, dataBase);
+    return getDataForSelect(queryInfo, dataBase);
 }
 
-module.exports = {
-    executeSelect: executeSelect
-}
+
 
