@@ -1,6 +1,6 @@
-const QueryInfo = require("./QueryInfo").QueryInfo;
+import QueryInfo from "./QueryInfo";
 
-class InsertInfo extends QueryInfo {
+export default class InsertInfo extends QueryInfo {
 
     /**
      * Construct a new InsertInfo object.
@@ -41,8 +41,4 @@ class InsertInfo extends QueryInfo {
     set numInserts(value) {
         this._numInserts = value;
     }
-}
-
-module.exports = {
-    InsertInfo: InsertInfo
 }

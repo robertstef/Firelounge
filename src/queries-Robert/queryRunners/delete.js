@@ -1,14 +1,15 @@
-const QueryInfo = require("../parser/QueryInfo").QueryInfo ;
-const qp = require('../parser/queryParser');
-const selectDb = require('../dataBase/selectDb');
-const deleteDb = require('../dataBase/deleteDb');
+import QueryInfo from "../parser/QueryInfo";
+import {getCollection, getWheres} from "../parser/queryParser";
+import {getDataForSelect} from '../dataBase/selectDb';
+import {deleteObject} from '../dataBase/deleteDb';
+
 
 /**
  * @param query
  * @param dataBase
  * @param commitResults
  */
-let executeDelete = async (query, dataBase, commitResults) => {
+export const executeDelete = async (query, dataBase, commitResults) => {
     // TODO - DELETE
     let updated_DB = {};
     let db_ref;
@@ -30,10 +31,10 @@ let execDelete = async (query, dataBase, commitResults) => {
     let dataRef = {};
     let queryInfo = new QueryInfo();
     try {
-        queryInfo.collection = qp.getCollection(query, 'delete');
-        queryInfo.wheres = qp.getWheres(query);
+        queryInfo.collection = getCollection(query, 'delete');
+        queryInfo.wheres = getWheres(query);
         queryInfo.selectFields = ['*'];
-        let payload = selectDb.getDataForSelect(queryInfo, dataBase); // use getDataForSelect to determine what we need to delete
+        let payload = getDataForSelect(queryInfo, dataBase); // use getDataForSelect to determine what we need to delete
         await payload.then(async (data) => {
             if (data && commitResults){
                 await performDelete(data, dataBase, queryInfo)
@@ -49,12 +50,12 @@ let execDelete = async (query, dataBase, commitResults) => {
 
 let performDelete = (data, dataBase, queryInfo) => {
     if (!queryInfo.wheres && queryInfo.collection.indexOf('/') > 0) {
-        deleteDb.deleteObject(queryInfo.collection, dataBase);
+        deleteObject(queryInfo.collection, dataBase);
     } else {
         Object.keys(data).forEach(objKey => {
             if (data[objKey]) {
                 const path = queryInfo.collection + "/" + objKey;
-                deleteDb.deleteObject(path, dataBase);
+                deleteObject(path, dataBase);
             }
         })
     }
@@ -98,8 +99,4 @@ let deleteValueFromPath = (path, entity) => {
             }
         }
     });
-};
-
-module.exports = {
-    executeDelete: executeDelete,
 };

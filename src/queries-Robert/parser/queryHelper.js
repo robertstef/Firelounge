@@ -6,7 +6,7 @@
  * @param replacement: String
  * @returns {String}: the modified string
  */
-let replaceAll = (string, regex, replacement) => {
+export const replaceAll = (string, regex, replacement) => {
     return string.replace(new RegExp(regex, "g"), replacement);
 }
 
@@ -15,7 +15,7 @@ let replaceAll = (string, regex, replacement) => {
  * @param query: String
  * @returns {string|*}: query with parenthesis removed
  */
-let removeWrappedParenthesis = (query) => {
+export const removeWrappedParenthesis = (query) => {
     if (/^\(.+\)$/.test(query)) {
         return query.substring(1, query.length - 1);
     } else {
@@ -31,7 +31,7 @@ let removeWrappedParenthesis = (query) => {
  * @returns {string|*}: new query with encasing slashes stripped
  */
 // TODO: write unit tests for stripEncasingSlashes
-let stripEncasingSlashes = (query) => {
+export const stripEncasingSlashes = (query) => {
     if (query === "/") {
         return query;
     }
@@ -59,7 +59,7 @@ let stripEncasingSlashes = (query) => {
  * @param where: String - where statement to be parsed
  * @returns {{comparator: string, index: *}}
  */
-let determineComparatorAndIndex = (where) => {
+export const determineComparatorAndIndex = (where) => {
     let comparators = ['!=', '<>', '>=', '>', '<=', '<', '!like', 'like', '='];
 
     for (let c of comparators) {
@@ -92,7 +92,7 @@ let determineComparatorAndIndex = (where) => {
  * @param isLike: {boolean}: indicates if the whereValue is a LIKE wildcard
  * @returns {null|boolean|number|String}
  */
-let getParsedValue = (whereValue, isLike) => {
+export const getParsedValue = (whereValue, isLike) => {
     // input is a like wildcard
     if (isLike) {
         return whereValue.replace(/["']/g, "");
@@ -131,7 +131,7 @@ let getParsedValue = (whereValue, isLike) => {
  * @param wheres: {Array}: An array of WHERE objects
  * @returns {Array}: array of WHERE objects
  */
-let optimizeWheres = (wheres) => {
+export const optimizeWheres = (wheres) => {
     // first term is '=', where done!
     if (wheres[0].comparator === '=') {
         return wheres;
@@ -146,15 +146,4 @@ let optimizeWheres = (wheres) => {
         }
         return wheres;
     }
-}
-
-
-/* Export statements */
-module.exports = {
-    replaceAll: replaceAll,
-    removeWrappedParenthesis: removeWrappedParenthesis,
-    stripEncasingSlashes: stripEncasingSlashes,
-    determineComparatorAndIndex: determineComparatorAndIndex,
-    getParsedValue: getParsedValue,
-    optimizeWheres: optimizeWheres
 }
