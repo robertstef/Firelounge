@@ -4,9 +4,9 @@
 - [About the Project](#about-the-project)
 - [Usage](#usage)
     - [Getting Started](#getting-started) 
-    - [Creating a new Project](#creating-a-new-project) 
-    - [Add an Existing Project](#add-an-existing-project)
-    - [Project Management](#project-management)
+    - [Creating a New Firebase Project](#creating-a-new-firebase-project) 
+    - [Add an Existing Firebase Project](#add-an-existing-firebase-project)
+    - [Firebase Project Management](#firebase-project-management)
     - [Database Management](#database-management)
     - [Database Queries](#database-queries)
 - [Contributors](#contributors)
@@ -41,7 +41,7 @@ npm run build
 ### Database Queries
 
 
-## Maintainers
+## Contributors
 - Jackson Schuler (https://github.com/jacksonschuler)
 - Benjamyn Baker (https://github.com/BenjamynBaker)
 - Robert Stefanyshin (https://github.com/robertstef)
