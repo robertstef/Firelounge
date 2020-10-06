@@ -30,11 +30,11 @@ npm run start
 npm run build
 ```
 
-### Creating a New Project
+### Creating a New Firebase Project
 
-### Add an Existing Project
+### Add an Existing Firebase Project
 
-### Project Management
+### Firebase Project Management
 
 ### Database Management
 
