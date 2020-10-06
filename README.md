@@ -3,12 +3,13 @@
 ### Table of Contents
 - [About the Project](#about-the-project)
 - [Usage](#usage)
+    - [Getting Started](#getting-started) 
     - [Creating a new Project](#creating-a-new-project) 
     - [Add an Existing Project](#add-an-existing-project)
     - [Project Management](#project-management)
     - [Database Management](#database-management)
     - [Database Queries](#database-queries)
-- [Maintainers](#maintainers)
+- [Contributors](#contributors)
 - [Credits](#credits)
 
 ## About the Project
@@ -16,6 +17,18 @@
 Specifically, its allows users to run SQL style queries to perform CRUD operations on Firebase RealTime databases.
 
 ## Usage
+
+### Getting Started
+```
+git clone https://github.com/robertstef/Firelounge.git
+cd Firelounge && npm install
+
+#run in development mode
+npm run start
+
+#build executable
+npm run build
+```
 
 ### Creating a New Project
 
