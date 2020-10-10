@@ -306,7 +306,7 @@ export default function CreateNewProjectStepper() {
 
     return (
         <div className={classes.root}>
-            <Typography variant={'h6'} id='create-header' className={classes.pgTitle}>Create a new FireLounge project</Typography>
+            <Typography variant={'h6'} id='create-header' className={classes.pgTitle}>Create a New Firebase Project</Typography>
             <MobileStepper
                 variant="progress"
                 steps={currentSteps.length}

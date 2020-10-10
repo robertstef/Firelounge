@@ -1,4 +1,4 @@
-# Firelounge
+# FireLounge
 
 ### Table of Contents
 - [About the Project](#about-the-project)
@@ -14,7 +14,7 @@
 
 ## About the Project
 - FireLounge is an application that allows developers to quickly create, connect and manage their Firebase applications. 
-Specifically, its allows users to run SQL style queries to perform CRUD operations on Firebase RealTime databases.
+Specifically, it allows users to run SQL style queries to perform CRUD operations on Firebase RealTime databases.
 
 ## Usage
 
@@ -31,6 +31,11 @@ npm run build
 ```
 
 ### Creating a New Firebase Project
+- Creating a new Firebase project through FireLounge is done using an basic step-by-step process. 
+Each step contains the necessary fields required for each respective Firebase feature. Currently 
+FireLounge supports project creation with Database, Hosting, and Functions features. The project
+creation stepper can be found under the Creation tab denoted by the pencil icon. 
+
 
 ### Add an Existing Firebase Project
 
