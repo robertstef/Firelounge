@@ -81,11 +81,11 @@ let performUpdate = async (payload, dataBase, queryInfo, sets) => {
         updateFields(path, updateObj, Object.keys(sets), dataBase); // perform the update operation in the Firebase database
 
     });
-    return await getReturnObj(paths, dataBase, true, {});
+    return await getReturnObj_Update(paths, dataBase, true, {});
 };
 
 
-let getReturnObj = async (paths, dataBase, commitResults, db_data_ref) => {
+let getReturnObj_Update = async (paths, dataBase, commitResults, db_data_ref) => {
     let returnObj = {};
     if (commitResults) {
         await dataBase.ref('/').once('value', function(snapshot) {
@@ -147,7 +147,7 @@ let execUpdate_commitFalse = async (payload, dataBase, queryInfo) => {
     }, function(err) {
         throw new Error("execUpdate(): failed to get the updated database.")
     });
-    return await getReturnObj(paths, dataBase, false, dataRef);
+    return await getReturnObj_Update(paths, dataBase, false, dataRef);
 };
 
 /**
