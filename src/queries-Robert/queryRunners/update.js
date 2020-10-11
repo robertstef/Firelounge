@@ -14,6 +14,9 @@ import {updateFields} from '../dataBase/updateDb';
  */
 export const executeUpdate = async (query, dataBase, commitResults) => {
     let db_ref;
+
+    query = query.replace(/(\r\n|\n|\r)/gm, " "); // filter out potential newline character
+
     db_ref = await execUpdate(query, dataBase, commitResults);
     if (commitResults) {
         // // if the user wishes to commit the results to the firebase database

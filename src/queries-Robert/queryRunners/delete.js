@@ -13,6 +13,9 @@ export const executeDelete = async (query, dataBase, commitResults) => {
     // TODO - DELETE
     let updated_DB = {};
     let db_ref;
+
+    query = query.replace(/(\r\n|\n|\r)/gm, " "); // filter out potential newline character
+
     db_ref = await execDelete(query, dataBase, commitResults);
     if (commitResults) {
         await dataBase.ref('/').once('value', function(snapshot) {
