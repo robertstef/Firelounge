@@ -64,17 +64,10 @@ const execDeleteTests = async () => {
     //BASIC DELETION WITHIN A FURTHER NESTED SECTION
     query = 'delete from games/Scores/cards';
     expected = {games : {
-            Employees: [
-                {Name: 'Jackson', Number: 15},
-                {Name: 'Robert', Number: 20},
-                {Name: 'Ben', Number: 19},
-            ],
-            Players: ['Robert', 'Ben', 'Jackson'],
             Scores: {
                 coding: { Ben: 900, Jackson: 1200, Robert: 1500 },
                 skiing: { Ben: 100, Jackson: 20, Robert: 15 }
             },
-            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
         }
     };
     result = await fbsql.executeQuery(query, db, true);
@@ -82,35 +75,21 @@ const execDeleteTests = async () => {
 
     // DELETION WITH MULTIPLE WHERES
     query = 'delete from games/Scores where Ben>800 and Robert>20';
-    expected = {games : {
-            Employees: [
-                {Name: 'Jackson', Number: 15},
-                {Name: 'Robert', Number: 20},
-                {Name: 'Ben', Number: 19},
-            ],
-            Players: ['Robert', 'Ben', 'Jackson'],
+    expected = {
             Scores: {
                 skiing: { Ben: 100, Jackson: 20, Robert: 15 }
             },
-            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
-        }
     };
     result = await fbsql.executeQuery(query, db, true);
     assert.deepStrictEqual(result, expected);
 
     // TESTING DELETION WITHIN AN ARRAY OF OBJECTS
     query = 'delete from games/Employees where Number=19';
-    expected = {games : {
-            Employees: [
-                {Name: 'Jackson', Number: 15},
-                {Name: 'Robert', Number: 20},
-            ],
-            Players: ['Robert', 'Ben', 'Jackson'],
-            Scores: {
-                skiing: { Ben: 100, Jackson: 20, Robert: 15 }
-            },
-            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
-        }
+    expected = {
+        Employees: [
+            {Name: 'Jackson', Number: 15},
+            {Name: 'Robert', Number: 20},
+        ],
     };
     result = await fbsql.executeQuery(query, db, true);
     assert.deepStrictEqual(result, expected);
@@ -134,33 +113,19 @@ const execDeleteTests = async () => {
 
     // TESTING FOR NEITHER OF THE WHERES ARE SATISFIED
     query = 'delete from games/Scores where Ben<90 and Robert=0';
-    expected = {games : {
-            Employees: [
-                {Name: 'Jackson', Number: 15},
-                {Name: 'Robert', Number: 20},
-            ],
-            Players: ['Robert', 'Ben', 'Jackson'],
-            Scores: {
-                skiing: { Ben: 100, Jackson: 20, Robert: 15 }
-            },
-            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
-        }
+    expected = {
+        Scores: {
+            skiing: { Ben: 100, Jackson: 20, Robert: 15 }
+        },
     };
     result = await fbsql.executeQuery(query, db, false);
     assert.deepStrictEqual(result, expected);
 
     // TESTING DELETION FOR MULTIPLE WHERES
     query = 'delete from games/Scores where Ben>90 and Robert>10';
-    expected = {games : {
-            Employees: [
-                {Name: 'Jackson', Number: 15},
-                {Name: 'Robert', Number: 20},
-            ],
-            Players: ['Robert', 'Ben', 'Jackson'],
-            Scores: {
-            },
-            Winners: { cards: 'Jackson', coding: 'Robert', skiing: 'Ben' }
-        }
+    expected = {
+        Scores: {
+        },
     };
     result = await fbsql.executeQuery(query, db, false);
     assert.deepStrictEqual(result, expected);
