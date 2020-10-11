@@ -16,13 +16,7 @@ export const executeUpdate = async (query, dataBase, commitResults) => {
     let db_ref;
     query = query.replace(/(\r\n|\n|\r)/gm, " "); // filter out potential newline character
     db_ref = await execUpdate(query, dataBase, commitResults);
-    if (commitResults) {
-        // // if the user wishes to commit the results to the firebase database
-        return db_ref
-    } else {
-        // the user only wishes to see the changes without actually changing the firebase db
-        return db_ref
-    }
+    return db_ref
 };
 
 /**
