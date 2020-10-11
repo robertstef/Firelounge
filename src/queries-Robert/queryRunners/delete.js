@@ -42,7 +42,7 @@ let execDelete = async (query, dataBase, commitResults) => {
             if (data && commitResults){
                 await performDelete(data, dataBase, queryInfo)
             } else if (data && !commitResults) {
-                dataRef = await getUpdatedObj_commitFalse(data, dataBase, queryInfo)
+                dataRef = await execDelete_commitFalse(data, dataBase, queryInfo)
             }
         });
     } catch (err) {
@@ -64,7 +64,7 @@ let performDelete = (data, dataBase, queryInfo) => {
     }
 };
 
-let getUpdatedObj_commitFalse = async (data, dataBase, queryInfo) => {
+let execDelete_commitFalse = async (data, dataBase, queryInfo) => {
     let dataRef = {};
     await dataBase.ref('/').once('value', function(snapshot) {
         dataRef = snapshot.val(); // get the current database object
