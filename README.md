@@ -36,6 +36,7 @@ Each step contains the necessary fields required for each respective Firebase fe
 FireLounge supports project creation with Database, Hosting, and Functions features. The project
 creation stepper can be found under the Creation tab denoted by the pencil icon. 
 
+<img src = 'images/proj_creation_screenshot.png'/>
 
 ### Add an Existing Firebase Project
 
@@ -44,6 +45,7 @@ creation stepper can be found under the Creation tab denoted by the pencil icon.
 the Management tab denoted by a briefcase icon. In addition, users are able to deploy all of the features on the 
 project or a select set of features from their selected project through FireLounge. 
 
+<img src = 'images/manage_proj_screenshot.png'/>
 
 ### Database Management
 
