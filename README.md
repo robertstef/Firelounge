@@ -48,9 +48,20 @@ project or a select set of features from their selected project through FireLoun
 <img src = 'images/manage_proj_screenshot.png'/>
 
 ### Database Management
+- Users are able easily manage their Firebase databases right in FireLounge using the provided user interface. This interface
+gives users the ability to perform basic CRUD operations on the currently selected  Firebase database. 
+
+<img src='images/view_db_screenshot.png'/>
 
 ### Database Queries
+- Within FireLounge users have the capability to query their databases using MySQL syntax on the NoSQL Firebase database.
+You enter your query and the corresponding result of that query will be displayed. 
+When performing an UPDATE or DELETE query the object that gets display is what the following change will result in on that specific object being queried.
+This allows the user to view the proposed changes before they occur. 
+One the 'COMMIT' button in the input section is clicked the following change is executed and applied on the Database. 
+Current supported MySQL statements are, SELECT, UPDATE, and DELETE.
 
+<img src='images/edit_db_screenshot_delete_statement.png'/>
 
 ## Contributors
 - Jackson Schuler (https://github.com/jacksonschuler)
@@ -59,3 +70,4 @@ project or a select set of features from their selected project through FireLoun
 
 
 ## Credits
+- Joseph Roddy (https://github.com/JoeRoddy) for his Firebase SQL library (https://www.npmjs.com/package/fbsql)
