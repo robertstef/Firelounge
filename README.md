@@ -48,6 +48,10 @@ project or a select set of features from their selected project through FireLoun
 <img src = 'images/manage_proj_screenshot.png'/>
 
 ### Database Management
+- Users are able easily manage their Firebase databases right in FireLounge using the provided user interface. This interface
+gives users the ability to perform basic CRUD operations on the currently selected  Firebase database. 
+
+<img src='images/view_db_screenshot.png'/>
 
 ### Database Queries
 
