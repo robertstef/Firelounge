@@ -53,8 +53,8 @@ export default function QueryInput({input, setInput, setQuery, query}) {
 
   /* Function used to update the display of the text field */
   const handleInput = (event) => {
-    if(event.target.value[event.target.value.length - 1] === '@'){
-      loadAutocomplete();
+    if(event.target.value.indexOf('#') !== -1 ){
+      loadAutocomplete(event.target.value);
     } else {
       setDisplayAutocomplete(false)
       setQuery({
@@ -93,31 +93,45 @@ export default function QueryInput({input, setInput, setQuery, query}) {
   
   /* Function used to bring in the selected autocomplete item into the textfield*/
   const handleAutoComplete = (child) => {
-    setInput(input.substring(0, input.length - 1) + child);
+    let index_hash = input.indexOf('#')
+    let first_half = input.substring(0, index_hash)
+    let second_half = input.substring(index_hash + 1, input.length)
+    setInput(first_half + child + second_half);
     setDisplayAutocomplete(false)
     setAutocompleteIndex(0)
   }
 
   /* Function parses the query input and sets the children of the current json object*/
-  const loadAutocomplete = () => {
-    let string = input.split(' ')
-    string = string[string.length-1]
+  const loadAutocomplete = (target) => {
+    let string = target.split(' ')
+    let index_hash; 
     
-    if(string === ''){setChildren(Object.keys(database))}
+    //find which word contains a #
+    for (let i in string){
+      if(string[i].indexOf('#') !== -1){
+        index_hash = i 
+      }
+    }
+    //get word that has hash, split its components by .
+    let chunks = string[index_hash].split('.')
+
+    //if it starts with #, its the root of database
+    if(chunks[0] === '#'){setChildren(Object.keys(database))}
     else {
-      string = string.split('.') //split string of object indexes
-      string.pop() //remove the @ sign
       let new_data = database // start from full data
 
-      for (let key in string){
-        var flag = false
-        if(new_data.hasOwnProperty(string[key]) && typeof(new_data[[string[key]]]) === 'object' ) {
+      //iterate through all pieces of the word, traverse the database and get the keys
+      var flag = false
+      for (let key in chunks){
+        if(new_data.hasOwnProperty(chunks[key]) && typeof(new_data[[chunks[key]]]) === 'object' ) {
           flag = true
-          new_data = new_data[[string[key]]]
+          new_data = new_data[[chunks[key]]]
           setChildren(Object.keys(new_data))
         }
       }
-      if(!flag){setChildren([])}
+      //if no children are found throughout
+      if(!flag){
+        setChildren([])}
     }
     setDisplayAutocomplete(true);
   }

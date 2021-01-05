@@ -14,21 +14,9 @@ import {updateFields} from '../dataBase/updateDb';
  */
 export const executeUpdate = async (query, dataBase, commitResults) => {
     let db_ref;
+    query = query.replace(/(\r\n|\n|\r)/gm, " "); // filter out potential newline character
     db_ref = await execUpdate(query, dataBase, commitResults);
-    if (commitResults) {
-        // // if the user wishes to commit the results to the firebase database
-        // await dataBase.ref('/').once('value', function(snapshot) {
-        //     updated_DB = snapshot.val()
-        //
-        // }, function(err) {
-        //     throw new Error("ExecuteUpdate(): failed to get the updated database.")
-        // });
-        // return updated_DB;
-        return db_ref
-    } else {
-        // the user only wishes to see the changes without actually changing the firebase db
-        return db_ref
-    }
+    return db_ref
 };
 
 /**
@@ -57,7 +45,7 @@ let execUpdate = async (query, dataBase, commitResults) => {
             if (payload && commitResults) {
                 dbRef = await performUpdate(payload, dataBase, queryInfo, sets) // the user wishes to update fields in the Firebase database
             } else if (payload && !commitResults) {
-                dbRef = await getUpdatedObject_commitFalse(payload, dataBase, queryInfo) // the user wishes to see the changes without making changes to the Firebase database
+                dbRef = await execUpdate_commitFalse(payload, dataBase, queryInfo) // the user wishes to see the changes without making changes to the Firebase database
             }
         })
     } catch (err) {
@@ -87,11 +75,11 @@ let performUpdate = async (payload, dataBase, queryInfo, sets) => {
         updateFields(path, updateObj, Object.keys(sets), dataBase); // perform the update operation in the Firebase database
 
     });
-    return await getReturnObj(paths, dataBase, true, {});
+    return await getReturnObj_Update(paths, dataBase, true, {});
 };
 
 
-let getReturnObj = async (paths, dataBase, commitResults, db_data_ref) => {
+let getReturnObj_Update = async (paths, dataBase, commitResults, db_data_ref) => {
     let returnObj = {};
     if (commitResults) {
         await dataBase.ref('/').once('value', function(snapshot) {
@@ -135,7 +123,7 @@ let getReturnObj = async (paths, dataBase, commitResults, db_data_ref) => {
  * @param queryInfo - the collection where we are performing the update
  * @return {Promise<{}>} database object with the corresponding query change applied. Change is NOT reflected on Firebase
  */
-let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
+let execUpdate_commitFalse = async (payload, dataBase, queryInfo) => {
     let dataRef = {};
     let paths = [];
     await dataBase.ref('/').once('value', function(snapshot) {
@@ -153,7 +141,7 @@ let getUpdatedObject_commitFalse = async (payload, dataBase, queryInfo) => {
     }, function(err) {
         throw new Error("execUpdate(): failed to get the updated database.")
     });
-    return await getReturnObj(paths, dataBase, false, dataRef);
+    return await getReturnObj_Update(paths, dataBase, false, dataRef);
 };
 
 /**
