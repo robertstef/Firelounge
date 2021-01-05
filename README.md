@@ -59,3 +59,4 @@ project or a select set of features from their selected project through FireLoun
 
 
 ## Credits
+- Joseph Roddy (https://github.com/JoeRoddy) for his Firebase SQL library (https://www.npmjs.com/package/fbsql)
